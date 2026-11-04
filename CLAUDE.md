@@ -70,7 +70,7 @@ content/
 lib/
   utils.ts  navigation.ts  supabase.ts (server-only)
   blocks-types.ts  blocks-validate.ts  blocks-load.ts
-  intake-types.ts  intake-validate.ts  intake-url.ts     answers <-> URL
+  intake-types.ts  intake-questions.ts  intake-phases.ts  intake-draft.ts  intake-validate.ts  intake-url.ts     answers <-> URL
   curriculum-engine.ts                                     PURE: answers + blocks -> plan
   feedback-types.ts  feedback-validate.ts  feedback-store.ts  feedback-service.ts
   *.test.ts
@@ -136,7 +136,7 @@ Colour tokens live in `app/globals.css` in `oklch`, mapped with `@theme inline`;
 - **Theme-aware logos:** `dark:hidden` and `hidden dark:block`.
 
 **Intake UX:**
-- One question per screen, with a progress bar and Back and Next buttons.
+- One question per screen, with numbered progress steps and Back and Next buttons that stay on screen. The hero shows on question 1 only.
 - Every question has a "Not sure" option that comes with a one-line explanation.
 - Answers are kept in the URL, so Back, refresh and sharing all work.
 - Fully keyboard-usable, using native radio buttons and checkboxes styled as cards.
