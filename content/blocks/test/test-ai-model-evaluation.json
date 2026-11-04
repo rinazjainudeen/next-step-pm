@@ -1,0 +1,71 @@
+{
+  "id": "test-ai-model-evaluation",
+  "title": "Evaluate an AI model's quality before launch",
+  "phase": "test",
+  "kind": "add-on",
+  "summary": "AI features can give different answers to the same question and can be confidently wrong. Before launch, define what 'good enough' means and test the AI against a set of realistic examples, then keep testing after release.",
+  "appliesTo": {
+    "pmTypes": ["ai"],
+    "productTypes": ["data-ai"],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down what the AI feature must do well, in measurable terms. For example: 'answers are accurate for at least 95% of common questions', 'never gives personal advice', 'replies within 3 seconds'.",
+      "Collect a test set: 30 to 50 realistic examples to start, taken from real user questions where you are allowed to use them. Include easy cases, hard cases, edge cases and attempts to misuse it.",
+      "For each example, write what a good answer looks like, or the rules a good answer must follow.",
+      "Run the test set and score the results. Simple checks can be automated; others need a person, or another AI model, to grade against clear rules. Check a sample of any AI grading by hand.",
+      "Check for harm and fairness: does it treat different user groups equally, does it make things up, and does it refuse when it should? Involve your legal or data protection colleagues.",
+      "Agree a launch decision with the team based on the scores. Keep the test set and rerun it whenever the model, prompt or data changes, and keep monitoring after launch."
+    ],
+    "intermediate": [
+      "Define specific, measurable success criteria across accuracy, safety, tone, speed and cost.",
+      "Build a test set of realistic, edge and adversarial cases with expected outcomes.",
+      "Grade with a mix of code checks, model grading and human review, and validate the model grading by hand.",
+      "Make a launch decision against thresholds, and rerun the evaluation as a regression check on every change."
+    ],
+    "experienced": [
+      "Multi-dimensional success criteria with thresholds agreed.",
+      "Representative test set including edge, misuse and fairness cases.",
+      "Grading approach validated; results reproducible.",
+      "Evaluation runs on every model or prompt change; live monitoring for drift and hallucination in place."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "data-scientist", "task": "Build and run the evaluation and grading" },
+      { "role": "qa", "task": "Write edge cases and misuse cases for the test set" },
+      { "role": "policy-legal", "task": "Review for data protection, fairness and harm risks" },
+      { "role": "user-researcher", "task": "Test the AI feature with real users and capture where it confuses them" }
+    ],
+    "reviewers": ["data-scientist", "tech-lead", "policy-legal"]
+  },
+  "toolExamples": {
+    "claude": "Ask Claude to help draft success criteria and edge cases for your feature, then review every one yourself. Anthropic's docs on defining success criteria and building evaluations give a worked approach.",
+    "github": "Keep the test set and expected answers in the repository, so the evaluation can run automatically when the prompt or model changes.",
+    "confluence": "Keep an evaluation page with the success criteria, thresholds, the latest scores and the launch decision.",
+    "jira": "Raise each failing example as a bug linked to the AI feature, so fixes can be retested against the same case."
+  },
+  "definitionOfDone": [
+    "Measurable success criteria and thresholds agreed",
+    "Test set covers normal, edge and misuse cases",
+    "Results scored, with any AI grading checked by a person",
+    "Launch decision recorded, and evaluation set to rerun on every change"
+  ],
+  "pitfalls": [
+    "Testing with a handful of hand-picked examples",
+    "Trusting AI-graded scores without checking them",
+    "Evaluating once before launch and never again"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": ["define-problem-statement"],
+  "freshness": "fast-moving",
+  "sources": [
+    { "title": "Define success criteria and build evaluations (Claude Platform docs)", "url": "https://platform.claude.com/docs/en/build-with-claude/define-success" },
+    { "title": "Artificial Intelligence Playbook for the UK Government", "url": "https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government/artificial-intelligence-playbook-for-the-uk-government-html" },
+    { "title": "How do we test and assure AI in Government? (CDDO blog)", "url": "https://cddo.blog.gov.uk/2025/09/22/how-do-we-test-and-assure-ai-in-government/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

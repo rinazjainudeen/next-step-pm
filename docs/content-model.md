@@ -42,7 +42,7 @@ The allowed values live in `content/taxonomy.ts`, so blocks and questions can't 
 2. **What kind of product?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
 3. **Where is the product now?** Starting something new · Mid-build · Live. Then an optional follow-up for the exact phase.
 4. **Your experience as a PM:** Beginner (under 1 year) · Intermediate (1 to 4 years) · Experienced (5+ years).
-5. **Who is in your team?** Multi-select with counts. Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner.
+5. **Who is in your team?** Multi-select with counts. Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner.
 6. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini).
 7. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. This sets how deep each step goes and gives the plan a week-by-week rhythm.
 8. **How does your team work?** Scrum · Kanban · Hybrid / stage gates · Not sure.
@@ -51,19 +51,20 @@ Answers are encoded in the URL, for example `/plan?pm=ai&product=public&stage=bu
 
 ## 3. A learning block
 
-One JSON file per block in `content/blocks/<phase>/<id>.json`. The file is validated by `lib/blocks-validate.ts`; a bad block fails `pnpm validate:content` and the build.
+One JSON file per block. A block with a single phase lives in `content/blocks/<phase>/<id>.json`. A block with `"phase": "any"` or a list of phases lives in `content/blocks/cross-phase/<id>.json`. The file name must match the block's `id`. The file is validated by `lib/blocks-validate.ts`; a bad block fails `pnpm validate:content` and the build.
 
 ```jsonc
 {
   "id": "define-problem-statement",
   "title": "Write a problem statement and hypothesis",
-  "phase": "define",
-  "kind": "core",                       // core | add-on | onboarding
+  "phase": "define",                    // one phase | a list, e.g. ["design", "plan"] | "any"
+  "kind": "core",                       // core | add-on | onboarding | ways-of-working
   "summary": "One or two sentences on why this matters.",
   "appliesTo": {                        // empty list = applies to all
     "pmTypes": [],
     "productTypes": [],
-    "stages": ["new", "mid-build"]
+    "stages": ["new", "mid-build"],
+    "waysOfWorking": []                 // scrum | kanban | hybrid
   },
   "steps": {
     "beginner":    ["Detailed step with guidance…", "…"],
@@ -90,6 +91,7 @@ One JSON file per block in `content/blocks/<phase>/<id>.json`. The file is valid
   "freshness": "evergreen",             // evergreen | changes-yearly | fast-moving
   "sources": [{ "title": "…", "url": "https://…" }],
   "lastReviewed": "2026-11-04"
+  // "placeholder": true               // optional. Only for dummy blocks used to test the site
 }
 ```
 
@@ -97,12 +99,37 @@ One JSON file per block in `content/blocks/<phase>/<id>.json`. The file is valid
 - **core**: every PM in that phase gets it.
 - **add-on**: only for certain PM or product types. Examples: "Evaluate model quality" for AI products, "Prepare for a service assessment" for public sector services, "Map the current process" for transformation.
 - **onboarding**: for people joining mid-build or a live product. Examples: "Read the decision trail", "1:1s with each role", "Find the live dashboards".
+- **ways-of-working**: how the team works, rather than what it produces. Examples: sprint planning, refinement, the daily stand-up, review, retrospective, Kanban flow and WIP limits, stage-gate reviews, roadmaps and estimation. These blocks often belong to several phases or to none in particular, so their `phase` can be a list or `"any"`. They are picked by the visitor's answer to "How does your team work?", using `appliesTo.waysOfWorking`.
+
+**The `phase` field** takes one of three forms: a single phase (`"define"`), a list of two or more phases (`["design", "plan"]`), or `"any"` (every phase).
+
+**Placeholder blocks** carry `"placeholder": true` and the word PLACEHOLDER in the title. They are dummy content for testing the Library. The site marks them, keeps them out of search engines and the sitemap, and `pnpm validate:content` warns until they are removed.
+
+### What `pnpm validate:content` checks
+
+Each block on its own:
+- `id` is lowercase words joined by hyphens, and matches the file name.
+- Every field is present, and no unknown fields appear (this catches typos).
+- `phase`, `kind`, PM types, product types, stages, ways of working, roles, tools and freshness all use values from `content/taxonomy.ts`.
+- `appliesTo` has all four lists. An empty list means "applies to all".
+- `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
+- `definitionOfDone` has at least one item. `pitfalls` must be present but may be empty.
+- `estimatedEffort` is a number or range and a unit: `30 minutes`, `2-4 hours`, `1 day`, `2-3 days`.
+- `sources` has at least one entry with a full `http(s)` address. Every block cites its sources.
+- `lastReviewed` is a real date written `YYYY-MM-DD`, and not in the future.
+
+Across all blocks:
+- Ids are unique, and each file is in the right folder for its phase.
+- Every `dependsOn` id exists, is not the block itself, and is not in a later phase.
+- There are no circular dependencies.
+
+Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`. Tool ids are listed in `content/taxonomy.ts`.
 
 ## 4. The curriculum engine (`lib/curriculum-engine.ts`)
 
 A pure function, `buildPlan(answers, blocks) -> Plan`, with no database, no AI and no randomness.
 
-1. **Select** core blocks for the phases in the visitor's starting point. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type and product type.
+1. **Select** core blocks for the phases in the visitor's starting point. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type and product type. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
 2. **Order** by phase, then by `dependsOn`. If a dependency comes from an earlier phase, show it as "check this exists" rather than as a task.
 3. **Shape** the steps to the visitor's experience level. If "Not sure" was chosen, use intermediate.
 4. **Assign** roles. For each delegable task, if the role is in the team, show "Ask your BA to…". If not, give the task to the PM with a note, e.g. "No QA in your team: agree who tests, and add time for it". Use the team list to suggest who reviews.
@@ -123,6 +150,16 @@ Rinaz reviews the pull request on the Vercel preview link and merges it, or clos
 
 ## 6. Content production
 
-- **First release:** about 40 to 50 blocks: 3 to 5 core blocks per phase, the two onboarding packs, and 1 to 2 add-ons for each PM type and product type.
+- **First release:** about **90 blocks** (planned 4 November 2026, up from 40 to 50). The target mix:
+
+  | Kind | Blocks |
+  |---|---|
+  | Core lifecycle | about 40 |
+  | Ways of working | about 15 |
+  | PM-type add-ons | about 15 |
+  | Product-type add-ons | about 12 |
+  | Onboarding | about 8 |
+
+- **Phase 2 starts with about 12 blocks**, drafted by Rinaz in a separate planning chat and added to `content/blocks/` by Claude Code, which fixes anything the validator flags. Claude Code does not write block content in Phase 2. Two clearly marked placeholder blocks stand in until then.
 - **Drafting:** Claude researches each block from reputable public sources (for example the GOV.UK Service Manual, Atlassian guides, Nielsen Norman Group, Marty Cagan / SVPG, Teresa Torres, Reforge essays and vendor docs for tool steps) and writes it in our own words, with citations. No copied text.
 - **Review:** Rinaz edits blocks in batches, one phase at a time.

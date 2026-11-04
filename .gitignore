@@ -6,11 +6,13 @@
 .env*.local
 
 # Dependencies and build output
+# (The leading / means the project's top level only, so a folder such as
+# content/blocks/build/ is never ignored by accident.)
 node_modules/
 .next/
-out/
-build/
-coverage/
+/out/
+/build/
+/coverage/
 
 # Vercel
 .vercel/

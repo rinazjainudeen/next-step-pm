@@ -1,0 +1,73 @@
+{
+  "id": "measure-results-hypothesis",
+  "title": "Measure results against your hypothesis",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "Shipping is not the finish line. Check whether the change did what your hypothesis predicted, learn why, and use that to decide what to do next.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Go back to your hypothesis and the measures of success you agreed. Write down the baseline (before) for each one.",
+      "Check the data is being collected properly. Ask your analyst or engineers to confirm the tracking works before you trust any numbers.",
+      "Wait long enough to get a fair picture: at least a full week, so weekday and weekend use are both included, and longer for low-traffic services.",
+      "Compare the results with the baseline. Look at different user groups separately, because an average can hide a group that got worse.",
+      "Pair the numbers with research. Numbers tell you what changed; talking to users or reading feedback tells you why.",
+      "Write a short summary: was the hypothesis right, partly right or wrong? What did you learn? What will you do next: keep it, improve it or remove it? Share it with the team and stakeholders."
+    ],
+    "intermediate": [
+      "Confirm tracking works and baselines are recorded.",
+      "Measure over a fair period, broken down by user group.",
+      "Combine the numbers with qualitative feedback to understand why.",
+      "Publish a verdict on the hypothesis and the next decision."
+    ],
+    "experienced": [
+      "Tracking verified; baselines and segments defined.",
+      "Results compared with the hypothesis over a fair period.",
+      "Quantitative and qualitative evidence combined.",
+      "Verdict, learning and next decision shared; backlog updated."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "performance-analyst", "task": "Build the dashboard and report results against the baseline" },
+      { "role": "data-analyst", "task": "Build the dashboard and report results against the baseline" },
+      { "role": "user-researcher", "task": "Run follow-up research to explain the numbers" },
+      { "role": "frontend-engineer", "task": "Check analytics events fire correctly" }
+    ],
+    "reviewers": ["tech-lead", "delivery-manager"]
+  },
+  "toolExamples": {
+    "ga4": "Set the key user actions as key events, then compare the period before and after release in the reports, broken down by device and user type.",
+    "amplitude": "Build a funnel for the journey your hypothesis targets and compare conversion before and after the release date.",
+    "mixpanel": "Use a funnel report and segment it by user group to see whether any group got worse.",
+    "power-bi": "Put the hypothesis measures and their baselines on one page, so the team can see progress at a glance.",
+    "looker": "Create a saved view of the hypothesis measures with a release-date marker.",
+    "claude": "Paste your results table (no personal data) and ask what other explanations could account for the change besides your feature."
+  },
+  "definitionOfDone": [
+    "Results compared with the baseline over a fair period",
+    "Results checked by user group, not just overall",
+    "Clear verdict on the hypothesis, with the reasons",
+    "Next decision agreed and the backlog updated"
+  ],
+  "pitfalls": [
+    "Declaring success after a day or two of data",
+    "Assuming the change caused the result without ruling out other causes",
+    "Only looking at averages"
+  ],
+  "estimatedEffort": "2-3 days",
+  "dependsOn": ["define-problem-statement", "launch-release-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "Measuring the success of your service (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/measuring-success/measuring-the-success-of-your-service" },
+    { "title": "How to set performance metrics for your service (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service" },
+    { "title": "How to implement hypothesis-driven development (Thoughtworks)", "url": "https://www.thoughtworks.com/insights/articles/how-implement-hypothesis-driven-development" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

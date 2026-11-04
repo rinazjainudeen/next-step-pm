@@ -1,0 +1,70 @@
+{
+  "id": "wow-kanban-flow",
+  "title": "Manage flow with a Kanban board",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "Kanban helps a team finish work rather than start more of it. By limiting work in progress and watching a few simple flow measures, you spot bottlenecks early and deliver more predictably.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": ["kanban"]
+  },
+  "steps": {
+    "beginner": [
+      "Agree with the team what a 'work item' is, and exactly when one counts as started and when it counts as finished.",
+      "Set up board columns that match how work really moves, for example: Ready, In progress, In review, Testing, Done.",
+      "Watch for a couple of weeks how many items usually sit in each column. Then agree a work-in-progress (WIP) limit for each, often a bit below the number of people who work that column.",
+      "Make the rule clear: when a column is at its limit, nobody starts new work. Instead, help finish what is already there.",
+      "Track four simple measures: how many items are in progress, how many get finished each week, how old each in-progress item is, and how long items take from start to finish.",
+      "Review the board regularly, starting with the oldest items. Every few weeks, look at the measures together and agree one change to try."
+    ],
+    "intermediate": [
+      "Agree a definition of workflow: work item types, start and finish points, columns and policies.",
+      "Set WIP limits from observed data and enforce a pull-only rule.",
+      "Track WIP, throughput, work item age and cycle time.",
+      "Review flow regularly, unblock aged items first, and adjust policies when the data shows a problem."
+    ],
+    "experienced": [
+      "Definition of workflow explicit and visible on the board.",
+      "WIP controlled; work pulled only when there is capacity.",
+      "Four flow metrics tracked; service level expectation set from cycle time history.",
+      "Regular flow reviews drive one improvement at a time."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "delivery-manager", "task": "Set up the board, agree WIP limits with the team and report flow measures" },
+      { "role": "scrum-master", "task": "Facilitate flow reviews and help remove blockers" },
+      { "role": "tech-lead", "task": "Agree where engineering columns and limits should sit" }
+    ],
+    "reviewers": ["delivery-manager", "tech-lead"]
+  },
+  "toolExamples": {
+    "jira": "In the board settings, open Columns and set a maximum for each column. The column header turns red when the limit is broken.",
+    "azure-devops": "Use the Kanban board's column settings to set WIP limits, and the cumulative flow chart to spot bottlenecks.",
+    "trello": "Use a list limits feature (Power-Up) so a list is highlighted when it has too many cards.",
+    "linear": "Use workflow states as columns and check cycle time in the insights view.",
+    "claude": "Paste a week of board history (item, start date, finish date) and ask it to work out cycle times and point out which items have been in progress far longer than the rest."
+  },
+  "definitionOfDone": [
+    "Start and finish points and column policies agreed",
+    "WIP limits set and followed",
+    "Flow measures tracked and reviewed at least monthly",
+    "At least one improvement agreed from the data"
+  ],
+  "pitfalls": [
+    "Raising WIP limits every time the team hits them",
+    "Starting new work to keep people busy instead of finishing work",
+    "Treating the board as a status report rather than a tool for decisions"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "The Kanban Guide (May 2025 edition)", "url": "https://kanbanguides.org/the-kanban-guide/" },
+    { "title": "Working with WIP limits for kanban (Atlassian)", "url": "https://www.atlassian.com/agile/kanban/wip-limits" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

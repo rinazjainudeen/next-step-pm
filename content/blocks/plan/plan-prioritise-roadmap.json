@@ -1,0 +1,73 @@
+{
+  "id": "plan-prioritise-roadmap",
+  "title": "Prioritise the work and build a roadmap",
+  "phase": "plan",
+  "kind": "core",
+  "summary": "You will always have more ideas than time. A simple, shared way of scoring them helps you choose, explain your choices and turn them into a roadmap the team and stakeholders can follow.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "List every candidate piece of work in one place: features, fixes, research and technical work. Write each one as an outcome where you can.",
+      "Pick one scoring method and explain it to the team. RICE is a good start: Reach (how many people), Impact (how much it helps each), Confidence (how sure you are) and Effort (how much work).",
+      "Score each item with the team. Ask engineers for effort, and use your research and data for reach and impact. Lower the confidence score where you are guessing.",
+      "Sort by score, then sense-check the order. Move items for real reasons, such as deadlines, dependencies or legal duties, and write down why.",
+      "Group the top items into a roadmap with three columns: Now, Next and Later. Avoid exact dates beyond the next few weeks.",
+      "Share the roadmap with stakeholders, explain how you scored it, and agree how often you will revisit it (for example monthly)."
+    ],
+    "intermediate": [
+      "Gather all candidate work as outcomes, including technical and research work.",
+      "Score it with a shared method (RICE or similar), using real effort estimates and confidence levels.",
+      "Adjust for dependencies and fixed deadlines, and record each reason.",
+      "Publish a Now / Next / Later roadmap and set a review rhythm."
+    ],
+    "experienced": [
+      "One backlog of outcomes; scoring method agreed and visible.",
+      "Effort comes from engineering; confidence reflects the evidence.",
+      "Overrides justified in writing; dependencies mapped.",
+      "Now / Next / Later roadmap published, with a review date set."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "delivery-manager", "task": "Map dependencies and run the scoring session" },
+      { "role": "tech-lead", "task": "Provide effort estimates and flag technical risks" },
+      { "role": "ba", "task": "Keep the backlog tidy and write each item as an outcome" },
+      { "role": "data-analyst", "task": "Estimate reach from usage data" }
+    ],
+    "reviewers": ["delivery-manager", "tech-lead"]
+  },
+  "toolExamples": {
+    "jira": "Add Reach, Impact, Confidence and Effort as custom number fields on epics, so you can sort and filter by score. Use Jira's timeline view for the Now / Next / Later roadmap.",
+    "azure-devops": "Use the Effort and Value fields on features, and show the roadmap on a delivery plan.",
+    "linear": "Use projects for roadmap items and priority labels for the scored order.",
+    "google-docs": "If you have no tracker, a shared spreadsheet with one row per item and a RICE formula column works well.",
+    "miro": "Run the scoring session live on a 2x2 grid (impact against effort) before you put numbers on it.",
+    "claude": "Paste your scored list and ask which scores look inconsistent with each other, and what questions a sceptical stakeholder would ask."
+  },
+  "definitionOfDone": [
+    "All candidate work scored with a method the team understands",
+    "Every change to the scored order has a written reason",
+    "Now / Next / Later roadmap shared with stakeholders",
+    "Date set to review priorities"
+  ],
+  "pitfalls": [
+    "Scoring alone, so the team does not trust the result",
+    "Treating the score as the final answer rather than a starting point",
+    "Putting firm dates on items months away"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": ["define-problem-statement"],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "RICE: simple prioritization for product managers (Intercom)", "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/" },
+    { "title": "RICE scoring model (ProductPlan glossary)", "url": "https://www.productplan.com/glossary/rice-scoring-model" },
+    { "title": "Agile epics: definition, examples and templates (Atlassian)", "url": "https://www.atlassian.com/agile/project-management/epics" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

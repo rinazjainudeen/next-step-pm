@@ -28,7 +28,7 @@ export const PRIMARY_ACTION: NavLink = {
 /** Pages shown in the header menu and footer. */
 export const PAGE_LINKS: NavLink[] = [
   { label: "Home", href: "/", description: "What Next Step PM is.", available: true },
-  { label: "Library", href: "/library", description: "Browse every learning block.", available: false },
+  { label: "Library", href: "/library", description: "Browse every learning block.", available: true },
   { label: "How I built this", href: "/how-i-built-this", description: "The case study.", available: false },
   { label: "Decision log", href: "/decisions", description: "What I decided and why.", available: false },
   { label: "Privacy", href: "/privacy", description: "What is stored, and for how long.", available: false },
