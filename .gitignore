@@ -1,0 +1,30 @@
+# macOS junk
+.DS_Store
+
+# Secrets: real keys live here and must never be uploaded
+.env
+.env*.local
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+build/
+coverage/
+
+# Vercel
+.vercel/
+
+# Logs and debug files
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Editor and Claude Code local settings
+.vscode/*
+!.vscode/extensions.json
+.claude/settings.local.json
