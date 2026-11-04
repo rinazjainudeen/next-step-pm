@@ -31,10 +31,10 @@ These are generic phases drawn from common industry practice, such as the UK Gov
 
 **Starting points** shown to the visitor:
 - **Starting something new**: phases 1 to 4.
-- **Joining mid-build**: phases 3 to 7, plus an "onboarding onto an existing product" pack.
+- **Partway through a build**: phases 3 to 7, plus an "onboarding onto an existing product" pack.
 - **Running a live product**: phases 8 and then 1 to 3 again, plus a "taking over a live product" pack.
 
-These are the usual phases. If a visitor's milestone is further on, their plan can run past them, along the stage's `journey` in `content/taxonomy.ts`: new and mid-build can continue to phase 8, and live can continue round to phase 7. If the stage is "Not sure", the plan covers the same phases as "Starting something new". `lib/intake-phases.ts` works this out.
+These are the usual phases. A live product can also say it's in any phase, because it may be building its next release. If a visitor's milestone is further on, their plan can run past them, along the stage's `journey` in `content/taxonomy.ts`: new and mid-build can continue to phase 8, and live can continue round to phase 7. If the stage is "Not sure", the plan covers the same phases as "Starting something new", and can run on along the same journey. `lib/intake-phases.ts` works this out.
 
 ## 2. Intake questions (the taxonomy)
 
@@ -42,16 +42,16 @@ The allowed values live in `content/taxonomy.ts`, so blocks and questions can't 
 
 1. **What kind of PM are you?** General · AI and innovation · Data · Technical / platform · Product transformation · Growth / commercial · Not sure.
 2. **What kind of product?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
-3. **Where is the product now?** Starting something new · Mid-build · Live. Then an optional follow-up for the exact phase.
+3. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase.
 4. **Your experience as a PM:** Beginner (under 1 year) · Intermediate (1 to 4 years) · Experienced (5+ years).
 5. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner.
 6. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini). There is also "A tool that isn't listed", with no text box, which leads to tool-agnostic tips.
-7. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. An optional follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It needs a real stage and a real date, and offers the phases from where the visitor is to the end of the stage's journey.
+7. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. A follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It's shown when there's a real date, must be answered when shown, and offers the phases from where the visitor is to the end of the stage's journey.
 8. **How does your team work?** Scrum · Kanban · Hybrid / stage gates · Not sure.
 
 Every question also has a **Not sure** option, with a one-line explanation of what it means for the plan. Its value is `not-sure`. It's an intake answer only, so it isn't in `content/taxonomy.ts` and blocks can't use it. On the team and tools questions it can't be ticked alongside anything else.
 
-Answers are encoded in the URL using the taxonomy ids, for example `/plan?pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,backend-engineer:3,ux-designer&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum`. `phase` is the optional follow-up to question 3 (where the plan starts), and `until` is the optional follow-up to question 7 (where it finishes). A number after a role is how many; no number means one. That way a plan can be shared and refreshed with no database. While the visitor is answering, `/start` adds `step=3` to show which question they're on.
+Answers are encoded in the URL using the taxonomy ids, for example `/plan?pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,backend-engineer:3,ux-designer&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum`. `phase` is the follow-up to question 3 (where the plan starts), and `until` is the follow-up to question 7 (where it finishes). Both can be `not-sure`. A number after a role is how many; no number means one. That way a plan can be shared and refreshed with no database. While the visitor is answering, `/start` adds `step=3` to show which question they're on.
 
 ## 3. A learning block
 

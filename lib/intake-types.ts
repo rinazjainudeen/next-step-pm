@@ -40,16 +40,16 @@ export type IntakeAnswers = {
   pm: Answer<PmTypeId>;
   product: Answer<ProductTypeId>;
   stage: Answer<StageId>;
-  /** Optional follow-up to `stage`. Null means the visitor didn't pick one. */
-  phase: PhaseId | null;
+  /** Follow-up to `stage`: where the plan starts. Null only when it wasn't asked. */
+  phase: Answer<PhaseId> | null;
   exp: Answer<ExperienceId>;
   team: Answer<TeamRoleId>[];
   /** How many of a role, for roles with more than one. Others count as 1. */
   teamCounts: Partial<Record<TeamRoleId, number>>;
   tools: Answer<ToolId | OtherTool>[];
   time: Answer<TimelineId>;
-  /** Optional follow-up to `time`: the phase to finish by the milestone. */
-  until: PhaseId | null;
+  /** Follow-up to `time`: the phase to finish by the milestone. Null only when it wasn't asked. */
+  until: Answer<PhaseId> | null;
   way: Answer<WayOfWorkingId>;
 };
 

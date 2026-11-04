@@ -53,14 +53,16 @@ export const CROSS_PHASE_FOLDER = "cross-phase";
 // ---------------------------------------------------------------------------
 
 /**
- * `phases` are what a plan covers by default, in working order. `journey` is the
- * full route onwards from the same starting point, which a visitor can extend
- * into if their milestone is further on. A live product loops back from Measure.
+ * `phases` are what a plan covers by default, in working order. `startPhases`
+ * are where a visitor can say they are now: a live product can be at any point
+ * in building its next release. `journey` is the full route onwards, which a
+ * plan can extend into if the milestone is further on. A live product loops
+ * back from Measure.
  */
 export const STAGES = [
-  { id: "new", label: "Starting something new", description: "The idea or problem is new, and nothing has been built yet.", phases: ["discover", "define", "design", "plan"], journey: ["discover", "define", "design", "plan", "build", "test", "launch", "measure"] },
-  { id: "mid-build", label: "Joining mid-build", description: "The work is under way, and you're part of it or picking it up.", phases: ["design", "plan", "build", "test", "launch"], journey: ["design", "plan", "build", "test", "launch", "measure"] },
-  { id: "live", label: "Running a live product", description: "Real people use it today, and your job is to run and improve it.", phases: ["measure", "discover", "define", "design"], journey: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"] },
+  { id: "new", label: "Starting something new", description: "The idea or problem is new, and nothing has been built yet.", phases: ["discover", "define", "design", "plan"], startPhases: ["discover", "define", "design", "plan"], journey: ["discover", "define", "design", "plan", "build", "test", "launch", "measure"] },
+  { id: "mid-build", label: "Partway through a build", description: "The work is under way, whether you've just joined or have been on it from the start.", phases: ["design", "plan", "build", "test", "launch"], startPhases: ["design", "plan", "build", "test", "launch"], journey: ["design", "plan", "build", "test", "launch", "measure"] },
+  { id: "live", label: "Running a live product", description: "Real people use it today, and your job is to run and improve it.", phases: ["measure", "discover", "define", "design"], startPhases: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"], journey: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"] },
 ] as const;
 
 export type StageId = (typeof STAGES)[number]["id"];

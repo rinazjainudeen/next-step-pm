@@ -36,7 +36,7 @@ export default async function PlanPage({
       />
       <section aria-label="Your answers" className="border-t bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-          <div className="max-w-4xl rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
             <h2 className="text-2xl font-bold tracking-tight">Your answers</h2>
             <dl className="mt-6 divide-y divide-border">
               {summariseAnswers(result.answers).map((row) => (

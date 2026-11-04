@@ -112,6 +112,10 @@ test("a phase outside the chosen stage is ignored", () => {
   assert.equal(parse("phase=build").phase, null);
   assert.equal(parse("stage=not-sure&phase=build").phase, null);
   assert.equal(parse("stage=new&phase=define").phase, "define");
+  assert.equal(parse("stage=new&phase=not-sure").phase, NOT_SURE);
+  assert.equal(parse("stage=not-sure&phase=not-sure").phase, null);
+  assert.equal(parse("stage=new&time=1-3m&until=not-sure").until, NOT_SURE);
+  assert.equal(parse("stage=new&time=not-sure&until=not-sure").until, null);
 });
 
 test("the step is read safely", () => {
@@ -156,13 +160,15 @@ test("changing stage keeps a phase that still fits and clears one that doesn't",
   const onDiscover: IntakeDraft = { ...EMPTY_DRAFT, stage: "new", phase: "discover" };
   assert.equal(chooseSingle(onDiscover, "stage", "mid-build").phase, null);
   assert.equal(chooseSingle(onDesign, "stage", NOT_SURE).phase, null);
+  const notSure: IntakeDraft = { ...EMPTY_DRAFT, stage: "new", phase: NOT_SURE };
+  assert.equal(chooseSingle(notSure, "stage", "live").phase, NOT_SURE);
 });
 
 test("each stage offers its own phases in working order, and Not sure offers none", () => {
   for (const stage of STAGES) {
-    assert.equal(phasesForStage(stage.id).length, stage.phases.length);
+    assert.deepEqual(ids(phasesForStage(stage.id)), [...stage.startPhases]);
   }
-  assert.deepEqual(ids(phasesForStage("live")), ["measure", "discover", "define", "design"]);
+  assert.deepEqual(ids(phasesForStage("live")).slice(0, 2), ["measure", "discover"]);
   assert.deepEqual(phasesForStage(NOT_SURE), []);
   assert.deepEqual(phasesForStage(null), []);
 });
@@ -266,12 +272,35 @@ test("a live product starts at Measure and loops back", () => {
   assert.ok(!options.includes("measure"), "Measure comes before Discover on this route");
 });
 
+test("a live product can be building its next release", () => {
+  assert.deepEqual(ids(phasesForStage("live")), [...STAGES[2].journey]);
+  assert.equal(chooseSingle({ ...EMPTY_DRAFT, stage: "new", phase: "plan" }, "stage", "live").phase, "plan");
+  assert.equal(parse("stage=live&phase=build").phase, "build");
+});
+
+test("starting past the usual end runs on to the end of the route, unless a finish is chosen", () => {
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: null })), ["build", "test", "launch"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: NOT_SURE })), ["build", "test", "launch"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: "test" })), ["build", "test"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "design", until: null })), ["design"]);
+});
+
+test("the finish question isn't asked when only one phase is left", () => {
+  assert.deepEqual(finishOptions({ stage: "live", phase: "launch", time: "1-3m" }), []);
+  assert.equal(validateDraft({ ...FULL, stage: "live", phase: "launch", until: null }).ok, true);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "launch", until: null })), ["launch"]);
+});
+
 test("not knowing the stage covers the same phases as starting something new", () => {
   assert.deepEqual(ids(phasesCovered({ stage: NOT_SURE, phase: null, until: null })), [...STAGES[0].phases]);
 });
 
-test("no finish can be chosen without a real stage and a real timeline", () => {
-  assert.deepEqual(finishOptions({ stage: NOT_SURE, phase: null, time: "1-3m" }), []);
+test("not knowing the stage still asks for a finish, using the route from the beginning", () => {
+  assert.deepEqual(ids(finishOptions({ stage: NOT_SURE, phase: null, time: "1-3m" })), [...STAGES[0].journey]);
+  assert.deepEqual(ids(phasesCovered({ stage: NOT_SURE, phase: null, until: "discover" })), ["discover"]);
+});
+
+test("no finish can be chosen without a stage answer and a real timeline", () => {
   assert.deepEqual(finishOptions({ stage: null, phase: null, time: "1-3m" }), []);
   assert.deepEqual(finishOptions({ stage: "new", phase: null, time: NOT_SURE }), []);
   assert.deepEqual(finishOptions({ stage: "new", phase: null, time: null }), []);
@@ -287,16 +316,17 @@ test("a finish that an earlier answer rules out is cleared", () => {
   assert.equal(chooseSingle(draft, "time", NOT_SURE).until, null);
   // Changing to a timeline with a date keeps it.
   assert.equal(chooseSingle(draft, "time", "3-6m").until, "define");
-  // Moving to a stage that can't reach it, and to not knowing the stage.
+  // Moving to a stage that can't reach it.
   assert.equal(chooseSingle(draft, "stage", "mid-build").until, null);
-  assert.equal(chooseSingle(draft, "stage", NOT_SURE).until, null);
+  // Not knowing the stage starts from the beginning, so it can still be reached.
+  assert.equal(chooseSingle(draft, "stage", NOT_SURE).until, "define");
 });
 
 test("a hand-edited address can't finish before it starts", () => {
   assert.equal(parse("stage=new&phase=plan&time=1-3m&until=define").until, null);
   assert.equal(parse("stage=new&until=define").until, null);
   assert.equal(parse("stage=new&time=not-sure&until=define").until, null);
-  assert.equal(parse("stage=not-sure&time=1-3m&until=define").until, null);
+  assert.equal(parse("stage=not-sure&time=1-3m&until=define").until, "define");
   assert.equal(parse("stage=mid-build&time=1-3m&until=discover").until, null);
   assert.equal(parse("stage=new&time=1-3m&until=nowhere").until, null);
 });
@@ -304,10 +334,11 @@ test("a hand-edited address can't finish before it starts", () => {
 test("every combination of stage, start, timeline and finish makes sense", () => {
   let checked = 0;
   const stages: IntakeDraft["stage"][] = [...STAGES.map((item) => item.id), NOT_SURE, null];
+  const phaseAnswers: IntakeDraft["phase"][] = [...PHASE_IDS, NOT_SURE, null];
   for (const stage of stages) {
-    for (const phase of [...PHASE_IDS, null]) {
+    for (const phase of phaseAnswers) {
       for (const time of [...TIMELINE_IDS, NOT_SURE, null]) {
-        for (const until of [...PHASE_IDS, null]) {
+        for (const until of phaseAnswers) {
           checked += 1;
           const name = `stage=${stage} phase=${phase} time=${time} until=${until}`;
           const draft = chooseSingle({ ...EMPTY_DRAFT, stage, phase, until }, "time", time as string);
@@ -318,19 +349,28 @@ test("every combination of stage, start, timeline and finish makes sense", () =>
           assert.ok(covered.length > 0, name);
           assert.equal(new Set(covered).size, covered.length, name);
           // It starts and finishes where the visitor said.
-          if (draft.phase) assert.equal(covered[0], draft.phase, name);
-          if (draft.until) assert.equal(covered.at(-1), draft.until, name);
-          // Someone with a real stage and date always has a finish to choose, starting where they are.
-          if (draft.stage && draft.stage !== NOT_SURE && time && time !== NOT_SURE) {
+          if (draft.phase && draft.phase !== NOT_SURE) assert.equal(covered[0], draft.phase, name);
+          if (draft.until && draft.until !== NOT_SURE) assert.equal(covered.at(-1), draft.until, name);
+          // A follow-up is required exactly when it's shown, and only then.
+          const followUpBlank =
+            (phasesForStage(draft.stage).length > 0 && draft.phase === null) ||
+            (finishOptions(draft).length > 0 && draft.until === null);
+          const { stage: s, phase: p, time: t, until: u } = draft;
+          const complete = { ...FULL, stage: s, phase: p, time: t, until: u };
+          if (draft.stage && draft.time) assert.equal(validateDraft(complete).ok, !followUpBlank, name);
+          // With a stage and a date there's a finish to choose, starting where they are,
+          // unless they're already in the last phase of the route.
+          if (draft.stage && time && time !== NOT_SURE) {
             const options = ids(finishOptions(draft));
-            assert.ok(options.length > 1, name);
-            if (draft.phase) assert.equal(options[0], draft.phase, name);
+            if (draft.stage === "live" && draft.phase === "launch") assert.deepEqual(options, [], name);
+            else assert.ok(options.length > 1, name);
+            if (options.length > 0 && draft.phase && draft.phase !== NOT_SURE) assert.equal(options[0], draft.phase, name);
           }
         }
       }
     }
   }
-  assert.equal(checked, 5 * 9 * 6 * 9);
+  assert.equal(checked, 5 * 10 * 6 * 10);
 });
 
 test("the longest possible address stays well within browser limits", () => {
@@ -352,9 +392,32 @@ test("a blank question gets a friendly message and an answered one doesn't", () 
   assert.equal(questionError({ ...EMPTY_DRAFT, team: [NOT_SURE] }, team), null);
 });
 
-test("complete answers pass, and the optional phase isn't required", () => {
+test("complete answers pass", () => {
   assert.deepEqual(validateDraft(FULL), { ok: true, answers: FULL });
-  assert.equal(validateDraft({ ...FULL, phase: null }).ok, true);
+  assert.equal(validateDraft({ ...FULL, phase: NOT_SURE, until: NOT_SURE }).ok, true);
+});
+
+test("a follow-up on screen must be answered, and Not sure is never assumed", () => {
+  const [stage, time] = [INTAKE_QUESTIONS[2], INTAKE_QUESTIONS[6]];
+  assert.match(questionError({ ...FULL, phase: null }, stage) ?? "", /phase you're in/);
+  assert.match(questionError({ ...FULL, until: null }, time) ?? "", /phase to finish/);
+  assert.equal(questionError({ ...FULL, until: NOT_SURE }, time), null);
+  assert.equal(firstUnansweredStep({ ...FULL, until: null }), 7);
+  assert.equal(firstUnansweredStep({ ...FULL, phase: null }), 3);
+});
+
+test("a follow-up that isn't shown isn't required", () => {
+  const noStage: IntakeDraft = { ...FULL, stage: NOT_SURE, phase: null, until: NOT_SURE };
+  assert.equal(validateDraft(noStage).ok, true);
+  assert.equal(firstUnansweredStep({ ...noStage, until: null }), 7);
+  const noDate: IntakeDraft = { ...FULL, time: NOT_SURE, until: null };
+  assert.equal(validateDraft(noDate).ok, true);
+});
+
+test("a change that rules out a later answer sends the visitor back to it", () => {
+  const changed = chooseSingle({ ...FULL, stage: "new", phase: NOT_SURE, until: "discover" }, "stage", "mid-build");
+  assert.equal(changed.until, null);
+  assert.equal(firstUnansweredStep(changed), 7);
 });
 
 test("incomplete answers list every missing question", () => {
@@ -370,14 +433,22 @@ test("the first unanswered step is found", () => {
   assert.equal(firstUnansweredStep(FULL), null);
 });
 
-test("a visitor can jump back anywhere, and forward only as far as the first gap", () => {
+test("going back to change an answer never locks the visitor out of later answers", () => {
+  // Stage changes from Not sure, so the phase follow-up is now a gap at question 3.
+  const changed = chooseSingle({ ...FULL, stage: NOT_SURE, phase: null }, "stage", "new");
+  assert.equal(firstUnansweredStep(changed), 3);
+  assert.equal(canJumpTo(changed, 4), true);
+  assert.equal(canJumpTo(changed, 8), true);
+});
+
+test("a visitor can jump to any answered question or to the first gap", () => {
   assert.equal(canJumpTo(EMPTY_DRAFT, 1), true);
   assert.equal(canJumpTo(EMPTY_DRAFT, 2), false);
   const gap = { ...FULL, exp: null };
   assert.equal(canJumpTo(gap, 3), true);
   assert.equal(canJumpTo(gap, 4), true);
-  assert.equal(canJumpTo(gap, 5), false);
   assert.equal(canJumpTo(FULL, 8), true);
+  assert.equal(canJumpTo({ ...EMPTY_DRAFT, pm: "ai" }, 3), false);
 });
 
 test("changing one answer has its own address, which never reaches the plan link", () => {
@@ -404,7 +475,7 @@ test("answers are summarised in readable words", () => {
   assert.deepEqual(summariseAnswers(FULL).map(({ label, value }) => ({ label, value })), [
     { label: "Kind of PM", value: "AI and innovation" },
     { label: "Kind of product", value: "Public sector service" },
-    { label: "Where the product is", value: "Joining mid-build (Build)" },
+    { label: "Where the product is", value: "Partway through a build (Build)" },
     { label: "Experience", value: "Beginner (under 1 year)" },
     { label: "Team", value: "Business Analyst, UX Designer, QA / Tester" },
     { label: "Tools", value: "Jira, Confluence, Figma" },

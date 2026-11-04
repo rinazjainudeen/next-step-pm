@@ -166,7 +166,8 @@ export function summariseAnswers(answers: IntakeAnswers): { label: string; value
 }
 
 function followUpText(question: IntakeQuestion["id"], answers: IntakeAnswers): string {
-  if (question === "stage" && answers.phase) return ` (${labelOf(PHASES, answers.phase)})`;
-  if (question === "time" && answers.until) return `, finishing ${labelOf(PHASES, answers.until)}`;
+  const { phase, until } = answers;
+  if (question === "stage" && phase && phase !== NOT_SURE) return ` (${labelOf(PHASES, phase)})`;
+  if (question === "time" && until && until !== NOT_SURE) return `, finishing ${labelOf(PHASES, until)}`;
   return "";
 }

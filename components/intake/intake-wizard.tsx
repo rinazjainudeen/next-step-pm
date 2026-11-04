@@ -11,14 +11,21 @@ import type { PHASES, PhaseId } from "@/content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "@/lib/intake-draft";
 import { finishOptions, phasesForStage } from "@/lib/intake-phases";
 import { INTAKE_QUESTIONS, TOTAL_STEPS, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
-import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type TeamRoleId } from "@/lib/intake-types";
+import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
-import { firstUnansweredStep, questionError } from "@/lib/intake-validate";
+import { firstUnansweredStep, followUpError, questionError } from "@/lib/intake-validate";
 import { cn } from "@/lib/utils";
 
-const GRID = "grid gap-3 sm:grid-cols-2";
+const GRID = "grid gap-3 sm:grid-cols-2 lg:grid-cols-3";
 // Tool names are short, so they fit two to a row even on a phone.
-const COMPACT_GRID = "grid grid-cols-2 gap-2 lg:grid-cols-4";
+const COMPACT_GRID = "grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6";
+
+/** Stretches the last card to fill its row, so the grid ends cleanly whatever the count. */
+function fillRow(cardsBefore: number): string {
+  const tablet = cardsBefore % 2 === 0 ? "sm:col-span-2" : "sm:col-span-1";
+  const laptop = ["lg:col-span-3", "lg:col-span-2", "lg:col-span-1"][cardsBefore % 3];
+  return `${tablet} ${laptop}`;
+}
 
 /** Reads the very latest answers, so two quick clicks can't overwrite each other. */
 function latestDraft(): IntakeDraft {
@@ -43,25 +50,44 @@ export function IntakeWizard() {
   const [error, setError] = useState<{ step: number; message: string } | null>(null);
   const message = error?.step === step ? error.message : null;
 
+  const followUpRef = useRef<HTMLDivElement>(null);
+  const hasFollowUp =
+    (question.id === "stage" && phasesForStage(draft.stage).length > 0) ||
+    (question.id === "time" && finishOptions(draft).length > 0);
+
+  /** Brings the follow-up out from behind the Back and Next bar. */
+  function revealFollowUp() {
+    followUpRef.current?.scrollIntoView({ block: "start" });
+    followUpRef.current?.querySelector("input")?.focus({ preventScroll: true });
+  }
+
   // When the question changes, start at the top and move focus to the question,
   // so screen readers announce it. Not on first load, where focus stays at the
-  // top of the page.
+  // top of the page. If a follow-up is why they're here, go straight to it.
   const headingRef = useRef<HTMLHeadingElement>(null);
   const shownStep = useRef(step);
+  const hadFollowUp = useRef(hasFollowUp);
   useEffect(() => {
-    if (shownStep.current === step) return;
-    shownStep.current = step;
-    window.scrollTo({ top: 0, behavior: "instant" });
-    headingRef.current?.focus({ preventScroll: true });
-  }, [step]);
+    if (shownStep.current !== step) {
+      shownStep.current = step;
+      window.scrollTo({ top: 0, behavior: "instant" });
+      headingRef.current?.focus({ preventScroll: true });
+      if (message && followUpError(draft, question.id)) revealFollowUp();
+    } else if (hasFollowUp && !hadFollowUp.current) {
+      // It has just appeared, probably below the fold. Scroll only, so
+      // keyboard users stay on the radio button they're using.
+      followUpRef.current?.scrollIntoView({ block: "start" });
+    }
+    hadFollowUp.current = hasFollowUp;
+  });
 
   function save(change: (current: IntakeDraft) => IntakeDraft) {
     window.history.replaceState(null, "", startHref(change(latestDraft()), step, editing));
     setError(null);
   }
 
-  function goTo(nextStep: number, nextError: string | null = null) {
-    window.history.pushState(null, "", startHref(latestDraft(), nextStep));
+  function goTo(nextStep: number, nextError: string | null = null, keepEditing = false) {
+    window.history.pushState(null, "", startHref(latestDraft(), nextStep, keepEditing));
     setError(nextError ? { step: nextStep, message: nextError } : null);
   }
 
@@ -71,8 +97,12 @@ export function IntakeWizard() {
     const problem = questionError(current, question);
     if (problem) {
       setError({ step, message: problem });
+      if (followUpError(current, question.id)) revealFollowUp();
     } else if (editing) {
-      router.push(planHref(current));
+      // A change can rule out a later answer, such as the phase to finish by.
+      const missing = firstUnansweredStep(current);
+      if (missing) goTo(missing, "Your change means we need this answer again.", true);
+      else router.push(planHref(current));
     } else if (step < TOTAL_STEPS) {
       goTo(step + 1);
     } else {
@@ -99,7 +129,7 @@ export function IntakeWizard() {
             onSubmit={handleNext}
             noValidate
             aria-label={editing ? "Change your answer" : "Build my plan"}
-            className="max-w-4xl rounded-2xl border border-border bg-card px-6 pt-6 shadow-sm sm:px-8"
+            className="rounded-2xl border border-border bg-card px-6 pt-6 shadow-sm sm:px-8"
           >
             <div className="flex items-baseline justify-between gap-4 text-sm font-semibold">
               {compact ? (
@@ -121,34 +151,36 @@ export function IntakeWizard() {
                   {question.title}
                 </h2>
               </legend>
-              <p className="mt-2 leading-relaxed text-pretty text-muted-foreground">{question.why}</p>
+              <p className="mt-2 max-w-3xl leading-relaxed text-pretty text-muted-foreground">{question.why}</p>
               <div className="mt-6">
                 <Options question={question} draft={draft} save={save} />
               </div>
             </fieldset>
 
-            {question.id === "stage" && (
-              <PhaseFollowUp
-                name="phase"
-                title="Which phase are you in right now?"
-                hint="Optional. Your plan will start here."
-                notSure="Your plan will start at the first phase for where the product is."
-                phases={phasesForStage(draft.stage)}
-                value={draft.phase}
-                save={save}
-              />
-            )}
-            {question.id === "time" && (
-              <PhaseFollowUp
-                name="until"
-                title="Which phase do you want to finish by then?"
-                hint="Optional. Your plan will stop here."
-                notSure="Pick this if your milestone doesn't match a phase, such as a contract ending. Your plan will cover the usual phases for where you are."
-                phases={finishOptions(draft)}
-                value={draft.until}
-                save={save}
-              />
-            )}
+            <div ref={followUpRef}>
+              {question.id === "stage" && (
+                <PhaseFollowUp
+                  name="phase"
+                  title="Which phase are you in right now?"
+                  hint="Your plan will start here."
+                  notSure="Your plan will start at the first phase for where the product is."
+                  phases={phasesForStage(draft.stage)}
+                  value={draft.phase}
+                  save={save}
+                />
+              )}
+              {question.id === "time" && (
+                <PhaseFollowUp
+                  name="until"
+                  title="Which phase do you want to finish by then?"
+                  hint="Your plan will stop here."
+                  notSure="Pick this if your milestone doesn't match a phase, such as a contract ending. Your plan will cover the usual phases for where you are."
+                  phases={finishOptions(draft)}
+                  value={draft.until}
+                  save={save}
+                />
+              )}
+            </div>
 
             {/* Stays on screen on long questions, so nobody has to scroll to carry on. */}
             <div className="sticky bottom-0 -mx-6 mt-6 rounded-b-2xl border-t border-border bg-card px-6 py-3 sm:-mx-8 sm:px-8">
@@ -213,26 +245,29 @@ function Options({ question, draft, save }: OptionsProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      {groups ? (
+      {groups && (
         groups.map((group) => (
           <fieldset key={group.id} className="min-w-0">
             <legend className="mb-2 text-sm font-semibold">{group.label}</legend>
             <div className={COMPACT_GRID}>{group.options.map((option) => card(option, true))}</div>
           </fieldset>
         ))
-      ) : (
-        <div className={GRID}>{question.options.map((option) => card(option))}</div>
       )}
-      {extraOption && card(extraOption)}
-      <OptionCard
-        type={type}
-        name={question.id}
-        value={NOT_SURE}
-        label="Not sure"
-        explanation={question.notSure}
-        checked={isChecked(NOT_SURE)}
-        onChange={() => select(NOT_SURE)}
-      />
+      <div className={GRID}>
+        {!groups && question.options.map((option) => card(option))}
+        {extraOption && card(extraOption)}
+        <div className={fillRow(groups ? 1 : question.options.length)}>
+          <OptionCard
+            type={type}
+            name={question.id}
+            value={NOT_SURE}
+            label="Not sure"
+            explanation={question.notSure}
+            checked={isChecked(NOT_SURE)}
+            onChange={() => select(NOT_SURE)}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -277,11 +312,11 @@ function PhaseFollowUp({
   hint: string;
   notSure: string;
   phases: readonly (typeof PHASES)[number][];
-  value: PhaseId | null;
+  value: IntakeDraft["phase"];
 }) {
   if (phases.length === 0) return null;
 
-  const choose = (phase: PhaseId | null) => save((current) => choosePhase(current, name, phase));
+  const choose = (phase: PhaseId | NotSure) => save((current) => choosePhase(current, name, phase));
 
   return (
     <fieldset className="mt-8 min-w-0 border-t border-border pt-6">
@@ -300,8 +335,8 @@ function PhaseFollowUp({
             onChange={() => choose(phase.id)}
           />
         ))}
-        <div className="sm:col-span-2">
-          <OptionCard type="radio" name={name} value="" label="Not sure" explanation={notSure} checked={value === null} onChange={() => choose(null)} />
+        <div className={fillRow(phases.length)}>
+          <OptionCard type="radio" name={name} value={NOT_SURE} label="Not sure" explanation={notSure} checked={value === NOT_SURE} onChange={() => choose(NOT_SURE)} />
         </div>
       </div>
     </fieldset>

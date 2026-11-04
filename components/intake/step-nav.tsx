@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * The progress bar, made of numbered steps. A visitor can click straight to any
- * question they've reached. Later ones stay disabled until the gap is filled.
+ * question they've answered, or to the first gap. Others stay disabled.
  */
 export function StepNav({ step, draft, onJump }: { step: number; draft: IntakeDraft; onJump: (step: number) => void }) {
   return (

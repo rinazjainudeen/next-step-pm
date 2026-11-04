@@ -51,22 +51,17 @@ function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"
   return { team, teamCounts };
 }
 
-function pickPhase(params: ParamReader, name: string) {
-  const value = params.get(name);
-  return isOneOf(PHASE_IDS, value) ? value : null;
-}
-
 export function parseDraft(params: ParamReader): IntakeDraft {
   return tidyDraft({
     pm: pickOne(params, "pm", PM_TYPE_IDS),
     product: pickOne(params, "product", PRODUCT_TYPE_IDS),
     stage: pickOne(params, "stage", STAGE_IDS),
-    phase: pickPhase(params, "phase"),
+    phase: pickOne(params, "phase", PHASE_IDS),
     exp: pickOne(params, "exp", EXPERIENCE_IDS),
     ...parseTeam(params),
     tools: pickMany(splitList(params.get("tools")), TOOL_ANSWER_IDS),
     time: pickOne(params, "time", TIMELINE_IDS),
-    until: pickPhase(params, "until"),
+    until: pickOne(params, "until", PHASE_IDS),
     way: pickOne(params, "way", WAY_OF_WORKING_IDS),
   });
 }

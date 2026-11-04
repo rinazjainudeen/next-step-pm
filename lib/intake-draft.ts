@@ -6,6 +6,7 @@ import {
   NOT_SURE,
   type IntakeDraft,
   type MultiQuestionId,
+  type NotSure,
   type SingleQuestionId,
   type TeamRoleId,
 } from "./intake-types";
@@ -21,10 +22,14 @@ import {
  * must belong to the stage, and a finish must be reachable from that start.
  */
 export function tidyDraft(draft: IntakeDraft): IntakeDraft {
-  const phase = phasesForStage(draft.stage).some((item) => item.id === draft.phase) ? draft.phase : null;
-  const tidied = { ...draft, phase };
-  const until = finishOptions(tidied).some((item) => item.id === draft.until) ? draft.until : null;
-  return { ...tidied, until };
+  const tidied = { ...draft, phase: keepIfOffered(draft.phase, phasesForStage(draft.stage)) };
+  return { ...tidied, until: keepIfOffered(draft.until, finishOptions(tidied)) };
+}
+
+/** Keeps a phase answer if it's on offer. "Not sure" is fine whenever the question is asked. */
+function keepIfOffered(answer: IntakeDraft["phase"], offered: readonly { id: PhaseId }[]): IntakeDraft["phase"] {
+  if (offered.length === 0) return null;
+  return answer === NOT_SURE || offered.some((item) => item.id === answer) ? answer : null;
 }
 
 /** Sets a one-answer question, then re-checks anything that depended on it. */
@@ -32,8 +37,8 @@ export function chooseSingle(draft: IntakeDraft, question: SingleQuestionId, val
   return tidyDraft({ ...draft, [question]: value } as IntakeDraft);
 }
 
-/** Sets either phase follow-up. Null means "Not sure". */
-export function choosePhase(draft: IntakeDraft, question: "phase" | "until", value: PhaseId | null): IntakeDraft {
+/** Sets either phase follow-up. */
+export function choosePhase(draft: IntakeDraft, question: "phase" | "until", value: PhaseId | NotSure): IntakeDraft {
   return tidyDraft({ ...draft, [question]: value });
 }
 
