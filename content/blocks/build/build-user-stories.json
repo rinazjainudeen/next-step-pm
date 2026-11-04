@@ -1,0 +1,73 @@
+{
+  "id": "build-user-stories",
+  "title": "Write user stories with acceptance criteria",
+  "phase": "build",
+  "kind": "core",
+  "summary": "User stories describe who needs something and why, so the team builds for a real need. Acceptance criteria say exactly when a story is done, so everyone agrees what to build and how to test it.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Break each roadmap item (epic) into small pieces of value a user would notice. Each story should be small enough to finish in a few days.",
+      "Write each story as: 'As a [type of user], I want [to do something] so that [I get this benefit].' Use a real user group from your research, not just 'user'.",
+      "Under each story, add 3 to 6 acceptance criteria. Write them as checks that are either met or not, for example 'It's done when the user can see their reference number', or as 'Given... when... then...'.",
+      "Include criteria for errors and edge cases (what happens if the user enters something wrong) and for accessibility (for example, 'works using only a keyboard').",
+      "Go through the stories with your engineers and tester before they are planned into work. Their questions will show you what is missing.",
+      "Agree a team 'definition of ready': what a story needs before work starts, such as clear criteria, designs attached and dependencies known."
+    ],
+    "intermediate": [
+      "Split epics into thin, user-visible stories that each fit within a few days.",
+      "Write the stories against real user groups, with testable acceptance criteria covering errors, edge cases and accessibility.",
+      "Refine them with engineering and QA before planning, and attach designs.",
+      "Agree and apply a definition of ready."
+    ],
+    "experienced": [
+      "Stories are small, independent where possible, and valuable to users.",
+      "Acceptance criteria are testable and cover unhappy paths and accessibility.",
+      "Refined with the team; designs and dependencies attached.",
+      "Definition of ready agreed and used."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "ba", "task": "Draft stories and acceptance criteria for the PM to review" },
+      { "role": "qa", "task": "Add edge cases and test scenarios to the acceptance criteria" },
+      { "role": "content-designer", "task": "Write the user-facing text the stories need" },
+      { "role": "tech-lead", "task": "Split stories so they can be built and released independently" }
+    ],
+    "reviewers": ["qa", "tech-lead", "ux-designer"]
+  },
+  "toolExamples": {
+    "jira": "Set a description template for the Story work type with sections for the story, acceptance criteria and design links. Link each story to its epic.",
+    "azure-devops": "Use the User Story work item. Put the criteria in the Acceptance Criteria field so they show up in test planning.",
+    "linear": "Use an issue template with headings for the story and acceptance criteria.",
+    "figma": "Paste a link to the exact frame each story covers, not the whole file.",
+    "claude": "Paste a draft story and ask for missing edge cases and error states. You decide which ones belong in this story.",
+    "copilot": "Ask it to suggest Given/When/Then criteria from your story, then check them with your tester."
+  },
+  "definitionOfDone": [
+    "Each story names a real user group and a clear benefit",
+    "Each story has testable acceptance criteria, including errors and accessibility",
+    "Stories reviewed with engineering and QA before planning",
+    "Definition of ready agreed by the team"
+  ],
+  "pitfalls": [
+    "Writing technical tasks and calling them user stories",
+    "Stories too big to finish in a sprint or a few days",
+    "Criteria that describe the screen layout rather than the outcome"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": ["plan-prioritise-roadmap"],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "Writing user stories (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/agile/writing-user-stories" },
+    { "title": "User stories with examples and a template (Atlassian)", "url": "https://www.atlassian.com/agile/project-management/user-stories" },
+    { "title": "Creating better acceptance criteria for user stories (GDS Technology blog)", "url": "https://technology.blog.gov.uk/2015/03/04/creating-better-acceptance-criteria-for-user-stories/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}
