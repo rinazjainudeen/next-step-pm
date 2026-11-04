@@ -26,14 +26,14 @@ export function isOneOf<T extends string>(allowed: readonly T[], value: unknown)
 // ---------------------------------------------------------------------------
 
 export const PHASES = [
-  { id: "discover", label: "Discover", order: 1, lead: "PM, User Researcher", readyWhen: "The problem, the users and the evidence are clear, and the opportunity is sized." },
-  { id: "define", label: "Define", order: 2, lead: "PM, BA", readyWhen: "The problem statement, hypothesis, measures of success and constraints are agreed." },
-  { id: "design", label: "Design", order: 3, lead: "UX / Content Designer, PM", readyWhen: "A solution has been tested with users and judged feasible by engineering." },
-  { id: "plan", label: "Plan and prioritise", order: 4, lead: "PM, Delivery Manager", readyWhen: "Scope is set, estimates exist, the work is on the roadmap and epics are created." },
-  { id: "build", label: "Build", order: 5, lead: "Tech Lead, Engineers", readyWhen: "Stories meet acceptance criteria, code is reviewed and tests pass." },
-  { id: "test", label: "Test", order: 6, lead: "QA, PM", readyWhen: "Acceptance criteria, accessibility, security and performance are checked." },
-  { id: "launch", label: "Launch", order: 7, lead: "Delivery Manager, DevOps, PM", readyWhen: "The release plan, monitoring, support and comms are ready." },
-  { id: "measure", label: "Measure and improve", order: 8, lead: "PM, Analyst", readyWhen: "Results are measured against the hypothesis and the next iteration is chosen." },
+  { id: "discover", label: "Discover", description: "Understanding your users and the problem.", order: 1, lead: "PM, User Researcher", readyWhen: "The problem, the users and the evidence are clear, and the opportunity is sized." },
+  { id: "define", label: "Define", description: "Agreeing the problem, the goal and how you'll measure success.", order: 2, lead: "PM, BA", readyWhen: "The problem statement, hypothesis, measures of success and constraints are agreed." },
+  { id: "design", label: "Design", description: "Shaping a solution and testing it with users.", order: 3, lead: "UX / Content Designer, PM", readyWhen: "A solution has been tested with users and judged feasible by engineering." },
+  { id: "plan", label: "Plan and prioritise", description: "Setting the scope, estimates and roadmap.", order: 4, lead: "PM, Delivery Manager", readyWhen: "Scope is set, estimates exist, the work is on the roadmap and epics are created." },
+  { id: "build", label: "Build", description: "Engineers build the product in small pieces.", order: 5, lead: "Tech Lead, Engineers", readyWhen: "Stories meet acceptance criteria, code is reviewed and tests pass." },
+  { id: "test", label: "Test", description: "Checking it works and is accessible and secure.", order: 6, lead: "QA, PM", readyWhen: "Acceptance criteria, accessibility, security and performance are checked." },
+  { id: "launch", label: "Launch", description: "Releasing it to real users.", order: 7, lead: "Delivery Manager, DevOps, PM", readyWhen: "The release plan, monitoring, support and comms are ready." },
+  { id: "measure", label: "Measure and improve", description: "Checking the results and choosing what comes next.", order: 8, lead: "PM, Analyst", readyWhen: "Results are measured against the hypothesis and the next iteration is chosen." },
 ] as const;
 
 export type PhaseId = (typeof PHASES)[number]["id"];
@@ -52,10 +52,15 @@ export const CROSS_PHASE_FOLDER = "cross-phase";
 // 2. Starting points (question 3: where is the product now?)
 // ---------------------------------------------------------------------------
 
+/**
+ * `phases` are what a plan covers by default, in working order. `journey` is the
+ * full route onwards from the same starting point, which a visitor can extend
+ * into if their milestone is further on. A live product loops back from Measure.
+ */
 export const STAGES = [
-  { id: "new", label: "Starting something new", phases: ["discover", "define", "design", "plan"] },
-  { id: "mid-build", label: "Joining mid-build", phases: ["design", "plan", "build", "test", "launch"] },
-  { id: "live", label: "Running a live product", phases: ["measure", "discover", "define", "design"] },
+  { id: "new", label: "Starting something new", description: "The idea or problem is new, and nothing has been built yet.", phases: ["discover", "define", "design", "plan"], journey: ["discover", "define", "design", "plan", "build", "test", "launch", "measure"] },
+  { id: "mid-build", label: "Joining mid-build", description: "The work is under way, and you're part of it or picking it up.", phases: ["design", "plan", "build", "test", "launch"], journey: ["design", "plan", "build", "test", "launch", "measure"] },
+  { id: "live", label: "Running a live product", description: "Real people use it today, and your job is to run and improve it.", phases: ["measure", "discover", "define", "design"], journey: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"] },
 ] as const;
 
 export type StageId = (typeof STAGES)[number]["id"];
@@ -84,11 +89,12 @@ export const KIND_IDS: readonly KindId[] = KINDS.map((kind) => kind.id);
 // ---------------------------------------------------------------------------
 
 export const PM_TYPES = [
-  { id: "general", label: "General" },
-  { id: "ai", label: "AI and innovation" },
-  { id: "technical", label: "Technical / platform" },
-  { id: "transformation", label: "Product transformation" },
-  { id: "growth", label: "Growth / commercial" },
+  { id: "general", label: "General", description: "You cover the whole product lifecycle, with no single specialism." },
+  { id: "ai", label: "AI and innovation", description: "You work on AI features or new ideas, where what's possible is still being tested." },
+  { id: "data", label: "Data", description: "You own data as a product, such as dashboards, pipelines or data platforms." },
+  { id: "technical", label: "Technical / platform", description: "Your users are often engineers, and you work on APIs, infrastructure or shared platforms." },
+  { id: "transformation", label: "Product transformation", description: "You change how an organisation works, often moving old processes or systems to new ones." },
+  { id: "growth", label: "Growth / commercial", description: "You focus on sign-ups, retention or revenue, often through experiments." },
 ] as const;
 
 export type PmTypeId = (typeof PM_TYPES)[number]["id"];
@@ -99,11 +105,11 @@ export const PM_TYPE_IDS: readonly PmTypeId[] = PM_TYPES.map((item) => item.id);
 // ---------------------------------------------------------------------------
 
 export const PRODUCT_TYPES = [
-  { id: "consumer", label: "Consumer digital product" },
-  { id: "b2b", label: "Business software (B2B / SaaS)" },
-  { id: "public", label: "Public sector service" },
-  { id: "internal", label: "Internal tool or platform" },
-  { id: "data-ai", label: "Data or AI product" },
+  { id: "consumer", label: "Consumer digital product", description: "Used by the public for themselves, such as a shopping, banking or streaming app." },
+  { id: "b2b", label: "Business software (B2B / SaaS)", description: "Sold to organisations for their staff to use. SaaS means software paid for by subscription." },
+  { id: "public", label: "Public sector service", description: "Run by government or a public body, such as applying for a licence or a benefit." },
+  { id: "internal", label: "Internal tool or platform", description: "Used by staff inside your own organisation, such as a case-management system." },
+  { id: "data-ai", label: "Data or AI product", description: "The main value comes from data or AI, such as a recommendation engine or a chatbot." },
 ] as const;
 
 export type ProductTypeId = (typeof PRODUCT_TYPES)[number]["id"];
@@ -129,24 +135,24 @@ export const EXPERIENCE_IDS: readonly ExperienceId[] = EXPERIENCE_LEVELS.map((it
 export const ROLES = [
   // The visitor. Can own a block, but is never picked in the team question.
   { id: "pm", label: "Product manager", inTeamQuestion: false },
-  { id: "delivery-manager", label: "Delivery Manager", inTeamQuestion: true },
-  { id: "scrum-master", label: "Scrum Master", inTeamQuestion: true },
-  { id: "ba", label: "Business Analyst", inTeamQuestion: true },
-  { id: "user-researcher", label: "User Researcher", inTeamQuestion: true },
-  { id: "ux-designer", label: "UX Designer", inTeamQuestion: true },
-  { id: "content-designer", label: "Content Designer", inTeamQuestion: true },
-  { id: "tech-lead", label: "Tech Lead", inTeamQuestion: true },
-  { id: "frontend-engineer", label: "Frontend Engineer", inTeamQuestion: true },
-  { id: "backend-engineer", label: "Backend Engineer", inTeamQuestion: true },
-  { id: "fullstack-engineer", label: "Full-stack Engineer", inTeamQuestion: true },
-  { id: "architect", label: "Architect", inTeamQuestion: true },
-  { id: "devops", label: "DevOps / SRE", inTeamQuestion: true },
-  { id: "qa", label: "QA / Tester", inTeamQuestion: true },
-  { id: "data-analyst", label: "Data Analyst", inTeamQuestion: true },
-  { id: "data-scientist", label: "Data Scientist / ML Engineer", inTeamQuestion: true },
-  { id: "performance-analyst", label: "Performance Analyst", inTeamQuestion: true },
-  { id: "policy-legal", label: "Policy / Legal / Compliance", inTeamQuestion: true },
-  { id: "product-owner", label: "Product Owner", inTeamQuestion: true },
+  { id: "delivery-manager", label: "Delivery Manager", description: "Keeps work flowing and clears blockers.", inTeamQuestion: true },
+  { id: "scrum-master", label: "Scrum Master", description: "Coaches the team in Scrum and runs its meetings.", inTeamQuestion: true },
+  { id: "ba", label: "Business Analyst", description: "Turns business needs into clear requirements.", inTeamQuestion: true },
+  { id: "user-researcher", label: "User Researcher", description: "Finds out what users need and how they behave.", inTeamQuestion: true },
+  { id: "ux-designer", label: "UX Designer", description: "Designs how the product looks and works.", inTeamQuestion: true },
+  { id: "content-designer", label: "Content Designer", description: "Writes the words users see.", inTeamQuestion: true },
+  { id: "tech-lead", label: "Tech Lead", description: "Guides the engineers and the technical decisions.", inTeamQuestion: true },
+  { id: "frontend-engineer", label: "Frontend Engineer", description: "Builds the parts users see and click.", inTeamQuestion: true },
+  { id: "backend-engineer", label: "Backend Engineer", description: "Builds the servers, data and logic behind the scenes.", inTeamQuestion: true },
+  { id: "fullstack-engineer", label: "Full-stack Engineer", description: "Works on both frontend and backend.", inTeamQuestion: true },
+  { id: "architect", label: "Architect", description: "Designs how the whole system fits together.", inTeamQuestion: true },
+  { id: "devops", label: "DevOps / SRE", description: "Releases the product and keeps it running reliably.", inTeamQuestion: true },
+  { id: "qa", label: "QA / Tester", description: "Checks that the product works as it should.", inTeamQuestion: true },
+  { id: "data-analyst", label: "Data Analyst", description: "Turns data into reports and insights.", inTeamQuestion: true },
+  { id: "data-scientist", label: "Data Scientist / ML Engineer", description: "Builds models and machine learning features.", inTeamQuestion: true },
+  { id: "performance-analyst", label: "Performance Analyst", description: "Tracks how the service performs against its goals.", inTeamQuestion: true },
+  { id: "policy-legal", label: "Policy / Legal / Compliance", description: "Checks the rules, risks and legal duties.", inTeamQuestion: true },
+  { id: "product-owner", label: "Product Owner", description: "Manages the backlog and day-to-day priorities.", inTeamQuestion: true },
 ] as const;
 
 export type RoleId = (typeof ROLES)[number]["id"];
@@ -218,9 +224,9 @@ export const TIMELINE_IDS: readonly TimelineId[] = TIMELINES.map((item) => item.
 // ---------------------------------------------------------------------------
 
 export const WAYS_OF_WORKING = [
-  { id: "scrum", label: "Scrum" },
-  { id: "kanban", label: "Kanban" },
-  { id: "hybrid", label: "Hybrid / stage gates" },
+  { id: "scrum", label: "Scrum", description: "Work happens in fixed sprints, often two weeks, with planning and a review." },
+  { id: "kanban", label: "Kanban", description: "Work flows continuously across a board, with limits on how much is in progress." },
+  { id: "hybrid", label: "Hybrid / stage gates", description: "Some agile working, plus formal approval points between phases." },
 ] as const;
 
 export type WayOfWorkingId = (typeof WAYS_OF_WORKING)[number]["id"];

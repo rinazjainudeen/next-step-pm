@@ -41,6 +41,9 @@ Build `content/taxonomy.ts`, `lib/blocks-types.ts`, `lib/blocks-validate.ts`, `p
 
 ### Phase 3: The intake
 Eight questions, one per screen, with a progress bar, Back and Next, and "Not sure" options. Answers are kept in the URL (`lib/intake-url.ts`, tested).
+
+**Added 4 November 2026:** a stand-in `/plan` page that shows the visitor's answers and says the plan isn't built yet, so the last button doesn't lead to a 404. Phase 4 replaces it.
+
 **Check:** answer every question, press Back, refresh the page, and confirm the answers are still there.
 
 ### Phase 4: The curriculum engine and plan page
@@ -88,5 +91,5 @@ A GitHub Actions workflow, as described in `docs/content-model.md` section 5. It
 - A team mode: a lead shares a plan with their team.
 - "Review my PRD" AI feedback tool.
 - Export a plan to Jira or Azure DevOps as epics and stories.
-- More PM types, such as data PM or hardware.
+- More PM types, such as hardware.
 - Linking from the portfolio website (website 1) as a featured case study.
