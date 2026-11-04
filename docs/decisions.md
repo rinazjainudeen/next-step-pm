@@ -16,4 +16,11 @@ Newest first. Each entry gives the date, the decision and why.
 - **Weekly job on GitHub Actions, not Vercel Cron.** It needs to open pull requests on GitHub, which GitHub Actions can do directly.
 - **No custom domain yet.** `next-step-pm.vercel.app` is enough. Resend can email Rinaz without a domain.
 - **Design:** the starter-pack design system with a navy and cyan palette, to match Rinaz's career profile.
+- **GitHub repo: `rinazjainudeen/next-step-pm`, public.** Hiring managers need to see the code, and it holds no secrets. The work GitHub account (`rinazdeen`) is not used for this project.
+- **Tailwind via `@tailwindcss/postcss`, and no `cacheComponents`.** The Next.js starter defaults to a newer Turbopack plugin and a caching mode that clashes with the `force-dynamic` setting our API routes need. We stay with the stack in `CLAUDE.md`.
+- **`cn()` is written in `lib/utils.ts` from `clsx` and `tailwind-merge`.** The shadcn installer tried to use an outside package called `cn` instead. We don't depend on it, to keep the dependency list small and known.
+- **Theme always starts in light, with a toggle in the header.** We first made it follow the visitor's phone or computer setting, but that meant a phone in dark mode opened the site dark. Starting in light means every visitor, including hiring managers, sees the main look first. The toggle remembers their choice. Browsers that force dark mode on all websites can still recolour the site; that is outside our control.
+- **Links to pages that don't exist yet are hidden** (`available: false` in `lib/navigation.ts`), so nobody lands on a 404. `/start` is a "coming soon" page until Phase 3.
+- **Home page stats are facts about the design, not usage numbers** (8 questions, 0 accounts and so on). We don't show visitor numbers until real ones exist.
+- **Logo is a simple three-steps mark drawn in code** (so it follows light and dark mode). The hero uses a navy gradient and a drawing of rising steps until Rinaz chooses a photo.
 - **Work in VS Code with Claude Code.** This file, `docs/plan.md` and `docs/content-model.md` are the hand-over between planning chats and building sessions.
