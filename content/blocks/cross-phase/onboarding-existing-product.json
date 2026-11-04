@@ -1,0 +1,72 @@
+{
+  "id": "onboarding-existing-product",
+  "title": "Get up to speed on an existing product",
+  "phase": "any",
+  "kind": "onboarding",
+  "summary": "Joining a product that is already being built or is live means learning fast without breaking momentum. Spend your first weeks listening and learning the product, the people and the decisions already made before you change anything.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": ["mid-build", "live"],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Book a 30-minute one-to-one with each person in the team and your key stakeholders. Ask each the same three questions: what is going well, what worries you, and what should I not change?",
+      "Use the product yourself as a new user would, and write down everything that confuses you. Fresh eyes only last a few weeks.",
+      "Find and read the decision trail: the problem statement, research findings, roadmap, recent sprint reviews and any decision log. Note the decisions you do not understand and ask about them.",
+      "Find the numbers. Ask where the dashboards are and what 'good' looks like. If nothing is measured, note that as an early job.",
+      "Join every team meeting for the first few weeks and watch how work actually flows, not just how the process says it should.",
+      "After about 30 days, write a one-page summary: what you learned, the main risks, and the two or three things you propose to focus on. Check it with your manager and the team before acting on it."
+    ],
+    "intermediate": [
+      "Hold one-to-ones with the team and stakeholders, using the same questions for each.",
+      "Use the product as a new user, and review the research, roadmap and decision trail.",
+      "Locate the live measures and baselines, and spot any gaps.",
+      "Publish a 30-day summary of learning, risks and proposed priorities."
+    ],
+    "experienced": [
+      "Stakeholder map and one-to-ones complete.",
+      "Product, research, decisions and metrics reviewed.",
+      "Risks and quick wins identified, with no big changes before day 30.",
+      "30 / 60 / 90-day priorities agreed with your manager and team."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "delivery-manager", "task": "Walk you through the current delivery plan, risks and dependencies" },
+      { "role": "tech-lead", "task": "Explain the architecture, technical debt and constraints" },
+      { "role": "user-researcher", "task": "Share past research findings and open questions" },
+      { "role": "performance-analyst", "task": "Show you the live dashboards and what the numbers mean" }
+    ],
+    "reviewers": ["delivery-manager"]
+  },
+  "toolExamples": {
+    "confluence": "Search the space for 'decision', 'retro' and 'research' to find the decision trail quickly, and watch the main pages so you see changes.",
+    "notion": "Start a personal onboarding page with three lists: people, product and process, and tick items off as you go.",
+    "jira": "Look at the last few sprints' reports and the oldest open bugs to see how the team really works and what keeps getting put off.",
+    "ga4": "Ask for viewer access and look at the main journeys over the last 90 days before forming opinions.",
+    "claude": "Paste your one-to-one notes (remove names first) and ask for the themes that came up most often, and any points where people disagreed."
+  },
+  "definitionOfDone": [
+    "One-to-ones held with everyone in the team and key stakeholders",
+    "Product used end to end and first impressions recorded",
+    "Decision trail and live measures reviewed",
+    "30-day summary shared and priorities agreed"
+  ],
+  "pitfalls": [
+    "Changing direction in the first week before understanding why things are as they are",
+    "Only meeting stakeholders and not the delivery team",
+    "Forgetting to write down first impressions before they fade"
+  ],
+  "estimatedEffort": "10-20 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "12 things every product manager should do in their first 30 days (ProductPlan)", "url": "https://www.productplan.com/learn/product-manager-first-30-days" },
+    { "title": "Product manager onboarding: your first 30/60/90 days (The Product Compass)", "url": "https://productcompass.pm/p/product-manager-onboarding-your-first" },
+    { "title": "The best approaches to onboarding new product managers (Rian van der Merwe)", "url": "https://elezea.com/2019/03/onboarding-new-product-managers/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

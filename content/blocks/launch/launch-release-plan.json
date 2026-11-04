@@ -1,0 +1,72 @@
+{
+  "id": "launch-release-plan",
+  "title": "Plan a release",
+  "phase": "launch",
+  "kind": "core",
+  "summary": "A release plan makes sure everyone knows what is going out, when, who is affected and what happens if it goes wrong. Releasing small changes gradually keeps the risk low.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Write one page that says what is in the release, who it affects, the goal and what is not included.",
+      "List everyone who needs to know: support teams, stakeholders, other teams who depend on you, and users if their experience changes. Plan what each group will hear and when.",
+      "Agree with your engineers how the change goes live. Releasing to a small share of users first (sometimes called a canary or phased release) lets you spot problems before everyone sees them.",
+      "Agree how you will know it is working: the dashboards and alerts to watch, and who watches them in the first hours and days.",
+      "Agree a rollback plan: what would make you undo the release, who decides and how long it takes.",
+      "Check the go-live list with the team the day before: tests passed, support briefed, monitoring ready, comms scheduled. After release, check your measures and share how it went."
+    ],
+    "intermediate": [
+      "Publish a release page covering scope, goal, audience, non-goals and timeline.",
+      "Plan stakeholder, support and user communications.",
+      "Agree a gradual rollout, monitoring, owners and rollback criteria with engineering.",
+      "Run a go / no-go check and a short review after release."
+    ],
+    "experienced": [
+      "Scope, audience and comms plan published.",
+      "Gradual rollout with monitoring and named owners.",
+      "Rollback criteria and decision-maker agreed.",
+      "Go / no-go held; post-release review booked."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "delivery-manager", "task": "Coordinate the release timeline, go / no-go meeting and dependencies" },
+      { "role": "devops", "task": "Set up the gradual rollout, monitoring, alerts and rollback" },
+      { "role": "content-designer", "task": "Write user-facing release notes and messages" },
+      { "role": "qa", "task": "Confirm testing is complete and run smoke tests after release" }
+    ],
+    "reviewers": ["tech-lead", "delivery-manager", "devops"]
+  },
+  "toolExamples": {
+    "jira": "Create a version (release) and attach the stories to it, so the release notes and progress come from one place.",
+    "confluence": "Use a release planning page: background, goals and non-goals, team, timeline, comms and rollback plan.",
+    "github": "Ask engineers to tag the release, so you can see exactly what went out and roll back to the previous tag if needed.",
+    "vercel": "Every pull request gets a preview link for checking before it goes live, and you can promote an earlier deployment back to production if something breaks.",
+    "aws": "Ask DevOps whether the service can shift traffic gradually to the new version, so problems only reach a small share of users.",
+    "azure": "Ask DevOps about deployment slots, which let you test a release in production conditions and swap back quickly."
+  },
+  "definitionOfDone": [
+    "Release scope, audience and timeline published",
+    "Stakeholders, support and users told what they need to know",
+    "Monitoring and named owners in place for the first days",
+    "Rollback criteria and decision-maker agreed"
+  ],
+  "pitfalls": [
+    "Releasing everything to everyone at once",
+    "Support teams hearing about changes from users",
+    "No agreed point at which you would undo the release"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": ["test-acceptance-accessibility"],
+  "freshness": "changes-yearly",
+  "sources": [
+    { "title": "A product manager's guide to release planning (Atlassian)", "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning" },
+    { "title": "Canarying releases (Google SRE Workbook)", "url": "https://sre.google/workbook/canarying-releases/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

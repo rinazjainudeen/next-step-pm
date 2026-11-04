@@ -1,7 +1,15 @@
 import type { MetadataRoute } from "next";
+import { loadBlocks } from "@/lib/blocks-load";
 import { PAGE_LINKS, PRIMARY_ACTION, SITE_URL, availableLinks } from "@/lib/navigation";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const paths = new Set([...availableLinks(PAGE_LINKS), PRIMARY_ACTION].map((link) => link.href));
-  return [...paths].map((path) => ({ url: `${SITE_URL}${path === "/" ? "" : path}` }));
+  const pagePaths = [...availableLinks(PAGE_LINKS), PRIMARY_ACTION].map((link) => link.href);
+  // Placeholder blocks are dummy content and are kept out of search engines.
+  const blockPaths = loadBlocks()
+    .filter((block) => !block.placeholder)
+    .map((block) => `/library/${block.id}`);
+
+  return [...new Set([...pagePaths, ...blockPaths])].map((path) => ({
+    url: `${SITE_URL}${path === "/" ? "" : path}`,
+  }));
 }

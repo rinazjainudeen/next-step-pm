@@ -1,0 +1,71 @@
+{
+  "id": "design-test-prototype",
+  "title": "Test a prototype with users",
+  "phase": "design",
+  "kind": "core",
+  "summary": "Watching real users try a prototype shows you what works before anything is built. Small, repeated rounds of testing are cheaper and more useful than one big study.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Agree what you want to learn from this round, for example 'Can people find out whether they are eligible?'. Keep it to two or three questions.",
+      "Ask your designer for a prototype that is just real enough to test those questions. It can be paper, clickable screens or a coded prototype.",
+      "Write 3 to 5 realistic tasks based on what users actually need to do. Do not give away the answer in the wording.",
+      "Recruit about 5 people from your main user group. If you have very different groups, use 3 or 4 from each.",
+      "In each session, ask people to think aloud while they try the tasks. Watch and listen. Do not help unless they are completely stuck.",
+      "Afterwards, list the problems you saw and how serious each one is. Agree changes with the team, update the prototype and test again."
+    ],
+    "intermediate": [
+      "Set two or three learning goals and build a prototype only as real as those goals need.",
+      "Run moderated sessions with about 5 users per group, using realistic tasks.",
+      "Rate the problems found by severity and agree design changes with the team.",
+      "Plan the next round, so you test that the fixes worked."
+    ],
+    "experienced": [
+      "Learning goals set; prototype fidelity matches them.",
+      "About 5 users per distinct group; tasks are realistic and neutral.",
+      "Issues rated, changes agreed, next round booked.",
+      "Engineering has confirmed the preferred design is feasible."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "ux-designer", "task": "Build the prototype and update it between rounds" },
+      { "role": "user-researcher", "task": "Recruit participants, write the tasks and moderate sessions" },
+      { "role": "content-designer", "task": "Write the words in the prototype and check they make sense to users" },
+      { "role": "frontend-engineer", "task": "Check the design is feasible and flag anything costly to build" }
+    ],
+    "reviewers": ["tech-lead", "user-researcher"]
+  },
+  "toolExamples": {
+    "figma": "Link frames into a clickable prototype and share a view-only link for remote sessions. Keep a page for each test round, so you can compare versions.",
+    "miro": "Run a quick team debrief straight after each session: one sticky note per issue, then group by screen.",
+    "confluence": "Keep a page per round with the goals, tasks, issues found and decisions made.",
+    "claude": "Paste your draft tasks and ask whether any of them give away the answer or use your internal jargon."
+  },
+  "definitionOfDone": [
+    "At least one round tested with real users from the target group",
+    "Issues recorded and rated by severity",
+    "Design changes agreed and made",
+    "Preferred design judged feasible by engineering"
+  ],
+  "pitfalls": [
+    "Testing with colleagues instead of real users",
+    "Helping participants through the task, which hides the problems",
+    "Running one large study instead of several small rounds"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": ["define-problem-statement"],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "Using moderated usability testing (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing" },
+    { "title": "Why you only need to test with 5 users (Nielsen Norman Group)", "url": "https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" },
+    { "title": "How many test users in a usability study? (Nielsen Norman Group)", "url": "https://www.nngroup.com/articles/how-many-test-users/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

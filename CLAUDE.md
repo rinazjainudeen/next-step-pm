@@ -65,6 +65,7 @@ app/
 components/ui/ site/ intake/ plan/ library/
 content/
   blocks/<phase>/<block-id>.json   one learning block per file (see docs/content-model.md)
+  blocks/cross-phase/<block-id>.json   blocks whose phase is "any" or a list of phases
   taxonomy.ts                      the allowed values: PM types, product types, phases, roles, tools
 lib/
   utils.ts  navigation.ts  supabase.ts (server-only)
@@ -124,7 +125,7 @@ Colour tokens live in `app/globals.css` in `oklch`, mapped with `@theme inline`;
   - optional jump-link pills
 
   The hero and the stats band together fill `min-h-svh`.
-- **Page hero:** `min-h-[60vh]`, in a "plain" or "card" variant (the card variant is a navy-to-primary gradient box).
+- **Page hero:** `min-h-[60vh]`, in a "plain" or "card" variant (the card variant is a navy-to-primary gradient box). **Tool pages (Library, Build my plan, Your plan) use a shorter hero of about 35% of the screen height (`min-h-[35vh]`, the `size="tool"` option), so the filters or the tool show straight away.**
 - **Stats band:** a navy background with a 2/3/5-column grid of large display numbers and small uppercase labels.
 - **Section heading:** an eyebrow (`text-sm font-bold uppercase tracking-[0.18em] text-accent`, optional numbered circle), an H2 (`text-3xl sm:text-4xl`, display font, `text-balance`), and an optional lead paragraph (`text-lg leading-relaxed text-muted-foreground max-w-3xl`).
 - **Cards:** `rounded-2xl border border-border bg-card p-6 shadow-sm`, with an icon chip (`size-11 rounded-xl bg-primary/10 text-primary`). Linked cards use `rounded-3xl`, a hover lift (`hover:-translate-y-1 hover:shadow-xl hover:border-primary/40`) and a primary-to-accent gradient bar that sweeps across the top on hover.

@@ -1,0 +1,74 @@
+{
+  "id": "discover-user-research",
+  "title": "Plan and run discovery research with users",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Before you commit to building anything, find out who your users are, what they are trying to do and what gets in their way. Discovery research gives you the evidence every later decision rests on.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down what you need to learn. Turn it into 3 to 5 research questions, for example 'How do people do this task today?' and 'Where does it go wrong?'.",
+      "List your assumptions about users and the problem. Mark the ones that would hurt most if they turned out to be wrong. Those are what the research should test first.",
+      "Agree with your User Researcher (or yourself, if you have none) who to talk to. Aim for 5 to 8 people from each main user group, including people who struggle with the current way of doing things.",
+      "Choose a method. One-to-one interviews and watching people do the task in their normal setting work best early on. Avoid surveys until you know which questions matter.",
+      "Run the sessions with a note-taker. Ask about what people did last time, not what they would do in theory. Keep your own opinions out of the room.",
+      "Sort what you heard into themes the same week. Write up the main user needs, pain points and surprises, with quotes or evidence for each, and share them with the whole team."
+    ],
+    "intermediate": [
+      "Turn your riskiest assumptions into research questions and agree them with the team.",
+      "Plan recruitment for each user group, including people with access needs and people who use the offline route.",
+      "Run interviews or contextual observation, and synthesise as a team within a few days of the last session.",
+      "Publish findings as user needs and pain points with evidence, and link them from your product backlog."
+    ],
+    "experienced": [
+      "Research questions trace back to your riskiest assumptions.",
+      "Sample covers each user group, including excluded and offline users.",
+      "Team synthesis done; findings published with evidence and linked to the backlog.",
+      "Clear decision recorded: carry on, change direction or stop."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "user-researcher", "task": "Plan the research, recruit participants and lead the sessions" },
+      { "role": "ba", "task": "Map the current process and gather existing data about it" },
+      { "role": "ux-designer", "task": "Take notes in sessions and help turn findings into journey maps" },
+      { "role": "data-analyst", "task": "Pull existing data that shows where users drop out or call for help" }
+    ],
+    "reviewers": ["user-researcher", "tech-lead", "delivery-manager"]
+  },
+  "toolExamples": {
+    "confluence": "Create one research page per round, with the research questions at the top, a table of sessions, and a findings section the whole team can comment on.",
+    "notion": "Use a database for sessions (date, user group, key quotes) so you can filter findings by user group when you synthesise.",
+    "miro": "Put each observation on a sticky note during a team synthesis session, then group them into themes together.",
+    "mural": "Use a synthesis template: one column per participant, then cluster the notes into themes as a team.",
+    "claude": "Paste anonymised session notes (no names or personal details) and ask for candidate themes, with the quotes that support each. Check every theme against your own notes before you use it.",
+    "chatgpt": "Paste anonymised notes and ask which findings contradict each other. Treat the answer as a prompt for discussion, not a conclusion."
+  },
+  "definitionOfDone": [
+    "Research questions agreed with the team before sessions started",
+    "Sessions run with people from each main user group",
+    "Findings shared as user needs and pain points, each backed by evidence",
+    "Team has agreed what the findings mean for the next step"
+  ],
+  "pitfalls": [
+    "Asking people what they would like instead of what they did",
+    "Only talking to confident or friendly users",
+    "Running the research alone and presenting a report, so the team never sees users first-hand",
+    "Starting to design or build before the findings are in"
+  ],
+  "estimatedEffort": "10-20 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "How the discovery phase works (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works" },
+    { "title": "Plan user research for your service (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/user-research/plan-user-research-for-your-service" },
+    { "title": "How many participants for a UX interview? (Nielsen Norman Group)", "url": "https://www.nngroup.com/articles/interview-sample-size/" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

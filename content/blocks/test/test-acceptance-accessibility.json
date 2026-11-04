@@ -1,0 +1,72 @@
+{
+  "id": "test-acceptance-accessibility",
+  "title": "Check acceptance criteria and accessibility",
+  "phase": "test",
+  "kind": "core",
+  "summary": "Before anything goes to users, check it does what the stories promised and that disabled people can use it. Accessibility is a legal duty for many services, and fixing problems late costs far more.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "For each story, go through its acceptance criteria one by one in a test environment. Mark each as passed or failed, and raise a bug for each failure.",
+      "Ask your tester or engineers to run an automated accessibility checker. Automated tools only catch part of the problems, so this is a starting point.",
+      "Do a basic manual check yourself: use the feature with only a keyboard, zoom the page to 200%, and check text is readable and every button says what it does.",
+      "Ask someone to try it with a screen reader, such as VoiceOver on a Mac or iPhone, or NVDA on Windows.",
+      "Agree with the team which problems must be fixed before release and which can wait. Write down any that wait, with a date.",
+      "Before release, record the result: what was tested, what passed and what is still known to be wrong."
+    ],
+    "intermediate": [
+      "Test every story against its acceptance criteria and log failures as bugs.",
+      "Run automated accessibility checks plus manual checks: keyboard only, zoom and screen reader.",
+      "Triage issues with the team into 'must fix before release' and 'known issues'.",
+      "Record the test outcome and update the accessibility statement if you have one."
+    ],
+    "experienced": [
+      "All acceptance criteria verified; failures logged and triaged.",
+      "WCAG 2.2 AA checked with automated and manual testing, including assistive technology.",
+      "Release-blocking issues fixed; known issues recorded with dates.",
+      "Accessibility statement updated where one is required."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "qa", "task": "Test each story against its criteria and run accessibility checks" },
+      { "role": "frontend-engineer", "task": "Add automated accessibility tests and fix issues found" },
+      { "role": "user-researcher", "task": "Test with disabled users and people who use assistive technology" },
+      { "role": "content-designer", "task": "Check headings, labels, link text and error messages are clear" }
+    ],
+    "reviewers": ["qa", "tech-lead"]
+  },
+  "toolExamples": {
+    "jira": "Link each bug to the story it came from, and use a label such as 'accessibility' so you can report on those issues separately.",
+    "azure-devops": "Use Test Plans to record a pass or fail against each acceptance criterion.",
+    "github": "Ask engineers to run an automated accessibility check on every pull request, so problems are caught before they merge.",
+    "confluence": "Keep a test summary page per release: what was tested, results and known issues.",
+    "claude": "Paste your acceptance criteria and ask which ones are hard to test as written and how to reword them."
+  },
+  "definitionOfDone": [
+    "Every acceptance criterion tested and marked passed or failed",
+    "Automated and manual accessibility checks done, including a screen reader",
+    "Release-blocking issues fixed",
+    "Known issues written down with a plan to fix them"
+  ],
+  "pitfalls": [
+    "Relying only on automated accessibility tools",
+    "Leaving accessibility until the end of the project",
+    "Testing only the happy path"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": ["build-user-stories"],
+  "freshness": "changes-yearly",
+  "sources": [
+    { "title": "Testing for accessibility (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/technology/testing-for-accessibility" },
+    { "title": "Understanding WCAG 2.2 (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service/understanding-wcag" },
+    { "title": "Accessibility guidance for product and delivery (NHS digital service manual)", "url": "https://service-manual.nhs.uk/accessibility/product-and-delivery" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

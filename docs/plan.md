@@ -31,8 +31,13 @@ Set up accounts (GitHub repo `next-step-pm`, Vercel linked to it). Create the Ne
 **Check:** open the live link on a phone and a laptop, switch to dark mode and tab through the page with the keyboard.
 
 ### Phase 2: Content model and first blocks
-Build `content/taxonomy.ts`, `lib/blocks-types.ts`, `lib/blocks-validate.ts`, `pnpm validate:content` and their tests. Draft about 12 blocks covering all 8 phases, so the engine has something real to work with. Build a **Library** page to browse and filter them.
-**Check:** filter the library by phase and PM type, and open a block.
+Build `content/taxonomy.ts`, `lib/blocks-types.ts`, `lib/blocks-validate.ts`, `pnpm validate:content` and their tests. Build a **Library** page to browse and filter blocks by phase, PM type, kind and way of working, with a page for each block.
+
+**Change agreed 4 November 2026:** Rinaz drafts the first 12 blocks in a separate planning chat, so Claude Code does **not** write block content in Phase 2. Claude Code adds 2 clearly marked placeholder blocks so the Library can be tested. When Rinaz brings the 12 blocks, Claude Code adds them to `content/blocks/` and fixes anything the validator flags. The 12 should cover all 8 phases and include at least one ways-of-working block, so the engine has something real to work with.
+
+**Also changed the same day:** the full library is now planned at about **90 blocks** (see Phase 5), and there is a new block kind, **ways-of-working**. Its `phase` can be one phase, a list or `"any"`, and blocks carry `appliesTo.waysOfWorking` (scrum, kanban, hybrid) to match the intake question "How does your team work?".
+
+**Check:** filter the library by phase, PM type, kind and way of working, and open a block.
 
 ### Phase 3: The intake
 Eight questions, one per screen, with a progress bar, Back and Next, and "Not sure" options. Answers are kept in the URL (`lib/intake-url.ts`, tested).
@@ -43,8 +48,18 @@ Build `lib/curriculum-engine.ts` with full tests. The plan page shows a summary,
 **Check:** create two very different profiles and confirm the plans differ in the expected ways.
 
 ### Phase 5: Full content
-Research and draft the remaining blocks (to about 40 to 50 in total). Rinaz reviews them one phase at a time.
-**Check:** Rinaz reads each phase's blocks in the library and approves them.
+Research and draft the remaining blocks, to about **90 in total** (the plan said 40 to 50 until 4 November 2026). The target mix is:
+
+| Kind | Blocks |
+|---|---|
+| Core lifecycle | about 40 |
+| Ways of working | about 15 |
+| PM-type add-ons | about 15 |
+| Product-type add-ons | about 12 |
+| Onboarding | about 8 |
+
+Rinaz reviews them in batches. Roughly doubling the content also roughly doubles the research and review work, so this phase may be split into 5a and 5b (for example core lifecycle first, then the rest). We decide when we get there. Who drafts the remaining blocks is also decided then.
+**Check:** Rinaz reads each batch of blocks in the library and approves them.
 
 ### Phase 6: Feedback, privacy and the case study
 - **Feedback and storage:** a "Was this useful?" rating and an optional comment, stored in Supabase with RLS and rate limits, plus an anonymous count of plans generated (category answers only). Resend emails Rinaz when feedback arrives.

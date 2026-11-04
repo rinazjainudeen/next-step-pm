@@ -1,0 +1,72 @@
+{
+  "id": "define-problem-statement",
+  "title": "Write a problem statement and hypothesis",
+  "phase": "define",
+  "kind": "core",
+  "summary": "A clear problem statement keeps the team solving the right thing. A hypothesis turns your idea into something you can prove or disprove, so you know later whether it worked.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": []
+  },
+  "steps": {
+    "beginner": [
+      "Start from your research findings. Pick the user need or pain point with the strongest evidence and the biggest impact.",
+      "Write the problem in one or two sentences: who has the problem, what they are trying to do, what stops them, and why it matters. Do not mention a solution yet.",
+      "List the evidence under it: research quotes, data, support calls or complaints. If the evidence is thin, say so.",
+      "Write a hypothesis in this shape: 'We believe that [doing this] for [these users] will result in [this outcome]. We will know we are right when we see [this measurable signal].'",
+      "Pick one or two measures of success you can actually track, and write down the current baseline if you have it.",
+      "Note the constraints: policy, legal, technical, budget and deadlines. Then review the statement with your team and change it until everyone agrees."
+    ],
+    "intermediate": [
+      "Write a solution-free problem statement grounded in research evidence.",
+      "Frame the idea as a testable hypothesis with a clear outcome and signal.",
+      "Agree measures of success with baselines, plus known constraints.",
+      "Review with design, engineering and stakeholders, and record sign-off."
+    ],
+    "experienced": [
+      "Problem statement is solution-free and evidence-backed.",
+      "Hypothesis names the users, the change, the outcome and the signal.",
+      "Success measures have baselines; constraints and non-goals are listed.",
+      "Signed off by the team and key stakeholders."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "ba", "task": "Draft the problem statement and constraints from the research and process maps" },
+      { "role": "user-researcher", "task": "Supply the evidence and check the statement reflects what users said" },
+      { "role": "performance-analyst", "task": "Find baselines for the measures of success" },
+      { "role": "data-analyst", "task": "Find baselines for the measures of success" }
+    ],
+    "reviewers": ["tech-lead", "ux-designer", "policy-legal"]
+  },
+  "toolExamples": {
+    "confluence": "Keep the problem statement, hypothesis and measures on one page at the top of your initiative space, and link every later document back to it.",
+    "notion": "Create a one-page brief with fixed headings: problem, evidence, hypothesis, measures, constraints, non-goals.",
+    "google-docs": "Share the draft with suggestion mode on, so reviewers propose wording changes rather than overwrite each other.",
+    "jira": "Paste the hypothesis into the epic description, so it travels with the work into planning.",
+    "claude": "Paste your research summary and ask for three alternative problem statements that avoid naming a solution. Then ask it to point out where each one lacks evidence."
+  },
+  "definitionOfDone": [
+    "Problem statement agreed and free of any solution",
+    "Evidence listed for each claim",
+    "Hypothesis and measures of success agreed, with baselines where possible",
+    "Constraints and non-goals written down"
+  ],
+  "pitfalls": [
+    "Writing the solution into the problem statement",
+    "Choosing measures you have no way of tracking",
+    "Skipping the baseline, so you cannot tell later whether anything changed"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "How to implement hypothesis-driven development (Thoughtworks)", "url": "https://www.thoughtworks.com/insights/articles/how-implement-hypothesis-driven-development" },
+    { "title": "Service Standard point 10: define what success looks like (GOV.UK)", "url": "https://www.gov.uk/service-manual/service-standard/point-10-define-success-publish-performance-data" },
+    { "title": "How to set performance metrics for your service (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service" }
+  ],
+  "lastReviewed": "2026-11-04"
+}

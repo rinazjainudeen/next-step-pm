@@ -1,0 +1,71 @@
+{
+  "id": "wow-sprint-planning",
+  "title": "Run sprint planning",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "Sprint planning sets up each sprint: why it matters, what the team will deliver and how. A clear sprint goal helps the team make good trade-offs when things change mid-sprint.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": ["scrum"]
+  },
+  "steps": {
+    "beginner": [
+      "Before the meeting, put the backlog in priority order and make sure the top items are ready: clear stories, acceptance criteria and designs attached.",
+      "Check the team's capacity for the sprint: holidays, training and other commitments. Your Scrum Master or Delivery Manager can help.",
+      "Start the meeting with 'why'. Propose what would make this sprint valuable, then agree a one-sentence sprint goal with the whole team.",
+      "Then agree 'what'. The developers choose which backlog items they can finish, based on past pace and capacity. Your job is to explain each item and answer questions, not to push more in.",
+      "Then the team plans 'how', often breaking items into tasks of a day or less. You do not need to direct this part.",
+      "End with the sprint goal, chosen items and plan visible to everyone. Keep the meeting short: well under four hours for a two-week sprint."
+    ],
+    "intermediate": [
+      "Arrive with a ready, ordered backlog and a proposed sprint goal linked to the product goal.",
+      "Agree the sprint goal with the team first, then let developers forecast what fits their capacity.",
+      "Leave the 'how' to the developers; clarify scope and trade-offs.",
+      "Make the sprint goal visible and refer back to it at every stand-up."
+    ],
+    "experienced": [
+      "Backlog refined and ordered; proposed goal ties to the product goal.",
+      "Sprint goal agreed by the whole team before items are selected.",
+      "Forecast based on capacity and past throughput, not pressure.",
+      "Sprint backlog (goal, items, plan) visible to all."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      { "role": "scrum-master", "task": "Facilitate the meeting and keep it within its timebox" },
+      { "role": "delivery-manager", "task": "Work out team capacity and flag dependencies" },
+      { "role": "product-owner", "task": "Order the backlog and propose the sprint goal" },
+      { "role": "ba", "task": "Make sure the top backlog items are ready before the meeting" }
+    ],
+    "reviewers": ["scrum-master", "tech-lead"]
+  },
+  "toolExamples": {
+    "jira": "Use the backlog view to drag items into the next sprint, and fill in the sprint goal field when you start the sprint, so it shows on the board.",
+    "azure-devops": "Set team capacity per person on the sprint's Capacity tab, then use the forecast to see what fits.",
+    "linear": "Use cycles for sprints, and write the goal in the cycle description.",
+    "miro": "For remote teams, put the proposed goal and top items on a board and agree the goal together before opening the tracker.",
+    "claude": "Paste the top backlog items and ask for two or three possible sprint goals that tie them together."
+  },
+  "definitionOfDone": [
+    "Sprint goal agreed by the whole team",
+    "Selected items fit the team's capacity",
+    "Plan for the first days broken into small tasks",
+    "Sprint goal and backlog visible to everyone"
+  ],
+  "pitfalls": [
+    "Skipping the sprint goal and just picking tickets",
+    "Pushing more work in than the team forecasts",
+    "Arriving with a backlog that is not ready, so planning turns into refinement"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    { "title": "The 2020 Scrum Guide (Schwaber and Sutherland)", "url": "https://scrumguides.org/scrum-guide.html" },
+    { "title": "Making the most of Sprint Planning (Scrum.org)", "url": "https://www.scrum.org/resources/blog/make-most-sprint-planning" }
+  ],
+  "lastReviewed": "2026-11-04"
+}
