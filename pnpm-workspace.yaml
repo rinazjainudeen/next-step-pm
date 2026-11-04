@@ -1,0 +1,5 @@
+# Which packages may run install scripts. Everything else is blocked by default.
+allowBuilds:
+  esbuild: true
+  sharp: false
+  unrs-resolver: false
