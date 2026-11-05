@@ -78,8 +78,8 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "ba", "task": "Draft the problem statement from research notes" },
-      { "role": "user-researcher", "task": "Supply the evidence and quotes" }
+      { "role": "ba", "task": "Draft the problem statement from research notes", "ifMissing": "pm" },
+      { "role": "data-analyst", "orRoles": ["performance-analyst"], "task": "Find baselines for the measures", "ifMissing": "find-someone" }
     ],
     "reviewers": ["tech-lead", "ux-designer"]
   },
@@ -99,6 +99,15 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 }
 ```
 
+**Writing steps:** every step at every experience level is an instruction that starts with a verb, such as "Verify tracking", not a finished state, such as "Tracking verified". The first steps become the visitor's next 3 actions.
+
+**Delegable tasks:** `ifMissing` is required and says what happens if nobody in the team can do the task:
+- `pm`: the PM can do this themselves.
+- `find-someone`: it needs specialist skills, so the PM should find someone. Use this for anything a PM shouldn't be doing alone, such as setting up monitoring.
+- `ask-around`: it needs someone who knows the product, such as a walkthrough.
+
+`orRoles` is optional and lists other roles who could do the task, best first. Use it rather than repeating a task under two roles, and list the people who could realistically step in, because teams vary. A full-stack engineer already covers frontend and backend tasks.
+
 **Kinds of block:**
 - **core**: every PM in that phase gets it.
 - **add-on**: only for certain PM or product types. Examples: "Evaluate model quality" for AI products, "Prepare for a service assessment" for public sector services, "Map the current process" for transformation.
@@ -117,6 +126,7 @@ Each block on its own:
 - `phase`, `kind`, PM types, product types, stages, ways of working, roles, tools and freshness all use values from `content/taxonomy.ts`.
 - `appliesTo` has all four lists. An empty list means "applies to all".
 - `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
+- Every delegable task has a valid `ifMissing`, and any `orRoles` are real roles other than the main one.
 - `definitionOfDone` has at least one item. `pitfalls` must be present but may be empty.
 - `estimatedEffort` is a number or range and a unit: `30 minutes`, `2-4 hours`, `1 day`, `2-3 days`.
 - `sources` has at least one entry with a full `http(s)` address. Every block cites its sources.
@@ -133,15 +143,17 @@ Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux
 
 A pure function, `buildPlan(answers, blocks) -> Plan`, with no database, no AI and no randomness.
 
-1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type and product type. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
-2. **Order** by phase, then by `dependsOn`. If a dependency comes from an earlier phase, show it as "check this exists" rather than as a task.
+1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type or product type (an empty list never counts as a match). A block's stage and way-of-working tags must always fit. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
+2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. Onboarding and ways-of-working blocks sit outside the timeline, in "Get up to speed" and "Your team's rhythm".
 3. **Shape** the steps to the visitor's experience level. If "Not sure" was chosen, use intermediate.
-4. **Assign** roles. For each delegable task, if the role is in the team, show "Ask your BA to…". If not, give the task to the PM with a note, e.g. "No QA in your team: agree who tests, and add time for it". Use the team list to suggest who reviews.
+4. **Assign** roles. For each delegable task, the first person in the team from `role`, then `orRoles`, gets it, as in "Ask your BA" or "Ask your 3 Backend Engineers". A full-stack engineer covers frontend and backend tasks. If nobody can do it, `ifMissing` sets the note. Use the team list to suggest who reviews.
 5. **Tools.** Show tool examples only for the tools the visitor picked. `other` (a tool that isn't listed) matches no examples. If none match, show a short tool-agnostic tip.
-6. **Pace.** Group blocks into weeks according to the timeline answer, and flag the plan as tight if the total effort is more than the time available.
+6. **Pace.** Add up the timeline's blocks. `estimatedEffort` means start-to-finish working time, not PM hours. Blocks only count the PM's part of Build, so Build counts as at least 2 weeks. The plan is then fitted to the timeline's length to plan across (9, 20 or 26 weeks; "Under 1 month" isn't stretched). Build gets two-thirds of the spare time, and the other phases share the rest in proportion. With no Build, the phases stretch evenly to at most 3 times what the work usually takes. Longer than the timeline's longest length is tight, and the plan is squeezed to end on time. A "Not sure" timeline isn't fitted to anything.
 7. **Explain.** Every block in the plan carries a short "why you're seeing this", e.g. "Because you're an AI PM in Build".
 
-**Tests must cover:** each starting point, each experience level, missing roles, an empty tools list, "Not sure" answers, conflicting dependencies, and that the same answers always give the same plan.
+**Tests must cover:** each starting point, each experience level, missing roles, an empty tools list, "Not sure" answers, conflicting dependencies, and that the same answers always give the same plan. `lib/plan-logic.test.ts` holds the rules that must be true of every plan and runs them across a wide spread of answers, using the real blocks.
+
+**Checking plans make sense:** tests can't judge whether a plan reads well to a PM. After each big batch of blocks, and fully before launch, a QA agent reads sample plans in full.
 
 ## 5. Keeping content up to date (later phase)
 

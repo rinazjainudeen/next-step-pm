@@ -26,19 +26,19 @@
       "Make a launch decision against thresholds, and rerun the evaluation as a regression check on every change."
     ],
     "experienced": [
-      "Multi-dimensional success criteria with thresholds agreed.",
-      "Representative test set including edge, misuse and fairness cases.",
-      "Grading approach validated; results reproducible.",
-      "Evaluation runs on every model or prompt change; live monitoring for drift and hallucination in place."
+      "Agree multi-dimensional success criteria with thresholds.",
+      "Build a representative test set, including edge, misuse and fairness cases.",
+      "Validate the grading approach and make results reproducible.",
+      "Run the evaluation on every model or prompt change, and monitor live for drift and hallucination."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "data-scientist", "task": "Build and run the evaluation and grading" },
-      { "role": "qa", "task": "Write edge cases and misuse cases for the test set" },
-      { "role": "policy-legal", "task": "Review for data protection, fairness and harm risks" },
-      { "role": "user-researcher", "task": "Test the AI feature with real users and capture where it confuses them" }
+      { "role": "data-scientist", "orRoles": ["tech-lead", "backend-engineer"], "task": "Build and run the evaluation and grading", "ifMissing": "find-someone" },
+      { "role": "qa", "task": "Write edge cases and misuse cases for the test set", "ifMissing": "pm" },
+      { "role": "policy-legal", "task": "Review for data protection, fairness and harm risks", "ifMissing": "find-someone" },
+      { "role": "user-researcher", "task": "Test the AI feature with real users and capture where it confuses them", "ifMissing": "pm" }
     ],
     "reviewers": ["data-scientist", "tech-lead", "policy-legal"]
   },

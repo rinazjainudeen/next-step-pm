@@ -26,19 +26,19 @@
       "Publish a Now / Next / Later roadmap and set a review rhythm."
     ],
     "experienced": [
-      "One backlog of outcomes; scoring method agreed and visible.",
-      "Effort comes from engineering; confidence reflects the evidence.",
-      "Overrides justified in writing; dependencies mapped.",
-      "Now / Next / Later roadmap published, with a review date set."
+      "Keep one backlog of outcomes, with an agreed, visible scoring method.",
+      "Get effort estimates from engineering, and let confidence reflect the evidence.",
+      "Justify overrides in writing, and map dependencies.",
+      "Publish a Now / Next / Later roadmap, with a review date set."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "delivery-manager", "task": "Map dependencies and run the scoring session" },
-      { "role": "tech-lead", "task": "Provide effort estimates and flag technical risks" },
-      { "role": "ba", "task": "Keep the backlog tidy and write each item as an outcome" },
-      { "role": "data-analyst", "task": "Estimate reach from usage data" }
+      { "role": "delivery-manager", "task": "Map dependencies and run the scoring session", "ifMissing": "pm" },
+      { "role": "tech-lead", "orRoles": ["architect", "backend-engineer", "frontend-engineer"], "task": "Provide effort estimates and flag technical risks", "ifMissing": "find-someone" },
+      { "role": "ba", "orRoles": ["product-owner"], "task": "Keep the backlog tidy and write each item as an outcome", "ifMissing": "pm" },
+      { "role": "data-analyst", "orRoles": ["performance-analyst"], "task": "Estimate reach from usage data", "ifMissing": "pm" }
     ],
     "reviewers": ["delivery-manager", "tech-lead"]
   },

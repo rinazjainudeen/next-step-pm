@@ -146,19 +146,32 @@ export const ROLES = [
   { id: "tech-lead", label: "Tech Lead", description: "Guides the engineers and the technical decisions.", inTeamQuestion: true },
   { id: "frontend-engineer", label: "Frontend Engineer", description: "Builds the parts users see and click.", inTeamQuestion: true },
   { id: "backend-engineer", label: "Backend Engineer", description: "Builds the servers, data and logic behind the scenes.", inTeamQuestion: true },
-  { id: "fullstack-engineer", label: "Full-stack Engineer", description: "Works on both frontend and backend.", inTeamQuestion: true },
-  { id: "architect", label: "Architect", description: "Designs how the whole system fits together.", inTeamQuestion: true },
-  { id: "devops", label: "DevOps / SRE", description: "Releases the product and keeps it running reliably.", inTeamQuestion: true },
-  { id: "qa", label: "QA / Tester", description: "Checks that the product works as it should.", inTeamQuestion: true },
+  { id: "fullstack-engineer", label: "Full-stack Engineer", description: "Works on both frontend and backend.", inTeamQuestion: true, covers: ["frontend-engineer", "backend-engineer"] },
+  { id: "architect", label: "Architect", description: "Designs how the whole system fits together.", inTeamQuestion: true, reviewsFor: ["tech-lead"] },
+  { id: "devops", label: "DevOps / SRE", person: "DevOps / SRE engineer", plural: "DevOps / SRE engineers", description: "Releases the product and keeps it running reliably.", inTeamQuestion: true },
+  { id: "qa", label: "QA / Tester", plural: "QA / Testers", description: "Checks that the product works as it should.", inTeamQuestion: true },
   { id: "data-analyst", label: "Data Analyst", description: "Turns data into reports and insights.", inTeamQuestion: true },
-  { id: "data-scientist", label: "Data Scientist / ML Engineer", description: "Builds models and machine learning features.", inTeamQuestion: true },
+  { id: "data-scientist", label: "Data Scientist / ML Engineer", plural: "Data Scientists / ML Engineers", description: "Builds models and machine learning features.", inTeamQuestion: true },
   { id: "performance-analyst", label: "Performance Analyst", description: "Tracks how the service performs against its goals.", inTeamQuestion: true },
-  { id: "policy-legal", label: "Policy / Legal / Compliance", description: "Checks the rules, risks and legal duties.", inTeamQuestion: true },
+  { id: "policy-legal", label: "Policy / Legal / Compliance", person: "Policy / Legal / Compliance colleague", plural: "Policy / Legal / Compliance colleagues", description: "Checks the rules, risks and legal duties.", inTeamQuestion: true },
   { id: "product-owner", label: "Product Owner", description: "Manages the backlog and day-to-day priorities.", inTeamQuestion: true },
 ] as const;
 
 export type RoleId = (typeof ROLES)[number]["id"];
 export const ROLE_IDS: readonly RoleId[] = ROLES.map((role) => role.id);
+
+/**
+ * What a task says when nobody in the visitor's team can do it.
+ * Every delegable task in a block must choose one.
+ */
+export const TASK_FALLBACKS = [
+  { id: "pm", label: "The PM can do this themselves" },
+  { id: "find-someone", label: "It needs specialist skills, so the PM should find someone" },
+  { id: "ask-around", label: "It needs someone who knows the product, so the PM should ask around" },
+] as const;
+
+export type TaskFallbackId = (typeof TASK_FALLBACKS)[number]["id"];
+export const TASK_FALLBACK_IDS: readonly TaskFallbackId[] = TASK_FALLBACKS.map((item) => item.id);
 
 // ---------------------------------------------------------------------------
 // 8. Intake question 6: which tools do you use?

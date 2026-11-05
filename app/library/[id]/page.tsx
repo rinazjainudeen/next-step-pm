@@ -156,7 +156,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
               <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed marker:text-primary">
                 {block.roles.canDelegateTo.map((item) => (
                   <li key={`${item.role}-${item.task}`}>
-                    <span className="font-medium">{roleLabel(item.role)}:</span> {item.task}
+                    <span className="font-medium">{[item.role, ...(item.orRoles ?? [])].map(roleLabel).join(" or ")}:</span> {item.task}
                   </li>
                 ))}
               </ul>

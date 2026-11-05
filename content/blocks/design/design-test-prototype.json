@@ -26,19 +26,19 @@
       "Plan the next round, so you test that the fixes worked."
     ],
     "experienced": [
-      "Learning goals set; prototype fidelity matches them.",
-      "About 5 users per distinct group; tasks are realistic and neutral.",
-      "Issues rated, changes agreed, next round booked.",
-      "Engineering has confirmed the preferred design is feasible."
+      "Set learning goals, and match the prototype's fidelity to them.",
+      "Test with about 5 users per distinct group, using realistic, neutral tasks.",
+      "Rate issues, agree changes and book the next round.",
+      "Confirm with engineering that the preferred design is feasible."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "ux-designer", "task": "Build the prototype and update it between rounds" },
-      { "role": "user-researcher", "task": "Recruit participants, write the tasks and moderate sessions" },
-      { "role": "content-designer", "task": "Write the words in the prototype and check they make sense to users" },
-      { "role": "frontend-engineer", "task": "Check the design is feasible and flag anything costly to build" }
+      { "role": "ux-designer", "task": "Build the prototype and update it between rounds", "ifMissing": "find-someone" },
+      { "role": "user-researcher", "orRoles": ["ux-designer"], "task": "Recruit participants, write the tasks and moderate sessions", "ifMissing": "pm" },
+      { "role": "content-designer", "orRoles": ["ux-designer"], "task": "Write the words in the prototype and check they make sense to users", "ifMissing": "pm" },
+      { "role": "frontend-engineer", "orRoles": ["tech-lead", "architect", "backend-engineer"], "task": "Check the design is feasible and flag anything costly to build", "ifMissing": "find-someone" }
     ],
     "reviewers": ["tech-lead", "user-researcher"]
   },

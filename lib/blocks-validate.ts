@@ -9,6 +9,7 @@ import {
   PRODUCT_TYPE_IDS,
   ROLE_IDS,
   STAGE_IDS,
+  TASK_FALLBACK_IDS,
   TOOL_IDS,
   WAY_OF_WORKING_IDS,
   isOneOf,
@@ -206,11 +207,20 @@ function checkRoles(value: unknown, errors: string[]): void {
         errors.push(`${where}: must have a role and a task.`);
         return;
       }
-      checkUnknownKeys(item, ["role", "task"], `${where}: `, errors);
+      checkUnknownKeys(item, ["role", "orRoles", "task", "ifMissing"], `${where}: `, errors);
       if (!isOneOf(ROLE_IDS, item.role)) {
         errors.push(`${where}.role: ${JSON.stringify(item.role)} isn't a role. Use one of: ${listOf(ROLE_IDS)}.`);
       }
+      if ("orRoles" in item) {
+        checkIdList(item.orRoles, ROLE_IDS, `${where}.orRoles`, errors, "Leave it out if only one role can do this.");
+        if (Array.isArray(item.orRoles) && item.orRoles.includes(item.role)) {
+          errors.push(`${where}.orRoles: "${String(item.role)}" is already the main role.`);
+        }
+      }
       if (!isNonEmptyString(item.task)) errors.push(`${where}.task: must be some text, not empty.`);
+      if (!isOneOf(TASK_FALLBACK_IDS, item.ifMissing)) {
+        errors.push(`${where}.ifMissing: ${JSON.stringify(item.ifMissing)} isn't allowed. Say what happens if nobody in the team can do this: ${listOf(TASK_FALLBACK_IDS)}.`);
+      }
     });
   }
 

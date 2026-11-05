@@ -19,7 +19,7 @@ export function makeBlock(overrides: Partial<Block> = {}): Block {
     },
     roles: {
       owner: "pm",
-      canDelegateTo: [{ role: "ba", task: "Dummy task." }],
+      canDelegateTo: [{ role: "ba", task: "Dummy task.", ifMissing: "pm" }],
       reviewers: ["tech-lead"],
     },
     toolExamples: { claude: "Dummy tool tip." },

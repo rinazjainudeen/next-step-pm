@@ -278,11 +278,18 @@ test("a live product can be building its next release", () => {
   assert.equal(parse("stage=live&phase=build").phase, "build");
 });
 
-test("starting past the usual end runs on to the end of the route, unless a finish is chosen", () => {
+test("a live product at or past its usual end runs on to Launch, unless a finish is chosen", () => {
   assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: null })), ["build", "test", "launch"]);
   assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: NOT_SURE })), ["build", "test", "launch"]);
   assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "build", until: "test" })), ["build", "test"]);
-  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "design", until: null })), ["design"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "design", until: null })), ["design", "plan", "build", "test", "launch"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "design", until: "design" })), ["design"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "live", phase: "define", until: null })), ["define", "design"]);
+});
+
+test("other stages stop at their usual end when no finish is chosen", () => {
+  assert.deepEqual(ids(phasesCovered({ stage: "new", phase: "plan", until: null })), ["plan"]);
+  assert.deepEqual(ids(phasesCovered({ stage: "mid-build", phase: "launch", until: null })), ["launch"]);
 });
 
 test("the finish question isn't asked when only one phase is left", () => {

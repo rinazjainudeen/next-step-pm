@@ -11,6 +11,7 @@ import {
   type ProductTypeId,
   type RoleId,
   type StageId,
+  type TaskFallbackId,
   type ToolId,
   type WayOfWorkingId,
 } from "../content/taxonomy";
@@ -19,6 +20,16 @@ import {
  * The shape of one learning block (one JSON file in content/blocks/).
  * The rules in docs/content-model.md are checked by lib/blocks-validate.ts.
  */
+
+/** One task a PM can hand to someone else. */
+export type DelegatedTask = {
+  role: RoleId;
+  /** Other roles who could do this instead, best first. */
+  orRoles?: RoleId[];
+  task: string;
+  /** What to tell the visitor if nobody in their team can do it. */
+  ifMissing: TaskFallbackId;
+};
 
 /** One phase, a list of phases, or "any" (every phase). */
 export type BlockPhase = PhaseId | PhaseId[] | typeof ANY_PHASE;
@@ -39,7 +50,7 @@ export type Block = {
   steps: Record<ExperienceId, string[]>;
   roles: {
     owner: RoleId;
-    canDelegateTo: { role: RoleId; task: string }[];
+    canDelegateTo: DelegatedTask[];
     reviewers: RoleId[];
   };
   toolExamples: Partial<Record<ToolId, string>>;

@@ -26,18 +26,18 @@
       "Review flow regularly, unblock aged items first, and adjust policies when the data shows a problem."
     ],
     "experienced": [
-      "Definition of workflow explicit and visible on the board.",
-      "WIP controlled; work pulled only when there is capacity.",
-      "Four flow metrics tracked; service level expectation set from cycle time history.",
-      "Regular flow reviews drive one improvement at a time."
+      "Make the definition of workflow explicit and visible on the board.",
+      "Control WIP, and pull work only when there is capacity.",
+      "Track the four flow metrics, and set a service level expectation from cycle time history.",
+      "Use regular flow reviews to drive one improvement at a time."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "delivery-manager", "task": "Set up the board, agree WIP limits with the team and report flow measures" },
-      { "role": "scrum-master", "task": "Facilitate flow reviews and help remove blockers" },
-      { "role": "tech-lead", "task": "Agree where engineering columns and limits should sit" }
+      { "role": "delivery-manager", "task": "Set up the board, agree WIP limits with the team and report flow measures", "ifMissing": "pm" },
+      { "role": "scrum-master", "orRoles": ["delivery-manager"], "task": "Facilitate flow reviews and help remove blockers", "ifMissing": "pm" },
+      { "role": "tech-lead", "orRoles": ["architect", "backend-engineer", "frontend-engineer"], "task": "Agree where engineering columns and limits should sit", "ifMissing": "find-someone" }
     ],
     "reviewers": ["delivery-manager", "tech-lead"]
   },
