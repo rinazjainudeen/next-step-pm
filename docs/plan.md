@@ -10,8 +10,8 @@
   - Content lives in the code.
   - Supabase stores feedback, ratings and anonymous plan counts.
   - Resend emails Rinaz when feedback arrives.
-  - AI comes in phases 7 and 8.
-- **Cost:** about £0 a month on Vercel Hobby, Supabase Free and Resend Free, plus AI usage capped at about £5 a month from phase 7. A domain (about £10 a year) is optional.
+  - AI comes in phases 10 and 11.
+- **Cost:** about £0 a month on Vercel Hobby, Supabase Free and Resend Free, plus AI usage capped at about £5 a month from phase 10. A domain (about £10 a year) is optional.
 - **Not in this version:** visitor accounts, saved progress across devices, payments, a team or manager mode, editing content in an admin screen.
 
 ## How we'll know it works
@@ -50,7 +50,7 @@ Eight questions, one per screen, with a progress bar, Back and Next, and "Not su
 Build `lib/curriculum-engine.ts` with full tests. The plan page shows a summary, the next 3 actions, a timeline by phase or week, block cards with delegation and tool examples, and "why you're seeing this". It also has tick-boxes saved in the browser, a copy-link button and a print/PDF view.
 **Check:** create two very different profiles and confirm the plans differ in the expected ways.
 
-**Not included:** the feedback rating (Phase 6).
+**Not included:** the feedback rating (Phase 9).
 
 ### Phase 5: Full content
 
@@ -68,22 +68,71 @@ Research and draft the remaining blocks, to about **90 in total** (the plan said
 Rinaz reviews them in batches. Roughly doubling the content also roughly doubles the research and review work, so this phase may be split into 5a and 5b (for example core lifecycle first, then the rest). We decide when we get there. Who drafts the remaining blocks is also decided then.
 **Check:** Rinaz reads each batch of blocks in the library and approves them.
 
-### Phase 6: Feedback, privacy and the case study
+### Phase 6: Home page wording
+Clear up the purpose on the home page: the headline, subtitle, search description, stats band, the "How it works" lead and the title of step 1. The stats band keeps "3 experience levels" until Phase 7 goes live, so the site never claims something it doesn't yet do.
+
+**Check:** read the home page in light and dark mode, on a phone and a laptop.
+
+### Phase 7a: Intake v2 and engine
+The intake moves to the ten questions in the replan of 5 November 2026.
+- Questions 2, 3 and 5 updated: PM types, what you own, and company size.
+- Up to two PM types.
+- The career-level mapping and the "leads people" flag.
+- The fundamentals rule and the "Refresh the basics" section.
+- Old links still work.
+- Question 1 ("kind of work") is built but switched off, until the track content exists.
+- The stats band updates to: 6 career levels, 21 team roles, and the new block count.
+
+**Check:** open an old shared plan link, then build a plan at each career level, with two PM types.
+
+### Phase 7b: New content
+Written in batches, like Phase 5. About 46 new blocks:
+
+| Content | New blocks |
+|---|---|
+| Strategy track | 14 |
+| Coaching track (includes the leads-people add-ons) | 15 |
+| Hardware or IoT add-ons | about 6 |
+| Platform add-ons | about 3 |
+| Company-size add-ons | about 8 |
+| **Total** | **about 46** |
+
+Two new team roles: Senior leader or sponsor, and People or HR partner. Question 1 is switched on when 7b is merged.
+
+**Check:** Rinaz reads each batch in the library and approves it, then builds a strategy plan and a coaching plan.
+
+### Phase 8a: Skills and growth
+- Nine PM skills, tagged on every block.
+- The plan opening line.
+- "Next level" notes.
+- A skills filter on the plan page ("Want to focus? Pick two skills") rather than an eleventh question, so the intake stays at ten.
+
+**Check:** filter a plan by two skills, and read the opening line for different levels and PM types.
+
+### Phase 8b: Content pass
+- "In your context" lines on core blocks: one line per PM type with the right example metric, such as activation rate for growth or hallucination rate for AI.
+- Practice scenarios on craft blocks, written per level.
+- Rewrite the experienced steps so they read as portfolio, cross-team and leadership work, not "the same task, done harder".
+
+**Check:** Rinaz reads each batch in the library and approves it.
+
+### Phase 9: Feedback, privacy and the case study
 - **Feedback and storage:** a "Was this useful?" rating and an optional comment, stored in Supabase with RLS and rate limits, plus an anonymous count of plans generated (category answers only). Resend emails Rinaz when feedback arrives.
 - **Pages:** a privacy page; a **How I built this** case study covering the problem, discovery, the block model, decisions, AI use, results so far and what's next; and a **Decision log** page.
 - **Guides:** `docs/supabase-setup.md` and `docs/resend-setup.md`.
 
 **Check:** submit feedback, see the email arrive, and see the row in Supabase.
 
-### Phase 7: AI personal summary
+### Phase 10: AI personal summary
 A "Summarise my plan" button. Claude gets only the visitor's category answers and the selected blocks, and returns a short tailored briefing ("Your first two weeks", "What to delegate", "Risks for your situation"). It streams onto the page.
 - Switched off by `AI_SUMMARY_ENABLED` until it's ready.
 - The page works without it.
 - The monthly spending cap is set in the Anthropic console.
+- The framing notes' "name who they are" and "adapt to level" ideas help shape the prompt.
 
 **Check:** generate a summary for two profiles and confirm it only mentions steps that are in the plan.
 
-### Phase 8: Weekly AI content check
+### Phase 11: Weekly AI content check
 A GitHub Actions workflow, as described in `docs/content-model.md` section 5. It opens a pull request with suggested block updates and sources, and also keeps Supabase active. A guide goes in `docs/content-check.md`.
 **Check:** run the workflow by hand from GitHub and review the pull request it opens.
 
@@ -95,5 +144,4 @@ A GitHub Actions workflow, as described in `docs/content-model.md` section 5. It
 - A team mode: a lead shares a plan with their team.
 - "Review my PRD" AI feedback tool.
 - Export a plan to Jira or Azure DevOps as epics and stories.
-- More PM types, such as hardware.
 - Linking from the portfolio website (website 1) as a featured case study.

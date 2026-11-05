@@ -8,6 +8,14 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-05 (Phase 6)
+
+- **The home page leads with learning on your real work.** Rinaz's call. The new headline is "Learn product management on the product you're building", with a matching subtitle, search description and "How it works" lead. Why: the old wording said what the tool does, not why it's different from a course.
+- **The stats band shows what's in the product.** Rinaz's call. It now shows 100 learning blocks, 8 lifecycle phases, 3 experience levels, 19 team roles, and that every block cites its sources. It keeps "3 experience levels" until Phase 7 goes live, so the site never claims something it doesn't yet do.
+- **The hero has less padding, and stats show the number above the label.** The longer headline pushed the stats band off a 1280 by 800 laptop screen, which breaks the rule that the hero and stats band fill one screen. Reading "Every" before "Block cites its sources" also needs the number first. The code meant to do this, but a class was missing.
+- **The home page says "a few questions", not "eight".** Why: the intake is moving to ten.
+- **The plan is replanned from Phase 6 onwards.** Rinaz's call. Phases are now 6 (wording), 7a (intake v2), 7b (new content), 8a (skills and growth), 8b (content pass), 9 (feedback, privacy and the case study), 10 (AI summary) and 11 (weekly content check). The old Phases 6, 7 and 8 became 9, 10 and 11. The replan's own decisions are added to this log when Phase 7a starts.
+
 ## 2026-11-05 (Phase 5)
 
 - **The library now has 100 blocks.** 12 existing and 88 new, drafted in a separate planning chat and approved by Rinaz: 41 core, 27 add-on, 5 onboarding, 13 ways-of-working and 14 craft. This fills the gaps for hybrid teams, Data PMs and every listed tool.

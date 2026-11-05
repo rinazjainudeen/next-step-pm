@@ -9,21 +9,21 @@ import { HOME_SECTION_LINKS, PRIMARY_ACTION } from "@/lib/navigation";
 export const metadata: Metadata = {
   title: { absolute: "Next Step PM: a learning plan for product managers" },
   description:
-    "Answer a few short questions about your role, product and team, and get a step-by-step learning plan for product managers. Free, with no sign-up.",
+    "A free learning plan for product managers, built around the product you're working on. Answer a few short questions and get sourced, step-by-step guidance pitched at your level.",
 };
 
 const STATS = [
-  { value: "8", label: "Short questions" },
+  { value: "100", label: "Learning blocks" },
   { value: "8", label: "Lifecycle phases" },
-  { value: "0", label: "Accounts needed" },
-  { value: "0", label: "Personal details collected" },
-  { value: "Free", label: "To use, always" },
+  { value: "3", label: "Experience levels" },
+  { value: "19", label: "Team roles" },
+  { value: "Every", label: "Block cites its sources" },
 ];
 
 const STEPS = [
   {
     icon: ClipboardList,
-    title: "Answer eight questions",
+    title: "Answer a few questions",
     text: "Your kind of PM, your product, where it is now, your experience, your team, your tools, your timeline and how you work. You can say “Not sure” to any of them.",
   },
   {
@@ -95,7 +95,7 @@ export default function HomePage() {
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/55 to-navy/15"
           />
-          <div className="relative mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+          <div className="relative mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 md:py-16 lg:px-8">
             <p className="inline-flex items-center rounded-full border border-white/30 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] backdrop-blur">
               Free tool · In development
             </p>
@@ -103,11 +103,11 @@ export default function HomePage() {
               id="hero-title"
               className="mt-6 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl"
             >
-              Your next step as a product manager, planned.
+              Learn product management on the product you&apos;re building.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/90 text-pretty">
-              Answer eight short questions about your role, product and team. Get a step-by-step learning plan built
-              from reusable, sourced blocks. Free, with no sign-up.
+              Answer a few short questions about your work, your product and your team. Get a step-by-step learning plan
+              you follow on your real work, pitched at your level. Free, with no sign-up.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Button
@@ -137,7 +137,7 @@ export default function HomePage() {
         <section aria-label="At a glance" className="border-t border-white/10 bg-navy text-white">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:grid-cols-5 lg:px-8">
             {STATS.map((stat) => (
-              <div key={stat.label}>
+              <div key={stat.label} className="flex flex-col">
                 <dt className="order-2 mt-1 text-xs font-bold uppercase tracking-[0.18em] text-white/80">{stat.label}</dt>
                 <dd className="font-heading text-4xl font-bold tracking-tight sm:text-5xl">{stat.value}</dd>
               </div>
@@ -152,7 +152,7 @@ export default function HomePage() {
             <SectionHeading
               eyebrow="How it works"
               title="From a few answers to a plan you can follow"
-              lead="Product roles are different, so one-size-fits-all courses rarely fit. This tool builds the path around you."
+              lead="Courses teach product management in the abstract. This builds a plan around the real work on your product, at your level, so you learn by doing."
             />
           </Reveal>
           <ol className="mt-12 grid gap-6 md:grid-cols-3">
