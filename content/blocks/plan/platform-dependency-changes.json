@@ -1,0 +1,89 @@
+{
+  "id": "platform-dependency-changes",
+  "title": "Map who depends on you and plan breaking changes",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Other teams build on your platform, so a change you make can break their work. Know who uses what, and give them time and help when something must change.",
+  "appliesTo": {
+    "pmTypes": [
+      "platform"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the teams and systems that use your platform.",
+      "For each, note which parts they use.",
+      "Learn the difference between a compatible change and a breaking change.",
+      "Before a breaking change, tell every affected team and agree a date.",
+      "Give them a guide to move to the new version."
+    ],
+    "intermediate": [
+      "Keep a live map of consumers and the features they use.",
+      "Use clear version numbers so teams can tell what is safe to upgrade.",
+      "Set a deprecation policy: notice period, support window and removal date."
+    ],
+    "experienced": [
+      "Set versioning and deprecation standards across platforms.",
+      "Measure the cost of breaking changes to other teams.",
+      "Plan migrations as a portfolio, not one team at a time."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect",
+          "backend-engineer"
+        ],
+        "task": "Find which teams call which features",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write the migration guide",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "architect",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Publish the consumer map and deprecation policy.",
+    "github": "Tag releases with semantic version numbers."
+  },
+  "definitionOfDone": [
+    "Consumer map in place",
+    "Deprecation policy published",
+    "Next breaking change agreed with affected teams"
+  ],
+  "pitfalls": [
+    "Assuming nobody uses an old feature",
+    "Short notice for breaking changes",
+    "No migration guide"
+  ],
+  "estimatedEffort": "3-8 days",
+  "dependsOn": [
+    "addon-internal-users"
+  ],
+  "comesAfter": ["plan-prioritise-roadmap"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Semantic Versioning 2.0.0",
+      "url": "https://semver.org/"
+    },
+    {
+      "title": "Versioning (Google Cloud API design guide)",
+      "url": "https://cloud.google.com/apis/design/versioning"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

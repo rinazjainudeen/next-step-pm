@@ -1,0 +1,86 @@
+{
+  "id": "size-scaling-write-it-down",
+  "title": "Write things down so new joiners can follow: decisions, product docs and a glossary",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "When a company grows fast, knowledge lives in a few heads. Write down decisions and how the product works so new people can get up to speed without asking.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "scaling"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Start a decision log: date, decision, why and who decided.",
+      "Write a short page on what the product does and for whom.",
+      "Start a glossary of the terms your team uses.",
+      "Link everything from one starting page.",
+      "Ask the next new joiner what was missing, and add it."
+    ],
+    "intermediate": [
+      "Write the decision down first, then announce it with a link.",
+      "Agree where each kind of document lives.",
+      "Review and prune documents every quarter."
+    ],
+    "experienced": [
+      "Make written decisions a norm across product and engineering.",
+      "Use short decision records for important technical and product choices.",
+      "Measure how long new joiners take to get up to speed."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Edit pages so they are clear",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Write technical decision records",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Keep the decision log and glossary in one space.",
+    "notion": "Link all key pages from one team home page.",
+    "github": "Store decision records next to the code."
+  },
+  "definitionOfDone": [
+    "Decision log started",
+    "Product overview page written",
+    "Glossary started",
+    "One starting page links them all"
+  ],
+  "pitfalls": [
+    "Writing long documents nobody reads",
+    "Documents in many places",
+    "Decisions announced but never written down"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [],
+  "comesAfter": ["plan-delivery-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Architectural decision records (ADR GitHub organisation)",
+      "url": "https://adr.github.io/"
+    },
+    {
+      "title": "The importance of a handbook-first approach to communication (GitLab Handbook)",
+      "url": "https://handbook.gitlab.com/handbook/company/culture/all-remote/handbook-first/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

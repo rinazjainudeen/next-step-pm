@@ -1,0 +1,71 @@
+{
+  "id": "craft-sql-basics",
+  "title": "Answer your own questions with data (SQL basics)",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Being able to run a simple query means you can check a hunch in minutes instead of waiting for an analyst. You don't need to be an expert.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn what a table, a row and a column are.",
+      "Practise SELECT, WHERE, ORDER BY and LIMIT in a free interactive course.",
+      "Learn COUNT, SUM, AVG and GROUP BY.",
+      "Ask an analyst for read-only access to a safe copy of your product's data.",
+      "Answer one real question each week, and check the result with an analyst."
+    ],
+    "intermediate": [
+      "Join tables to answer questions across users and events.",
+      "Build simple funnels and cohorts yourself.",
+      "Save useful queries so others can reuse them."
+    ],
+    "experienced": [
+      "Review your team's key queries for mistakes in definitions.",
+      "Agree shared definitions, such as active user, with data teams.",
+      "Coach PMs to answer their own questions safely."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "task": "Give access and check early results",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "looker": "Explore saved views before writing your own queries.",
+    "power-bi": "Check your query results against an existing report.",
+    "claude": "Ask an AI assistant to explain a query, then check it yourself."
+  },
+  "definitionOfDone": [
+    "Basic course completed",
+    "Read-only access set up",
+    "Three real questions answered and checked"
+  ],
+  "pitfalls": [
+    "Querying live production databases",
+    "Trusting a result without checking definitions",
+    "Stopping after the course"
+  ],
+  "estimatedEffort": "5-10 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "SQLBolt: interactive SQL lessons",
+      "url": "https://sqlbolt.com/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

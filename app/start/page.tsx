@@ -5,7 +5,7 @@ import { IntakeWizard } from "@/components/intake/intake-wizard";
 export const metadata: Metadata = {
   title: "Build my plan",
   description:
-    "Answer eight short questions about your role, product and team to get a step-by-step learning plan. No name, email or account needed.",
+    "Answer a few short questions about your role, product and team to get a step-by-step learning plan. No name, email or account needed.",
 };
 
 export default async function StartPage() {

@@ -5,6 +5,7 @@ import { Reveal } from "@/components/site/reveal";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import { HOME_SECTION_LINKS, PRIMARY_ACTION } from "@/lib/navigation";
+import { HOME_STATS } from "@/lib/site-stats";
 
 export const metadata: Metadata = {
   title: { absolute: "Next Step PM: a learning plan for product managers" },
@@ -12,19 +13,11 @@ export const metadata: Metadata = {
     "A free learning plan for product managers, built around the product you're working on. Answer a few short questions and get sourced, step-by-step guidance pitched at your level.",
 };
 
-const STATS = [
-  { value: "100", label: "Learning blocks" },
-  { value: "8", label: "Lifecycle phases" },
-  { value: "3", label: "Experience levels" },
-  { value: "19", label: "Team roles" },
-  { value: "Every", label: "Block cites its sources" },
-];
-
 const STEPS = [
   {
     icon: ClipboardList,
     title: "Answer a few questions",
-    text: "Your kind of PM, your product, where it is now, your experience, your team, your tools, your timeline and how you work. You can say “Not sure” to any of them.",
+    text: "Your kind of PM, what you own, your product, your organisation, where the product is, your team, your tools, your timeline and how you work. You can say “Not sure” to any of them.",
   },
   {
     icon: Shapes,
@@ -136,7 +129,7 @@ export default function HomePage() {
 
         <section aria-label="At a glance" className="border-t border-white/10 bg-navy text-white">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:grid-cols-5 lg:px-8">
-            {STATS.map((stat) => (
+            {HOME_STATS.map((stat) => (
               <div key={stat.label} className="flex flex-col">
                 <dt className="order-2 mt-1 text-xs font-bold uppercase tracking-[0.18em] text-white/80">{stat.label}</dt>
                 <dd className="font-heading text-4xl font-bold tracking-tight sm:text-5xl">{stat.value}</dd>

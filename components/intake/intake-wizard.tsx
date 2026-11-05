@@ -120,7 +120,7 @@ export function IntakeWizard() {
           size="tool"
           eyebrow="Build my plan"
           title="Tell us about your work"
-          lead="Eight short questions. No name, no email and no account. Your answers stay in the web address, so you can go back, refresh or share the link."
+          lead="A few short questions. No name, no email and no account. Your answers stay in the web address, so you can go back, refresh or share the link."
         />
       )}
       <section aria-label="Questions" className={cn("bg-secondary/40", compact ? "pt-16" : "border-t")}>
@@ -233,6 +233,7 @@ function Options({ question, draft, save }: OptionsProps) {
       explanation={option.description}
       checked={isChecked(option.id)}
       onChange={() => select(option.id)}
+      disabled={atLimit && !isChecked(option.id)}
     >
       {question.id === "team" && isChecked(option.id) && (
         <TeamCount option={option} count={draft.teamCounts[option.id as TeamRoleId] ?? 1} save={save} />
@@ -240,11 +241,17 @@ function Options({ question, draft, save }: OptionsProps) {
     </OptionCard>
   );
 
+  const maxChoices = question.kind === "multi" ? question.maxChoices : undefined;
+  const answer = draft[question.id];
+  const chosen = Array.isArray(answer) ? answer.filter((id) => id !== NOT_SURE).length : 0;
+  const atLimit = maxChoices !== undefined && chosen >= maxChoices;
+
   const groups = question.kind === "multi" ? question.groups : undefined;
   const extraOption = question.kind === "multi" ? question.extraOption : undefined;
 
   return (
     <div className="flex flex-col gap-3">
+      {atLimit && <p className="font-medium">You&apos;ve picked two. Untick one to choose another.</p>}
       {groups && (
         groups.map((group) => (
           <fieldset key={group.id} className="min-w-0">

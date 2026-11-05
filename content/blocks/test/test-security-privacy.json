@@ -84,6 +84,7 @@
   "dependsOn": [
     "build-user-stories"
   ],
+  "movesUpFor": ["enterprise"],
   "comesAfter": ["test-performance-reliability"],
   "freshness": "changes-yearly",
   "sources": [

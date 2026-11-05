@@ -1,5 +1,6 @@
 import {
-  EXPERIENCE_LEVELS,
+  CAREER_LEVELS,
+  COMPANY_SIZES,
   PHASES,
   PM_TYPES,
   PRODUCT_TYPES,
@@ -10,10 +11,11 @@ import {
   TOOL_GROUPS,
   TOOL_IDS,
   WAYS_OF_WORKING,
+  WORK_KINDS,
   labelOf,
 } from "../content/taxonomy";
 import { phasesCovered } from "./intake-phases";
-import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
+import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
 
 export type IntakeOption = { readonly id: string; readonly label: string; readonly description?: string };
 type OptionGroup = { id: string; label: string; options: readonly IntakeOption[] };
@@ -38,6 +40,8 @@ export type IntakeQuestion = QuestionText &
         groups?: OptionGroup[];
         /** Shown below the groups, and can be ticked alongside them. */
         extraOption?: IntakeOption;
+        /** The most a visitor can tick. No limit if left out. */
+        maxChoices?: number;
       }
   );
 
@@ -59,25 +63,53 @@ const TOOLS_BY_GROUP: OptionGroup[] = TOOL_GROUPS.map((group) => ({
   options: TOOLS.filter((tool) => tool.group === group.id),
 }));
 
-/** The eight questions, in the order visitors see them. */
-export const INTAKE_QUESTIONS: readonly IntakeQuestion[] = [
+const KIND_OF_WORK_QUESTION: IntakeQuestion = {
+  id: "work",
+  kind: "single",
+  shortLabel: "Kind of work",
+  title: "What kind of product work are you doing right now?",
+  why: "This decides which kind of plan you get.",
+  notSure: "We'll start you on building or improving a product. Most plans begin there.",
+  options: WORK_KINDS,
+};
+
+const CORE_QUESTIONS: readonly IntakeQuestion[] = [
   {
     id: "pm",
-    kind: "single",
+    kind: "multi",
     shortLabel: "Kind of PM",
-    title: "What kind of PM are you?",
-    why: "This decides which add-on blocks you get.",
-    notSure: "Pick this if your role mixes several. We'll leave out add-ons aimed at one kind of PM.",
+    title: "What kind of product manager are you?",
+    why: "Pick up to two. This decides which add-on blocks you get.",
+    notSure: "We'll use general. You can change it on your plan.",
     options: PM_TYPES,
+    maxChoices: MAX_PM_TYPES,
+  },
+  {
+    id: "level",
+    kind: "single",
+    shortLabel: "What you own",
+    title: "What best describes what you own?",
+    why: "This sets how much guidance each step gives. Titles mean different things at different companies, so pick by scope.",
+    notSure: "We'll pitch your plan at product manager level. You can change it on your plan.",
+    options: CAREER_LEVELS,
   },
   {
     id: "product",
     kind: "single",
     shortLabel: "Kind of product",
-    title: "What kind of product do you work on?",
+    title: "What kind of product is it?",
     why: "Some steps only matter for certain products, such as service assessments in the public sector.",
     notSure: "Pick this if it doesn't fit neatly. We'll leave out add-ons aimed at one kind of product.",
     options: PRODUCT_TYPES,
+  },
+  {
+    id: "size",
+    kind: "single",
+    shortLabel: "Size of organisation",
+    title: "How big is your organisation?",
+    why: "This adds blocks for your size and moves some others up. Public sector and charities: pick the size that fits.",
+    notSure: "We'll assume an established organisation.",
+    options: COMPANY_SIZES,
   },
   {
     id: "stage",
@@ -87,15 +119,6 @@ export const INTAKE_QUESTIONS: readonly IntakeQuestion[] = [
     why: "This sets where your plan starts and which phases it usually covers.",
     notSure: "Pick this if you can't tell yet. Your plan will start from the beginning.",
     options: STAGES,
-  },
-  {
-    id: "exp",
-    kind: "single",
-    shortLabel: "Experience",
-    title: "How much experience do you have as a PM?",
-    why: "This sets how much guidance each step gives.",
-    notSure: "Pick this if your experience is hard to place. Steps will be pitched at the middle level.",
-    options: EXPERIENCE_LEVELS,
   },
   {
     id: "team",
@@ -137,6 +160,13 @@ export const INTAKE_QUESTIONS: readonly IntakeQuestion[] = [
   },
 ];
 
+/** The questions, in the order visitors see them. The first waits for its switch. */
+export function questionsFor(kindOfWorkEnabled: boolean): readonly IntakeQuestion[] {
+  return kindOfWorkEnabled ? [KIND_OF_WORK_QUESTION, ...CORE_QUESTIONS] : CORE_QUESTIONS;
+}
+
+export const INTAKE_QUESTIONS = questionsFor(KIND_OF_WORK_ENABLED);
+
 export const TOTAL_STEPS = INTAKE_QUESTIONS.length;
 
 function answerLabel(options: readonly IntakeOption[], id: string): string {
@@ -158,7 +188,7 @@ export function summariseAnswers(answers: IntakeAnswers): { label: string; value
     const counts: Record<string, number | undefined> = question.id === "team" ? answers.teamCounts : {};
     const value = Array.isArray(answer)
       ? answer.map((id) => withCount(answerLabel(question.options, id), counts[id])).join(", ")
-      : answerLabel(question.options, answer);
+      : answerLabel(question.options, answer ?? NOT_SURE);
     return { label: question.shortLabel, value: `${value}${followUpText(question.id, answers)}`, step: index + 1 };
   });
   const covered = phasesCovered(answers).map((phase) => phase.label);

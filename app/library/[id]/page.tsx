@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import {
+  COMPANY_SIZES,
   EXPERIENCE_LEVELS,
   FRESHNESS,
   KINDS,
@@ -129,6 +130,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
           <Chips label="Starting points" values={block.appliesTo.stages.map((v) => labelOf(STAGES, v))} />
           <Chips label="Ways of working" values={block.appliesTo.waysOfWorking.map((v) => labelOf(WAYS_OF_WORKING, v))} />
           <Chips label="Experience" values={block.appliesTo.experience.map((v) => labelOf(EXPERIENCE_LEVELS, v))} />
+          <Chips label="Size of organisation" values={(block.appliesTo.companySizes ?? []).map((v) => labelOf(COMPANY_SIZES, v))} />
         </dl>
       </Section>
 

@@ -1,0 +1,88 @@
+{
+  "id": "size-established-dependencies",
+  "title": "Manage dependencies with other teams",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "In a larger organisation, your plan often depends on other teams' work. Find those dependencies early, agree them in writing and review them often.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "established",
+      "enterprise"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the work you need from other teams to deliver your plan.",
+      "Meet each team to agree what, when and who owns it.",
+      "Record each dependency with a date and an owner.",
+      "Review the list every week.",
+      "Raise a slipping dependency early, with options."
+    ],
+    "intermediate": [
+      "Map dependencies in both directions: what you need and who needs you.",
+      "Agree interfaces and dates in writing.",
+      "Plan around high-risk dependencies, for example with a simpler first release."
+    ],
+    "experienced": [
+      "Spot dependency patterns across teams and fix the cause, such as team boundaries.",
+      "Run a regular cross-team planning session.",
+      "Escalate systemic blockers to leadership with data."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Keep the dependency list up to date",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Agree technical interfaces with other teams",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Link issues across projects to show dependencies.",
+    "miro": "Draw a dependency map for planning sessions."
+  },
+  "definitionOfDone": [
+    "Dependencies listed with owners and dates",
+    "Agreements written down",
+    "Weekly review in place"
+  ],
+  "pitfalls": [
+    "Agreeing dependencies verbally",
+    "Finding them at the end of the plan",
+    "Escalating without options"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "plan-delivery-plan"
+  ],
+  "comesAfter": ["plan-delivery-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to manage agile team dependencies (Contino)",
+      "url": "https://contino.io/insights/how-to-manage-agile-team-dependencies"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

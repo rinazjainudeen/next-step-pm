@@ -13,6 +13,7 @@ export function OptionCard({
   explanation,
   checked,
   onChange,
+  disabled = false,
   compact = false,
   children,
 }: {
@@ -23,20 +24,23 @@ export function OptionCard({
   explanation?: string;
   checked: boolean;
   onChange: () => void;
+  /** For when a limit has been reached. */
+  disabled?: boolean;
   /** Less padding, for lists of short names. */
   compact?: boolean;
   /** Extra controls. They sit outside the label, so using them doesn't untick the card. */
   children?: ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-background transition-colors hover:border-primary/60 has-checked:border-primary has-checked:bg-primary/10">
-      <label className={cn("flex cursor-pointer items-start gap-3", compact ? "p-3" : "p-4")}>
+    <div className={cn("rounded-xl border border-border bg-background transition-colors has-checked:border-primary has-checked:bg-primary/10", disabled ? "opacity-70" : "hover:border-primary/60")}>
+      <label className={cn("flex items-start gap-3", disabled ? "cursor-not-allowed" : "cursor-pointer", compact ? "p-3" : "p-4")}>
         <input
           type={type}
           name={name}
           value={value}
           checked={checked}
           onChange={onChange}
+          disabled={disabled}
           className="mt-0.5 size-5 shrink-0 accent-primary"
         />
         <span className="min-w-0">

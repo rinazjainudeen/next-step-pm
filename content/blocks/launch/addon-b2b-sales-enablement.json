@@ -1,0 +1,78 @@
+{
+  "id": "addon-b2b-sales-enablement",
+  "title": "Equip sales to sell it",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "In business software, sales teams need to understand why a customer would buy, not just what the product does. Give them the story, the proof and the answers before launch.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "b2b"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write one paragraph on who the product is for and why they would buy.",
+      "List the questions and objections customers are likely to raise, with answers.",
+      "Prepare a short demo that shows the main value.",
+      "Run a session with sales before launch and record it.",
+      "Ask sales a few weeks later what is missing."
+    ],
+    "intermediate": [
+      "Work with product marketing on messaging, battlecards and demo scripts.",
+      "Brief customer success and support as well as sales.",
+      "Tell sales early about price changes or retired features."
+    ],
+    "experienced": [
+      "Set a launch enablement standard across products.",
+      "Measure enablement by win rate and sales cycle, not attendance.",
+      "Bring sales feedback into product strategy."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Write the messaging and answers",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Keep one sales page with the story, demo and answers.",
+    "notion": "Keep a living list of objections and answers."
+  },
+  "definitionOfDone": [
+    "Messaging written",
+    "Objections and answers listed",
+    "Demo ready",
+    "Sales session held"
+  ],
+  "pitfalls": [
+    "Giving sales a feature list",
+    "Enabling sales on launch day",
+    "Forgetting customer success and support"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "launch-go-to-market"
+  ],
+  "comesAfter": ["launch-go-to-market"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Launch to sell: sales enablement for product launches (Intercom)",
+      "url": "https://www.intercom.com/blog/sales-enablement-product-launch"
+    },
+    {
+      "title": "Your guide to sales enablement (Product Marketing Alliance)",
+      "url": "https://www.productmarketingalliance.com/your-guide-to-sales-enablement/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

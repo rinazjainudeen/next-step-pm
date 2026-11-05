@@ -1,23 +1,29 @@
 import {
-  EXPERIENCE_IDS,
+  CAREER_LEVEL_IDS,
+  COMPANY_SIZE_IDS,
   PHASE_IDS,
   PM_TYPE_IDS,
   PRODUCT_TYPE_IDS,
   STAGE_IDS,
   TIMELINE_IDS,
   WAY_OF_WORKING_IDS,
+  WORK_KIND_IDS,
   isOneOf,
+  type CareerLevelId,
 } from "../content/taxonomy";
 import { tidyDraft } from "./intake-draft";
 import { TEAM_ROLE_IDS, TOOL_ANSWER_IDS, TOTAL_STEPS } from "./intake-questions";
-import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "./intake-types";
+import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "./intake-types";
 
 /**
  * Answers live in the web address, so Back, refresh and sharing all work with
  * no database. For example:
- * /plan?pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,backend-engineer:3&tools=jira&time=1-3m&until=launch&way=scrum
+ * /plan?pm=ai,growth&level=senior&product=public&size=established&stage=mid-build&phase=build&team=ba,backend-engineer:3&tools=jira&time=1-3m&until=launch&way=scrum
  *
  * Addresses can be edited by hand, so anything unrecognised is ignored.
+ *
+ * Plans shared before Phase 7a use `exp` and have no `size`. They must keep
+ * opening, so `exp` is mapped onto a career level and the size counts as Not sure.
  */
 
 type ParamReader = { get(name: string): string | null };
@@ -37,6 +43,26 @@ function pickMany<T extends string>(values: string[], allowed: readonly T[]): (T
 
 const splitList = (value: string | null) => (value ?? "").split(",");
 
+const OLD_EXPERIENCE = new Map<string | null, CareerLevelId | NotSure>([
+  ["beginner", "associate"],
+  ["intermediate", "product-manager"],
+  ["experienced", "senior"],
+  [NOT_SURE, NOT_SURE],
+]);
+
+/** A link from before Phase 7a, which has an old experience answer and no level. */
+const isOldLink = (params: ParamReader) => params.get("level") === null && OLD_EXPERIENCE.has(params.get("exp"));
+
+/** Reads `level`, or an old link's `exp`. */
+function parseLevel(params: ParamReader): IntakeDraft["level"] {
+  return pickOne(params, "level", CAREER_LEVEL_IDS) ?? OLD_EXPERIENCE.get(params.get("exp")) ?? null;
+}
+
+/** An old link was never asked about size, so it shouldn't be sent back to answer it. */
+function parseSize(params: ParamReader): IntakeDraft["size"] {
+  return pickOne(params, "size", COMPANY_SIZE_IDS) ?? (isOldLink(params) ? NOT_SURE : null);
+}
+
 /** Reads `team=ba,backend-engineer:3`. A role with no number counts as 1. */
 function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"> {
   const entries = splitList(params.get("team")).map((entry) => entry.split(":"));
@@ -53,11 +79,13 @@ function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"
 
 export function parseDraft(params: ParamReader): IntakeDraft {
   return tidyDraft({
-    pm: pickOne(params, "pm", PM_TYPE_IDS),
+    work: KIND_OF_WORK_ENABLED ? pickOne(params, "work", WORK_KIND_IDS) : null,
+    pm: pickMany(splitList(params.get("pm")), PM_TYPE_IDS).slice(0, MAX_PM_TYPES),
+    level: parseLevel(params),
     product: pickOne(params, "product", PRODUCT_TYPE_IDS),
+    size: parseSize(params),
     stage: pickOne(params, "stage", STAGE_IDS),
     phase: pickOne(params, "phase", PHASE_IDS),
-    exp: pickOne(params, "exp", EXPERIENCE_IDS),
     ...parseTeam(params),
     tools: pickMany(splitList(params.get("tools")), TOOL_ANSWER_IDS),
     time: pickOne(params, "time", TIMELINE_IDS),
@@ -82,17 +110,19 @@ export function parseEditing(params: ParamReader): boolean {
  * ids, which are safe in a web address, so commas stay readable.
  */
 export function draftToQuery(draft: IntakeDraft): string {
-  const { pm, product, stage, phase, exp, team, teamCounts, tools, time, until, way } = draft;
+  const { work, pm, level, product, size, stage, phase, team, teamCounts, tools, time, until, way } = draft;
   const teamEntries = team.map((id) => {
     const count = teamCounts[id as TeamRoleId];
     return count ? `${id}:${count}` : id;
   });
   const pairs: [string, string | null][] = [
-    ["pm", pm],
+    ["work", work],
+    ["pm", pm.join(",")],
+    ["level", level],
     ["product", product],
+    ["size", size],
     ["stage", stage],
     ["phase", phase],
-    ["exp", exp],
     ["team", teamEntries.join(",")],
     ["tools", tools.join(",")],
     ["time", time],

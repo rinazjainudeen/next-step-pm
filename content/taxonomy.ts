@@ -92,12 +92,14 @@ export const KIND_IDS: readonly KindId[] = KINDS.map((kind) => kind.id);
 // ---------------------------------------------------------------------------
 
 export const PM_TYPES = [
-  { id: "general", label: "General", description: "You cover the whole product lifecycle, with no single specialism." },
-  { id: "ai", label: "AI and innovation", description: "You work on AI features or new ideas, where what's possible is still being tested." },
-  { id: "data", label: "Data", description: "You own data as a product, such as dashboards, pipelines or data platforms." },
-  { id: "technical", label: "Technical / platform", description: "Your users are often engineers, and you work on APIs, infrastructure or shared platforms." },
-  { id: "transformation", label: "Product transformation", description: "You change how an organisation works, often moving old processes or systems to new ones." },
-  { id: "growth", label: "Growth / commercial", description: "You focus on sign-ups, retention or revenue, often through experiments." },
+  { id: "general", label: "General", description: "You cover a bit of everything." },
+  { id: "growth", label: "Growth", description: "Acquisition, activation, conversion and retention." },
+  { id: "ai", label: "AI", description: "Products built on machine learning or large language models." },
+  { id: "data", label: "Data", description: "Data products, analytics and data platforms." },
+  { id: "technical", label: "Technical", description: "APIs, developer tools and infrastructure." },
+  { id: "platform", label: "Platform", description: "Shared internal services other teams build on, such as billing, identity or design systems." },
+  { id: "transformation", label: "Transformation", description: "Changing how an organisation works, often replacing old systems." },
+  { id: "hardware", label: "Hardware or IoT", description: "Physical products, devices and the software inside them." },
 ] as const;
 
 export type PmTypeId = (typeof PM_TYPES)[number]["id"];
@@ -132,6 +134,49 @@ export type ExperienceId = (typeof EXPERIENCE_LEVELS)[number]["id"];
 export const EXPERIENCE_IDS: readonly ExperienceId[] = EXPERIENCE_LEVELS.map((item) => item.id);
 
 // ---------------------------------------------------------------------------
+// 6a. Intake: what do you own? Each career level points to one of the three sets of steps.
+// ---------------------------------------------------------------------------
+
+export const CAREER_LEVELS = [
+  { id: "associate", label: "Features someone else has shaped", description: "Often called associate or junior PM. Usually 0 to 2 years.", short: "Associate or junior PM", steps: "beginner", leadsPeople: false },
+  { id: "product-manager", label: "A whole feature or module for one team", description: "Often called product manager. Usually 2 to 5 years.", short: "Product manager", steps: "intermediate", leadsPeople: false },
+  { id: "senior", label: "A product line or a hard problem, without managing people", description: "Often called senior, staff or principal PM. Usually 5 years or more.", short: "Senior, staff or principal PM", steps: "experienced", leadsPeople: false },
+  { id: "group", label: "A group of products and 2 to 5 PMs", description: "Often called group PM or product lead.", short: "Group PM or product lead", steps: "experienced", leadsPeople: true },
+  { id: "director", label: "A portfolio, a budget and the people in it", description: "Often called director or head of product.", short: "Director or head of product", steps: "experienced", leadsPeople: true },
+  { id: "vp", label: "Product strategy for the whole company", description: "Often called VP of product or chief product officer.", short: "VP or CPO", steps: "experienced", leadsPeople: true },
+] as const;
+
+export type CareerLevelId = (typeof CAREER_LEVELS)[number]["id"];
+export const CAREER_LEVEL_IDS: readonly CareerLevelId[] = CAREER_LEVELS.map((level) => level.id);
+
+// ---------------------------------------------------------------------------
+// 6b. Intake: how big is your organisation?
+// ---------------------------------------------------------------------------
+
+export const COMPANY_SIZES = [
+  { id: "early-startup", label: "Early start-up", description: "Under 30 people, still finding product-market fit." },
+  { id: "scaling", label: "Scaling", description: "30 to 200 people, putting processes in place." },
+  { id: "established", label: "Established", description: "200 to 1,000 people, with many teams to align." },
+  { id: "enterprise", label: "Large enterprise", description: "Over 1,000 people, with deep specialist roles." },
+] as const;
+
+export type CompanySizeId = (typeof COMPANY_SIZES)[number]["id"];
+export const COMPANY_SIZE_IDS: readonly CompanySizeId[] = COMPANY_SIZES.map((size) => size.id);
+
+// ---------------------------------------------------------------------------
+// 6c. Intake: what kind of product work? Built, but switched off until the tracks exist.
+// ---------------------------------------------------------------------------
+
+export const WORK_KINDS = [
+  { id: "product", label: "Building or improving a product", description: "Discovery, delivery, launch and measuring results." },
+  { id: "strategy", label: "Setting product strategy", description: "Deciding where to play, what to bet on and how to align people." },
+  { id: "coaching", label: "Building a team's skills or coaching", description: "Growing a product team, a practice or the way people work." },
+] as const;
+
+export type WorkKindId = (typeof WORK_KINDS)[number]["id"];
+export const WORK_KIND_IDS: readonly WorkKindId[] = WORK_KINDS.map((kind) => kind.id);
+
+// ---------------------------------------------------------------------------
 // 7. Intake question 5: who is in your team? (also used for block roles)
 // ---------------------------------------------------------------------------
 
@@ -156,6 +201,7 @@ export const ROLES = [
   { id: "performance-analyst", label: "Performance Analyst", description: "Tracks how the service performs against its goals.", inTeamQuestion: true },
   { id: "policy-legal", label: "Policy / Legal / Compliance", person: "Policy / Legal / Compliance colleague", plural: "Policy / Legal / Compliance colleagues", description: "Checks the rules, risks and legal duties.", inTeamQuestion: true },
   { id: "product-owner", label: "Product Owner", description: "Manages the backlog and day-to-day priorities.", inTeamQuestion: true },
+  { id: "hardware-engineer", label: "Hardware / manufacturing engineer", plural: "Hardware / manufacturing engineers", description: "Designs the physical product and how it gets made.", inTeamQuestion: true },
 ] as const;
 
 export type RoleId = (typeof ROLES)[number]["id"];

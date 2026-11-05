@@ -8,6 +8,31 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-05 (Phase 7a)
+
+Decisions from the replan:
+
+- **Experience is asked by scope, not title.** There are six career levels, with job titles (and years, where they help) shown as hints. Why: titles mean different things at different companies.
+- **Blocks keep three versions of their steps** (beginner, intermediate, experienced). Each career level points to one of them.
+- **People leaders get extra blocks automatically.** Group PM, Director and VP count as "leads people", which adds coaching and team blocks in "Lead your team". The full coaching track stays for anyone whose main work right now is building a team.
+- **Fundamentals stay in every plan.** No block is removed because of someone's level. Beginner-only basics move to a collapsed "Refresh the basics" section for product manager level and above. This rule covers basics only: blocks limited to higher levels still don't reach lower ones, and the Library shows every block to everyone.
+- **New PM types: Platform, and Hardware or IoT.** Visitors can pick up to two PM types.
+- **New question: company size**, with four options. "Not sure" assumes an established organisation.
+- **The "kind of work" question stays.** A level is not the same as the kind of work someone is doing.
+- **Ten questions in total**, each with a "Not sure" option. The first is built but switched off by `KIND_OF_WORK_ENABLED` until the strategy and coaching tracks exist, so visitors see nine for now.
+
+Decisions made while building, on Rinaz's instructions:
+
+- **The first 20 Phase 7b blocks moved into 7a.** Rinaz's call. The library grows from 100 to 120 blocks, covering hardware, platform, company size and the gaps found. Why: they need the new PM types and sizes to reach anyone, and those arrive here.
+- **"Lead your team" shows nothing until its blocks exist.** Rinaz's call. The section is built, and stays hidden with no blocks, so no content is faked.
+- **New team role: Hardware / manufacturing engineer.** Rinaz's call. The hardware blocks ask this role first, then a Tech Lead or Architect.
+- **The stats band counts only what exists:** 120 blocks, 6 career levels and 20 team roles. Rinaz's call. A test checks these against the real content. This replaces "21 team roles" in the replan, because the other two new roles arrive in Phase 7b.
+- **Old links keep working.** Rinaz's call. `exp` maps beginner to associate, intermediate to product manager and experienced to senior. A link with `exp` and no size counts the size as Not sure, so nobody is sent back to answer a question. Ticks carry over, because each career level uses the same steps as before.
+- **`movesUpFor` moves a block as early as its dependencies allow**, for the listed sizes, and marks it "Priority at your size of organisation". Why: the replan moves blocks up for bigger organisations. A move ignores `comesAfter` but never `dependsOn`, so `test-security-privacy` goes first in Test for a large enterprise, while `define-stakeholder-alignment` still follows the product brief and is only marked. `wow-raid-log` only reaches hybrid teams, as before.
+- **Every add-on in the 20 blocks has a `comesAfter`,** following the order rules from Phase 5. The pilot still comes last in Test, after hardware certification.
+- **A PM can't be given a task or asked to review.** The validator now rejects both. Why: `hw-prototype-builds` would have told visitors "No Product manager in your team". Its tasks went to the Hardware / manufacturing engineer, and its owner is now the PM.
+- **At two PM types, the other options are disabled** until one is unticked, so no answer disappears unnoticed.
+
 ## 2026-11-05 (Phase 6)
 
 - **The home page leads with learning on your real work.** Rinaz's call. The new headline is "Learn product management on the product you're building", with a matching subtitle, search description and "How it works" lead. Why: the old wording said what the tool does, not why it's different from a course.

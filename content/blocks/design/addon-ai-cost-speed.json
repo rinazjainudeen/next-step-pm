@@ -1,0 +1,92 @@
+{
+  "id": "addon-ai-cost-speed",
+  "title": "Manage AI cost and speed, and decide when to fine-tune",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "Every AI call costs money and takes time. Estimate both early, pick the cheapest model that meets the quality bar, and use simple savings before anything complex.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn that cost depends on how much text goes in and comes out.",
+      "Estimate calls per user per day and the cost per call.",
+      "Multiply out to a monthly cost at your expected usage.",
+      "Agree how fast a response must be for the feature to feel usable.",
+      "Set a spending cap before launch."
+    ],
+    "intermediate": [
+      "Compare models on quality, speed and cost with your own test set.",
+      "Use savings such as caching repeated instructions and batching non-urgent work.",
+      "Decide whether fine-tuning is worth it only after simpler options."
+    ],
+    "experienced": [
+      "Set cost and speed targets for AI features across products.",
+      "Build unit economics into pricing and business cases.",
+      "Review model choices regularly, because prices and models change quickly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Compare models on quality and speed",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ba",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Model monthly cost",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "aws": "Set billing alerts for AI usage.",
+    "gcp": "Set a budget alert on the AI project.",
+    "claude": "Check current model pricing before you estimate."
+  },
+  "definitionOfDone": [
+    "Monthly cost estimate agreed",
+    "Speed target agreed",
+    "Spending cap set",
+    "Model chosen against a test set"
+  ],
+  "pitfalls": [
+    "Using the largest model by default",
+    "No spending cap",
+    "Fine-tuning before trying simpler options"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "design-feasibility"
+  ],
+  "comesAfter": ["design-feasibility"],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "Pricing (Claude Platform Docs)",
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing"
+    },
+    {
+      "title": "Prompt caching (Claude Platform Docs)",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

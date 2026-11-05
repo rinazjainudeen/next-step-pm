@@ -75,6 +75,7 @@
   "dependsOn": [
     "define-product-brief"
   ],
+  "movesUpFor": ["established", "enterprise"],
   "freshness": "evergreen",
   "sources": [
     {

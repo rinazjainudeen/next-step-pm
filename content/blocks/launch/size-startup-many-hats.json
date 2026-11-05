@@ -1,0 +1,70 @@
+{
+  "id": "size-startup-many-hats",
+  "title": "Cover marketing, support and testing yourself, without dropping product work",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "In a small start-up, the PM often does support, testing and marketing too. Do them on purpose, learn from them, and protect time for product decisions.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "early-startup"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the jobs nobody owns yet, such as support, testing and launch posts.",
+      "Agree with the founders which ones you will cover for now.",
+      "Block time each week for discovery and planning so they don't disappear.",
+      "Use support conversations as research and write down what you learn.",
+      "Keep simple checklists for testing and launches so others can help."
+    ],
+    "intermediate": [
+      "Timebox each extra job and review the split monthly.",
+      "Turn repeated support issues into backlog items.",
+      "Flag to the founders when a job needs a hire."
+    ],
+    "experienced": [
+      "Design the first roles the product team needs next.",
+      "Hand over jobs with checklists and clear owners.",
+      "Keep the founders owning vision while you run product execution."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep checklists for testing and launches in one place.",
+    "trello": "Track support issues that should become backlog items."
+  },
+  "definitionOfDone": [
+    "Jobs you cover agreed with the founders",
+    "Weekly product time protected",
+    "Support insights logged"
+  ],
+  "pitfalls": [
+    "Support swallowing every week",
+    "Not telling founders when the load is too high",
+    "Losing what customers say in support"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "comesAfter": ["launch-go-to-market"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Joining as the first product manager (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/joining-as-the-first-product-manager"
+    },
+    {
+      "title": "The role of the first product manager (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/the-role-of-the-first-product-manager-by-andrew-moll/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

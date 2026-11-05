@@ -28,6 +28,8 @@ export type PlanBlock = {
   kind: KindId;
   /** A "Go further" block: extra, and not counted in the timing or next actions. */
   optional?: boolean;
+  /** This matters more at the visitor's size of organisation, so it comes early. */
+  movedUp?: boolean;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;
@@ -74,6 +76,10 @@ export type Plan = {
   phases: PlanPhase[];
   /** Ways-of-working blocks. They recur, so they sit outside the timeline. */
   rhythm: PlanBlock[];
+  /** Blocks for people leaders. Outside the timeline. Empty until the Phase 7b blocks exist. */
+  leadYourTeam: PlanBlock[];
+  /** Basics for levels below the visitor's. A level never removes a block, so they're kept here. */
+  refreshBasics: PlanBlock[];
   /** Craft blocks limited to the visitor's level, most specific first. Outside the timeline. */
   skillsForLevel: PlanBlock[];
   /** Craft blocks for every level. Their steps are still shaped to the visitor. */

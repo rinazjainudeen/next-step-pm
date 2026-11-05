@@ -84,7 +84,7 @@
   "dependsOn": [
     "test-acceptance-accessibility"
   ],
-  "comesAfter": ["test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-ai-model-evaluation"],
+  "comesAfter": ["test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-ai-model-evaluation", "hw-safety-certification"],
   "freshness": "evergreen",
   "sources": [
     {

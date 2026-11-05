@@ -1,0 +1,77 @@
+{
+  "id": "size-scaling-light-process",
+  "title": "Put in your first product processes, and keep them light",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "As a company grows, ad hoc decisions stop working. Add just enough process to keep teams aligned, and drop anything that slows them without helping.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "scaling"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Ask the team where work gets stuck or repeated.",
+      "Pick one problem to fix first, such as unclear priorities.",
+      "Try a simple fix, such as a fixed planning cycle or a one-page pitch for new work.",
+      "Review it after a few weeks and keep it, change it or drop it.",
+      "Write down the process in a few lines."
+    ],
+    "intermediate": [
+      "Set a planning rhythm, such as fixed cycles with a short cool-down.",
+      "Decide work by how much time it is worth, not only by estimates.",
+      "Review processes every quarter and remove what no one uses."
+    ],
+    "experienced": [
+      "Design the product operating rhythm for several teams.",
+      "Balance consistency across teams with team autonomy.",
+      "Coach leads to own and improve their own processes."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Run the new rhythm and collect feedback",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "linear": "Use cycles to set a fixed planning rhythm.",
+    "notion": "Write each process on one short page."
+  },
+  "definitionOfDone": [
+    "One process problem chosen",
+    "Light fix tried",
+    "Review date set"
+  ],
+  "pitfalls": [
+    "Copying a big-company process whole",
+    "Adding process for every problem",
+    "Never removing anything"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "comesAfter": ["plan-delivery-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Shape Up: stop running in circles and ship work that matters (Basecamp)",
+      "url": "https://basecamp.com/shapeup"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

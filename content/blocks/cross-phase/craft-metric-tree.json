@@ -1,0 +1,79 @@
+{
+  "id": "craft-metric-tree",
+  "title": "Build a metric tree",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "A metric tree breaks your top metric into the drivers and inputs that move it. It shows which levers your team can pull and how your work links to the goal.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start with your top metric, such as your north star.",
+      "Break it into two to four drivers that add up to it.",
+      "Break each driver into inputs a team can change.",
+      "Mark which inputs your team owns.",
+      "Use the tree to explain why your work matters."
+    ],
+    "intermediate": [
+      "Check the maths: drivers should add up to the top metric.",
+      "Agree one definition for each metric with data teams.",
+      "Use the tree to find where a drop started."
+    ],
+    "experienced": [
+      "Build a shared tree across teams to link work to company goals.",
+      "Use it to spot under-invested drivers in planning.",
+      "Keep it up to date as the business changes."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Check the maths and definitions",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Draw the tree on a board.",
+    "mixpanel": "Build the tree from live metrics.",
+    "amplitude": "Link each input to a chart."
+  },
+  "definitionOfDone": [
+    "Tree drawn to input level",
+    "Owners marked",
+    "Definitions agreed"
+  ],
+  "pitfalls": [
+    "Categories that don't add up",
+    "Different definitions in different dashboards",
+    "Drawing it once and never using it"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "movesUpFor": ["enterprise"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "What is a metric tree? The complete guide with examples (Mixpanel)",
+      "url": "https://mixpanel.com/blog/metric-tree/"
+    },
+    {
+      "title": "Driver trees: how and why to use them (Delivery Hero Tech)",
+      "url": "https://tech.deliveryhero.com/driver-trees-how-and-why-to-use-them-to-improve-your-business"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

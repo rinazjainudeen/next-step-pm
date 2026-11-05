@@ -1,0 +1,92 @@
+{
+  "id": "addon-tech-service-levels",
+  "title": "Set service levels and quality targets (SLOs and non-functional requirements)",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "How fast, reliable and secure a technical product must be is part of the requirement. Agree measurable targets before building, not after testing.",
+  "appliesTo": {
+    "pmTypes": [
+      "technical",
+      "platform"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn the terms: a service level objective (SLO) is a reliability target, such as 99.9% of requests succeed.",
+      "Ask users what speed and reliability they need.",
+      "Agree two or three targets, such as response time and availability.",
+      "Make each target measurable and testable.",
+      "Add them to the acceptance criteria of the relevant work."
+    ],
+    "intermediate": [
+      "Set SLOs from user needs, not from what the system does today.",
+      "Agree an error budget and what happens when it runs out.",
+      "Cover other qualities too, such as security and scalability."
+    ],
+    "experienced": [
+      "Set SLO standards across services and teams.",
+      "Use error budgets to balance new features with reliability work.",
+      "Weigh the cost of each extra level of reliability."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "devops",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Measure current reliability and set up monitoring",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "architect",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Advise on what targets are achievable",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "aws": "Use monitoring dashboards to track SLOs.",
+    "gcp": "Set up SLO monitoring for the service.",
+    "azure": "Set alerts on availability and response time."
+  },
+  "definitionOfDone": [
+    "Two or three measurable targets agreed",
+    "Targets in acceptance criteria",
+    "Monitoring planned"
+  ],
+  "pitfalls": [
+    "Aiming for 100%",
+    "Targets nobody can measure",
+    "Leaving quality targets until testing"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "define-success-metrics"
+  ],
+  "comesAfter": ["define-success-metrics"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Service level objectives (Google SRE book)",
+      "url": "https://sre.google/sre-book/service-level-objectives/"
+    },
+    {
+      "title": "Nonfunctional requirements (Scaled Agile Framework)",
+      "url": "https://scaledagileframework.com/nonfunctional-requirements"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

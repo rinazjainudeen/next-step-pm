@@ -1,0 +1,88 @@
+{
+  "id": "hw-cost-targets",
+  "title": "Set a bill-of-materials cost target and protect it",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "In hardware, the parts list sets most of the cost of every unit you sell. Agree a target cost per unit early and check every design change against it.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn what a bill of materials (BOM) is: every part, material and sub-assembly in one unit.",
+      "Work out the price customers will pay and the margin the business needs.",
+      "Turn that into a target cost per unit, and write it into the product brief.",
+      "Ask engineering for a first costed BOM and compare it with the target.",
+      "Agree a rule: any change that adds cost needs your sign-off."
+    ],
+    "intermediate": [
+      "Set a target unit cost from price, margin and expected volume.",
+      "Review the costed BOM with engineering and purchasing at each build.",
+      "Track the gap to target and agree trade-offs before they reach the design."
+    ],
+    "experienced": [
+      "Set cost targets across a product line, including packaging, freight and returns.",
+      "Plan cost-down steps for later production runs.",
+      "Make unit cost a standing measure in portfolio reviews."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "hardware-engineer",
+        "orRoles": [
+          "tech-lead",
+          "architect"
+        ],
+        "task": "Produce and maintain the costed BOM",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ba",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Model price, margin and volume",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "sharepoint-word": "Keep the costed BOM in a shared spreadsheet with a change log.",
+    "google-docs": "Track the target and current unit cost on the first tab of the BOM sheet."
+  },
+  "definitionOfDone": [
+    "Target unit cost agreed and written down",
+    "First costed BOM compared with the target",
+    "Rule for approving cost increases agreed"
+  ],
+  "pitfalls": [
+    "Forgetting packaging, freight and returns",
+    "Setting the target after the design is fixed",
+    "Letting small additions pile up unchecked"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "comesAfter": ["define-problem-statement"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to build a bill of materials (Fictiv Hardware Guide)",
+      "url": "https://www.fictiv.com/hwg/plan/how-to-build-a-bom"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

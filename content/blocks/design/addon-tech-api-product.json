@@ -6,7 +6,8 @@
   "summary": "An API is a product for developers. Design it to be easy to understand, consistent, well documented and stable.",
   "appliesTo": {
     "pmTypes": [
-      "technical"
+      "technical",
+      "platform"
     ],
     "productTypes": [],
     "stages": [],

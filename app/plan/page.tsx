@@ -195,6 +195,19 @@ export default async function PlanPage({
         </section>
       )}
 
+      {plan.leadYourTeam.length > 0 && (
+        <section id="lead-your-team" aria-label="Lead your team" className="border-t">
+          <div className={CONTAINER}>
+            <SectionHeading eyebrow="Alongside your plan" title="Lead your team" lead="You lead other product people, so these sit alongside your own work." />
+            <div className="mt-8 space-y-4">
+              {plan.leadYourTeam.map((block) => (
+                <PlanBlockCard key={block.id} block={block} heading="h3" />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {plan.skillsForLevel.length + plan.skillsAnyLevel.length > 0 && (
         <section id="grow-your-skills" aria-label="Grow your skills" className={cn("border-t", plan.rhythm.length === 0 && "bg-secondary/40")}>
           <div className={CONTAINER}>
@@ -222,6 +235,24 @@ export default async function PlanPage({
                 </div>
               )}
             </div>
+          </div>
+        </section>
+      )}
+
+      {plan.refreshBasics.length > 0 && (
+        <section id="refresh-the-basics" aria-label="Refresh the basics" className="border-t">
+          <div className={CONTAINER}>
+            <details data-plan-block className="rounded-2xl border border-border bg-card shadow-sm">
+              <summary className="cursor-pointer rounded-2xl p-5 font-semibold sm:p-6">
+                Refresh the basics
+                <span className="mt-1 block text-sm font-normal text-muted-foreground">Written for earlier in a PM career. Open this if you want to check the fundamentals.</span>
+              </summary>
+              <div className="space-y-4 border-t border-border p-5 sm:p-6">
+                {plan.refreshBasics.map((block) => (
+                  <PlanBlockCard key={block.id} block={block} heading="h3" />
+                ))}
+              </div>
+            </details>
           </div>
         </section>
       )}

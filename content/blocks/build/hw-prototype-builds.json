@@ -1,0 +1,91 @@
+{
+  "id": "hw-prototype-builds",
+  "title": "Run prototype and pilot production builds (EVT, DVT and PVT)",
+  "phase": "build",
+  "kind": "add-on",
+  "summary": "Hardware is built several times before mass production. Each build has a purpose and exit criteria: first the design works, then it is right, then the factory can make it.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn the three builds: engineering validation (EVT), design validation (DVT) and production validation (PVT).",
+      "For each build, write down what it must prove before the next one starts.",
+      "Agree how many units each build needs, including extras for testing and marketing.",
+      "Track the issues found in each build and who is fixing them.",
+      "Do not move to the next build until the exit criteria are met."
+    ],
+    "intermediate": [
+      "Plan the build schedule with time to fix issues between builds.",
+      "Agree exit criteria for each build with engineering and the manufacturer.",
+      "Shorten the build, test and fix cycle rather than squeezing the schedule."
+    ],
+    "experienced": [
+      "Set build standards across products so schedules are comparable.",
+      "Decide when an extra build is cheaper than shipping a known problem.",
+      "Report build readiness to leadership with clear risks."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "hardware-engineer",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Agree exit criteria and the build schedule",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "qa",
+        "orRoles": [
+          "hardware-engineer"
+        ],
+        "task": "Run the tests for each build",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Track issues by build, such as EVT or DVT.",
+    "confluence": "Write the exit criteria for each build on one page."
+  },
+  "definitionOfDone": [
+    "Exit criteria written for each build",
+    "Build quantities agreed",
+    "Issues tracked to closure before the next build"
+  ],
+  "pitfalls": [
+    "Calling a build DVT when the design is still changing",
+    "Too few units for testing",
+    "Squeezing the schedule instead of fixing faster"
+  ],
+  "estimatedEffort": "20-60 days",
+  "dependsOn": [
+    "hw-manufacturing-partner"
+  ],
+  "comesAfter": ["build-user-stories"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "EVT, DVT and PVT: a guide to engineering builds (Instrumental)",
+      "url": "https://instrumental.com/resources/ebook/evt-dvt-pvt-a-guide-to-engineering-builds"
+    },
+    {
+      "title": "Design validation and test (Embedded Artistry field manual)",
+      "url": "https://embeddedartistry.com/fieldmanual-terms/design-validation-test/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

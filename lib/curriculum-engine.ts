@@ -1,5 +1,7 @@
 import {
-  EXPERIENCE_LEVELS,
+  CAREER_LEVELS,
+  COMPANY_SIZES,
+  EXPERIENCE_IDS,
   PHASES,
   PM_TYPES,
   PRODUCT_TYPES,
@@ -8,6 +10,7 @@ import {
   TOOLS,
   WAYS_OF_WORKING,
   labelOf,
+  type CompanySizeId,
   type ExperienceId,
   type PhaseId,
   type RoleId,
@@ -77,8 +80,19 @@ export function effortInDays(effort: string): number {
   return (match[3] === "hour" ? midpoint : midpoint / 60) / HOURS_PER_DAY;
 }
 
+/** "Not sure" is pitched at product manager level. */
+function careerLevelFor(answers: IntakeAnswers) {
+  const id = answers.level === NOT_SURE ? "product-manager" : answers.level;
+  return CAREER_LEVELS.find((level) => level.id === id) ?? CAREER_LEVELS[1];
+}
+
 function experienceFor(answers: IntakeAnswers): ExperienceId {
-  return answers.exp === NOT_SURE ? "intermediate" : answers.exp;
+  return careerLevelFor(answers).steps;
+}
+
+/** "Not sure" assumes an established organisation. */
+function sizeFor(answers: IntakeAnswers): CompanySizeId {
+  return answers.size === NOT_SURE ? "established" : answers.size;
 }
 
 // --- 1. Select ---
@@ -89,7 +103,7 @@ function stageFor(answers: IntakeAnswers): StageId {
 }
 
 function matchesPmType(block: Block, answers: IntakeAnswers): boolean {
-  return block.appliesTo.pmTypes.some((id) => id === answers.pm);
+  return block.appliesTo.pmTypes.some((id) => answers.pm.some((chosen) => chosen === id));
 }
 
 function matchesProduct(block: Block, answers: IntakeAnswers): boolean {
@@ -120,8 +134,29 @@ function fitsExperience(block: Block, answers: IntakeAnswers): boolean {
   return experience.length === 0 || experience.includes(experienceFor(answers));
 }
 
-function fitsVisitor(block: Block, answers: IntakeAnswers): boolean {
-  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsExperience(block, answers);
+/** Basics written for levels below the visitor's. They're kept, in "Refresh the basics". */
+function isBelowLevel(block: Block, answers: IntakeAnswers): boolean {
+  const { experience } = block.appliesTo;
+  const visitor = EXPERIENCE_IDS.indexOf(experienceFor(answers));
+  return experience.length > 0 && experience.every((level) => EXPERIENCE_IDS.indexOf(level) < visitor);
+}
+
+function fitsCompanySize(block: Block, answers: IntakeAnswers): boolean {
+  const sizes = block.appliesTo.companySizes ?? [];
+  return sizes.length === 0 || sizes.includes(sizeFor(answers));
+}
+
+function fitsLeadership(block: Block, answers: IntakeAnswers): boolean {
+  return !block.appliesTo.leadsPeople || careerLevelFor(answers).leadsPeople;
+}
+
+/** Everything except the experience limit, which decides where a block goes, not whether it's kept. */
+function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
+  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsCompanySize(block, answers) && fitsLeadership(block, answers);
+}
+
+function movesUp(block: Block, answers: IntakeAnswers): boolean {
+  return block.movesUpFor?.includes(sizeFor(answers)) ?? false;
 }
 
 /** The first phase of this plan that the block belongs to, if any. */
@@ -136,12 +171,14 @@ function placeIn(block: Block, covered: readonly PhaseId[]): PhaseId | undefined
  * Puts blocks after whatever they depend on or come after within the same
  * phase. When several could go next, a block with a place to follow goes first,
  * and an add-on goes before core work, so it sits straight after what it
- * extends. "Go further" blocks always go last.
+ * extends. "Go further" blocks always go last. A block that moves up for the
+ * visitor's organisation goes as early as its dependencies allow.
  */
-function orderByDependency(blocks: readonly Block[]): Block[] {
+function orderByDependency(blocks: readonly Block[], answers: IntakeAnswers): Block[] {
   const present = new Set(blocks.map((block) => block.id));
-  const follows = (block: Block) => (block.comesAfter ?? []).filter((id) => present.has(id));
+  const follows = (block: Block) => (movesUp(block, answers) ? [] : (block.comesAfter ?? []).filter((id) => present.has(id)));
   const rank = (block: Block) => {
+    if (movesUp(block, answers)) return -1;
     if (block.optional) return 4;
     if (follows(block).length > 0) return block.kind === "add-on" ? 0 : 1;
     return block.kind === "core" ? 2 : 3;
@@ -219,13 +256,22 @@ function toolExamples(block: Block, answers: IntakeAnswers): PlanToolExample[] {
 
 // --- 7. Explain ---
 
+const matchedPmTypes = (block: Block, answers: IntakeAnswers) =>
+  answers.pm.filter((id) => block.appliesTo.pmTypes.some((type) => type === id)).map((id) => labelOf(PM_TYPES, id)).join(" and ");
+
+function whyCompanySize(answers: IntakeAnswers): string {
+  if (answers.size === NOT_SURE) return "Because we've assumed an established organisation.";
+  return `Because you chose ${labelOf(COMPANY_SIZES, answers.size)} as the size of your organisation.`;
+}
+
 function whyTimeline(block: Block, answers: IntakeAnswers, phaseId: PhaseId): string {
   if (block.kind === "add-on") {
     const reasons = [
-      matchesPmType(block, answers) ? `${labelOf(PM_TYPES, answers.pm)} as your kind of PM` : "",
+      matchesPmType(block, answers) ? `${matchedPmTypes(block, answers)} as your kind of PM` : "",
       matchesProduct(block, answers) ? `${labelOf(PRODUCT_TYPES, answers.product)} as your product` : "",
     ].filter(Boolean);
     if (reasons.length > 0) return `Because you chose ${reasons.join(" and ")}.`;
+    if (block.appliesTo.companySizes?.length) return whyCompanySize(answers);
   }
   return `Because your plan covers ${labelOf(PHASES, phaseId)}.`;
 }
@@ -237,6 +283,14 @@ function whyRhythm(block: Block, answers: IntakeAnswers): string {
 
 /** A skill for one level is more specific than one for two, so it comes first. */
 const byNarrowestLevel = (a: Block, b: Block) => a.appliesTo.experience.length - b.appliesTo.experience.length;
+
+function whyRefresh(): string {
+  return "Because you've moved past this level. It's here if you want to check the basics.";
+}
+
+function whyLead(): string {
+  return "Because you lead other product people.";
+}
 
 function whyCraft(block: Block): string {
   if (block.appliesTo.experience.length === 0) return "Because it's a useful skill at any level.";
@@ -272,6 +326,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     summary: block.summary,
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
+    ...(movesUp(block, answers) ? { movedUp: true } : {}),
     effort: block.estimatedEffort,
     why,
     steps: block.steps[level].map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
@@ -397,9 +452,9 @@ function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: Intake
 
 function whoText(answers: IntakeAnswers): string {
   const parts = [
-    answers.pm === NOT_SURE ? "" : `PM type: ${labelOf(PM_TYPES, answers.pm)}`,
+    answers.pm.includes(NOT_SURE) ? "" : `PM type: ${answers.pm.map((id) => labelOf(PM_TYPES, id)).join(" and ")}`,
     answers.product === NOT_SURE ? "" : `Product: ${labelOf(PRODUCT_TYPES, answers.product)}`,
-    answers.exp === NOT_SURE ? "" : `Experience: ${labelOf(EXPERIENCE_LEVELS, answers.exp).split(" (")[0]}`,
+    answers.level === NOT_SURE ? "" : `Level: ${careerLevelFor(answers).short}`,
   ].filter(Boolean);
   return parts.length > 0 ? parts.join(" · ") : "Product manager";
 }
@@ -431,13 +486,16 @@ function checksBeforeActions(phases: readonly PlanPhase[], actions: readonly Pla
 
 export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Plan {
   const covered = phasesCovered(answers).map((phase) => phase.id);
-  const eligible = blocks.filter((block) => fitsVisitor(block, answers));
+  const kept = blocks.filter((block) => fitsApartFromLevel(block, answers));
+  const leadBlocks = kept.filter((block) => block.appliesTo.leadsPeople);
+  const others = kept.filter((block) => !block.appliesTo.leadsPeople);
+  const eligible = others.filter((block) => fitsExperience(block, answers));
   const inTimeline = eligible.filter((block) => block.kind === "core" || block.kind === "add-on");
 
   const byPhase = covered
     .map((phaseId) => ({
       phaseId,
-      blocks: orderByDependency(inTimeline.filter((block) => placeIn(block, covered) === phaseId)),
+      blocks: orderByDependency(inTimeline.filter((block) => placeIn(block, covered) === phaseId), answers),
     }))
     .filter((group) => group.blocks.length > 0);
 
@@ -482,7 +540,7 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
   const stage = stageFor(answers);
   const showOnboarding = stage === "mid-build" || stage === "live";
   const alongside = (kind: Block["kind"]) =>
-    orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)));
+    orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
 
   const nextActions = firstActions(phases, 3);
   const skills = alongside("craft");
@@ -501,6 +559,10 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
       : [],
     phases,
     rhythm: alongside("ways-of-working").map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
+    leadYourTeam: orderByDependency(leadBlocks, answers).map((block) => shapeBlock(block, answers, whyLead(), [])),
+    refreshBasics: orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) =>
+      shapeBlock(block, answers, whyRefresh(), []),
+    ),
     skillsForLevel: skills.filter((block) => block.appliesTo.experience.length > 0).sort(byNarrowestLevel).map(shapeSkill),
     skillsAnyLevel: skills.filter((block) => block.appliesTo.experience.length === 0).map(shapeSkill),
   };

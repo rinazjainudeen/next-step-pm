@@ -1,0 +1,81 @@
+{
+  "id": "addon-growth-activation",
+  "title": "Shorten time to value in onboarding",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "New users decide quickly whether a product is worth it. Find the first moment they get real value, and remove every step that stands between sign-up and that moment.",
+  "appliesTo": {
+    "pmTypes": [
+      "growth"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Define your activation event: the first action that shows a user got value.",
+      "Measure how long new users take to reach it, and how many do.",
+      "List every step between sign-up and that event.",
+      "Remove or delay steps that are not needed yet.",
+      "Test the shorter path and compare activation rates."
+    ],
+    "intermediate": [
+      "Find the activation event that best predicts retention.",
+      "Design different paths for different user goals.",
+      "Use prompts and messages to bring back users who stall."
+    ],
+    "experienced": [
+      "Set activation targets across products and segments.",
+      "Link activation to retention and revenue in planning.",
+      "Balance self-serve onboarding with sales or support help for complex products."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "task": "Measure activation rate and time to value",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Redesign the onboarding path",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Build a funnel from sign-up to activation.",
+    "mixpanel": "Measure time to the activation event.",
+    "figma": "Map the current onboarding steps."
+  },
+  "definitionOfDone": [
+    "Activation event defined",
+    "Baseline measured",
+    "Shorter path tested"
+  ],
+  "pitfalls": [
+    "Measuring tour completion instead of value",
+    "Asking for everything at sign-up",
+    "One path for every kind of user"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "addon-growth-funnel"
+  ],
+  "comesAfter": ["design-user-journey"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to shorten time to value with better product-led onboarding (ProductLed)",
+      "url": "https://productled.com/time-to-value/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}
