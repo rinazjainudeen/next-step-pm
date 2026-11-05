@@ -166,7 +166,8 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const problems: string[] = [];
   const timeline = plan.phases.flatMap((phase) => phase.blocks);
   const required = timeline.filter((block) => !block.optional);
-  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...plan.growSkills];
+  const skills = [...plan.skillsForLevel, ...plan.skillsAnyLevel];
+  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills];
   const covered = expectedPhases(answers);
   const level = answers.exp === NOT_SURE ? "intermediate" : answers.exp;
 
@@ -196,7 +197,12 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const eligible = (kinds: readonly string[]) => BLOCKS.filter((block) => kinds.includes(block.kind) && fits(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
   if (sorted(timeline.map((block) => block.id)).join() !== sorted(eligible(["core", "add-on"])).join()) problems.push("The timeline has the wrong blocks.");
   if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(eligible(["ways-of-working"])).join()) problems.push("The rhythm section has the wrong blocks.");
-  if (sorted(plan.growSkills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
+  if (sorted(skills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
+  const levelsOf = (id: string) => (byId.get(id) as Block).appliesTo.experience.length;
+  if (plan.skillsForLevel.some((block) => levelsOf(block.id) === 0)) problems.push("A skill for every level is listed as picked for your level.");
+  if (plan.skillsAnyLevel.some((block) => levelsOf(block.id) !== 0)) problems.push("A level-specific skill is listed as useful at any level.");
+  const narrowing = plan.skillsForLevel.map((block) => levelsOf(block.id));
+  if (narrowing.some((levels, index) => index > 0 && levels < narrowing[index - 1])) problems.push("The most specific skills don't come first.");
   const onboarding = answers.stage === "mid-build" || answers.stage === "live" ? eligible(["onboarding"]) : [];
   if (sorted(plan.getUpToSpeed.map((block) => block.id)).join() !== sorted(onboarding).join()) problems.push("Get up to speed has the wrong blocks.");
 
@@ -474,9 +480,10 @@ test("every way of working has a rhythm", () => {
   assert.ok(rhythm.some((block) => block.appliesTo.waysOfWorking.length === 0), "Not sure needs at least one block for any team.");
 });
 
-test("every experience level has skills to grow", () => {
+test("every experience level has skills picked for it, and some for everyone", () => {
   const craft = BLOCKS.filter((block) => block.kind === "craft");
-  for (const level of EXPERIENCE_IDS) assert.ok(craft.some((block) => block.appliesTo.experience.length === 0 || block.appliesTo.experience.includes(level)), level);
+  for (const level of EXPERIENCE_IDS) assert.ok(craft.some((block) => block.appliesTo.experience.includes(level)), level);
+  assert.ok(craft.some((block) => block.appliesTo.experience.length === 0));
 });
 
 test("every role in the team question can actually receive a task", () => {

@@ -214,20 +214,32 @@ test("a plan of only Go further blocks has no next actions, and no crash", () =>
 const craft = (id: string, experience: Block["appliesTo"]["experience"] = []) =>
   fixture(id, "any", "1-2 days", [], { kind: "craft", appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience } });
 
+const skillIds = (plan: Plan) => [...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id);
+
 test("craft blocks go in Grow your skills, outside the timeline", () => {
   const plan = buildPlan(ANSWERS, [...PLAN_BLOCKS, craft("craft-a")]);
-  assert.deepEqual(plan.growSkills.map((block) => block.id), ["craft-a"]);
+  assert.deepEqual(skillIds(plan), ["craft-a"]);
   assert.ok(!blockIds(plan).includes("craft-a"));
   assert.ok(!plan.rhythm.some((block) => block.id === "craft-a"));
   assert.ok(plan.nextActions.every((action) => action.blockId !== "craft-a"));
 });
 
-test("craft blocks are filtered by experience", () => {
+test("skills split into those picked for your level and those for any level", () => {
   const blocks = [craft("craft-all"), craft("craft-beginner", ["beginner"]), craft("craft-senior", ["experienced"])];
-  const ids = (exp: IntakeAnswers["exp"]) => buildPlan({ ...ANSWERS, exp }, blocks).growSkills.map((block) => block.id);
-  assert.deepEqual(ids("beginner"), ["craft-all", "craft-beginner"]);
-  assert.deepEqual(ids("experienced"), ["craft-all", "craft-senior"]);
-  assert.deepEqual(ids(NOT_SURE), ["craft-all"]);
+  const split = (exp: IntakeAnswers["exp"]) => {
+    const plan = buildPlan({ ...ANSWERS, exp }, blocks);
+    return [plan.skillsForLevel.map((block) => block.id), plan.skillsAnyLevel.map((block) => block.id)];
+  };
+  assert.deepEqual(split("beginner"), [["craft-beginner"], ["craft-all"]]);
+  assert.deepEqual(split("experienced"), [["craft-senior"], ["craft-all"]]);
+  assert.deepEqual(split("intermediate"), [[], ["craft-all"]]);
+  assert.deepEqual(split(NOT_SURE), [[], ["craft-all"]]);
+});
+
+test("the most level-specific skills come first, whatever their names", () => {
+  const blocks = [craft("craft-a-two-levels", ["intermediate", "experienced"]), craft("craft-z-one-level", ["experienced"])];
+  const plan = buildPlan({ ...ANSWERS, exp: "experienced" }, blocks);
+  assert.deepEqual(plan.skillsForLevel.map((block) => block.id), ["craft-z-one-level", "craft-a-two-levels"]);
 });
 
 test("craft blocks don't add to the plan's length", () => {
@@ -238,7 +250,8 @@ test("craft blocks don't add to the plan's length", () => {
 
 test("craft blocks say why they're there", () => {
   const plan = buildPlan({ ...ANSWERS, exp: "beginner" }, [craft("craft-all"), craft("craft-beginner", ["beginner"])]);
-  assert.deepEqual(plan.growSkills.map((block) => block.why), ["Because it's a useful skill at any level.", "Because it suits your experience."]);
+  assert.equal(plan.skillsAnyLevel[0].why, "Because it's a useful skill at any level.");
+  assert.equal(plan.skillsForLevel[0].why, "Because it suits your experience.");
 });
 
 test("placeholder blocks never reach a plan", () => {

@@ -235,6 +235,9 @@ function whyRhythm(block: Block, answers: IntakeAnswers): string {
   return `Because your team works with ${labelOf(WAYS_OF_WORKING, answers.way)}.`;
 }
 
+/** A skill for one level is more specific than one for two, so it comes first. */
+const byNarrowestLevel = (a: Block, b: Block) => a.appliesTo.experience.length - b.appliesTo.experience.length;
+
 function whyCraft(block: Block): string {
   if (block.appliesTo.experience.length === 0) return "Because it's a useful skill at any level.";
   return "Because it suits your experience.";
@@ -482,6 +485,8 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
     orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)));
 
   const nextActions = firstActions(phases, 3);
+  const skills = alongside("craft");
+  const shapeSkill = (block: Block) => shapeBlock(block, answers, whyCraft(block), []);
 
   return {
     who: whoText(answers),
@@ -496,6 +501,7 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
       : [],
     phases,
     rhythm: alongside("ways-of-working").map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
-    growSkills: alongside("craft").map((block) => shapeBlock(block, answers, whyCraft(block), [])),
+    skillsForLevel: skills.filter((block) => block.appliesTo.experience.length > 0).sort(byNarrowestLevel).map(shapeSkill),
+    skillsAnyLevel: skills.filter((block) => block.appliesTo.experience.length === 0).map(shapeSkill),
   };
 }

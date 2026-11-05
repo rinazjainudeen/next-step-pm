@@ -117,7 +117,7 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 - **onboarding**: for people joining mid-build or a live product. Examples: "Read the decision trail", "1:1s with each role", "Find the live dashboards".
 - **ways-of-working**: how the team works, rather than what it produces. Examples: sprint planning, refinement, the daily stand-up, review, retrospective, Kanban flow and WIP limits, stage-gate reviews, roadmaps and estimation. These blocks often belong to several phases or to none in particular, so their `phase` can be a list or `"any"`. They are picked by the visitor's answer to "How does your team work?", using `appliesTo.waysOfWorking`.
 
-- **craft**: skills that grow over time, such as strategy or influencing. These blocks use phase `"any"` and go in "Grow your skills", outside the timeline. They're filtered by experience.
+- **craft**: skills that grow over time, such as strategy or influencing. These blocks use phase `"any"` and go in "Grow your skills", outside the timeline. They're filtered by experience. Blocks with an experience limit go under "Picked for your level", most specific first, and the rest go under "Useful at any level".
 
 **The `phase` field** takes one of three forms: a single phase (`"define"`), a list of two or more phases (`["design", "plan"]`), or `"any"` (every phase).
 

@@ -74,6 +74,8 @@ export type Plan = {
   phases: PlanPhase[];
   /** Ways-of-working blocks. They recur, so they sit outside the timeline. */
   rhythm: PlanBlock[];
-  /** Craft blocks. Skills that grow over time, so they sit outside the timeline. */
-  growSkills: PlanBlock[];
+  /** Craft blocks limited to the visitor's level, most specific first. Outside the timeline. */
+  skillsForLevel: PlanBlock[];
+  /** Craft blocks for every level. Their steps are still shaped to the visitor. */
+  skillsAnyLevel: PlanBlock[];
 };
