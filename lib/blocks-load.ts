@@ -13,9 +13,10 @@ import { blockPhases, type Block } from "./blocks-types";
  * block stops the build instead of reaching visitors.
  */
 
-// The blocks are read only while the site is being built (every page that uses
-// them is pre-built), never while it is running. The comment below tells the
-// build tool not to bundle the whole project because of these file reads.
+// Most pages read the blocks while the site is being built. The plan page reads
+// them for each visitor, so next.config.ts ships the files with that page. The
+// comment below tells the build tool not to bundle the whole project because of
+// these file reads.
 export const BLOCKS_DIR = path.join(/*turbopackIgnore: true*/ process.cwd(), "content", "blocks");
 
 export type ContentCheck = {

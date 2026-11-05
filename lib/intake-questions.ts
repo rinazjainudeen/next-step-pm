@@ -122,7 +122,7 @@ export const INTAKE_QUESTIONS: readonly IntakeQuestion[] = [
     kind: "single",
     shortLabel: "Timeline",
     title: "How long until your next milestone?",
-    why: "A milestone is the next point that matters to you, such as a small feature release, the end of discovery, going live or the end of a client contract. We'll spread your plan across this time, week by week, and warn you if it looks tight.",
+    why: "A milestone is the next point that matters to you, such as a small feature release, the end of discovery, going live or the end of a client contract. We'll fit your plan to this time, week by week, and warn you if it looks tight.",
     notSure: "Pick this if you have no date yet. Your plan will use a steady pace, with no deadline warning.",
     options: TIMELINES,
   },

@@ -26,19 +26,19 @@
       "Record the test outcome and update the accessibility statement if you have one."
     ],
     "experienced": [
-      "All acceptance criteria verified; failures logged and triaged.",
-      "WCAG 2.2 AA checked with automated and manual testing, including assistive technology.",
-      "Release-blocking issues fixed; known issues recorded with dates.",
-      "Accessibility statement updated where one is required."
+      "Verify all acceptance criteria, and log and triage failures.",
+      "Check WCAG 2.2 AA with automated and manual testing, including assistive technology.",
+      "Get release-blocking issues fixed, and record known issues with dates.",
+      "Update the accessibility statement where one is required."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "qa", "task": "Test each story against its criteria and run accessibility checks" },
-      { "role": "frontend-engineer", "task": "Add automated accessibility tests and fix issues found" },
-      { "role": "user-researcher", "task": "Test with disabled users and people who use assistive technology" },
-      { "role": "content-designer", "task": "Check headings, labels, link text and error messages are clear" }
+      { "role": "qa", "task": "Test each story against its criteria and run accessibility checks", "ifMissing": "pm" },
+      { "role": "frontend-engineer", "orRoles": ["tech-lead", "backend-engineer"], "task": "Add automated accessibility tests and fix issues found", "ifMissing": "find-someone" },
+      { "role": "user-researcher", "task": "Test with disabled users and people who use assistive technology", "ifMissing": "find-someone" },
+      { "role": "content-designer", "task": "Check headings, labels, link text and error messages are clear", "ifMissing": "pm" }
     ],
     "reviewers": ["qa", "tech-lead"]
   },

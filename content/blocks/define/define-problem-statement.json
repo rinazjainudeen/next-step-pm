@@ -26,19 +26,18 @@
       "Review with design, engineering and stakeholders, and record sign-off."
     ],
     "experienced": [
-      "Problem statement is solution-free and evidence-backed.",
-      "Hypothesis names the users, the change, the outcome and the signal.",
-      "Success measures have baselines; constraints and non-goals are listed.",
-      "Signed off by the team and key stakeholders."
+      "Write a problem statement that is solution-free and backed by evidence.",
+      "Write a hypothesis that names the users, the change, the outcome and the signal.",
+      "Set baselines for success measures, and list constraints and non-goals.",
+      "Get sign-off from the team and key stakeholders."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "ba", "task": "Draft the problem statement and constraints from the research and process maps" },
-      { "role": "user-researcher", "task": "Supply the evidence and check the statement reflects what users said" },
-      { "role": "performance-analyst", "task": "Find baselines for the measures of success" },
-      { "role": "data-analyst", "task": "Find baselines for the measures of success" }
+      { "role": "ba", "task": "Draft the problem statement and constraints from the research and process maps", "ifMissing": "pm" },
+      { "role": "user-researcher", "task": "Supply the evidence and check the statement reflects what users said", "ifMissing": "pm" },
+      { "role": "data-analyst", "orRoles": ["performance-analyst"], "task": "Find baselines for the measures of success", "ifMissing": "pm" }
     ],
     "reviewers": ["tech-lead", "ux-designer", "policy-legal"]
   },

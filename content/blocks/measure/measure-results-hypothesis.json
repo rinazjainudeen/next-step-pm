@@ -26,19 +26,18 @@
       "Publish a verdict on the hypothesis and the next decision."
     ],
     "experienced": [
-      "Tracking verified; baselines and segments defined.",
-      "Results compared with the hypothesis over a fair period.",
-      "Quantitative and qualitative evidence combined.",
-      "Verdict, learning and next decision shared; backlog updated."
+      "Verify tracking, and define baselines and segments.",
+      "Compare results with the hypothesis over a fair period.",
+      "Combine quantitative and qualitative evidence.",
+      "Share the verdict, learning and next decision, and update the backlog."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "performance-analyst", "task": "Build the dashboard and report results against the baseline" },
-      { "role": "data-analyst", "task": "Build the dashboard and report results against the baseline" },
-      { "role": "user-researcher", "task": "Run follow-up research to explain the numbers" },
-      { "role": "frontend-engineer", "task": "Check analytics events fire correctly" }
+      { "role": "data-analyst", "orRoles": ["performance-analyst"], "task": "Build the dashboard and report results against the baseline", "ifMissing": "find-someone" },
+      { "role": "user-researcher", "task": "Run follow-up research to explain the numbers", "ifMissing": "pm" },
+      { "role": "frontend-engineer", "orRoles": ["tech-lead", "backend-engineer"], "task": "Check analytics events fire correctly", "ifMissing": "find-someone" }
     ],
     "reviewers": ["tech-lead", "delivery-manager"]
   },

@@ -26,19 +26,19 @@
       "Publish findings as user needs and pain points with evidence, and link them from your product backlog."
     ],
     "experienced": [
-      "Research questions trace back to your riskiest assumptions.",
-      "Sample covers each user group, including excluded and offline users.",
-      "Team synthesis done; findings published with evidence and linked to the backlog.",
-      "Clear decision recorded: carry on, change direction or stop."
+      "Trace research questions back to your riskiest assumptions.",
+      "Cover each user group in your sample, including excluded and offline users.",
+      "Synthesise as a team, and publish findings with evidence, linked to the backlog.",
+      "Record a clear decision: carry on, change direction or stop."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "user-researcher", "task": "Plan the research, recruit participants and lead the sessions" },
-      { "role": "ba", "task": "Map the current process and gather existing data about it" },
-      { "role": "ux-designer", "task": "Take notes in sessions and help turn findings into journey maps" },
-      { "role": "data-analyst", "task": "Pull existing data that shows where users drop out or call for help" }
+      { "role": "user-researcher", "orRoles": ["ux-designer"], "task": "Plan the research, recruit participants and lead the sessions", "ifMissing": "pm" },
+      { "role": "ba", "task": "Map the current process and gather existing data about it", "ifMissing": "pm" },
+      { "role": "ux-designer", "task": "Take notes in sessions and help turn findings into journey maps", "ifMissing": "pm" },
+      { "role": "data-analyst", "orRoles": ["performance-analyst"], "task": "Pull existing data that shows where users drop out or call for help", "ifMissing": "pm" }
     ],
     "reviewers": ["user-researcher", "tech-lead", "delivery-manager"]
   },

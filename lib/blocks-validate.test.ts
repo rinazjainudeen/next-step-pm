@@ -108,8 +108,25 @@ test("roles must come from the taxonomy", () => {
 });
 
 test("a delegated task needs some text", () => {
-  const roles = { owner: "pm", canDelegateTo: [{ role: "ba", task: "" }], reviewers: [] };
+  const roles = { owner: "pm", canDelegateTo: [{ role: "ba", task: "", ifMissing: "pm" }], reviewers: [] };
   assert.ok(mentions(errorsFor({ roles }), "roles.canDelegateTo[1].task"));
+});
+
+test("a delegated task must say what happens if nobody can do it", () => {
+  const roles = { owner: "pm", canDelegateTo: [{ role: "ba", task: "x" }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles }), "roles.canDelegateTo[1].ifMissing"));
+  const wrong = { owner: "pm", canDelegateTo: [{ role: "ba", task: "x", ifMissing: "shrug" }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles: wrong }), "roles.canDelegateTo[1].ifMissing"));
+});
+
+test("other roles for a task must be real, and different from the main role", () => {
+  const task = { role: "ba", task: "x", ifMissing: "pm" };
+  const valid = { owner: "pm", canDelegateTo: [{ ...task, orRoles: ["qa", "architect"] }], reviewers: [] };
+  assert.deepEqual(errorsFor({ roles: valid }), []);
+  const unknown = { owner: "pm", canDelegateTo: [{ ...task, orRoles: ["robot"] }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles: unknown }), "roles.canDelegateTo[1].orRoles"));
+  const repeated = { owner: "pm", canDelegateTo: [{ ...task, orRoles: ["ba"] }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles: repeated }), "already the main role"));
 });
 
 test("tool examples must use tools we list", () => {

@@ -26,19 +26,19 @@
       "Make the sprint goal visible and refer back to it at every stand-up."
     ],
     "experienced": [
-      "Backlog refined and ordered; proposed goal ties to the product goal.",
-      "Sprint goal agreed by the whole team before items are selected.",
-      "Forecast based on capacity and past throughput, not pressure.",
-      "Sprint backlog (goal, items, plan) visible to all."
+      "Refine and order the backlog, and tie your proposed goal to the product goal.",
+      "Agree the sprint goal with the whole team before selecting items.",
+      "Base the forecast on capacity and past throughput, not pressure.",
+      "Keep the sprint backlog (goal, items, plan) visible to all."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "scrum-master", "task": "Facilitate the meeting and keep it within its timebox" },
-      { "role": "delivery-manager", "task": "Work out team capacity and flag dependencies" },
-      { "role": "product-owner", "task": "Order the backlog and propose the sprint goal" },
-      { "role": "ba", "task": "Make sure the top backlog items are ready before the meeting" }
+      { "role": "scrum-master", "orRoles": ["delivery-manager"], "task": "Facilitate the meeting and keep it within its timebox", "ifMissing": "pm" },
+      { "role": "delivery-manager", "task": "Work out team capacity and flag dependencies", "ifMissing": "pm" },
+      { "role": "product-owner", "task": "Order the backlog and propose the sprint goal", "ifMissing": "pm" },
+      { "role": "ba", "orRoles": ["product-owner"], "task": "Make sure the top backlog items are ready before the meeting", "ifMissing": "pm" }
     ],
     "reviewers": ["scrum-master", "tech-lead"]
   },

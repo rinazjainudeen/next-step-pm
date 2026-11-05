@@ -61,8 +61,9 @@ export function phasesCovered(answers: Pick<IntakeDraft, "stage" | "phase" | "un
   const journey: readonly PhaseId[] = stage.journey;
   const start = startIndex(journey, answers.phase);
   const lastUsual = journey.indexOf(stage.phases[stage.phases.length - 1]);
-  // Starting past the usual end, such as a live product in Build, runs to the end of the route.
-  const usualFinish = start > lastUsual ? journey.length - 1 : lastUsual;
+  // A live product past its usual phases is building its next release, so it runs on to Launch.
+  // Design counts too: stopping there would give one phase, while Plan next to it gives four.
+  const usualFinish = stage.id === "live" && start >= lastUsual ? journey.length - 1 : lastUsual;
   const finish = isPhase(answers.until) ? journey.indexOf(answers.until) : usualFinish;
   return toPhases(journey.slice(start, finish + 1));
 }

@@ -71,7 +71,8 @@ lib/
   utils.ts  navigation.ts  supabase.ts (server-only)
   blocks-types.ts  blocks-validate.ts  blocks-load.ts
   intake-types.ts  intake-questions.ts  intake-phases.ts  intake-draft.ts  intake-validate.ts  intake-url.ts     answers <-> URL
-  curriculum-engine.ts                                     PURE: answers + blocks -> plan
+  curriculum-engine.ts  plan-types.ts                      PURE: answers + blocks -> plan
+  plan-ticks.ts                                            ticks saved in the browser
   feedback-types.ts  feedback-validate.ts  feedback-store.ts  feedback-service.ts
   *.test.ts
 docs/

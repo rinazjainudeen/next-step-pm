@@ -26,19 +26,19 @@
       "Agree and apply a definition of ready."
     ],
     "experienced": [
-      "Stories are small, independent where possible, and valuable to users.",
-      "Acceptance criteria are testable and cover unhappy paths and accessibility.",
-      "Refined with the team; designs and dependencies attached.",
-      "Definition of ready agreed and used."
+      "Keep stories small, valuable to users and independent where possible.",
+      "Make acceptance criteria testable, covering unhappy paths and accessibility.",
+      "Refine stories with the team, and attach designs and dependencies.",
+      "Agree a definition of ready and use it."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "ba", "task": "Draft stories and acceptance criteria for the PM to review" },
-      { "role": "qa", "task": "Add edge cases and test scenarios to the acceptance criteria" },
-      { "role": "content-designer", "task": "Write the user-facing text the stories need" },
-      { "role": "tech-lead", "task": "Split stories so they can be built and released independently" }
+      { "role": "ba", "orRoles": ["product-owner"], "task": "Draft stories and acceptance criteria for the PM to review", "ifMissing": "pm" },
+      { "role": "qa", "task": "Add edge cases and test scenarios to the acceptance criteria", "ifMissing": "pm" },
+      { "role": "content-designer", "orRoles": ["ux-designer"], "task": "Write the user-facing text the stories need", "ifMissing": "pm" },
+      { "role": "tech-lead", "orRoles": ["backend-engineer", "frontend-engineer", "architect"], "task": "Split stories so they can be built and released independently", "ifMissing": "find-someone" }
     ],
     "reviewers": ["qa", "tech-lead", "ux-designer"]
   },

@@ -191,4 +191,7 @@
     background: #fff;
     color: #000;
   }
+  details[data-plan-block] {
+    break-inside: avoid;
+  }
 }

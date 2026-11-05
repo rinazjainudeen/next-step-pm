@@ -26,19 +26,19 @@
       "Publish a 30-day summary of learning, risks and proposed priorities."
     ],
     "experienced": [
-      "Stakeholder map and one-to-ones complete.",
-      "Product, research, decisions and metrics reviewed.",
-      "Risks and quick wins identified, with no big changes before day 30.",
-      "30 / 60 / 90-day priorities agreed with your manager and team."
+      "Map your stakeholders and complete your one-to-ones.",
+      "Review the product, research, decisions and metrics.",
+      "Identify risks and quick wins, and make no big changes before day 30.",
+      "Agree 30 / 60 / 90-day priorities with your manager and team."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "delivery-manager", "task": "Walk you through the current delivery plan, risks and dependencies" },
-      { "role": "tech-lead", "task": "Explain the architecture, technical debt and constraints" },
-      { "role": "user-researcher", "task": "Share past research findings and open questions" },
-      { "role": "performance-analyst", "task": "Show you the live dashboards and what the numbers mean" }
+      { "role": "delivery-manager", "orRoles": ["scrum-master", "product-owner"], "task": "Walk you through the current delivery plan, risks and dependencies", "ifMissing": "ask-around" },
+      { "role": "tech-lead", "orRoles": ["architect", "backend-engineer", "frontend-engineer"], "task": "Explain the architecture, technical debt and constraints", "ifMissing": "ask-around" },
+      { "role": "user-researcher", "task": "Share past research findings and open questions", "ifMissing": "ask-around" },
+      { "role": "performance-analyst", "orRoles": ["data-analyst"], "task": "Show you the live dashboards and what the numbers mean", "ifMissing": "ask-around" }
     ],
     "reviewers": ["delivery-manager"]
   },

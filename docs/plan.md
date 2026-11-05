@@ -50,7 +50,11 @@ Eight questions, one per screen, with a progress bar, Back and Next, and "Not su
 Build `lib/curriculum-engine.ts` with full tests. The plan page shows a summary, the next 3 actions, a timeline by phase or week, block cards with delegation and tool examples, and "why you're seeing this". It also has tick-boxes saved in the browser, a copy-link button and a print/PDF view.
 **Check:** create two very different profiles and confirm the plans differ in the expected ways.
 
+**Not included:** blocks for hybrid teams and Data PMs (Phase 5), and the feedback rating (Phase 6).
+
 ### Phase 5: Full content
+
+**Quality checks:** `lib/plan-logic.test.ts` checks every new block automatically. After each big batch of blocks, and fully before launch, a QA agent also reads sample plans in full, because tests can't judge whether a plan makes sense to a PM.
 Research and draft the remaining blocks, to about **90 in total** (the plan said 40 to 50 until 4 November 2026). The target mix is:
 
 | Kind | Blocks |

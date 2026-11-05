@@ -26,19 +26,19 @@
       "Run a go / no-go check and a short review after release."
     ],
     "experienced": [
-      "Scope, audience and comms plan published.",
-      "Gradual rollout with monitoring and named owners.",
-      "Rollback criteria and decision-maker agreed.",
-      "Go / no-go held; post-release review booked."
+      "Publish the scope, audience and comms plan.",
+      "Plan a gradual rollout with monitoring and named owners.",
+      "Agree the rollback criteria and who makes the decision.",
+      "Hold a go / no-go meeting, and book a post-release review."
     ]
   },
   "roles": {
     "owner": "pm",
     "canDelegateTo": [
-      { "role": "delivery-manager", "task": "Coordinate the release timeline, go / no-go meeting and dependencies" },
-      { "role": "devops", "task": "Set up the gradual rollout, monitoring, alerts and rollback" },
-      { "role": "content-designer", "task": "Write user-facing release notes and messages" },
-      { "role": "qa", "task": "Confirm testing is complete and run smoke tests after release" }
+      { "role": "delivery-manager", "task": "Coordinate the release timeline, go / no-go meeting and dependencies", "ifMissing": "pm" },
+      { "role": "devops", "orRoles": ["tech-lead", "backend-engineer"], "task": "Set up the gradual rollout, monitoring, alerts and rollback", "ifMissing": "find-someone" },
+      { "role": "content-designer", "task": "Write user-facing release notes and messages", "ifMissing": "pm" },
+      { "role": "qa", "task": "Confirm testing is complete and run smoke tests after release", "ifMissing": "pm" }
     ],
     "reviewers": ["tech-lead", "delivery-manager", "devops"]
   },
