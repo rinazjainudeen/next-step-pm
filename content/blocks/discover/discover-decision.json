@@ -1,0 +1,98 @@
+{
+  "id": "discover-decision",
+  "title": "Decide whether to carry on: the discovery decision",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Discovery ends with a decision: carry on, change direction or stop. Making this call openly, with evidence, saves money and builds trust, even when the answer is no.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Go back to your learning questions and write what you now know for each one.",
+      "Check the four risks again: what evidence do you have on value, usability, feasibility and viability?",
+      "Write a short recommendation: carry on, change direction or stop, and the main reasons.",
+      "If you recommend carrying on, describe the problem to solve next and roughly what it will take.",
+      "If you recommend stopping, say what you learned and what it saved. This is a good outcome.",
+      "Present it to your sponsor and record the decision and the reasons."
+    ],
+    "intermediate": [
+      "Summarise answers to each learning question and the remaining risks.",
+      "Recommend continue, pivot or stop, with evidence.",
+      "Outline scope, team and cost for the next phase if continuing.",
+      "Get a recorded decision from the sponsor."
+    ],
+    "experienced": [
+      "Write a short decision memo that leads with the recommendation and the strongest evidence for and against.",
+      "Compare this opportunity with the others competing for the same team.",
+      "Check your own bias: what would have to be true for stopping to be the right call?",
+      "Agree the decision in a review with the key decision-makers and publish it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Summarise what research showed for each learning question",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Give a view on feasibility and rough effort for the next phase",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "delivery-manager",
+        "task": "Estimate the team and time needed if the work continues",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Write the decision on a page linked from the opportunity frame, so the full story is in one place.",
+    "google-docs": "Share a two-page memo before the meeting and ask people to comment in advance.",
+    "claude": "Paste your evidence summary and ask it to argue the opposite recommendation, so you can test how strong your case is."
+  },
+  "definitionOfDone": [
+    "Each learning question answered or marked as still open",
+    "Recommendation written with evidence for and against",
+    "Decision made and recorded with reasons"
+  ],
+  "pitfalls": [
+    "Carrying on by default because the team has already invested time",
+    "Presenting only the evidence that supports carrying on",
+    "Not recording why the decision was made"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "discover-user-research",
+    "discover-market-competitors",
+    "discover-data-signals"
+  ],
+  "comesAfter": ["discover-opportunity-sizing", "addon-b2b-customer-discovery", "addon-data-decisions", "addon-growth-funnel", "addon-internal-users", "addon-tech-developer-research", "addon-transformation-current-state"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

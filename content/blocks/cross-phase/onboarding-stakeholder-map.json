@@ -1,0 +1,77 @@
+{
+  "id": "onboarding-stakeholder-map",
+  "title": "Map your stakeholders",
+  "phase": "any",
+  "kind": "onboarding",
+  "summary": "When you join an existing product, quickly learn who matters, what they care about and how decisions are made.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "mid-build",
+      "live"
+    ],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Ask your manager and team who the key people are.",
+      "Meet each one and ask what they need from the product and from you.",
+      "Note who makes which decisions.",
+      "Map them by interest and influence.",
+      "Agree how you will keep each one updated."
+    ],
+    "intermediate": [
+      "Meet key stakeholders in the first two weeks.",
+      "Map interest, influence and decision rights.",
+      "Set up an update rhythm."
+    ],
+    "experienced": [
+      "Spot tensions between stakeholders early.",
+      "Find the informal influencers.",
+      "Use the map to plan your first big decision."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Introduce you to key stakeholders",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Draw an interest and influence grid.",
+    "notion": "Keep notes from each conversation."
+  },
+  "definitionOfDone": [
+    "Key stakeholders met",
+    "Map completed",
+    "Update rhythm agreed"
+  ],
+  "pitfalls": [
+    "Only meeting senior people",
+    "Not asking about decision rights",
+    "Waiting too long to meet people"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Stakeholder communications plan (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/stakeholder-communications-plan"
+    },
+    {
+      "title": "DACI decision-making framework (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/daci"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,80 @@
+{
+  "id": "onboarding-tech-landscape",
+  "title": "Learn the technical landscape",
+  "phase": "any",
+  "kind": "onboarding",
+  "summary": "Understand the systems behind the product, their constraints and the technical debt, so you can plan realistically.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "mid-build",
+      "live"
+    ],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Ask an engineer to draw the main systems and how they connect.",
+      "Learn which systems are owned by other teams.",
+      "Ask about the biggest technical risks and debt.",
+      "Learn how releases work and how often.",
+      "Note constraints that will affect your plans."
+    ],
+    "intermediate": [
+      "Understand architecture and dependencies.",
+      "Review technical debt and risks.",
+      "Learn the release process."
+    ],
+    "experienced": [
+      "Assess technical strategy and its fit with product strategy.",
+      "Identify platform dependencies.",
+      "Agree technical health priorities with engineering."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Explain the architecture and debt",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Read the README and architecture notes.",
+    "miro": "Redraw the architecture and check it with engineers."
+  },
+  "definitionOfDone": [
+    "Architecture understood",
+    "Risks and debt known",
+    "Release process understood"
+  ],
+  "pitfalls": [
+    "Skipping it because you are not technical",
+    "Ignoring other teams' systems",
+    "Promising dates without understanding constraints"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Technical debt quadrant (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/TechnicalDebtQuadrant.html"
+    },
+    {
+      "title": "Strangler fig (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/StranglerFigApplication.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

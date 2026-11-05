@@ -48,9 +48,11 @@ const TOP_LEVEL_KEYS = [
   "pitfalls",
   "estimatedEffort",
   "dependsOn",
+  "comesAfter",
   "freshness",
   "sources",
   "lastReviewed",
+  "optional",
   "placeholder",
 ];
 
@@ -151,10 +153,10 @@ function checkPhase(value: unknown, errors: string[]): void {
 
 function checkAppliesTo(value: unknown, errors: string[]): void {
   if (!isRecord(value)) {
-    errors.push(`appliesTo: is missing. It needs pmTypes, productTypes, stages and waysOfWorking. An empty list means "applies to all".`);
+    errors.push(`appliesTo: is missing. It needs pmTypes, productTypes, stages, waysOfWorking and experience. An empty list means "applies to all".`);
     return;
   }
-  const keys = ["pmTypes", "productTypes", "stages", "waysOfWorking"];
+  const keys = ["pmTypes", "productTypes", "stages", "waysOfWorking", "experience"];
   checkUnknownKeys(value, keys, "appliesTo: ", errors);
   const hint = "Use [] to mean applies to all.";
   const lists: [string, readonly string[]][] = [
@@ -162,6 +164,7 @@ function checkAppliesTo(value: unknown, errors: string[]): void {
     ["productTypes", PRODUCT_TYPE_IDS],
     ["stages", STAGE_IDS],
     ["waysOfWorking", WAY_OF_WORKING_IDS],
+    ["experience", EXPERIENCE_IDS],
   ];
   for (const [key, allowed] of lists) {
     if (!(key in value)) {
@@ -287,6 +290,10 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
     errors.push(`kind: ${JSON.stringify(b.kind)} isn't a kind of block. Use one of: ${listOf(KIND_IDS)}.`);
   }
 
+  if (b.kind === "craft" && b.phase !== ANY_PHASE) {
+    errors.push(`phase: a craft block must use "${ANY_PHASE}", because it sits outside the timeline.`);
+  }
+
   checkAppliesTo(b.appliesTo, errors);
   checkSteps(b.steps, errors);
   checkRoles(b.roles, errors);
@@ -314,6 +321,22 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
     }
   }
 
+  if ("comesAfter" in b) {
+    if (!Array.isArray(b.comesAfter) || b.comesAfter.length === 0) {
+      errors.push(`comesAfter: must be a list of block ids. Leave it out if the order doesn't matter.`);
+    } else {
+      const seen = new Set<string>();
+      for (const id of b.comesAfter) {
+        if (typeof id !== "string" || !ID_PATTERN.test(id)) {
+          errors.push(`comesAfter: ${JSON.stringify(id)} isn't a block id.`);
+        } else if (seen.has(id)) {
+          errors.push(`comesAfter: "${id}" is listed twice.`);
+        }
+        if (typeof id === "string") seen.add(id);
+      }
+    }
+  }
+
   if (!isOneOf(FRESHNESS_IDS, b.freshness)) {
     errors.push(`freshness: ${JSON.stringify(b.freshness)} isn't allowed. Use one of: ${listOf(FRESHNESS_IDS)}.`);
   }
@@ -324,6 +347,14 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
     errors.push(`lastReviewed: must be a real date written as YYYY-MM-DD, such as "2026-11-04".`);
   } else if (b.lastReviewed > (options.today ?? todayAsText())) {
     errors.push(`lastReviewed: "${b.lastReviewed}" is in the future.`);
+  }
+
+  if ("optional" in b) {
+    if (b.optional !== true) {
+      errors.push(`optional: leave it out, or set it to true. It marks a "Go further" block.`);
+    } else if (b.kind !== "core" && b.kind !== "add-on") {
+      errors.push(`optional: only core and add-on blocks can be "Go further", because only they sit in the timeline.`);
+    }
   }
 
   if ("placeholder" in b && b.placeholder !== true) {
@@ -390,6 +421,27 @@ export function validateBlockSet(files: BlockFile[]): string[] {
       if (phaseSpan(dep.block).first > phaseSpan(file.block).last) {
         errors.push(`${file.path}: depends on "${depId}", which belongs to a later phase. A block can only depend on blocks from the same or an earlier phase.`);
       }
+      if (dep.block.optional && !file.block.optional) {
+        errors.push(`${file.path}: depends on "${depId}", which is a "Go further" block. Required work can't rely on optional work.`);
+      }
+      const levels = file.block.appliesTo.experience;
+      const reached = dep.block.appliesTo.experience;
+      if (reached.length > 0 && (levels.length === 0 || levels.some((level) => !reached.includes(level)))) {
+        errors.push(`${file.path}: depends on "${depId}", which some of this block's experience levels never see. They'd lose the order, or be told to check for work they were never given.`);
+      }
+    }
+  }
+
+  for (const file of files) {
+    for (const id of file.block.comesAfter ?? []) {
+      const other = byId.get(id);
+      if (id === file.block.id) {
+        errors.push(`${file.path}: a block can't come after itself.`);
+      } else if (!other) {
+        errors.push(`${file.path}: comesAfter "${id}", but no block has that id.`);
+      } else if (!blockPhases(other.block.phase).some((phase) => blockPhases(file.block.phase).includes(phase))) {
+        errors.push(`${file.path}: comesAfter "${id}", which shares no phase with it. It only sets the order within a phase, so this does nothing.`);
+      }
     }
   }
 
@@ -397,7 +449,7 @@ export function validateBlockSet(files: BlockFile[]): string[] {
   return errors;
 }
 
-/** Finds loops such as a → b → a. Reports each loop once. */
+/** Finds loops such as a → b → a, across dependsOn and comesAfter. Reports each loop once. */
 function findCircularDependencies(byId: Map<string, BlockFile>): string[] {
   const errors: string[] = [];
   const done = new Set<string>();
@@ -417,7 +469,7 @@ function findCircularDependencies(byId: Map<string, BlockFile>): string[] {
     }
     const file = byId.get(id);
     if (!file) return;
-    for (const dep of file.block.dependsOn) {
+    for (const dep of [...file.block.dependsOn, ...(file.block.comesAfter ?? [])]) {
       if (dep !== id) visit(dep, [...trail, id]);
     }
     done.add(id);

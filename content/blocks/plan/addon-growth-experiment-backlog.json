@@ -1,0 +1,90 @@
+{
+  "id": "addon-growth-experiment-backlog",
+  "title": "Build and run an experiment backlog",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Growth comes from many small, well-chosen tests. Keep a ranked backlog of experiments and run them steadily.",
+  "appliesTo": {
+    "pmTypes": [
+      "growth"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Collect ideas for the priority funnel stage.",
+      "Write each as a hypothesis with an expected result.",
+      "Rank them by expected impact, confidence and effort.",
+      "Run the top ones, one change at a time.",
+      "Record every result and what you learned."
+    ],
+    "intermediate": [
+      "Maintain a ranked experiment backlog.",
+      "Run experiments at a steady pace.",
+      "Record and share learning."
+    ],
+    "experienced": [
+      "Track experiment velocity and win rate.",
+      "Combine learning into bigger product bets.",
+      "Protect long-term value with guardrails."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Design and analyse experiments",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "frontend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Build variants",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-scientist"
+    ]
+  },
+  "toolExamples": {
+    "notion": "Keep an experiment backlog with hypothesis, score, status and result.",
+    "amplitude": "Run experiments with guardrail metrics."
+  },
+  "definitionOfDone": [
+    "Ranked backlog in place",
+    "Experiments running regularly",
+    "Results recorded"
+  ],
+  "pitfalls": [
+    "Testing tiny changes with no real impact",
+    "Stopping tests early",
+    "Not sharing failures"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "addon-growth-funnel"
+  ],
+  "comesAfter": ["plan-epics-backlog"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Trustworthy online controlled experiments (Kohavi, Tang and Xu, Cambridge University Press)",
+      "url": "https://doi.org/10.1017/9781108653985"
+    },
+    {
+      "title": "Guardrail metrics: a guide to balanced product growth (Mixpanel)",
+      "url": "https://mixpanel.com/blog/guardrail-metrics/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

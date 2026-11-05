@@ -1,0 +1,94 @@
+{
+  "id": "discover-opportunity-sizing",
+  "title": "Size the opportunity",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Estimate how many people have the problem and what solving it is worth. A rough, honest number helps you compare this opportunity with others and decide how much to invest.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Decide what to count: users affected, time saved, revenue, cost avoided or risk reduced.",
+      "Start from the bottom up: how many people have the problem, how often, and what each occurrence costs or is worth.",
+      "Cross-check from the top down using market or organisation-wide figures.",
+      "Write down every assumption next to the number, with a source or a note that it is a guess.",
+      "Give a low, likely and high estimate rather than one number.",
+      "Compare the result with the cost of discovery and delivery so far."
+    ],
+    "intermediate": [
+      "Choose the value measure that matters most to your organisation.",
+      "Build a bottom-up estimate and cross-check it top-down.",
+      "Show low, likely and high ranges with assumptions and sources.",
+      "Identify which assumption changes the answer most and plan to test it."
+    ],
+    "experienced": [
+      "Size the reachable segment you can realistically serve, not just the total market, and show how share grows over time.",
+      "Model value for users and for the business separately, including second-order effects.",
+      "Run a sensitivity check on the two or three biggest assumptions and present the range honestly.",
+      "Compare against other opportunities in the portfolio using the same method."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Find the counts and frequencies for the bottom-up estimate",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Gather cost, process and market figures for the cross-check",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Keep a short written explanation of the method alongside the numbers so others can follow it.",
+    "power-bi": "Pull usage and volume data into a simple model with sliders for the key assumptions.",
+    "looker": "Build an explore that counts affected users by segment, so the estimate can be refreshed later.",
+    "claude": "Give it your assumptions and ask it to check the arithmetic and point out any assumption that looks too optimistic."
+  },
+  "definitionOfDone": [
+    "Bottom-up and top-down estimates, with a low, likely and high range",
+    "Every assumption listed with a source or marked as a guess",
+    "The most sensitive assumption identified"
+  ],
+  "pitfalls": [
+    "Quoting a huge total market that you could never reach",
+    "Hiding guesses inside precise-looking numbers",
+    "Sizing only the business value and ignoring user value"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "discover-user-research",
+    "discover-market-competitors"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

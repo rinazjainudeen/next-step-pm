@@ -1,0 +1,84 @@
+{
+  "id": "addon-internal-users",
+  "title": "Treat internal users as customers",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "Staff who use internal tools deserve the same care as customers. Research their work and design for it.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "internal"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Identify the staff groups who will use the tool.",
+      "Watch them at work and note their pain points.",
+      "Find out what tools they use alongside it.",
+      "Involve them in testing.",
+      "Measure time saved and errors reduced."
+    ],
+    "intermediate": [
+      "Research staff in context.",
+      "Test with real staff and data.",
+      "Measure efficiency and satisfaction."
+    ],
+    "experienced": [
+      "Measure the business value of internal tools.",
+      "Build a feedback loop with staff.",
+      "Hold internal tools to public-facing standards."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Research staff in their workplace",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Map processes and systems",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Map a day in the life of each staff group.",
+    "sharepoint-word": "Gather feedback through existing staff channels."
+  },
+  "definitionOfDone": [
+    "Staff groups researched",
+    "Pain points prioritised",
+    "Measures agreed"
+  ],
+  "pitfalls": [
+    "Assuming staff will cope",
+    "Designing from the procedure manual",
+    "Ignoring other tools they use"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Services for government users (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/design/services-for-government-users"
+    },
+    {
+      "title": "Journey mapping 101 (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/journey-mapping-101/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

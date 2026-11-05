@@ -1,0 +1,101 @@
+{
+  "id": "design-feasibility",
+  "title": "Check feasibility and cost with engineering",
+  "phase": "design",
+  "kind": "core",
+  "summary": "Before committing, check with engineers that the design can be built with the time, skills and technology you have, and roughly what it will cost. Finding out late is far more expensive.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Walk the engineers through the tested design and the problem it solves.",
+      "Ask what is straightforward, what is hard and what is unknown.",
+      "For anything unknown, agree a short technical test, often called a spike, to find out.",
+      "Ask for a rough size for each part of the design, such as small, medium or large.",
+      "Discuss simpler versions of the hardest parts that would still meet the user need.",
+      "Write down the risks, dependencies and rough effort, and update the design if needed."
+    ],
+    "intermediate": [
+      "Review the design with engineering and identify complexity and unknowns.",
+      "Run time-boxed spikes for the biggest technical risks.",
+      "Get rough sizes and explore simpler alternatives for costly parts.",
+      "Record risks, dependencies and estimates."
+    ],
+    "experienced": [
+      "Include architecture, security, data, scalability and running costs, not just build effort.",
+      "Use feasibility prototypes for genuinely new technology, and treat them as discovery.",
+      "Make cost and value trade-offs explicit with the team rather than negotiating estimates down.",
+      "Check fit with the technical strategy and platform roadmap."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Lead the review and give rough sizes",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "backend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Run a spike on the riskiest technical unknown",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "devops",
+        "task": "Estimate hosting, running and support costs",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "architect",
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Walk engineers through the prototype and let them leave comments on parts they are unsure about.",
+    "jira": "Create spike tickets with a time box and a clear question to answer.",
+    "github": "Keep spike code in a separate branch so it is clearly throwaway.",
+    "aws": "Use the pricing calculator to estimate running costs for the main services.",
+    "azure": "Use the pricing calculator to estimate running costs for the main services.",
+    "gcp": "Use the pricing calculator to estimate running costs for the main services."
+  },
+  "definitionOfDone": [
+    "Design reviewed with engineering",
+    "Biggest technical unknowns tested with spikes",
+    "Rough sizes, risks and dependencies recorded",
+    "Design updated where needed"
+  ],
+  "pitfalls": [
+    "Asking engineers for exact dates at this stage",
+    "Forgetting running and support costs",
+    "Ignoring a simpler option that meets the same need"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "design-test-prototype"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Parallel and iterative design (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/parallel-and-iterative-design/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

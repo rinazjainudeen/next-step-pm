@@ -1,0 +1,87 @@
+{
+  "id": "addon-tech-platform-adoption",
+  "title": "Drive platform adoption and migrations",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "Internal platforms only create value when teams adopt them. Make moving easy, show the benefit and support teams through it.",
+  "appliesTo": {
+    "pmTypes": [
+      "technical"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the teams who should adopt and what they use now.",
+      "Show the benefit in their terms: time saved, fewer incidents, lower cost.",
+      "Make the first step easy with guides, templates and help.",
+      "Start with a few willing teams and share their results.",
+      "Track adoption and help teams who are stuck."
+    ],
+    "intermediate": [
+      "Segment teams by readiness.",
+      "Provide migration guides and support.",
+      "Track adoption and blockers."
+    ],
+    "experienced": [
+      "Agree deprecation dates for old systems with leaders.",
+      "Measure platform value, not just adoption.",
+      "Build a community of practice around the platform."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "devops",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Provide migration tooling and support",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write migration guides",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Provide template repositories that start teams on the platform.",
+    "confluence": "Publish migration guides and an adoption tracker."
+  },
+  "definitionOfDone": [
+    "Target teams listed",
+    "Migration guides ready",
+    "Adoption tracked"
+  ],
+  "pitfalls": [
+    "Forcing adoption without showing value",
+    "No support during migration",
+    "Running old and new systems forever"
+  ],
+  "estimatedEffort": "5-20 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Strangler fig (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/StranglerFigApplication.html"
+    },
+    {
+      "title": "The Prosci ADKAR model (Prosci)",
+      "url": "https://www.prosci.com/methodology/adkar"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

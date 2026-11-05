@@ -1,0 +1,80 @@
+{
+  "id": "wow-raid-log",
+  "title": "Keep a risks, assumptions, issues and dependencies log",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "A RAID log keeps track of risks, assumptions, issues and dependencies in one place, with owners and actions. It stops important problems slipping through.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "hybrid"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Create one log with four sections: risks, assumptions, issues and dependencies.",
+      "For each item, write a short description, an owner and a next action.",
+      "Rate risks by how likely and how serious they are.",
+      "Review the log every week with the team.",
+      "Escalate the most serious items to your sponsor."
+    ],
+    "intermediate": [
+      "Keep one RAID log with owners and actions.",
+      "Rate and review regularly.",
+      "Escalate serious items."
+    ],
+    "experienced": [
+      "Link RAID items to the plan and roadmap.",
+      "Use the log to drive decisions, not just record them.",
+      "Keep it short and focused on what matters."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Maintain the log and run reviews",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use a RAID log template on the project page.",
+    "jira": "Track risks and dependencies as issues with owners.",
+    "sharepoint-word": "Keep a shared log in a list with owners and dates."
+  },
+  "definitionOfDone": [
+    "Log created with owners and actions",
+    "Reviewed weekly",
+    "Serious items escalated"
+  ],
+  "pitfalls": [
+    "A log nobody reads",
+    "Items with no owner",
+    "Hundreds of minor items"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A product manager's guide to release planning (Atlassian)",
+      "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning"
+    },
+    {
+      "title": "Incident management handbook (Atlassian)",
+      "url": "https://www.atlassian.com/incident-management/handbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

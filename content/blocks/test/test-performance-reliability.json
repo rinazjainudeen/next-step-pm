@@ -1,0 +1,97 @@
+{
+  "id": "test-performance-reliability",
+  "title": "Check performance and reliability",
+  "phase": "test",
+  "kind": "core",
+  "summary": "Users leave slow or unreliable products. Agree how fast and available the product must be, test that it is, and make sure the team will know quickly when it is not.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Agree simple targets with engineers, for example 'pages load in under 2 seconds for most users' and 'the service is available 99.5 percent of the time'.",
+      "Find out how many users you expect at the busiest times.",
+      "Ask the team to test the product under that load and a bit more.",
+      "Check what happens when something fails: is there a clear error message and a way to recover?",
+      "Make sure alerts are set up so the team hears about problems before users complain."
+    ],
+    "intermediate": [
+      "Agree service level objectives for speed and availability.",
+      "Run load and failure tests against expected peak use.",
+      "Check monitoring and alerting cover the key user journeys.",
+      "Decide what to fix before launch and what to accept."
+    ],
+    "experienced": [
+      "Set objectives from the user's point of view and agree an error budget with engineering.",
+      "Use the error budget to balance new features against reliability work.",
+      "Plan capacity for growth and for unusual peaks.",
+      "Run game days to rehearse failures."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "devops",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Set up monitoring, alerting and load tests",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "qa",
+        "task": "Run performance and failure test scenarios",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Agree targets and decide on fixes",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "devops"
+    ]
+  },
+  "toolExamples": {
+    "aws": "Use CloudWatch alarms on error rates and response times for the key journeys.",
+    "azure": "Use Azure Monitor alerts on error rates and response times.",
+    "gcp": "Use Cloud Monitoring to set service level objectives and alerts.",
+    "vercel": "Check Speed Insights for real-user page load times."
+  },
+  "definitionOfDone": [
+    "Speed and availability targets agreed",
+    "Load and failure tests run",
+    "Monitoring and alerts cover key journeys"
+  ],
+  "pitfalls": [
+    "Testing only with a handful of users",
+    "No alerts, so users find problems first",
+    "Aiming for 100 percent availability, which is rarely worth the cost"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "build-user-stories"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Service level objectives (Google SRE book)",
+      "url": "https://sre.google/sre-book/service-level-objectives/"
+    },
+    {
+      "title": "Incident management handbook (Atlassian)",
+      "url": "https://www.atlassian.com/incident-management/handbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

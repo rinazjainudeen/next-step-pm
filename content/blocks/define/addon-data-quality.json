@@ -1,0 +1,88 @@
+{
+  "id": "addon-data-quality",
+  "title": "Set data quality and trust measures",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "If people do not trust the data, they will not use it. Agree what good quality means and how you will show it.",
+  "appliesTo": {
+    "pmTypes": [
+      "data"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Agree what quality means for your users: accuracy, completeness, freshness and consistency.",
+      "Set measurable targets for each, such as 'updated by 8am daily'.",
+      "Decide how you will check them automatically.",
+      "Show users when data was last updated and any known issues.",
+      "Agree who fixes problems and how fast."
+    ],
+    "intermediate": [
+      "Define quality dimensions and targets.",
+      "Automate checks and show freshness.",
+      "Agree ownership and fix times."
+    ],
+    "experienced": [
+      "Publish data contracts between producers and consumers.",
+      "Track trust through user feedback and usage.",
+      "Report data quality as a product health measure."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "data-scientist"
+        ],
+        "task": "Define checks and targets",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "backend-engineer",
+        "task": "Build automated quality checks",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-analyst",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "looker": "Show freshness and quality status on each dashboard.",
+    "power-bi": "Add a data quality page to the report."
+  },
+  "definitionOfDone": [
+    "Quality dimensions and targets agreed",
+    "Automated checks in place",
+    "Freshness visible to users"
+  ],
+  "pitfalls": [
+    "Users finding errors before you do",
+    "No owner for fixes",
+    "Quality defined only by engineers"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "define-success-metrics"
+  ],
+  "comesAfter": ["define-success-metrics"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Data mesh principles and logical architecture (martinfowler.com)",
+      "url": "https://martinfowler.com/articles/data-mesh-principles.html"
+    },
+    {
+      "title": "Tracking plan (Twilio Segment docs)",
+      "url": "https://www.twilio.com/docs/segment/protocols/tracking-plan/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

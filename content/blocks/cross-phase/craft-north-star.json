@@ -1,0 +1,84 @@
+{
+  "id": "craft-north-star",
+  "title": "Choose a north star metric",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "A north star metric captures the core value users get from the product. Paired with a few input metrics the team can influence, it keeps everyone pulling in the same direction.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Ask what value users get when the product works.",
+      "Find a number that reflects that value.",
+      "List what drives it.",
+      "Agree it with the team.",
+      "Track it every week."
+    ],
+    "intermediate": [
+      "Identify the moment users get real value and a metric that counts it.",
+      "Break it into three to five input metrics teams can move.",
+      "Check it reflects long-term value, not short-term spikes.",
+      "Align team goals to the inputs."
+    ],
+    "experienced": [
+      "Run a workshop with leaders to agree the metric and inputs.",
+      "Check it cannot be gamed at the expense of users.",
+      "Use it to make prioritisation trade-offs across teams.",
+      "Know when to change it as the product matures."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "data-scientist"
+        ],
+        "task": "Test candidate metrics against historical data",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-analyst",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Use the North Star template to map the metric and inputs.",
+    "looker": "Define the metric once so every report uses it the same way.",
+    "miro": "Draw the metric tree with inputs below the north star."
+  },
+  "definitionOfDone": [
+    "North star metric agreed",
+    "Input metrics defined",
+    "Tracked and reviewed regularly"
+  ],
+  "pitfalls": [
+    "Choosing revenue, which measures value captured, not delivered",
+    "Too many north stars",
+    "Inputs the team cannot influence"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    },
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

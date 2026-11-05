@@ -1,0 +1,78 @@
+{
+  "id": "craft-technical-fluency",
+  "title": "Build technical fluency",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "You do not need to code, but you do need to understand how your product works, what is hard to build and why. Technical fluency earns engineers' trust and leads to better trade-offs.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Ask an engineer to draw how your product works: the main parts and how data flows.",
+      "Learn the basic terms your team uses, such as front end, back end, API and database.",
+      "Sit in on a few technical discussions and ask questions afterwards.",
+      "Learn how code gets from a developer's laptop to live service.",
+      "Try a small technical task yourself, such as reading logs or running a query."
+    ],
+    "intermediate": [
+      "Understand your architecture and its constraints.",
+      "Learn the release pipeline and testing approach.",
+      "Read technical designs and ask good questions."
+    ],
+    "experienced": [
+      "Discuss trade-offs in architecture, cost and scale with confidence.",
+      "Spot technical risks in product ideas early.",
+      "Help engineers explain technical work to leaders."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Walk you through the architecture",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Read the README and recent pull requests to see how the team works.",
+    "miro": "Redraw the architecture yourself and check it with an engineer.",
+    "claude": "Paste a technical term or design and ask for a plain-English explanation with an example."
+  },
+  "definitionOfDone": [
+    "You can explain how the product works",
+    "You understand the release process",
+    "Engineers say you ask useful technical questions"
+  ],
+  "pitfalls": [
+    "Pretending to understand",
+    "Telling engineers how to build things",
+    "Avoiding technical discussions"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "API design guide (Google Cloud)",
+      "url": "https://cloud.google.com/apis/design"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

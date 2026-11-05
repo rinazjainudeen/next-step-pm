@@ -21,6 +21,9 @@ export function BlockCard({ block }: { block: BlockSummary }) {
         <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">
           {labelOf(KINDS, block.kind)}
         </span>
+        {block.optional && (
+          <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">Go further</span>
+        )}
         {block.placeholder && (
           <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-destructive">
             Placeholder

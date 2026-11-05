@@ -1,0 +1,84 @@
+{
+  "id": "addon-b2b-buyers-users",
+  "title": "Build for both buyers and users",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "In business software the person who buys is often not the person who uses it. Meet both needs.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "b2b"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the buyer, the users and any administrators.",
+      "Write what each one needs to succeed.",
+      "Spot conflicts, such as control versus ease of use.",
+      "Decide how to meet both.",
+      "Measure success for each group."
+    ],
+    "intermediate": [
+      "Define needs for buyers, users and admins.",
+      "Resolve conflicts.",
+      "Set measures for each."
+    ],
+    "experienced": [
+      "Design for adoption so buyers see value.",
+      "Give buyers reporting that shows return on investment.",
+      "Align packaging with buyer needs."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Design for different roles",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "task": "Define usage and value reports",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Write a needs table by role.",
+    "figma": "Design role-specific views."
+  },
+  "definitionOfDone": [
+    "Roles and needs defined",
+    "Conflicts resolved",
+    "Measures set for each role"
+  ],
+  "pitfalls": [
+    "Designing only for the buyer",
+    "Forgetting administrators",
+    "No proof of value for buyers"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "comesAfter": ["define-problem-statement"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Positioning resources (April Dunford)",
+      "url": "https://www.aprildunford.com/"
+    },
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,84 @@
+{
+  "id": "addon-data-decisions",
+  "title": "Find the decisions your data product supports",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "Data products succeed when they help someone make a better decision. Start from the decisions, not the data.",
+  "appliesTo": {
+    "pmTypes": [
+      "data"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List who will use the data product and what decisions they make.",
+      "For each decision, ask what information they use now and what is missing.",
+      "Ask how often they decide and how fast they need the data.",
+      "Find out what a wrong decision costs.",
+      "Prioritise the decisions with the most value."
+    ],
+    "intermediate": [
+      "Map users, decisions and information needs.",
+      "Assess frequency, timeliness and value.",
+      "Prioritise decisions to support."
+    ],
+    "experienced": [
+      "Link decisions to business outcomes.",
+      "Design for decisions that can be automated.",
+      "Measure success by better decisions, not usage."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Interview decision-makers",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "task": "Map current data use",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Map each user, their decisions and the data they need.",
+    "notion": "Keep a decision catalogue with owners and value."
+  },
+  "definitionOfDone": [
+    "Users and decisions mapped",
+    "Information needs captured",
+    "Priority decisions chosen"
+  ],
+  "pitfalls": [
+    "Starting from available data",
+    "Building dashboards nobody uses",
+    "Ignoring how fast data is needed"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Data mesh principles and logical architecture (martinfowler.com)",
+      "url": "https://martinfowler.com/articles/data-mesh-principles.html"
+    },
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

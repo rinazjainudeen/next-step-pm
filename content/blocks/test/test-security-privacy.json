@@ -1,0 +1,100 @@
+{
+  "id": "test-security-privacy",
+  "title": "Check security, privacy and data protection",
+  "phase": "test",
+  "kind": "core",
+  "summary": "Before real users and real data arrive, check that the product protects both. Security and privacy problems found after launch are expensive and damage trust.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List what personal or sensitive data the product collects, where it is stored and who can see it.",
+      "Check you only collect what you need, and that users are told how it is used.",
+      "Ask your security colleague or a specialist to check the product against common risks, such as the OWASP Top Ten.",
+      "Check who can access what: users should only see their own data, and staff only what they need.",
+      "Complete a data protection impact assessment if the processing is high risk.",
+      "Fix serious issues before launch and record any accepted risks with an owner."
+    ],
+    "intermediate": [
+      "Map personal data flows and check minimisation and transparency.",
+      "Arrange a security review or penetration test proportionate to the risk.",
+      "Check access controls and logging.",
+      "Complete a data protection impact assessment where needed and track fixes."
+    ],
+    "experienced": [
+      "Build security and privacy reviews into the delivery process, not just before launch.",
+      "Threat-model new features with engineering early.",
+      "Agree risk acceptance rules with security and legal leaders.",
+      "Plan for data subject requests, retention and deletion from the start."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Lead the data protection impact assessment",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "backend-engineer",
+        "orRoles": [
+          "fullstack-engineer",
+          "tech-lead"
+        ],
+        "task": "Fix security issues and check access controls",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "devops",
+        "task": "Check hosting, secrets and logging",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "github": "Turn on secret scanning and dependency alerts for the repository.",
+    "gitlab": "Use security scanning in the pipeline so issues are found on every change.",
+    "aws": "Review access permissions so each service has only what it needs.",
+    "azure": "Review access permissions so each service has only what it needs.",
+    "gcp": "Review access permissions so each service has only what it needs.",
+    "confluence": "Keep the data map and the impact assessment together on one page."
+  },
+  "definitionOfDone": [
+    "Personal data mapped and minimised",
+    "Security review done and serious issues fixed",
+    "Impact assessment done where needed",
+    "Accepted risks recorded with owners"
+  ],
+  "pitfalls": [
+    "Leaving security to the last week",
+    "Collecting data 'in case it is useful'",
+    "Assuming the hosting provider handles everything"
+  ],
+  "estimatedEffort": "2-10 days",
+  "dependsOn": [
+    "build-user-stories"
+  ],
+  "comesAfter": ["test-performance-reliability"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "OWASP Top Ten (OWASP Foundation)",
+      "url": "https://owasp.org/www-project-top-ten/"
+    },
+    {
+      "title": "ICO resources to help designers embed data protection by default (ICO)",
+      "url": "https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/03/ico-shares-resources-to-help-designers-embed-data-protection-by-default"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,90 @@
+{
+  "id": "launch-support-readiness",
+  "title": "Prepare support and operations",
+  "phase": "launch",
+  "kind": "core",
+  "summary": "Make sure the people and processes behind the product are ready on day one: who answers questions, who fixes problems and how issues reach the team.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the questions and problems users are likely to have, using beta feedback.",
+      "Write help content and short guides for support staff.",
+      "Agree how support raises issues with the product team, and how fast each type must be handled.",
+      "Check any manual steps behind the scenes have people, training and time.",
+      "Run a short practice session with support before launch."
+    ],
+    "intermediate": [
+      "Prepare help content, support guides and escalation routes.",
+      "Agree service levels for each issue type.",
+      "Check operational processes and staffing.",
+      "Run a readiness review before launch."
+    ],
+    "experienced": [
+      "Design support into the product, with self-service help and clear error messages.",
+      "Set up a feedback loop so support themes reach the backlog every week.",
+      "Plan for peak demand at launch.",
+      "Agree ownership of the product in live service."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Write the help content and support guides",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "delivery-manager",
+        "task": "Agree escalation routes and run the readiness review",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Map the operational processes behind the product",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "devops"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Set up a service desk queue with categories that match your escalation routes.",
+    "confluence": "Publish a support knowledge base linked from the help pages.",
+    "notion": "Keep a launch-week issue log that support and the team both use."
+  },
+  "definitionOfDone": [
+    "Help content and support guides ready",
+    "Escalation routes and service levels agreed",
+    "Operations staffed and trained"
+  ],
+  "pitfalls": [
+    "Support learning about the launch from users",
+    "No route for problems to reach the team",
+    "Forgetting the manual work behind the scenes"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Incident management handbook (Atlassian)",
+      "url": "https://www.atlassian.com/incident-management/handbook"
+    },
+    {
+      "title": "Designing assisted digital support (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service/designing-assisted-digital"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

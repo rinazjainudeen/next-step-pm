@@ -26,6 +26,8 @@ export type PlanBlock = {
   title: string;
   summary: string;
   kind: KindId;
+  /** A "Go further" block: extra, and not counted in the timing or next actions. */
+  optional?: boolean;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;
@@ -72,4 +74,6 @@ export type Plan = {
   phases: PlanPhase[];
   /** Ways-of-working blocks. They recur, so they sit outside the timeline. */
   rhythm: PlanBlock[];
+  /** Craft blocks. Skills that grow over time, so they sit outside the timeline. */
+  growSkills: PlanBlock[];
 };

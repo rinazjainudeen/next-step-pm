@@ -1,0 +1,75 @@
+{
+  "id": "craft-product-writing",
+  "title": "Write clearly: briefs, updates and decision records",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Much of a PM's influence happens in writing. Clear, short documents help people understand quickly, decide well and remember why.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start with the point: what you want the reader to know or decide.",
+      "Know your reader and what they already know.",
+      "Use short sentences, plain words and headings.",
+      "Cut anything that does not help the reader.",
+      "Ask a colleague to read it and tell you what they took away."
+    ],
+    "intermediate": [
+      "Lead with the conclusion.",
+      "Structure documents for scanning.",
+      "Edit hard and test with a reader."
+    ],
+    "experienced": [
+      "Write narratives that replace slide decks for big decisions.",
+      "Set writing standards for your team.",
+      "Use written decision records to build institutional memory."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Review documents for clarity",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "content-designer"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Use suggestion mode so reviewers propose cuts.",
+    "confluence": "Use a decision record template: context, options, decision, reasons.",
+    "claude": "Paste a draft and ask it to cut it by a third without losing meaning. Check the result."
+  },
+  "definitionOfDone": [
+    "Document leads with the main point",
+    "Plain language and clear structure",
+    "Tested with a reader"
+  ],
+  "pitfalls": [
+    "Burying the conclusion",
+    "Jargon and acronyms",
+    "Writing for yourself, not the reader"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Technical writing courses for engineers and product managers (Google for Developers)",
+      "url": "https://developers.google.com/tech-writing"
+    },
+    {
+      "title": "Working backwards PR/FAQ (Working Backwards)",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

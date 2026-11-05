@@ -1,0 +1,97 @@
+{
+  "id": "measure-experiments",
+  "title": "Run A/B tests and experiments",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "An A/B test shows two versions to similar groups of users and compares results. It is the most reliable way to know whether a change caused an improvement.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write a hypothesis: what you will change, for whom, and what you expect to happen.",
+      "Pick one main metric and one or two guardrails before you start.",
+      "Ask an analyst how many users and how long you need for a reliable answer.",
+      "Split users at random between the current version and the new one.",
+      "Do not stop early because the result looks good. Wait until the planned end.",
+      "Record the result, including when nothing changed, and decide what to do next."
+    ],
+    "intermediate": [
+      "Write a hypothesis with a primary metric and guardrails.",
+      "Calculate sample size and duration before starting.",
+      "Run the test without peeking or changing it midway.",
+      "Analyse, record and share the result."
+    ],
+    "experienced": [
+      "Run an A/A test or sample checks to make sure the experiment system is trustworthy.",
+      "Use an overall evaluation measure that reflects long-term value.",
+      "Watch for novelty effects and differences between user groups.",
+      "Build an experiment log so the organisation learns from every test."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Design the test, calculate sample size and analyse results",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "frontend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Build the variants behind a feature flag",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-scientist",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Use the experiment features to assign users and analyse results with guardrails.",
+    "mixpanel": "Use the experiments report to compare variants on your main metric.",
+    "ga4": "Compare variant audiences on key events if you run tests through another tool.",
+    "notion": "Keep an experiment log: hypothesis, design, result and decision."
+  },
+  "definitionOfDone": [
+    "Hypothesis, metric and guardrails set before starting",
+    "Sample size and duration calculated",
+    "Result recorded and decision made"
+  ],
+  "pitfalls": [
+    "Stopping early when the result looks good",
+    "Testing many changes at once and not knowing which worked",
+    "Only recording wins"
+  ],
+  "estimatedEffort": "5-20 days",
+  "dependsOn": [
+    "measure-dashboard"
+  ],
+  "comesAfter": ["measure-results-hypothesis"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Trustworthy online controlled experiments (Kohavi, Tang and Xu, Cambridge University Press)",
+      "url": "https://doi.org/10.1017/9781108653985"
+    },
+    {
+      "title": "Guardrail metrics: a guide to balanced product growth (Mixpanel)",
+      "url": "https://mixpanel.com/blog/guardrail-metrics/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

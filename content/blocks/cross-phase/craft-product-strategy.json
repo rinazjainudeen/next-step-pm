@@ -1,0 +1,89 @@
+{
+  "id": "craft-product-strategy",
+  "title": "Build a product strategy",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Strategy is how you plan to reach the vision: which problems to focus on, which to ignore and why. Good strategy is mostly about saying no.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Start from the vision and company goals.",
+      "List the biggest problems standing in the way.",
+      "Pick two or three to focus on.",
+      "Say what you will not do.",
+      "Share it and use it to prioritise."
+    ],
+    "intermediate": [
+      "Analyse users, market, competitors and your organisation's strengths.",
+      "Identify the few insights that give you an edge.",
+      "Choose two or three focus areas and explicit non-goals.",
+      "Turn focus areas into objectives and roadmap themes."
+    ],
+    "experienced": [
+      "Diagnose the core challenge before choosing actions.",
+      "Make hard trade-offs visible and get leadership to commit to them.",
+      "Sequence bets so early ones create advantage for later ones.",
+      "Review strategy regularly against results and change course when evidence demands."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Supply market and usage analysis",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Gather competitor and market information",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Write a short strategy narrative: diagnosis, focus areas, non-goals and how you will measure progress.",
+    "miro": "Map the challenges and cluster them before choosing focus areas.",
+    "claude": "Paste your strategy and ask it to find the weakest assumption."
+  },
+  "definitionOfDone": [
+    "Core challenge diagnosed",
+    "Focus areas and non-goals agreed",
+    "Strategy linked to objectives and roadmap"
+  ],
+  "pitfalls": [
+    "A list of goals called a strategy",
+    "No non-goals",
+    "Strategy written once and never revisited"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product strategy: focus (SVPG)",
+      "url": "https://www.svpg.com/product-strategy-focus/"
+    },
+    {
+      "title": "Product vision vs strategy (SVPG)",
+      "url": "https://www.svpg.com/product-vision-vs-strategy/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

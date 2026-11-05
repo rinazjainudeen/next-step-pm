@@ -1,0 +1,86 @@
+{
+  "id": "addon-data-governance",
+  "title": "Handle data ownership, lineage and access",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Know who owns each data source, where data comes from and who can see it. Good governance keeps data safe, legal and trusted.",
+  "appliesTo": {
+    "pmTypes": [
+      "data"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List each data source, its owner and what it contains.",
+      "Mark any personal or sensitive data.",
+      "Agree who can access what, and how access is granted.",
+      "Record where data comes from and how it is changed, so people can trace it.",
+      "Agree how long data is kept and when it is deleted."
+    ],
+    "intermediate": [
+      "Catalogue sources, owners and sensitivity.",
+      "Define access rules and lineage.",
+      "Agree retention."
+    ],
+    "experienced": [
+      "Design federated ownership with clear standards.",
+      "Automate access and lineage tracking.",
+      "Align with legal and security policies."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Advise on sensitive data, access and retention",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "data-analyst",
+        "task": "Build the data catalogue",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "policy-legal",
+      "architect"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep a data catalogue with owners and sensitivity.",
+    "gcp": "Use access controls and data catalogue features.",
+    "azure": "Use role-based access and data governance tools."
+  },
+  "definitionOfDone": [
+    "Sources, owners and sensitivity catalogued",
+    "Access rules agreed",
+    "Retention agreed"
+  ],
+  "pitfalls": [
+    "No clear owners",
+    "Broad access 'to be safe'",
+    "Keeping data forever"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "addon-data-quality"
+  ],
+  "comesAfter": ["plan-define-mvp"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Data mesh principles and logical architecture (martinfowler.com)",
+      "url": "https://martinfowler.com/articles/data-mesh-principles.html"
+    },
+    {
+      "title": "ICO resources to help designers embed data protection by default (ICO)",
+      "url": "https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/03/ico-shares-resources-to-help-designers-embed-data-protection-by-default"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

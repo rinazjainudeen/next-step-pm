@@ -1,0 +1,86 @@
+{
+  "id": "craft-pricing",
+  "title": "Price and package a product",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Pricing and packaging decide what customers pay for and what they get. They shape who buys, how they use the product and how the business grows.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Learn what customers value most.",
+      "Look at how alternatives charge.",
+      "Pick what to charge for.",
+      "Group features into simple plans.",
+      "Test before launching."
+    ],
+    "intermediate": [
+      "Research willingness to pay.",
+      "Choose a value metric that grows with customer value.",
+      "Design simple packages and test them."
+    ],
+    "experienced": [
+      "Choose a value metric that scales with customer success.",
+      "Design packages for different segments, with clear reasons to upgrade.",
+      "Test prices with research and controlled experiments.",
+      "Plan price changes and how to treat existing customers."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "data-scientist"
+        ],
+        "task": "Analyse usage and revenue by segment",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Check pricing terms and consumer law",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-analyst",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "power-bi": "Model revenue under different pricing scenarios.",
+    "google-docs": "Document pricing principles and the reasoning behind each package."
+  },
+  "definitionOfDone": [
+    "Value metric chosen",
+    "Packages designed with clear upgrade reasons",
+    "Prices tested before launch"
+  ],
+  "pitfalls": [
+    "Pricing from cost rather than value",
+    "Too many plans",
+    "Changing prices without a plan for existing customers"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "SaaS pricing and packaging for modern B2B teams (Schematic)",
+      "url": "https://schematichq.com/blog/saas-pricing-and-packaging"
+    },
+    {
+      "title": "Positioning resources (April Dunford)",
+      "url": "https://www.aprildunford.com/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

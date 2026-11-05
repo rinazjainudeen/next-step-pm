@@ -1,0 +1,84 @@
+{
+  "id": "addon-transformation-current-state",
+  "title": "Map the current process and its pain points",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "Before changing how an organisation works, understand how it works today, including the workarounds people rely on.",
+  "appliesTo": {
+    "pmTypes": [
+      "transformation"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick the process to map and its start and end points.",
+      "Watch people do the work, not just what the procedure says.",
+      "Map each step, who does it, which systems they use and how long it takes.",
+      "Mark pain points, delays, rework and workarounds.",
+      "Check the map with the people who do the work."
+    ],
+    "intermediate": [
+      "Observe and map the as-is process.",
+      "Measure time, cost and errors.",
+      "Validate with staff."
+    ],
+    "experienced": [
+      "Map across departments to find hand-off problems.",
+      "Quantify the cost of pain points.",
+      "Use the map to build the case for change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ba",
+        "task": "Map the process and systems",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Observe staff doing the work",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "ba"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Draw a swimlane map with a lane per role.",
+    "mural": "Map the process with staff in a workshop."
+  },
+  "definitionOfDone": [
+    "Current process mapped from observation",
+    "Pain points and workarounds marked",
+    "Map validated with staff"
+  ],
+  "pitfalls": [
+    "Mapping the official process, not the real one",
+    "Skipping the people who do the work",
+    "Jumping to solutions"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Journey mapping 101 (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/journey-mapping-101/"
+    },
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,88 @@
+{
+  "id": "measure-user-feedback",
+  "title": "Collect and act on user feedback continuously",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "Numbers tell you what is happening; feedback tells you why. Set up regular ways to hear from users and make sure what they say reaches decisions.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List where feedback already arrives: support tickets, reviews, surveys, sales calls and social media.",
+      "Add a simple way to give feedback inside the product if there is not one.",
+      "Once a week, read a sample and group it into themes.",
+      "Share the top themes with the team, with real quotes.",
+      "Link themes to backlog items and tell users when you fix something they raised."
+    ],
+    "intermediate": [
+      "Bring feedback from all channels into one place.",
+      "Tag and theme it weekly, with counts.",
+      "Share top themes and link them to backlog decisions.",
+      "Close the loop with users."
+    ],
+    "experienced": [
+      "Combine feedback with behaviour data to size each theme.",
+      "Watch for groups whose feedback is under-represented.",
+      "Run regular satisfaction measures and track them alongside usage.",
+      "Make feedback review part of planning, not an extra."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Theme feedback and run follow-up interviews",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Combine feedback with usage data",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "user-researcher",
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Link feedback themes to backlog items so you can see what drove each change.",
+    "notion": "Keep a feedback database tagged by theme, source and user type.",
+    "miro": "Run a monthly affinity mapping session on recent feedback.",
+    "claude": "Paste anonymised feedback and ask it to suggest themes with counts. Check the themes against the raw text."
+  },
+  "definitionOfDone": [
+    "Feedback channels mapped and gathered in one place",
+    "Weekly theming in place",
+    "Themes linked to backlog decisions"
+  ],
+  "pitfalls": [
+    "Only listening to the loudest users",
+    "Collecting feedback without acting",
+    "Not telling users what changed"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [],
+  "comesAfter": ["measure-dashboard"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    },
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

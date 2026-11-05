@@ -1,0 +1,80 @@
+{
+  "id": "craft-pm-role",
+  "title": "Understand what a product manager does",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "A product manager makes sure the team builds the right thing: something users need, that works for the organisation and that can be built. Knowing what the role is, and is not, helps you focus your time.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Learn the four risks every PM manages: will people want it, can they use it, can we build it, and does it work for the business.",
+      "Write down the outcomes you are responsible for, not just the tasks you do.",
+      "Find out how your organisation divides work between you, design, engineering, delivery and any product owner.",
+      "Book short one-to-ones with each role in your team and ask what they need from you.",
+      "Each week, check how much of your time went on users, the team and stakeholders. Aim for a balance.",
+      "Pick one experienced PM to learn from and meet them regularly."
+    ],
+    "intermediate": [
+      "Map your responsibilities against value, usability, feasibility and viability.",
+      "Agree role boundaries with your team.",
+      "Review where your time goes each month."
+    ],
+    "experienced": [
+      "Coach new PMs on the role and on outcomes over output.",
+      "Help your organisation define product roles clearly.",
+      "Model the role through your own habits."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Explain how delivery and product work together here",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "notion": "Keep a simple weekly log of where your time went and what you learned.",
+    "claude": "Describe your week and ask which activities moved outcomes and which did not."
+  },
+  "definitionOfDone": [
+    "Outcomes you own written down",
+    "Role boundaries agreed with your team",
+    "A mentor or peer to learn from"
+  ],
+  "pitfalls": [
+    "Becoming the team's note-taker or ticket-writer only",
+    "Saying yes to every request",
+    "Trying to be the designer or engineer as well"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Product vision vs strategy (SVPG)",
+      "url": "https://www.svpg.com/product-vision-vs-strategy/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

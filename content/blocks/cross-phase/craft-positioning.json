@@ -1,0 +1,85 @@
+{
+  "id": "craft-positioning",
+  "title": "Position your product against the alternatives",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Positioning explains what your product is, who it is for and why it is better than the alternatives. Clear positioning makes marketing, sales and even product decisions easier.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List what users would use if your product did not exist.",
+      "Write what you do better.",
+      "Name who cares most.",
+      "Write it in one sentence.",
+      "Test it with users."
+    ],
+    "intermediate": [
+      "Map the real alternatives, including doing nothing.",
+      "Identify your unique strengths and the value they create.",
+      "Define the users who care most about that value.",
+      "Choose the market frame that makes your strengths obvious, and test the wording."
+    ],
+    "experienced": [
+      "Revisit positioning as the market changes.",
+      "Align product, marketing and sales on one positioning.",
+      "Use positioning to say no to features that blur it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Test positioning with target users",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write and refine the positioning statement",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "content-designer",
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Map alternatives and your strengths on a board.",
+    "google-docs": "Keep a positioning canvas with each element and its evidence.",
+    "claude": "Ask it to rewrite your positioning for three different audiences."
+  },
+  "definitionOfDone": [
+    "Alternatives and strengths mapped",
+    "Target users defined",
+    "Positioning tested with users"
+  ],
+  "pitfalls": [
+    "Claiming to be for everyone",
+    "Comparing only with direct competitors",
+    "Positioning that product and sales do not share"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Positioning resources (April Dunford)",
+      "url": "https://www.aprildunford.com/"
+    },
+    {
+      "title": "Competitive usability evaluations (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/competitive-usability-evaluations/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,89 @@
+{
+  "id": "measure-dashboard",
+  "title": "Set up a product dashboard",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "A dashboard puts the numbers that matter in one place, so the team can see how the product is doing every week without waiting for reports.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Put your main success metric at the top, with its target.",
+      "Add the supporting metrics and guardrails under it.",
+      "Show trends over time, not just today's number, and mark key releases.",
+      "Keep it to one screen. If it needs scrolling, it has too much on it.",
+      "Review it with the team every week and note what changed and why."
+    ],
+    "intermediate": [
+      "Build a dashboard around the primary metric, inputs and guardrails.",
+      "Show trends, targets and release markers.",
+      "Add breakdowns for key user groups.",
+      "Use it in a weekly team review."
+    ],
+    "experienced": [
+      "Link the dashboard to the north star metric and its input metrics.",
+      "Use a framework such as HEART to cover user experience, not just business numbers.",
+      "Add automatic alerts for big changes.",
+      "Make the dashboard the basis of regular business reviews."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Build the dashboard and check the numbers are right",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Help make the dashboard clear and readable",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-analyst",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "looker": "Build the dashboard on shared metric definitions so everyone sees the same numbers.",
+    "power-bi": "Create a one-page report with targets and trend lines.",
+    "amplitude": "Build a dashboard of saved charts and share it with the team.",
+    "ga4": "Use a custom report collection for the main journeys."
+  },
+  "definitionOfDone": [
+    "Dashboard shows primary metric, supporting metrics and guardrails",
+    "Trends and targets visible",
+    "Weekly review in place"
+  ],
+  "pitfalls": [
+    "Too many charts to read",
+    "Numbers nobody trusts",
+    "Looking at it once and forgetting it"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "build-tracking-plan"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    },
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

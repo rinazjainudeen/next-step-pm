@@ -68,8 +68,11 @@ export default async function PlanPage({
   if (!result.ok) redirect(startHref(draft, firstUnansweredStep(draft) ?? 1));
 
   const plan = buildPlan(result.answers, BLOCKS);
-  // Progress follows the timeline. Onboarding can be skipped, and rhythm blocks repeat.
-  const stepIds = plan.phases.flatMap((phase) => phase.blocks).flatMap((block) => block.steps.map((step) => step.id));
+  // Progress follows the required timeline. Everything else is skippable or repeats.
+  const stepIds = plan.phases
+    .flatMap((phase) => phase.blocks)
+    .filter((block) => !block.optional)
+    .flatMap((block) => block.steps.map((step) => step.id));
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
@@ -185,6 +188,19 @@ export default async function PlanPage({
             <SectionHeading eyebrow="All the way through" title="Your team's rhythm" lead="These repeat throughout your work, so they sit outside the timeline." />
             <div className="mt-8 space-y-4">
               {plan.rhythm.map((block) => (
+                <PlanBlockCard key={block.id} block={block} heading="h3" />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {plan.growSkills.length > 0 && (
+        <section id="grow-your-skills" aria-label="Grow your skills" className={cn("border-t", plan.rhythm.length === 0 && "bg-secondary/40")}>
+          <div className={CONTAINER}>
+            <SectionHeading eyebrow="Whenever you're ready" title="Grow your skills" lead="These build your craft as a PM. They sit outside the timeline, so pick them up as you need them." />
+            <div className="mt-8 space-y-4">
+              {plan.growSkills.map((block) => (
                 <PlanBlockCard key={block.id} block={block} heading="h3" />
               ))}
             </div>

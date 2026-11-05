@@ -1,0 +1,81 @@
+{
+  "id": "addon-transformation-change",
+  "title": "Plan the change for people, not just systems",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "New systems fail when people do not change how they work. Plan how people will learn about, want, learn and keep using the new way.",
+  "appliesTo": {
+    "pmTypes": [
+      "transformation"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the groups affected and how their work will change.",
+      "Explain why the change is happening, early and often.",
+      "Find champions in each group to help others.",
+      "Provide training and help at the moment people need it.",
+      "Check how people are getting on and fix problems quickly.",
+      "Remove the old way once the new way works."
+    ],
+    "intermediate": [
+      "Assess impact by group.",
+      "Plan communication, training and support.",
+      "Track adoption and reinforce the change."
+    ],
+    "experienced": [
+      "Use a change model to find where people are stuck.",
+      "Get visible leadership support.",
+      "Measure behaviour change, not training attendance."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Coordinate communication and training",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write guides and messages",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "sharepoint-word": "Publish guides where staff already look.",
+    "confluence": "Keep a change plan with groups, messages and dates."
+  },
+  "definitionOfDone": [
+    "Impact assessed for each group",
+    "Communication, training and support planned",
+    "Adoption tracked"
+  ],
+  "pitfalls": [
+    "Training once and hoping",
+    "No leadership support",
+    "Keeping the old way available forever"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Prosci ADKAR model (Prosci)",
+      "url": "https://www.prosci.com/methodology/adkar"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

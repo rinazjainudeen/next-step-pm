@@ -1,0 +1,85 @@
+{
+  "id": "craft-okrs",
+  "title": "Set and use OKRs",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Objectives and key results, or OKRs, pair an inspiring goal with a few measurable results. Used well, they focus a team on outcomes rather than a list of tasks.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Read your organisation's goals first.",
+      "Write one to three objectives: short statements of what you want to achieve.",
+      "For each, write three to five key results that measure progress. They should be outcomes, not tasks.",
+      "Check each key result has a baseline and a target.",
+      "Review progress every two to four weeks.",
+      "Score them honestly at the end and learn from the misses."
+    ],
+    "intermediate": [
+      "Draft objectives linked to company goals.",
+      "Write measurable, outcome-based key results.",
+      "Review progress regularly and adjust work."
+    ],
+    "experienced": [
+      "Align OKRs across teams without creating a rigid hierarchy.",
+      "Use OKRs to drive conversations about trade-offs.",
+      "Coach teams to write outcomes, not output."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Find baselines for key results",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "delivery-manager",
+        "task": "Track progress and organise reviews",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use an OKR template page and update it each review.",
+    "notion": "Keep OKRs in a database linked to roadmap items.",
+    "jira": "Link epics to the key result they move."
+  },
+  "definitionOfDone": [
+    "One to three objectives agreed",
+    "Key results measurable with baselines",
+    "Regular review in place"
+  ],
+  "pitfalls": [
+    "Key results that are tasks",
+    "Too many OKRs",
+    "Setting them and not looking again until the end"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Objectives and key results play (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/okrs"
+    },
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

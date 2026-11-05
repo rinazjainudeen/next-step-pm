@@ -1,0 +1,81 @@
+{
+  "id": "wow-daily-standup",
+  "title": "Run a useful daily stand-up",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "A short daily meeting where the team checks progress towards its goal and removes blockers. It should take 15 minutes or less.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "scrum",
+      "kanban"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Keep it to 15 minutes at the same time each day.",
+      "Focus on the goal: are we on track, and what is in the way?",
+      "Walk the board from right to left, starting with work nearest to done.",
+      "Take detailed problem-solving to a separate conversation straight after.",
+      "Note blockers and who will clear them."
+    ],
+    "intermediate": [
+      "Focus on the sprint goal or flow of work.",
+      "Walk the board rather than going person by person.",
+      "Take discussions offline."
+    ],
+    "experienced": [
+      "Let the team own the stand-up; the PM attends as a team member.",
+      "Watch for signs it has become a status report.",
+      "Use it to spot work that is stuck."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Facilitate and track blockers",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "scrum-master"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use the board view during the meeting.",
+    "trello": "Walk the board from the 'done' side backwards.",
+    "linear": "Use the cycle view to see what is in progress."
+  },
+  "definitionOfDone": [
+    "Stand-up kept to 15 minutes",
+    "Blockers noted with owners",
+    "Focus on the goal, not individual status"
+  ],
+  "pitfalls": [
+    "Turning it into a status report for the PM",
+    "Solving problems in the meeting",
+    "Running long"
+  ],
+  "estimatedEffort": "15 minutes",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    },
+    {
+      "title": "The Kanban Guide (Kanban Guides)",
+      "url": "https://kanbanguides.org/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

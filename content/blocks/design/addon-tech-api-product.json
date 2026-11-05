@@ -1,0 +1,85 @@
+{
+  "id": "addon-tech-api-product",
+  "title": "Design an API as a product",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "An API is a product for developers. Design it to be easy to understand, consistent, well documented and stable.",
+  "appliesTo": {
+    "pmTypes": [
+      "technical"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start from the tasks developers need to complete.",
+      "Agree simple, consistent naming and patterns.",
+      "Write the documentation and examples before building.",
+      "Test the design with a few developers.",
+      "Plan how you will change it later without breaking users."
+    ],
+    "intermediate": [
+      "Design from developer tasks with consistent patterns.",
+      "Document first and test with developers.",
+      "Plan versioning and deprecation."
+    ],
+    "experienced": [
+      "Set API standards across teams.",
+      "Measure adoption and time to first successful call.",
+      "Manage breaking changes with clear timelines."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "backend-engineer",
+        "orRoles": [
+          "architect",
+          "tech-lead"
+        ],
+        "task": "Design the API",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write documentation and examples",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "architect",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Review the API specification as a pull request.",
+    "gitlab": "Keep the API specification and docs in the repository."
+  },
+  "definitionOfDone": [
+    "Design based on developer tasks",
+    "Documentation written and tested",
+    "Versioning plan agreed"
+  ],
+  "pitfalls": [
+    "Exposing internal structure",
+    "Documentation as an afterthought",
+    "Breaking changes without warning"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "comesAfter": ["design-explore-solutions"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "API design guide (Google Cloud)",
+      "url": "https://cloud.google.com/apis/design"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

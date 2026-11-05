@@ -1,0 +1,84 @@
+{
+  "id": "addon-consumer-mobile-release",
+  "title": "Plan a mobile app release",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "Mobile releases go through app store review and users update slowly. Plan for both.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "consumer"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Check the app store rules that apply to your features.",
+      "Allow time for review, and for rejection and resubmission.",
+      "Prepare the store listing: description, screenshots and privacy details.",
+      "Release to a small share of users first.",
+      "Plan for users on older versions."
+    ],
+    "intermediate": [
+      "Check store guidelines and plan review time.",
+      "Prepare listings and privacy details.",
+      "Use staged rollout."
+    ],
+    "experienced": [
+      "Use feature flags to decouple release from deployment.",
+      "Set minimum supported versions.",
+      "Track crash rates and ratings after release."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "frontend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Prepare builds and handle store submission",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write store listing",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "qa",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "github": "Automate builds and track release tags.",
+    "jira": "Track release checklist items."
+  },
+  "definitionOfDone": [
+    "Store rules checked",
+    "Listing and privacy details ready",
+    "Staged rollout planned"
+  ],
+  "pitfalls": [
+    "No time for review",
+    "Forgetting older versions",
+    "Missing privacy declarations"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "App Review Guidelines (Apple Developer)",
+      "url": "https://developer.apple.com/app-store/review/guidelines/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "wow-sprint-review",
+  "title": "Run a sprint review",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "At the end of each sprint, the team shows what it built to stakeholders and discusses what to do next. It is a working session, not a presentation.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "scrum"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Invite stakeholders and some users if possible.",
+      "Remind everyone of the sprint goal.",
+      "Show working product, not slides.",
+      "Ask for feedback and questions.",
+      "Discuss what to do next and update the backlog.",
+      "Keep it to about an hour for a two-week sprint."
+    ],
+    "intermediate": [
+      "Demo working software against the sprint goal.",
+      "Gather feedback and adjust the backlog.",
+      "Share progress towards the product goal."
+    ],
+    "experienced": [
+      "Use reviews to keep stakeholders engaged and aligned.",
+      "Show results and data, not just features.",
+      "Invite real users to give feedback."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Organise and facilitate the review",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "fullstack-engineer",
+        "orRoles": [
+          "frontend-engineer",
+          "backend-engineer"
+        ],
+        "task": "Demo the work",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "scrum-master"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Show the sprint report and completed items.",
+    "confluence": "Record feedback and decisions on a review page.",
+    "figma": "Show upcoming designs to get early feedback."
+  },
+  "definitionOfDone": [
+    "Working product demonstrated",
+    "Feedback gathered",
+    "Backlog updated"
+  ],
+  "pitfalls": [
+    "Slides instead of working product",
+    "Only the team attends",
+    "No changes made from feedback"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

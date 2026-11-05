@@ -8,7 +8,8 @@
     "pmTypes": [],
     "productTypes": [],
     "stages": [],
-    "waysOfWorking": []
+    "waysOfWorking": [],
+    "experience": []
   },
   "steps": {
     "beginner": [
@@ -62,7 +63,7 @@
     "Criteria that describe the screen layout rather than the outcome"
   ],
   "estimatedEffort": "2-4 hours",
-  "dependsOn": ["plan-prioritise-roadmap"],
+  "dependsOn": ["plan-epics-backlog"],
   "freshness": "evergreen",
   "sources": [
     { "title": "Writing user stories (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/agile/writing-user-stories" },

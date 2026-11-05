@@ -1,0 +1,95 @@
+{
+  "id": "launch-incident-response",
+  "title": "Know what to do when something breaks",
+  "phase": "launch",
+  "kind": "core",
+  "summary": "Things will go wrong in live service. Agree in advance how the team will spot, fix and communicate problems, and how you will learn from them without blame.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Agree what counts as an incident, and how serious each level is.",
+      "Agree who is on call, how they are contacted and who leads when an incident happens.",
+      "Decide who tells users and stakeholders, and prepare simple message templates.",
+      "Make sure there is a way to roll back or switch off a feature quickly.",
+      "After each serious incident, hold a blameless review: what happened, why, and what you will change."
+    ],
+    "intermediate": [
+      "Define incident severity levels and response times.",
+      "Agree on-call, incident lead and communication roles.",
+      "Check rollback and feature switch options.",
+      "Run blameless post-incident reviews and track actions."
+    ],
+    "experienced": [
+      "Rehearse incidents so the process works under pressure.",
+      "Track incident trends and feed them into the roadmap.",
+      "Agree public status page and customer communication rules.",
+      "Build a culture where people report problems early without fear."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "devops",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Set up on-call, alerting and rollback",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Lead technical response during incidents",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write incident message templates",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "devops"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use an incident issue type with severity, timeline and actions.",
+    "confluence": "Use a post-incident review template and link actions to the backlog.",
+    "github": "Document rollback steps in the repository so anyone on call can follow them."
+  },
+  "definitionOfDone": [
+    "Severity levels and roles agreed",
+    "Rollback or feature switch available",
+    "Communication templates ready",
+    "Review process agreed"
+  ],
+  "pitfalls": [
+    "Working it out during the first incident",
+    "Blaming individuals, so people hide problems",
+    "Fixing the symptom and not the cause"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-support-readiness"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Incident management handbook (Atlassian)",
+      "url": "https://www.atlassian.com/incident-management/handbook"
+    },
+    {
+      "title": "Postmortem culture: learning from failure (Google SRE book)",
+      "url": "https://sre.google/sre-book/postmortem-culture/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

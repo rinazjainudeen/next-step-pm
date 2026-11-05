@@ -1,0 +1,101 @@
+{
+  "id": "discover-data-signals",
+  "title": "Use data to find where users struggle",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Data shows you what users do and where they give up. Use it alongside research: data tells you where the problem is, and talking to users tells you why.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick the user journey linked to your learning questions, for example signing up, completing an order or submitting a form.",
+      "Find out what data already exists: product analytics, support tickets, complaints, reviews, survey comments and operational reports. Ask an analyst or engineer where it lives.",
+      "Build a simple funnel: list each step and how many people reach it. Look for the step where the most people drop out.",
+      "Split the numbers by groups that might behave differently, such as new and returning users, device type or region.",
+      "Read 30 to 50 support tickets or comments for the worst step and note the common themes.",
+      "Write down three to five 'data signals' with numbers, and the questions they raise for user research."
+    ],
+    "intermediate": [
+      "Build a funnel for the target journey and find the largest drop-off in absolute numbers.",
+      "Segment by user type, device and channel to find where the problem is concentrated.",
+      "Triangulate with support tickets, reviews and survey text.",
+      "Summarise signals with numbers and feed the open questions into research."
+    ],
+    "experienced": [
+      "Combine behavioural, qualitative and operational data to size each pain point by users affected and value at stake.",
+      "Check data quality and tracking gaps before trusting a pattern; note confidence for each signal.",
+      "Look for cohort and trend changes, not just a snapshot, to separate new problems from old ones.",
+      "Use the signals to aim research at the highest-value questions and to set baselines for later measurement."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst",
+          "data-scientist"
+        ],
+        "task": "Build the funnel and segment the data",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "backend-engineer",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Explain what is tracked, where the data lives and any gaps",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Analyse support tickets and comments for themes",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "ga4": "Use a funnel exploration to see drop-off between each step of the journey, then add a breakdown by device category.",
+    "amplitude": "Build a funnel chart and click on the worst step to see what people did instead.",
+    "mixpanel": "Create a funnels report and compare conversion for new and returning users.",
+    "power-bi": "Combine analytics exports with support ticket counts on one page so you can see both together.",
+    "claude": "Paste anonymised support ticket text and ask it to group the tickets into themes with a count for each. Remove any personal details first."
+  },
+  "definitionOfDone": [
+    "Funnel or step data for the target journey, with the biggest drop-off identified",
+    "Key segments compared",
+    "Three to five data signals written up with numbers and confidence",
+    "Open questions handed to user research"
+  ],
+  "pitfalls": [
+    "Trusting numbers without checking how they are tracked",
+    "Looking at percentages only and missing where most people are actually lost",
+    "Treating data as the answer to 'why' rather than 'where'"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Funnel analysis: find drop-offs (Amplitude)",
+      "url": "https://amplitude.com/guides/funnel-analysis"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

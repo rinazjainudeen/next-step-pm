@@ -68,7 +68,8 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
     "pmTypes": [],
     "productTypes": [],
     "stages": ["new", "mid-build"],
-    "waysOfWorking": []                 // scrum | kanban | hybrid
+    "waysOfWorking": [],                // scrum | kanban | hybrid
+    "experience": []                    // beginner | intermediate | experienced
   },
   "steps": {
     "beginner":    ["Detailed step with guidance…", "…"],
@@ -92,9 +93,11 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
   "pitfalls": ["Writing the solution into the problem statement"],
   "estimatedEffort": "2-4 hours",
   "dependsOn": ["discover-user-research-plan"],
+  // "comesAfter": ["define-success-metrics"], // optional. Order only, within a phase
   "freshness": "evergreen",             // evergreen | changes-yearly | fast-moving
   "sources": [{ "title": "…", "url": "https://…" }],
   "lastReviewed": "2026-11-04"
+  // "optional": true                  // optional. Marks a "Go further" block
   // "placeholder": true               // optional. Only for dummy blocks used to test the site
 }
 ```
@@ -109,12 +112,20 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 `orRoles` is optional and lists other roles who could do the task, best first. Use it rather than repeating a task under two roles, and list the people who could realistically step in, because teams vary. A full-stack engineer already covers frontend and backend tasks.
 
 **Kinds of block:**
-- **core**: every PM in that phase gets it.
+- **core**: every PM in that phase gets it, unless `appliesTo.experience` limits it.
 - **add-on**: only for certain PM or product types. Examples: "Evaluate model quality" for AI products, "Prepare for a service assessment" for public sector services, "Map the current process" for transformation.
 - **onboarding**: for people joining mid-build or a live product. Examples: "Read the decision trail", "1:1s with each role", "Find the live dashboards".
 - **ways-of-working**: how the team works, rather than what it produces. Examples: sprint planning, refinement, the daily stand-up, review, retrospective, Kanban flow and WIP limits, stage-gate reviews, roadmaps and estimation. These blocks often belong to several phases or to none in particular, so their `phase` can be a list or `"any"`. They are picked by the visitor's answer to "How does your team work?", using `appliesTo.waysOfWorking`.
 
+- **craft**: skills that grow over time, such as strategy or influencing. These blocks use phase `"any"` and go in "Grow your skills", outside the timeline. They're filtered by experience.
+
 **The `phase` field** takes one of three forms: a single phase (`"define"`), a list of two or more phases (`["design", "plan"]`), or `"any"` (every phase).
+
+**"Go further" blocks** carry `"optional": true`. They show in their phase, marked "Go further", after the required blocks. They're left out of the timing, the next 3 actions and the progress count. Only core and add-on blocks can use it. Nothing required can depend on one.
+
+**`comesAfter`** is an order-only link. The block comes after the listed blocks when they're in the same phase of the plan. Unlike `dependsOn`, a missing block is ignored and never becomes "check this exists". Use `dependsOn` for work a block really needs, and `comesAfter` for the order to read in. Every add-on must name the core block it extends, and it then sits straight after that block. Decision blocks list everything that must come first.
+
+**`appliesTo.experience`** limits a block to certain levels. An empty list means every level. "Not sure" counts as intermediate. Nothing can depend on a block that some of its own visitors won't get.
 
 **Placeholder blocks** carry `"placeholder": true` and the word PLACEHOLDER in the title. They are dummy content for testing the Library. The site marks them, keeps them out of search engines and the sitemap, and `pnpm validate:content` warns until they are removed.
 
@@ -124,7 +135,9 @@ Each block on its own:
 - `id` is lowercase words joined by hyphens, and matches the file name.
 - Every field is present, and no unknown fields appear (this catches typos).
 - `phase`, `kind`, PM types, product types, stages, ways of working, roles, tools and freshness all use values from `content/taxonomy.ts`.
-- `appliesTo` has all four lists. An empty list means "applies to all".
+- `appliesTo` has all five lists. An empty list means "applies to all".
+- A craft block uses phase `"any"`.
+- `optional` is `true` or left out, and only appears on core and add-on blocks.
 - `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
 - Every delegable task has a valid `ifMissing`, and any `orRoles` are real roles other than the main one.
 - `definitionOfDone` has at least one item. `pitfalls` must be present but may be empty.
@@ -136,6 +149,8 @@ Across all blocks:
 - Ids are unique, and each file is in the right folder for its phase.
 - Every `dependsOn` id exists, is not the block itself, and is not in a later phase.
 - There are no circular dependencies.
+- Required work doesn't depend on a "Go further" block, and no block depends on a block some of its experience levels never see.
+- Every `comesAfter` id exists, shares a phase with the block and isn't the block itself, and loops are caught across `dependsOn` and `comesAfter`.
 
 Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`. Tool ids are listed in `content/taxonomy.ts`.
 
@@ -143,12 +158,12 @@ Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux
 
 A pure function, `buildPlan(answers, blocks) -> Plan`, with no database, no AI and no randomness.
 
-1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type or product type (an empty list never counts as a match). A block's stage and way-of-working tags must always fit. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
-2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. Onboarding and ways-of-working blocks sit outside the timeline, in "Get up to speed" and "Your team's rhythm".
+1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. A block's experience limit must always fit. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type or product type (an empty list never counts as a match). A block's stage and way-of-working tags must always fit. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
+2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. Within a phase, `dependsOn` and `comesAfter` set the order. Add-ons sit straight after the block they extend, and "Go further" blocks come last. Onboarding, ways-of-working and craft blocks sit outside the timeline, in "Get up to speed", "Your team's rhythm" and "Grow your skills".
 3. **Shape** the steps to the visitor's experience level. If "Not sure" was chosen, use intermediate.
 4. **Assign** roles. For each delegable task, the first person in the team from `role`, then `orRoles`, gets it, as in "Ask your BA" or "Ask your 3 Backend Engineers". A full-stack engineer covers frontend and backend tasks. If nobody can do it, `ifMissing` sets the note. Use the team list to suggest who reviews.
 5. **Tools.** Show tool examples only for the tools the visitor picked. `other` (a tool that isn't listed) matches no examples. If none match, show a short tool-agnostic tip.
-6. **Pace.** Add up the timeline's blocks. `estimatedEffort` means start-to-finish working time, not PM hours. Blocks only count the PM's part of Build, so Build counts as at least 2 weeks. The plan is then fitted to the timeline's length to plan across (9, 20 or 26 weeks; "Under 1 month" isn't stretched). Build gets two-thirds of the spare time, and the other phases share the rest in proportion. With no Build, the phases stretch evenly to at most 3 times what the work usually takes. Longer than the timeline's longest length is tight, and the plan is squeezed to end on time. A "Not sure" timeline isn't fitted to anything.
+6. **Pace.** Blocks in a phase overlap, so a phase is its longest required block plus a quarter of the rest. `estimatedEffort` means start-to-finish working time, not PM hours. Blocks only count the PM's part of Build, so Build counts as at least 4 weeks. Measure also counts as at least 4 weeks, because results need time to build up after launch. The plan is then fitted to the timeline's length to plan across (9, 20 or 26 weeks; "Under 1 month" isn't stretched). Build gets two-thirds of the spare time, and the other phases share the rest in proportion. With no Build, the phases stretch evenly to at most 3 times what the work usually takes. Longer than the timeline's longest length is tight, and the plan is squeezed to end on time. A tight plan under 1 month also says what to do: narrow to the smallest valuable release, finish one phase first, or both. A "Not sure" timeline isn't fitted to anything.
 7. **Explain.** Every block in the plan carries a short "why you're seeing this", e.g. "Because you're an AI PM in Build".
 
 **Tests must cover:** each starting point, each experience level, missing roles, an empty tools list, "Not sure" answers, conflicting dependencies, and that the same answers always give the same plan. `lib/plan-logic.test.ts` holds the rules that must be true of every plan and runs them across a wide spread of answers, using the real blocks.
@@ -166,15 +181,15 @@ Rinaz reviews the pull request on the Vercel preview link and merges it, or clos
 
 ## 6. Content production
 
-- **First release:** about **90 blocks** (planned 4 November 2026, up from 40 to 50). The target mix:
+- **First release:** **100 blocks** (5 November 2026):
 
   | Kind | Blocks |
   |---|---|
-  | Core lifecycle | about 40 |
-  | Ways of working | about 15 |
-  | PM-type add-ons | about 15 |
-  | Product-type add-ons | about 12 |
-  | Onboarding | about 8 |
+  | Core lifecycle | 41 |
+  | Ways of working | 13 |
+  | Add-ons (PM type and product type) | 27 |
+  | Craft | 14 |
+  | Onboarding | 5 |
 
 - **Phase 2 starts with about 12 blocks**, drafted by Rinaz in a separate planning chat and added to `content/blocks/` by Claude Code, which fixes anything the validator flags. Claude Code does not write block content in Phase 2. Two clearly marked placeholder blocks stand in until then.
 - **Drafting:** Claude researches each block from reputable public sources (for example the GOV.UK Service Manual, Atlassian guides, Nielsen Norman Group, Marty Cagan / SVPG, Teresa Torres, Reforge essays and vendor docs for tool steps) and writes it in our own words, with citations. No copied text.

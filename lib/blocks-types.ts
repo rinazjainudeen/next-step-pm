@@ -46,6 +46,8 @@ export type Block = {
     productTypes: ProductTypeId[];
     stages: StageId[];
     waysOfWorking: WayOfWorkingId[];
+    /** Leaves the block out for other levels. "Not sure" counts as intermediate. */
+    experience: ExperienceId[];
   };
   steps: Record<ExperienceId, string[]>;
   roles: {
@@ -59,10 +61,17 @@ export type Block = {
   /** For example "2-4 hours" or "1 day". */
   estimatedEffort: string;
   dependsOn: string[];
+  /**
+   * Order only: come after these blocks when they're in the same phase of the
+   * plan. Unlike dependsOn, a missing block is ignored and never becomes a check.
+   */
+  comesAfter?: string[];
   freshness: FreshnessId;
   sources: { title: string; url: string }[];
   /** A date written as YYYY-MM-DD. */
   lastReviewed: string;
+  /** A "Go further" block: shown in its phase, but left out of the timing and next actions. */
+  optional?: boolean;
   /** True for dummy blocks used only to test the site. Never real guidance. */
   placeholder?: boolean;
 };
@@ -70,7 +79,7 @@ export type Block = {
 /** The small part of a block the Library list needs. */
 export type BlockSummary = Pick<
   Block,
-  "id" | "title" | "phase" | "kind" | "summary" | "appliesTo" | "estimatedEffort" | "placeholder"
+  "id" | "title" | "phase" | "kind" | "summary" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder"
 >;
 
 export function toSummary(block: Block): BlockSummary {
@@ -82,6 +91,7 @@ export function toSummary(block: Block): BlockSummary {
     summary: block.summary,
     appliesTo: block.appliesTo,
     estimatedEffort: block.estimatedEffort,
+    ...(block.optional ? { optional: true } : {}),
     ...(block.placeholder ? { placeholder: true } : {}),
   };
 }

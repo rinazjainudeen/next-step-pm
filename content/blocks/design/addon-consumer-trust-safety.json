@@ -1,0 +1,84 @@
+{
+  "id": "addon-consumer-trust-safety",
+  "title": "Design for trust and safety",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "Consumer products can be misused for fraud, abuse or harmful content. Design protections in from the start.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "consumer"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List ways people could misuse the product or harm others.",
+      "Write clear rules about what is and is not allowed.",
+      "Give users easy ways to report problems and block others.",
+      "Decide how reports will be reviewed and how fast.",
+      "Check the laws that apply, including protections for children."
+    ],
+    "intermediate": [
+      "Assess abuse risks.",
+      "Design reporting, blocking and review.",
+      "Check legal duties."
+    ],
+    "experienced": [
+      "Build abuse detection and response into the product roadmap.",
+      "Measure harm, not just reports.",
+      "Publish transparency information."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Advise on legal duties and policies",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Design reporting and safety features",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Design report, block and appeal flows.",
+    "confluence": "Keep content policies and the review process together."
+  },
+  "definitionOfDone": [
+    "Misuse risks assessed",
+    "Reporting and review designed",
+    "Legal duties checked"
+  ],
+  "pitfalls": [
+    "Thinking about safety after an incident",
+    "Reporting with no response",
+    "Rules users cannot understand"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "comesAfter": ["design-explore-solutions"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "Trust and Safety Curriculum (Trust & Safety Professional Association)",
+      "url": "https://www.tspa.org/curriculum/ts-curriculum/"
+    },
+    {
+      "title": "ICO resources to help designers embed data protection by default (ICO)",
+      "url": "https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/03/ico-shares-resources-to-help-designers-embed-data-protection-by-default"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

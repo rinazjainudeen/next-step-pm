@@ -1,0 +1,81 @@
+{
+  "id": "addon-public-service-assessment",
+  "title": "Prepare for a service assessment",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Many public services are assessed against a service standard before moving phase. Prepare by doing the work well and showing it honestly.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "public"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Check whether your service needs an assessment and which standard applies.",
+      "Read the standard points and note your evidence for each.",
+      "Book early with your assurance team.",
+      "Prepare a short demo of the user journey, including what happens when things go wrong.",
+      "Bring the team members who can answer questions.",
+      "Act on the recommendations."
+    ],
+    "intermediate": [
+      "Map evidence against each standard point.",
+      "Book and prepare the demo and team.",
+      "Plan actions from the report."
+    ],
+    "experienced": [
+      "Build standard evidence into normal work.",
+      "Use the panel as peer review.",
+      "Share lessons across teams."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Book and coordinate the assessment",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Present research evidence",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep an evidence page per standard point.",
+    "google-docs": "Draft the service brief."
+  },
+  "definitionOfDone": [
+    "Requirement checked",
+    "Evidence mapped",
+    "Assessment booked and prepared"
+  ],
+  "pitfalls": [
+    "Over-preparing documents",
+    "Showing only the happy path",
+    "Leaving booking too late"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "plan-delivery-plan"
+  ],
+  "comesAfter": ["plan-delivery-plan"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "What happens at a service assessment (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/service-assessments/how-service-assessments-work"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

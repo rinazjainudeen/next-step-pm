@@ -1,0 +1,93 @@
+{
+  "id": "plan-epics-backlog",
+  "title": "Break the work into epics and a backlog",
+  "phase": "plan",
+  "kind": "core",
+  "summary": "Turn the first release into a backlog the team can work from: a few large epics, each broken into smaller items, in priority order. A good backlog makes progress visible and planning easy.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Take each part of the first release and make it an epic, a large piece of work with a clear goal.",
+      "Break each epic into smaller items that deliver something a user or the team can see.",
+      "Write a short title and a sentence of context for each item. Detail comes later.",
+      "Put the items in priority order, with the riskiest and most valuable near the top.",
+      "Mark dependencies between items and on other teams.",
+      "Review the backlog with the team and agree who keeps it tidy."
+    ],
+    "intermediate": [
+      "Create epics for each part of the release, each with a goal and measure.",
+      "Split epics into small, valuable items and order them by value and risk.",
+      "Mark dependencies and link items to the product brief.",
+      "Agree backlog ownership and a refinement rhythm."
+    ],
+    "experienced": [
+      "Structure the backlog around outcomes, so every item traces to a goal.",
+      "Keep only the next few weeks detailed; leave later work at epic level.",
+      "Expose cross-team dependencies early and agree them with the other teams.",
+      "Regularly prune items that no longer serve the goal."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "product-owner",
+        "task": "Create and order the backlog items",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Break epics into items and capture details",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Identify technical items and dependencies",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Create epics, link stories to them and use the backlog view to drag items into order.",
+    "azure-devops": "Use features and user stories under epics, and order them on the backlog board.",
+    "linear": "Use projects for epics and keep the issue list ordered by priority.",
+    "trello": "Use one list per epic and order cards from top to bottom by priority.",
+    "claude": "Paste the product brief and ask it to suggest epics and a first breakdown, then refine it with the team."
+  },
+  "definitionOfDone": [
+    "Epics created for the first release, each with a goal",
+    "Epics broken into smaller items and ordered by priority",
+    "Dependencies marked and backlog owner agreed"
+  ],
+  "pitfalls": [
+    "Writing detailed items for work months away",
+    "Splitting work by technical layer instead of user value",
+    "A backlog so long nobody can see the priorities"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "plan-define-mvp"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Epics, stories and initiatives (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/epics-stories-themes"
+    },
+    {
+      "title": "Making sense of MVP (Henrik Kniberg, Crisp)",
+      "url": "https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

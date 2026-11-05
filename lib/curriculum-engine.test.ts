@@ -4,11 +4,38 @@ import { EXPERIENCE_IDS, PHASE_IDS, PM_TYPE_IDS, PRODUCT_TYPE_IDS, STAGES, TIMEL
 import { makeBlock } from "./blocks-fixture";
 import { loadBlocks } from "./blocks-load";
 import type { Block } from "./blocks-types";
-import { MIN_BUILD_DAYS, TIMELINE_WEEKS, buildPlan, effortInDays } from "./curriculum-engine";
+import { MIN_PHASE_DAYS, TIMELINE_WEEKS, buildPlan, effortInDays } from "./curriculum-engine";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers } from "./intake-types";
 import type { Plan } from "./plan-types";
 
-const REAL_BLOCKS = loadBlocks();
+/**
+ * Made-up blocks, so these tests check the engine's rules and not today's
+ * content. lib/plan-logic.test.ts checks the real blocks.
+ */
+const dummySteps = (id: string) => ["first", "second", "third", "fourth"].map((word) => `Do the ${word} thing for ${id}.`);
+
+function fixture(id: string, phase: Block["phase"], estimatedEffort: string, dependsOn: string[], overrides: Partial<Block> = {}): Block {
+  const steps = dummySteps(id);
+  return makeBlock({ id, phase, estimatedEffort, dependsOn, steps: { beginner: steps.map((text) => `Slowly: ${text}`), intermediate: steps, experienced: steps.map((text) => `Briefly: ${text}`) }, ...overrides });
+}
+
+const stages = (list: Block["appliesTo"]["stages"]) => ({ appliesTo: { pmTypes: [], productTypes: [], stages: list, waysOfWorking: [], experience: [] } });
+const way = (list: Block["appliesTo"]["waysOfWorking"]) => ({ appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: list, experience: [] } });
+
+const PLAN_BLOCKS: Block[] = [
+  fixture("discover-research", "discover", "10-20 days", []),
+  fixture("define-problem", "define", "1-2 days", ["discover-research"]),
+  fixture("design-prototype", "design", "5-10 days", ["define-problem"]),
+  fixture("plan-roadmap", "plan", "1-2 days", ["define-problem"]),
+  fixture("build-stories", "build", "2-4 hours", ["plan-roadmap"]),
+  fixture("test-acceptance", "test", "1-3 days", ["build-stories"]),
+  fixture("test-ai-evaluation", "test", "3-5 days", ["define-problem"], { kind: "add-on", appliesTo: { pmTypes: ["ai"], productTypes: ["data-ai"], stages: [], waysOfWorking: [], experience: [] } }),
+  fixture("launch-release", "launch", "1-2 days", ["test-acceptance"]),
+  fixture("measure-results", "measure", "2-3 days", ["define-problem", "launch-release"]),
+  fixture("onboarding-product", "any", "10-20 days", [], { kind: "onboarding", ...stages(["mid-build", "live"]) }),
+  fixture("wow-sprints", "any", "1-2 hours", [], { kind: "ways-of-working", ...way(["scrum"]) }),
+  fixture("wow-flow", "any", "2-4 hours", [], { kind: "ways-of-working", ...way(["kanban"]) }),
+];
 
 const ANSWERS: IntakeAnswers = {
   pm: "general",
@@ -32,7 +59,7 @@ const addOn = (overrides: Partial<Block> = {}) =>
   makeBlock({
     id: "define-add-on",
     kind: "add-on",
-    appliesTo: { pmTypes: ["ai"], productTypes: ["data-ai"], stages: [], waysOfWorking: [] },
+    appliesTo: { pmTypes: ["ai"], productTypes: ["data-ai"], stages: [], waysOfWorking: [], experience: [] },
     ...overrides,
   });
 
@@ -41,7 +68,7 @@ const wow = (ways: Block["appliesTo"]["waysOfWorking"]) =>
     id: `wow-${ways.join("-") || "all"}`,
     phase: "any",
     kind: "ways-of-working",
-    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ways },
+    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ways, experience: [] },
   });
 
 // --- Effort ---
@@ -55,29 +82,29 @@ test("effort is read in working days, using the middle of a range", () => {
 });
 
 test("every real block has an effort the engine can read", () => {
-  for (const block of REAL_BLOCKS) assert.ok(effortInDays(block.estimatedEffort) > 0, block.id);
+  for (const block of loadBlocks()) assert.ok(effortInDays(block.estimatedEffort) > 0, block.id);
 });
 
 // --- Choosing blocks ---
 
 test("each starting point covers its own phases", () => {
   for (const stage of STAGES) {
-    const plan = buildPlan({ ...ANSWERS, stage: stage.id }, REAL_BLOCKS);
+    const plan = buildPlan({ ...ANSWERS, stage: stage.id }, PLAN_BLOCKS);
     assert.deepEqual(phaseIds(plan), [...stage.phases], stage.id);
   }
 });
 
 test("Not sure on the stage gives the same phases as starting something new", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: NOT_SURE, phase: null }, REAL_BLOCKS);
-  assert.deepEqual(blockIds(plan), blockIds(buildPlan(ANSWERS, REAL_BLOCKS)));
+  const plan = buildPlan({ ...ANSWERS, stage: NOT_SURE, phase: null }, PLAN_BLOCKS);
+  assert.deepEqual(blockIds(plan), blockIds(buildPlan(ANSWERS, PLAN_BLOCKS)));
   assert.match(plan.where, /^Not sure of your stage, so your plan starts at the beginning, from Discover to Plan and prioritise\.$/);
 });
 
 test("the start and finish answers set the phases", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "new", phase: "define", until: "launch" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "new", phase: "define", until: "launch" }, PLAN_BLOCKS);
   assert.deepEqual(phaseIds(plan), ["define", "design", "plan", "build", "test", "launch"]);
   assert.match(plan.where, /from Define to Launch/);
-  const one = buildPlan({ ...ANSWERS, until: "discover" }, REAL_BLOCKS);
+  const one = buildPlan({ ...ANSWERS, until: "discover" }, PLAN_BLOCKS);
   assert.deepEqual(phaseIds(one), ["discover"]);
   assert.match(one.where, /focused on Discover/);
 });
@@ -104,7 +131,7 @@ test("an add-on reaches a matching PM type or a matching product type", () => {
 });
 
 test("an empty list never counts as a match on its own", () => {
-  const publicOnly = addOn({ appliesTo: { pmTypes: [], productTypes: ["public"], stages: [], waysOfWorking: [] } });
+  const publicOnly = addOn({ appliesTo: { pmTypes: [], productTypes: ["public"], stages: [], waysOfWorking: [], experience: [] } });
   assert.equal(blockIds(buildPlan(ANSWERS, [publicOnly])).length, 0);
   assert.equal(blockIds(buildPlan({ ...ANSWERS, product: "public" }, [publicOnly])).length, 1);
 });
@@ -114,19 +141,104 @@ test("Not sure on PM type and product leaves out add-ons aimed at one kind", () 
 });
 
 test("stage and way-of-working tags must still fit an add-on", () => {
-  const midBuildOnly = addOn({ appliesTo: { pmTypes: ["ai"], productTypes: [], stages: ["mid-build"], waysOfWorking: [] } });
+  const midBuildOnly = addOn({ appliesTo: { pmTypes: ["ai"], productTypes: [], stages: ["mid-build"], waysOfWorking: [], experience: [] } });
   assert.equal(blockIds(buildPlan({ ...ANSWERS, pm: "ai" }, [midBuildOnly])).length, 0);
-  const kanbanOnly = addOn({ appliesTo: { pmTypes: ["ai"], productTypes: [], stages: [], waysOfWorking: ["kanban"] } });
+  const kanbanOnly = addOn({ appliesTo: { pmTypes: ["ai"], productTypes: [], stages: [], waysOfWorking: ["kanban"], experience: [] } });
   assert.equal(blockIds(buildPlan({ ...ANSWERS, pm: "ai" }, [kanbanOnly])).length, 0);
   assert.equal(blockIds(buildPlan({ ...ANSWERS, pm: "ai", way: "kanban" }, [kanbanOnly])).length, 1);
 });
 
-test("the real AI block reaches AI PMs and AI products, and not others", () => {
-  const id = "test-ai-model-evaluation";
+test("an add-on tagged for AI reaches AI PMs and AI products, and not others", () => {
+  const id = "test-ai-evaluation";
   const base: IntakeAnswers = { ...ANSWERS, stage: "mid-build", phase: "test" };
-  assert.ok(blockIds(buildPlan({ ...base, pm: "ai" }, REAL_BLOCKS)).includes(id));
-  assert.ok(blockIds(buildPlan({ ...base, product: "data-ai" }, REAL_BLOCKS)).includes(id));
-  assert.ok(!blockIds(buildPlan(base, REAL_BLOCKS)).includes(id));
+  assert.ok(blockIds(buildPlan({ ...base, pm: "ai" }, PLAN_BLOCKS)).includes(id));
+  assert.ok(blockIds(buildPlan({ ...base, product: "data-ai" }, PLAN_BLOCKS)).includes(id));
+  assert.ok(!blockIds(buildPlan(base, PLAN_BLOCKS)).includes(id));
+});
+
+test("a block limited by experience only reaches those levels", () => {
+  const forExperienced = makeBlock({ appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["experienced"] } });
+  const reached = (exp: IntakeAnswers["exp"]) => blockIds(buildPlan({ ...ANSWERS, exp }, [forExperienced])).length === 1;
+  assert.equal(reached("experienced"), true);
+  assert.equal(reached("beginner"), false);
+  assert.equal(reached("intermediate"), false);
+  assert.equal(reached(NOT_SURE), false);
+});
+
+test("Not sure on experience counts as intermediate for limits as well as steps", () => {
+  const intermediateUp = makeBlock({ appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["intermediate", "experienced"] } });
+  assert.equal(blockIds(buildPlan({ ...ANSWERS, exp: NOT_SURE }, [intermediateUp])).length, 1);
+  assert.equal(blockIds(buildPlan({ ...ANSWERS, exp: "beginner" }, [intermediateUp])).length, 0);
+});
+
+test("an empty experience list reaches every level", () => {
+  for (const exp of [...EXPERIENCE_IDS, NOT_SURE] as const) assert.equal(blockIds(buildPlan({ ...ANSWERS, exp }, [makeBlock()])).length, 1, exp);
+});
+
+// --- Go further blocks ---
+
+const goFurther = (overrides: Partial<Block> = {}) => fixture("define-extra", "define", "5 days", [], { optional: true, ...overrides });
+
+test("a Go further block shows in its phase, marked as optional", () => {
+  const plan = buildPlan(ANSWERS, [fixture("define-core", "define", "1 day", []), goFurther()]);
+  assert.deepEqual(blockIds(plan), ["define-core", "define-extra"]);
+  assert.equal(allBlocks(plan)[1].optional, true);
+  assert.equal(allBlocks(plan)[0].optional, undefined);
+});
+
+test("a Go further block comes after required blocks in its phase, whatever its name", () => {
+  const plan = buildPlan({ ...ANSWERS, pm: "ai" }, [fixture("z-core", "define", "1 day", []), addOn({ id: "y-add-on" }), goFurther({ id: "a-extra" })]);
+  assert.deepEqual(blockIds(plan), ["z-core", "y-add-on", "a-extra"]);
+});
+
+test("a Go further block doesn't change the plan's timing", () => {
+  const without = buildPlan({ ...ANSWERS, time: NOT_SURE, until: null }, PLAN_BLOCKS);
+  const withExtra = buildPlan({ ...ANSWERS, time: NOT_SURE, until: null }, [...PLAN_BLOCKS, goFurther()]);
+  assert.equal(withExtra.pace.message, without.pace.message);
+  assert.deepEqual(withExtra.phases.map((phase) => phase.weeks), without.phases.map((phase) => phase.weeks));
+});
+
+test("a Go further block never reaches the next actions", () => {
+  const plan = buildPlan(ANSWERS, [goFurther({ id: "a-extra", phase: "discover" }), fixture("z-core", "discover", "1 day", [])]);
+  assert.ok(plan.nextActions.every((action) => action.blockId === "z-core"));
+});
+
+test("a plan of only Go further blocks has no next actions, and no crash", () => {
+  const plan = buildPlan({ ...ANSWERS, time: "1-3m" }, [goFurther()]);
+  assert.deepEqual(plan.nextActions, []);
+  assert.ok(plan.pace.message.length > 0);
+});
+
+// --- Craft blocks ---
+
+const craft = (id: string, experience: Block["appliesTo"]["experience"] = []) =>
+  fixture(id, "any", "1-2 days", [], { kind: "craft", appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience } });
+
+test("craft blocks go in Grow your skills, outside the timeline", () => {
+  const plan = buildPlan(ANSWERS, [...PLAN_BLOCKS, craft("craft-a")]);
+  assert.deepEqual(plan.growSkills.map((block) => block.id), ["craft-a"]);
+  assert.ok(!blockIds(plan).includes("craft-a"));
+  assert.ok(!plan.rhythm.some((block) => block.id === "craft-a"));
+  assert.ok(plan.nextActions.every((action) => action.blockId !== "craft-a"));
+});
+
+test("craft blocks are filtered by experience", () => {
+  const blocks = [craft("craft-all"), craft("craft-beginner", ["beginner"]), craft("craft-senior", ["experienced"])];
+  const ids = (exp: IntakeAnswers["exp"]) => buildPlan({ ...ANSWERS, exp }, blocks).growSkills.map((block) => block.id);
+  assert.deepEqual(ids("beginner"), ["craft-all", "craft-beginner"]);
+  assert.deepEqual(ids("experienced"), ["craft-all", "craft-senior"]);
+  assert.deepEqual(ids(NOT_SURE), ["craft-all"]);
+});
+
+test("craft blocks don't add to the plan's length", () => {
+  const without = buildPlan(ANSWERS, PLAN_BLOCKS);
+  const withCraft = buildPlan(ANSWERS, [...PLAN_BLOCKS, craft("craft-a"), craft("craft-b")]);
+  assert.equal(withCraft.pace.message, without.pace.message);
+});
+
+test("craft blocks say why they're there", () => {
+  const plan = buildPlan({ ...ANSWERS, exp: "beginner" }, [craft("craft-all"), craft("craft-beginner", ["beginner"])]);
+  assert.deepEqual(plan.growSkills.map((block) => block.why), ["Because it's a useful skill at any level.", "Because it suits your experience."]);
 });
 
 test("placeholder blocks never reach a plan", () => {
@@ -134,8 +246,8 @@ test("placeholder blocks never reach a plan", () => {
 });
 
 test("onboarding is for people partway through or running a live product, outside the timeline", () => {
-  const blockSet = REAL_BLOCKS;
-  const id = "onboarding-existing-product";
+  const blockSet = PLAN_BLOCKS;
+  const id = "onboarding-product";
   assert.deepEqual(buildPlan(ANSWERS, blockSet).getUpToSpeed, []);
   assert.deepEqual(buildPlan({ ...ANSWERS, stage: NOT_SURE, phase: null }, blockSet).getUpToSpeed, []);
   for (const stage of ["mid-build", "live"] as const) {
@@ -176,23 +288,57 @@ test("core blocks come before add-ons when nothing else decides", () => {
   assert.deepEqual(blockIds(buildPlan({ ...ANSWERS, pm: "ai" }, [extra, core])), ["z-core", "a-extra"]);
 });
 
+const inDefine = (id: string, overrides: Partial<Block> = {}) => fixture(id, "define", "1 day", [], overrides);
+
+test("comesAfter sets the order when both blocks are in the phase", () => {
+  const blocks = [inDefine("a-later", { comesAfter: ["z-first"] }), inDefine("z-first")];
+  assert.deepEqual(blockIds(buildPlan(ANSWERS, blocks)), ["z-first", "a-later"]);
+});
+
+test("comesAfter is ignored when the other block isn't in the plan, and never becomes a check", () => {
+  const plan = buildPlan(ANSWERS, [inDefine("a-block", { comesAfter: ["missing-block"] }), inDefine("b-block")]);
+  assert.deepEqual(blockIds(plan), ["a-block", "b-block"]);
+  assert.deepEqual(allBlocks(plan)[0].checkFirst, []);
+});
+
+test("an add-on sits straight after the block it extends, ahead of other core work", () => {
+  const extra = addOn({ id: "z-extra", comesAfter: ["b-core"] });
+  const blocks = [inDefine("a-core"), inDefine("b-core", { dependsOn: ["a-core"] }), inDefine("c-core", { dependsOn: ["a-core"] }), inDefine("d-core", { dependsOn: ["a-core"] }), extra];
+  assert.deepEqual(blockIds(buildPlan({ ...ANSWERS, pm: "ai" }, blocks)), ["a-core", "b-core", "z-extra", "c-core", "d-core"]);
+});
+
+test("a block can wait for every block on its comesAfter list", () => {
+  const blocks = [inDefine("a-decide", { comesAfter: ["b-work", "c-work"] }), inDefine("b-work"), inDefine("c-work")];
+  assert.equal(blockIds(buildPlan(ANSWERS, blocks)).at(-1), "a-decide");
+});
+
+test("a Go further block stays last even after a block that waits for others", () => {
+  const blocks = [inDefine("a-decide", { comesAfter: ["b-work"] }), inDefine("b-work"), inDefine("a-extra", { optional: true })];
+  assert.deepEqual(blockIds(buildPlan(ANSWERS, blocks)), ["b-work", "a-decide", "a-extra"]);
+});
+
+test("a circular comesAfter in a bad file can't hang the engine", () => {
+  const blocks = [inDefine("a", { comesAfter: ["b"] }), inDefine("b", { comesAfter: ["a"] })];
+  assert.equal(blockIds(buildPlan(ANSWERS, blocks)).length, 2);
+});
+
 test("a dependency earlier in the plan isn't repeated as a check", () => {
-  const plan = buildPlan(ANSWERS, REAL_BLOCKS);
-  assert.deepEqual(allBlocks(plan).find((block) => block.id === "define-problem-statement")?.checkFirst, []);
+  const plan = buildPlan(ANSWERS, PLAN_BLOCKS);
+  assert.deepEqual(allBlocks(plan).find((block) => block.id === "define-problem")?.checkFirst, []);
 });
 
 test("a dependency before the plan starts becomes check this exists, not a task", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, REAL_BLOCKS);
-  const stories = allBlocks(plan).find((block) => block.id === "build-user-stories");
-  assert.deepEqual(stories?.checkFirst.map((item) => item.id), ["plan-prioritise-roadmap"]);
-  assert.ok(!blockIds(plan).includes("plan-prioritise-roadmap"));
+  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, PLAN_BLOCKS);
+  const stories = allBlocks(plan).find((block) => block.id === "build-stories");
+  assert.deepEqual(stories?.checkFirst.map((item) => item.id), ["plan-roadmap"]);
+  assert.ok(!blockIds(plan).includes("plan-roadmap"));
 });
 
 test("on a live product's loop, a dependency that comes later is treated as already done", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "live" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "live" }, PLAN_BLOCKS);
   assert.equal(plan.phases[0].id, "measure");
   const measure = plan.phases[0].blocks[0];
-  assert.deepEqual(measure.checkFirst.map((item) => item.id), ["define-problem-statement", "launch-release-plan"]);
+  assert.deepEqual(measure.checkFirst.map((item) => item.id), ["define-problem", "launch-release"]);
 });
 
 test("a circular dependency in a bad file can't hang the engine", () => {
@@ -210,22 +356,22 @@ test("a dependency on a block the visitor doesn't get still shows its title", ()
 // --- Experience ---
 
 test("each experience level gets its own steps", () => {
-  const block = REAL_BLOCKS[0];
+  const block = PLAN_BLOCKS[0];
   for (const exp of EXPERIENCE_IDS) {
-    const plan = buildPlan({ ...ANSWERS, exp }, REAL_BLOCKS);
+    const plan = buildPlan({ ...ANSWERS, exp }, PLAN_BLOCKS);
     assert.deepEqual(allBlocks(plan)[0].steps.map((step) => step.text), block.steps[exp]);
   }
 });
 
 test("Not sure on experience gets the intermediate steps", () => {
-  const plan = buildPlan({ ...ANSWERS, exp: NOT_SURE }, REAL_BLOCKS);
-  assert.deepEqual(allBlocks(plan)[0].steps.map((step) => step.text), REAL_BLOCKS[0].steps.intermediate);
+  const plan = buildPlan({ ...ANSWERS, exp: NOT_SURE }, PLAN_BLOCKS);
+  assert.deepEqual(allBlocks(plan)[0].steps.map((step) => step.text), PLAN_BLOCKS[0].steps.intermediate);
 });
 
 test("step ids are unique across a plan, and differ between levels", () => {
-  const beginner = allBlocks(buildPlan({ ...ANSWERS, exp: "beginner" }, REAL_BLOCKS)).flatMap((block) => block.steps);
+  const beginner = allBlocks(buildPlan({ ...ANSWERS, exp: "beginner" }, PLAN_BLOCKS)).flatMap((block) => block.steps);
   assert.equal(new Set(beginner.map((step) => step.id)).size, beginner.length);
-  const experienced = allBlocks(buildPlan({ ...ANSWERS, exp: "experienced" }, REAL_BLOCKS)).flatMap((block) => block.steps);
+  const experienced = allBlocks(buildPlan({ ...ANSWERS, exp: "experienced" }, PLAN_BLOCKS)).flatMap((block) => block.steps);
   assert.ok(!beginner.some((step) => experienced.some((other) => other.id === step.id)));
 });
 
@@ -306,14 +452,6 @@ test("a task with other roles goes to the first one in the team", () => {
   assert.equal(delegated(item, ["ba"]).who, "No Tech Lead in your team");
 });
 
-test("the same task isn't split across analysts", () => {
-  const measure = { ...ANSWERS, stage: "live" } as const;
-  const withoutAnalyst = allBlocks(buildPlan({ ...measure, team: ["ba"] }, REAL_BLOCKS)).find((block) => block.id === "measure-results-hypothesis");
-  assert.equal(withoutAnalyst?.tasks.filter((task) => task.task.startsWith("Build the dashboard")).length, 1);
-  const withAnalyst = allBlocks(buildPlan({ ...measure, team: ["performance-analyst"] }, REAL_BLOCKS)).find((block) => block.id === "measure-results-hypothesis");
-  assert.equal(withAnalyst?.tasks.find((task) => task.task.startsWith("Build the dashboard"))?.who, "Ask your Performance Analyst");
-});
-
 test("a full-stack engineer covers frontend and backend tasks", () => {
   const frontend = { role: "frontend-engineer", ifMissing: "find-someone" } as const;
   assert.equal(delegated(frontend, ["fullstack-engineer"], { "fullstack-engineer": 3 }).who, "Ask your 3 Full-stack Engineers");
@@ -339,17 +477,6 @@ test("nobody reviews work they stepped in to do", () => {
   const plan = (team: IntakeAnswers["team"]) => allBlocks(buildPlan({ ...ANSWERS, team }, [block]))[0].reviewers;
   assert.deepEqual(plan(["tech-lead"]), []);
   assert.deepEqual(plan(["tech-lead", "devops"]), ["Tech Lead"]);
-});
-
-test("the people closest to a task are found across the real blocks", () => {
-  const taskIn = (stage: Partial<IntakeAnswers>, team: IntakeAnswers["team"], blockId: string, text: string) =>
-    allBlocks(buildPlan({ ...ANSWERS, ...stage, team }, REAL_BLOCKS)).find((block) => block.id === blockId)?.tasks.find((task) => task.task.startsWith(text))?.who;
-  const design = { stage: "mid-build", phase: "design", until: "launch" } as const;
-  assert.equal(taskIn(design, ["backend-engineer", "architect"], "design-test-prototype", "Check the design"), "Ask your Architect");
-  assert.equal(taskIn(design, ["fullstack-engineer"], "launch-release-plan", "Set up the gradual"), "Ask your Full-stack Engineer");
-  assert.equal(taskIn(design, ["product-owner"], "build-user-stories", "Draft stories"), "Ask your Product Owner");
-  assert.equal(taskIn(design, ["ux-designer"], "design-test-prototype", "Write the words"), "Ask your UX Designer");
-  assert.equal(allBlocks(buildPlan({ ...ANSWERS, ...design, team: ["ba"] }, REAL_BLOCKS)).find((block) => block.id === "test-acceptance-accessibility")?.tasks[0].note, "This sits with you. Agree who can help, and add time for it.");
 });
 
 test("only reviewers in the team are suggested", () => {
@@ -382,78 +509,122 @@ test("an unlisted tool sits beside real tools without adding anything", () => {
 
 // --- Pace ---
 
+test("blocks in a phase overlap: a phase is its longest block plus a quarter of the rest", () => {
+  const blocks = [fixture("define-long", "define", "10 days", []), fixture("define-a", "define", "4 days", []), fixture("define-b", "define", "4 days", [])];
+  const plan = buildPlan({ ...ANSWERS, until: "define", phase: "define", time: NOT_SURE }, blocks);
+  assert.match(plan.pace.message, /about 3 weeks/);
+  const one = buildPlan({ ...ANSWERS, until: "define", phase: "define", time: NOT_SURE }, [fixture("define-long", "define", "10 days", [])]);
+  assert.match(one.pace.message, /about 2 weeks/);
+});
+
 const buildToLaunch = { ...ANSWERS, stage: "mid-build", phase: "build", until: "launch" } as const;
 const weekOf = (plan: Plan, id: string) => plan.phases.find((phase) => phase.id === id)?.weeks;
 const lastWeek = (plan: Plan) => Number(plan.phases.at(-1)?.weeks.split(" ").at(-1));
 
 test("starting something new is tight in under a month, and fits 1 to 3 months", () => {
-  assert.equal(buildPlan({ ...ANSWERS, time: "under-1m" }, REAL_BLOCKS).pace.status, "tight");
-  assert.equal(buildPlan({ ...ANSWERS, time: "1-3m" }, REAL_BLOCKS).pace.status, "fits");
+  assert.equal(buildPlan({ ...ANSWERS, time: "under-1m" }, PLAN_BLOCKS).pace.status, "tight");
+  assert.equal(buildPlan({ ...ANSWERS, time: "1-3m" }, PLAN_BLOCKS).pace.status, "fits");
 });
 
 test("every length of timeline gives its own schedule", () => {
-  const lengths = TIMELINE_IDS.map((time) => lastWeek(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "plan", until: "launch", time }, REAL_BLOCKS)));
-  assert.deepEqual(lengths, [3, 9, 20, 26]);
+  const lengths = TIMELINE_IDS.map((time) => lastWeek(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "plan", until: "launch", time }, PLAN_BLOCKS)));
+  assert.deepEqual(lengths, [4, 9, 20, 26]);
 });
 
 test("under 1 month isn't stretched, because the milestone could be days away", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "launch", until: null, time: "under-1m" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "launch", until: null, time: "under-1m" }, PLAN_BLOCKS);
   assert.equal(plan.phases[0].weeks, "Week 1");
   assert.match(plan.pace.message, /fits your timeline/);
 });
 
 test("Build takes most of the spare time, and is never treated as a few hours", () => {
-  const plan = buildPlan({ ...buildToLaunch, time: "3-6m" }, REAL_BLOCKS);
-  assert.deepEqual(plan.phases.map((phase) => phase.weeks), ["Weeks 1 to 14", "Weeks 14 to 18", "Weeks 18 to 20"]);
+  const plan = buildPlan({ ...buildToLaunch, time: "3-6m" }, PLAN_BLOCKS);
+  assert.deepEqual(plan.phases.map((phase) => phase.weeks), ["Weeks 1 to 15", "Weeks 15 to 18", "Weeks 18 to 20"]);
   assert.match(plan.pace.message, /most of the spare time going to Build/);
   assert.ok(plan.phases.find((phase) => phase.id === "build")?.note);
   assert.equal(plan.phases.find((phase) => phase.id === "test")?.note, undefined);
-  const noDate = buildPlan({ ...buildToLaunch, time: NOT_SURE, until: null }, REAL_BLOCKS);
+  const noDate = buildPlan({ ...buildToLaunch, time: NOT_SURE, until: null }, PLAN_BLOCKS);
   assert.equal(noDate.pace.status, "open");
-  assert.match(weekOf(noDate, "build") ?? "", /Weeks 1 to 2/);
-  assert.equal(MIN_BUILD_DAYS, 10);
+  assert.equal(weekOf(noDate, "build"), "Weeks 1 to 4");
+  assert.equal(MIN_PHASE_DAYS.build, 20);
+});
+
+test("Measure gets at least 4 weeks, because results need time to build up", () => {
+  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "measure", until: "measure", time: NOT_SURE }, PLAN_BLOCKS);
+  assert.equal(plan.phases[0].weeks, "Weeks 1 to 4");
+  assert.equal(MIN_PHASE_DAYS.measure, 20);
+});
+
+test("a tight plan under a month offers both ways out when both exist", () => {
+  const plan = buildPlan({ ...ANSWERS, stage: "new", phase: "discover", until: "launch", time: "under-1m" }, PLAN_BLOCKS);
+  assert.equal(plan.pace.status, "tight");
+  assert.match(plan.pace.message, /To make this realistic, narrow it to the smallest valuable release, or finish one phase first by choosing an earlier finish in Your answers\.$/);
+});
+
+test("a tight plan under a month with no release to narrow suggests an earlier finish", () => {
+  const plan = buildPlan({ ...ANSWERS, stage: "new", phase: "discover", until: "design", time: "under-1m" }, PLAN_BLOCKS);
+  assert.equal(plan.pace.status, "tight");
+  assert.match(plan.pace.message, /To make this realistic, finish one phase first by choosing an earlier finish in Your answers\.$/);
+  assert.doesNotMatch(plan.pace.message, /smallest valuable release/);
+});
+
+test("a tight one-phase plan under a month doesn't suggest an earlier finish", () => {
+  const huge = fixture("build-huge", "build", "30 days", []);
+  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "under-1m" }, [huge]);
+  assert.equal(plan.pace.status, "tight");
+  assert.match(plan.pace.message, /To make this realistic, narrow it to the smallest valuable release\.$/);
+  const research = fixture("discover-huge", "discover", "30 days", []);
+  const learning = buildPlan({ ...ANSWERS, stage: "new", phase: "discover", until: "discover", time: "under-1m" }, [research]);
+  assert.match(learning.pace.message, /narrow what you need to learn, or move the milestone\.$/);
+});
+
+test("advice is only for plans under a month", () => {
+  const plan = buildPlan({ ...ANSWERS, stage: "new", phase: "discover", until: "measure", time: "1-3m" }, [...PLAN_BLOCKS, fixture("test-huge", "test", "100 days", [])]);
+  assert.equal(plan.pace.status, "tight");
+  assert.doesNotMatch(plan.pace.message, /To make this realistic/);
+  assert.match(plan.pace.message, /or do less of each\.$/);
 });
 
 test("a plan that's only Build runs to the end of the timeline", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "3-6m" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "3-6m" }, PLAN_BLOCKS);
   assert.deepEqual(plan.phases.map((phase) => phase.weeks), ["Weeks 1 to 20"]);
 });
 
 test("a plan without Build spreads evenly, and says it may need less", () => {
-  const plan = buildPlan({ ...ANSWERS, until: "discover", time: "6m-plus" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, until: "discover", time: "6m-plus" }, PLAN_BLOCKS);
   assert.equal(plan.pace.status, "spare");
   assert.equal(plan.phases[0].weeks, "Weeks 1 to 9");
   assert.match(plan.pace.message, /usually takes about 3 weeks. We've allowed about 9 weeks, so you have time to spare/);
   assert.match(plan.pace.message, /choose a later phase/);
-  const spreadWithin = buildPlan({ ...ANSWERS, time: "1-3m" }, REAL_BLOCKS);
+  const spreadWithin = buildPlan({ ...ANSWERS, time: "1-3m" }, PLAN_BLOCKS);
   assert.equal(spreadWithin.pace.status, "fits");
   assert.match(spreadWithin.pace.message, /may well need less/);
 });
 
 test("small work is never stretched past three times its length", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "launch", until: null, time: "6m-plus" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "launch", until: null, time: "6m-plus" }, PLAN_BLOCKS);
   assert.equal(plan.phases[0].weeks, "Week 1");
 });
 
 test("Build's message only mentions spare time when there is some to share", () => {
-  const buildOnly = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "3-6m" }, REAL_BLOCKS);
+  const buildOnly = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "3-6m" }, PLAN_BLOCKS);
   assert.equal(buildOnly.pace.message, "We've planned Build across about 20 weeks to suit your timeline.");
-  const full = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "plan", until: "launch", time: "under-1m" }, REAL_BLOCKS);
-  assert.match(full.pace.message, /fits your timeline/);
+  const noSpare = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build", time: "under-1m" }, PLAN_BLOCKS);
+  assert.equal(noSpare.pace.message, "This plan takes about 4 weeks, which fits your timeline.");
 });
 
 test("Measure on a tight plan is expected to finish after the milestone", () => {
-  const plan = buildPlan({ ...ANSWERS, until: "measure", time: "under-1m" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, until: "measure", time: "under-1m" }, PLAN_BLOCKS);
   assert.equal(plan.pace.status, "tight");
   assert.match(plan.phases.at(-1)?.note ?? "", /after your milestone/);
-  assert.equal(buildPlan({ ...ANSWERS, until: "measure", time: "6m-plus" }, REAL_BLOCKS).phases.at(-1)?.note, undefined);
+  assert.equal(buildPlan({ ...ANSWERS, until: "measure", time: "6m-plus" }, PLAN_BLOCKS).phases.at(-1)?.note, undefined);
 });
 
 test("spare time only suggests a later phase if there is one", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "launch", until: null, time: "6m-plus" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "launch", until: null, time: "6m-plus" }, PLAN_BLOCKS);
   assert.equal(plan.pace.status, "spare");
   assert.doesNotMatch(plan.pace.message, /later phase/);
-  const lastPhase = buildPlan({ ...ANSWERS, stage: "new", phase: "plan", until: "measure", time: "6m-plus" }, REAL_BLOCKS);
+  const lastPhase = buildPlan({ ...ANSWERS, stage: "new", phase: "plan", until: "measure", time: "6m-plus" }, PLAN_BLOCKS);
   assert.doesNotMatch(lastPhase.pace.message, /later phase/);
 });
 
@@ -470,7 +641,7 @@ test("Not sure on the timeline gives a steady pace and no warning", () => {
 });
 
 test("a tight plan is squeezed to end on time, and says why", () => {
-  const tight = buildPlan({ ...ANSWERS, stage: "live", until: "launch", time: "under-1m" }, REAL_BLOCKS);
+  const tight = buildPlan({ ...ANSWERS, stage: "live", until: "launch", time: "under-1m" }, PLAN_BLOCKS);
   assert.equal(tight.pace.status, "tight");
   assert.equal(lastWeek(tight), 4);
   assert.match(tight.pace.message, /usually takes about \d+ weeks, and you have up to 4 weeks/);
@@ -484,18 +655,18 @@ test("a plan just over its limit never says it takes the same as the limit", () 
 });
 
 test("the length quoted matches the last week of the timeline", () => {
-  const plan = buildPlan({ ...ANSWERS, exp: "beginner", time: NOT_SURE, until: null }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, exp: "beginner", time: NOT_SURE, until: null }, PLAN_BLOCKS);
   assert.match(plan.pace.message, new RegExp(`about ${lastWeek(plan)} weeks`));
 });
 
 test("recurring and onboarding blocks don't add to the plan's length", () => {
-  const without = buildPlan({ ...ANSWERS, stage: "mid-build" }, REAL_BLOCKS.filter((block) => block.kind === "core"));
-  const withThem = buildPlan({ ...ANSWERS, stage: "mid-build" }, REAL_BLOCKS);
+  const without = buildPlan({ ...ANSWERS, stage: "mid-build" }, PLAN_BLOCKS.filter((block) => block.kind === "core" || block.kind === "add-on"));
+  const withThem = buildPlan({ ...ANSWERS, stage: "mid-build" }, PLAN_BLOCKS);
   assert.equal(withThem.pace.message, without.pace.message);
 });
 
 test("week labels never go backwards", () => {
-  const plan = buildPlan({ ...ANSWERS, until: "measure", time: "3-6m" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, until: "measure", time: "3-6m" }, PLAN_BLOCKS);
   const weeks = plan.phases.map((phase) => Number(phase.weeks.split(" ").at(-1)));
   assert.deepEqual(weeks, weeks.toSorted((a, b) => a - b));
 });
@@ -503,7 +674,7 @@ test("week labels never go backwards", () => {
 // --- Explaining ---
 
 test("every block says why it's there", () => {
-  const plan = buildPlan({ ...ANSWERS, pm: "ai", stage: "mid-build" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, pm: "ai", stage: "mid-build" }, PLAN_BLOCKS);
   for (const block of [...allBlocks(plan), ...plan.getUpToSpeed, ...plan.rhythm]) assert.ok(block.why.startsWith("Because"), block.id);
 });
 
@@ -520,27 +691,26 @@ test("reasons name what the visitor actually chose", () => {
 // --- The summary ---
 
 test("the next three actions are the first steps, in order", () => {
-  const plan = buildPlan({ ...ANSWERS, exp: "beginner" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, exp: "beginner" }, PLAN_BLOCKS);
   assert.equal(plan.nextActions.length, 3);
-  assert.deepEqual(plan.nextActions.map((action) => action.text), REAL_BLOCKS[0].steps.beginner.slice(0, 3));
+  assert.deepEqual(plan.nextActions.map((action) => action.text), PLAN_BLOCKS[0].steps.beginner.slice(0, 3));
 });
 
 test("the next actions start from instructions at every experience level", () => {
-  const plan = buildPlan({ ...ANSWERS, exp: "experienced" }, REAL_BLOCKS);
-  assert.deepEqual(plan.nextActions.map((action) => action.text), REAL_BLOCKS.find((block) => block.id === plan.nextActions[0].blockId)?.steps.experienced.slice(0, 3));
-  assert.match(plan.nextActions[2].text, /^Synthesise as a team/);
+  const plan = buildPlan({ ...ANSWERS, exp: "experienced" }, PLAN_BLOCKS);
+  assert.deepEqual(plan.nextActions.map((action) => action.text), PLAN_BLOCKS.find((block) => block.id === plan.nextActions[0].blockId)?.steps.experienced.slice(0, 3));
 });
 
 test("earlier work the next actions rely on is called out", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, REAL_BLOCKS);
-  assert.deepEqual(plan.checkBeforeActions.map((check) => check.id), ["plan-prioritise-roadmap"]);
-  assert.deepEqual(buildPlan(ANSWERS, REAL_BLOCKS).checkBeforeActions, []);
+  const plan = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, PLAN_BLOCKS);
+  assert.deepEqual(plan.checkBeforeActions.map((check) => check.id), ["plan-roadmap"]);
+  assert.deepEqual(buildPlan(ANSWERS, PLAN_BLOCKS).checkBeforeActions, []);
 });
 
 test("on a live product's loop, the work to look for comes from the last release", () => {
-  const plan = buildPlan({ ...ANSWERS, stage: "live" }, REAL_BLOCKS);
+  const plan = buildPlan({ ...ANSWERS, stage: "live" }, PLAN_BLOCKS);
   assert.equal(plan.checkBeforeLabel, "From your last release, find");
-  assert.equal(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, REAL_BLOCKS).checkBeforeLabel, "Make sure these are done first");
+  assert.equal(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, PLAN_BLOCKS).checkBeforeLabel, "Make sure these are done first");
 });
 
 test("the next actions carry on into the next block if one runs out", () => {
@@ -550,10 +720,10 @@ test("the next actions carry on into the next block if one runs out", () => {
 });
 
 test("the summary reads properly with and without Not sure", () => {
-  assert.equal(buildPlan(ANSWERS, REAL_BLOCKS).who, "PM type: General · Product: Business software (B2B / SaaS) · Experience: Intermediate");
-  assert.equal(buildPlan({ ...ANSWERS, pm: NOT_SURE, product: NOT_SURE, exp: NOT_SURE }, REAL_BLOCKS).who, "Product manager");
-  assert.equal(buildPlan({ ...ANSWERS, pm: NOT_SURE, exp: NOT_SURE }, REAL_BLOCKS).who, "Product: Business software (B2B / SaaS)");
-  assert.match(buildPlan(ANSWERS, REAL_BLOCKS).where, /^Starting something new, from Discover to Plan and prioritise\.$/);
+  assert.equal(buildPlan(ANSWERS, PLAN_BLOCKS).who, "PM type: General · Product: Business software (B2B / SaaS) · Experience: Intermediate");
+  assert.equal(buildPlan({ ...ANSWERS, pm: NOT_SURE, product: NOT_SURE, exp: NOT_SURE }, PLAN_BLOCKS).who, "Product manager");
+  assert.equal(buildPlan({ ...ANSWERS, pm: NOT_SURE, exp: NOT_SURE }, PLAN_BLOCKS).who, "Product: Business software (B2B / SaaS)");
+  assert.match(buildPlan(ANSWERS, PLAN_BLOCKS).where, /^Starting something new, from Discover to Plan and prioritise\.$/);
 });
 
 test("no blocks at all gives an empty plan, not a crash", () => {
@@ -565,37 +735,38 @@ test("no blocks at all gives an empty plan, not a crash", () => {
 // --- Keeping it predictable ---
 
 test("the same answers always give the same plan", () => {
-  assert.deepEqual(buildPlan(ANSWERS, REAL_BLOCKS), buildPlan(ANSWERS, REAL_BLOCKS));
-  assert.deepEqual(buildPlan(ANSWERS, REAL_BLOCKS), buildPlan(ANSWERS, [...REAL_BLOCKS].reverse()));
+  assert.deepEqual(buildPlan(ANSWERS, PLAN_BLOCKS), buildPlan(ANSWERS, PLAN_BLOCKS));
+  assert.deepEqual(buildPlan(ANSWERS, PLAN_BLOCKS), buildPlan(ANSWERS, [...PLAN_BLOCKS].reverse()));
 });
 
 test("building a plan doesn't change the answers or the blocks", () => {
   const answers = structuredClone(ANSWERS);
-  const blocks = structuredClone(REAL_BLOCKS);
+  const blocks = structuredClone(PLAN_BLOCKS);
   buildPlan(answers, blocks);
   assert.deepEqual(answers, ANSWERS);
-  assert.deepEqual(blocks, REAL_BLOCKS);
+  assert.deepEqual(blocks, PLAN_BLOCKS);
 });
 
 test("two very different visitors get clearly different plans", () => {
   const newcomer = buildPlan(
     { ...ANSWERS, pm: "general", stage: "new", exp: "beginner", team: [NOT_SURE], tools: [NOT_SURE], way: "kanban" },
-    REAL_BLOCKS,
+    PLAN_BLOCKS,
   );
   const expert = buildPlan(
     { ...ANSWERS, pm: "ai", product: "data-ai", stage: "mid-build", phase: "test", exp: "experienced", team: ["qa"], tools: ["github"], until: "launch", way: "scrum" },
-    REAL_BLOCKS,
+    PLAN_BLOCKS,
   );
   assert.deepEqual(phaseIds(newcomer), ["discover", "define", "design", "plan"]);
   assert.deepEqual(phaseIds(expert), ["test", "launch"]);
-  assert.ok(blockIds(expert).includes("test-ai-model-evaluation"));
-  assert.deepEqual(newcomer.rhythm.map((block) => block.id), ["wow-kanban-flow"]);
-  assert.deepEqual(expert.rhythm.map((block) => block.id), ["wow-sprint-planning"]);
+  assert.ok(blockIds(expert).includes("test-ai-evaluation"));
+  assert.deepEqual(newcomer.rhythm.map((block) => block.id), ["wow-flow"]);
+  assert.deepEqual(expert.rhythm.map((block) => block.id), ["wow-sprints"]);
   assert.deepEqual(newcomer.getUpToSpeed, []);
   assert.equal(expert.getUpToSpeed.length, 1);
 });
 
 test("every mix of the main answers builds a sensible plan from the real blocks", () => {
+  const realBlocks = loadBlocks();
   const withNotSure = <T>(values: readonly T[]) => [...values, NOT_SURE] as (T | typeof NOT_SURE)[];
   let checked = 0;
   for (const pm of withNotSure(PM_TYPE_IDS)) {
@@ -605,7 +776,7 @@ test("every mix of the main answers builds a sensible plan from the real blocks"
           for (const way of withNotSure(WAY_OF_WORKING_IDS)) {
             checked += 1;
             const answers: IntakeAnswers = { ...ANSWERS, pm, product, stage, time, way, phase: stage === NOT_SURE ? null : NOT_SURE };
-            const plan = buildPlan(answers, REAL_BLOCKS);
+            const plan = buildPlan(answers, realBlocks);
             const name = JSON.stringify({ pm, product, stage, time, way });
             assert.ok(plan.phases.length > 0, name);
             assert.equal(plan.nextActions.length, 3, name);

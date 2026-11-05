@@ -1,0 +1,84 @@
+{
+  "id": "addon-internal-adoption",
+  "title": "Get people to adopt an internal tool",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "Staff may stick to old ways unless the new tool clearly helps them. Plan adoption as carefully as the build.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "internal"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Show staff how the tool helps them, not just the organisation.",
+      "Train people close to when they will use it.",
+      "Find champions in each team.",
+      "Track usage by team and help those who are stuck.",
+      "Retire the old tool when ready."
+    ],
+    "intermediate": [
+      "Plan communication, training and champions.",
+      "Track adoption by team.",
+      "Retire old tools."
+    ],
+    "experienced": [
+      "Get managers to support adoption.",
+      "Link adoption to business outcomes.",
+      "Use feedback to improve the tool quickly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Coordinate training and rollout",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write guides",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "sharepoint-word": "Publish quick guides on the intranet.",
+    "power-bi": "Track adoption by team."
+  },
+  "definitionOfDone": [
+    "Adoption plan in place",
+    "Usage tracked by team",
+    "Old tool retirement planned"
+  ],
+  "pitfalls": [
+    "Launching by email only",
+    "No champions",
+    "Keeping the old tool forever"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Prosci ADKAR model (Prosci)",
+      "url": "https://www.prosci.com/methodology/adkar"
+    },
+    {
+      "title": "Services for government users (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/design/services-for-government-users"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

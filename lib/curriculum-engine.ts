@@ -44,10 +44,14 @@ export const TIMELINE_WEEKS: Record<TimelineId, { min: number; plan: number; max
 };
 
 /**
- * The least time a plan allows for Build. Blocks only count the PM's part of
+ * The least time a plan allows for a phase. Blocks only count the PM's part of
  * Build, not the engineering, so without this it could look like a few hours.
+ * Measure needs time for results to build up after launch.
  */
-export const MIN_BUILD_DAYS = 10;
+export const MIN_PHASE_DAYS: Partial<Record<PhaseId, number>> = { build: 20, measure: 20 };
+
+/** Blocks in a phase overlap. Each block after the longest adds this share of its length. */
+const OVERLAP_SHARE = 1 / 4;
 
 /** How much of a plan's spare time goes to Build. The other phases share the rest. */
 const BUILD_SHARE_OF_SPARE = 2 / 3;
@@ -56,6 +60,8 @@ const BUILD_SHARE_OF_SPARE = 2 / 3;
 const MAX_STRETCH = 3;
 
 const BUILD_PHASE: PhaseId = "build";
+/** Phases where a plan can be cut back to a smaller release. */
+const RELEASE_PHASES: readonly PhaseId[] = ["plan", "build", "test", "launch"];
 const BUILD_NOTE = "Build depends on your team and scope, so this length is a starting point. Agree real dates with your engineers.";
 const MEASURE_NOTE = "Results take time to appear, so expect to finish this after your milestone.";
 
@@ -69,6 +75,10 @@ export function effortInDays(effort: string): number {
   const midpoint = (low + Number(match[2] ?? low)) / 2;
   if (match[3] === "day") return midpoint;
   return (match[3] === "hour" ? midpoint : midpoint / 60) / HOURS_PER_DAY;
+}
+
+function experienceFor(answers: IntakeAnswers): ExperienceId {
+  return answers.exp === NOT_SURE ? "intermediate" : answers.exp;
 }
 
 // --- 1. Select ---
@@ -104,8 +114,14 @@ function fitsWayOfWorking(block: Block, answers: IntakeAnswers): boolean {
   return waysOfWorking.length === 0 || waysOfWorking.some((id) => id === answers.way);
 }
 
+/** An empty list means every level. "Not sure" counts as intermediate, the same as for steps. */
+function fitsExperience(block: Block, answers: IntakeAnswers): boolean {
+  const { experience } = block.appliesTo;
+  return experience.length === 0 || experience.includes(experienceFor(answers));
+}
+
 function fitsVisitor(block: Block, answers: IntakeAnswers): boolean {
-  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers);
+  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsExperience(block, answers);
 }
 
 /** The first phase of this plan that the block belongs to, if any. */
@@ -116,19 +132,25 @@ function placeIn(block: Block, covered: readonly PhaseId[]): PhaseId | undefined
 
 // --- 2. Order ---
 
-const byKindThenId = (a: Block, b: Block): number => {
-  const rank = (block: Block) => (block.kind === "core" ? 0 : 1);
-  if (rank(a) !== rank(b)) return rank(a) - rank(b);
-  return a.id < b.id ? -1 : 1;
-};
-
-/** Puts blocks after whatever they depend on within the same phase. */
+/**
+ * Puts blocks after whatever they depend on or come after within the same
+ * phase. When several could go next, a block with a place to follow goes first,
+ * and an add-on goes before core work, so it sits straight after what it
+ * extends. "Go further" blocks always go last.
+ */
 function orderByDependency(blocks: readonly Block[]): Block[] {
-  const remaining = [...blocks].sort(byKindThenId);
+  const present = new Set(blocks.map((block) => block.id));
+  const follows = (block: Block) => (block.comesAfter ?? []).filter((id) => present.has(id));
+  const rank = (block: Block) => {
+    if (block.optional) return 4;
+    if (follows(block).length > 0) return block.kind === "add-on" ? 0 : 1;
+    return block.kind === "core" ? 2 : 3;
+  };
+  const remaining = [...blocks].sort((a, b) => rank(a) - rank(b) || (a.id < b.id ? -1 : 1));
   const ordered: Block[] = [];
   while (remaining.length > 0) {
     const waiting = new Set(remaining.map((block) => block.id));
-    const ready = remaining.findIndex((block) => !block.dependsOn.some((id) => waiting.has(id)));
+    const ready = remaining.findIndex((block) => ![...block.dependsOn, ...follows(block)].some((id) => waiting.has(id)));
     // The validator rejects circular dependencies. This just means a bad file can't hang the page.
     ordered.push(...remaining.splice(Math.max(ready, 0), 1));
   }
@@ -136,10 +158,6 @@ function orderByDependency(blocks: readonly Block[]): Block[] {
 }
 
 // --- 3 to 5. Shape, assign and tools ---
-
-function experienceFor(answers: IntakeAnswers): ExperienceId {
-  return answers.exp === NOT_SURE ? "intermediate" : answers.exp;
-}
 
 type RoleDetails = { id: RoleId; label: string; person?: string; plural?: string; covers?: readonly RoleId[]; reviewsFor?: readonly RoleId[] };
 const ROLE_DETAILS: readonly RoleDetails[] = ROLES;
@@ -217,6 +235,11 @@ function whyRhythm(block: Block, answers: IntakeAnswers): string {
   return `Because your team works with ${labelOf(WAYS_OF_WORKING, answers.way)}.`;
 }
 
+function whyCraft(block: Block): string {
+  if (block.appliesTo.experience.length === 0) return "Because it's a useful skill at any level.";
+  return "Because it suits your experience.";
+}
+
 function whyOnboarding(answers: IntakeAnswers): string {
   const stage = labelOf(STAGES, stageFor(answers));
   return `Because you're ${stage[0].toLowerCase()}${stage.slice(1)}. Skip this if you already know the product.`;
@@ -245,6 +268,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     title: block.title,
     summary: block.summary,
     kind: block.kind,
+    ...(block.optional ? { optional: true } : {}),
     effort: block.estimatedEffort,
     why,
     steps: block.steps[level].map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
@@ -282,6 +306,14 @@ function durationText(days: number): string {
 
 type PhaseGroup = { phaseId: PhaseId; blocks: Block[] };
 
+/** Blocks in a phase overlap, so a phase is its longest block plus a share of the rest. */
+function phaseDays(blocks: readonly Block[]): number {
+  const days = blocks.map((block) => effortInDays(block.estimatedEffort));
+  const total = days.reduce((sum, value) => sum + value, 0);
+  const longest = Math.max(0, ...days);
+  return longest + (total - longest) * OVERLAP_SHARE;
+}
+
 type Schedule = {
   /** Working days for each phase, in order. */
   lengths: number[];
@@ -299,8 +331,9 @@ type Schedule = {
  */
 function schedulePhases(groups: readonly PhaseGroup[], time: IntakeAnswers["time"]): Schedule {
   const needed = groups.map(({ phaseId, blocks }) => {
-    const days = blocks.reduce((sum, block) => sum + effortInDays(block.estimatedEffort), 0);
-    return phaseId === BUILD_PHASE ? Math.max(days, MIN_BUILD_DAYS) : days;
+    // "Go further" blocks are extra, so they don't add to the plan's length.
+    const days = phaseDays(blocks.filter((block) => !block.optional));
+    return Math.max(days, MIN_PHASE_DAYS[phaseId] ?? 0);
   });
   const neededDays = needed.reduce((sum, days) => sum + days, 0);
   if (time === NOT_SURE || neededDays === 0) return { lengths: needed, neededDays, plannedDays: neededDays };
@@ -320,7 +353,17 @@ function schedulePhases(groups: readonly PhaseGroup[], time: IntakeAnswers["time
   return { lengths, neededDays, plannedDays };
 }
 
-function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: IntakeAnswers, hasBuild: boolean, canFinishLater: boolean): PlanPace {
+/** What a visitor can do about a plan that won't fit in under a month. */
+function tightAdvice(covered: readonly PhaseId[], canFinishEarlier: boolean): string {
+  const canNarrow = covered.some((id) => RELEASE_PHASES.includes(id));
+  const finishFirst = "finish one phase first by choosing an earlier finish in Your answers";
+  if (canNarrow && canFinishEarlier) return `To make this realistic, narrow it to the smallest valuable release, or ${finishFirst}.`;
+  if (canNarrow) return "To make this realistic, narrow it to the smallest valuable release.";
+  if (canFinishEarlier) return `To make this realistic, ${finishFirst}.`;
+  return "To make this realistic, narrow what you need to learn, or move the milestone.";
+}
+
+function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: IntakeAnswers, hasBuild: boolean, canFinishLater: boolean, advice: string): PlanPace {
   const { time } = answers;
   const needed = durationText(neededDays);
   const planned = durationText(plannedDays);
@@ -329,10 +372,9 @@ function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: Intake
   }
   const { min, max } = TIMELINE_WEEKS[time];
   if (neededDays > max * DAYS_PER_WEEK) {
-    return {
-      status: "tight",
-      message: `This is tight. The work usually takes ${needed}, and you have up to ${max} weeks. We've fitted it in, so expect to run steps side by side or do less of each.`,
-    };
+    const opening = `This is tight. The work usually takes ${needed}, and you have up to ${max} weeks.`;
+    if (time === "under-1m") return { status: "tight", message: `${opening} We've fitted it in, so expect steps to run side by side. ${advice}` };
+    return { status: "tight", message: `${opening} We've fitted it in, so expect to run steps side by side or do less of each.` };
   }
   const fits = `This plan takes ${planned}, which fits your timeline.`;
   if (hasBuild) {
@@ -370,6 +412,7 @@ function whereText(answers: IntakeAnswers, covered: readonly PhaseId[]): string 
 function firstActions(phases: readonly PlanPhase[], count: number): PlanAction[] {
   return phases
     .flatMap((phase) => phase.blocks)
+    .filter((block) => !block.optional)
     .flatMap((block) => block.steps.map((step) => ({ blockId: block.id, blockTitle: block.title, text: step.text })))
     .slice(0, count);
 }
@@ -403,7 +446,9 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
 
   const furthestFinish = finishOptions(answers).at(-1)?.id;
   const canFinishLater = furthestFinish !== undefined && furthestFinish !== covered[covered.length - 1];
-  const pace = paceFor(schedule, answers, byPhase.some((group) => group.phaseId === BUILD_PHASE), canFinishLater);
+  const canFinishEarlier = furthestFinish !== undefined && covered.length > 1;
+  const advice = tightAdvice(covered, canFinishEarlier);
+  const pace = paceFor(schedule, answers, byPhase.some((group) => group.phaseId === BUILD_PHASE), canFinishLater, advice);
   const phaseNote = (phaseId: PhaseId) => {
     if (phaseId === BUILD_PHASE) return BUILD_NOTE;
     return phaseId === "measure" && pace.status === "tight" ? MEASURE_NOTE : undefined;
@@ -451,5 +496,6 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
       : [],
     phases,
     rhythm: alongside("ways-of-working").map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
+    growSkills: alongside("craft").map((block) => shapeBlock(block, answers, whyCraft(block), [])),
   };
 }

@@ -1,0 +1,91 @@
+{
+  "id": "plan-share-roadmap",
+  "title": "Share the roadmap and set expectations",
+  "phase": "plan",
+  "kind": "core",
+  "summary": "A roadmap only helps if people understand it. Share it in a way each audience can use, be clear about what is certain and what is not, and keep it up to date.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Decide who needs the roadmap: your team, leaders, other teams, customers or the public. Each needs a different level of detail.",
+      "Show outcomes and problems, not just features. For each item, say why it matters.",
+      "Use a simple format such as Now, Next and Later, so certainty drops as items move further away.",
+      "Say clearly what is not on the roadmap and why.",
+      "Walk key stakeholders through it in person and invite questions.",
+      "Agree when you will update it and where people can always find the latest version."
+    ],
+    "intermediate": [
+      "Tailor roadmap views for each audience.",
+      "Frame items as outcomes, with confidence shown by time horizon.",
+      "Present it, take questions and record concerns.",
+      "Publish one source of truth and an update rhythm."
+    ],
+    "experienced": [
+      "Use the roadmap to tell the strategy story: where you are going, why and what you are trading off.",
+      "Pre-wire senior stakeholders so the review is a confirmation, not a surprise.",
+      "Treat changes as normal and explain them openly when they happen.",
+      "Align roadmaps across teams so dependencies are visible."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "product-owner"
+        ],
+        "task": "Keep the roadmap and delivery plan in step",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "content-designer",
+        "task": "Make the roadmap wording clear for each audience",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Publish a read-only roadmap view for leaders so they see live status without extra reports.",
+    "confluence": "Embed the roadmap on one page with a short explanation of each outcome.",
+    "miro": "Draw a Now, Next, Later board for workshops with stakeholders.",
+    "notion": "Keep a roadmap database with a view per audience."
+  },
+  "definitionOfDone": [
+    "Roadmap views agreed for each audience",
+    "Items framed as outcomes with confidence shown",
+    "Shared and walked through with key stakeholders",
+    "Single source of truth and update rhythm agreed"
+  ],
+  "pitfalls": [
+    "One roadmap for every audience",
+    "Treating the roadmap as a promise of dates",
+    "Letting it go out of date so people stop trusting it"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "plan-delivery-plan"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Building better roadmaps with Janna Bastow (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/building-better-roadmaps-janna-bastow"
+    },
+    {
+      "title": "Stakeholder communications plan (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/stakeholder-communications-plan"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}
