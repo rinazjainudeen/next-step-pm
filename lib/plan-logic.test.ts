@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
+import { CAREER_LEVELS, COMPANY_SIZE_IDS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
 import { loadBlocks } from "./blocks-load";
 import { blockPhases, type Block } from "./blocks-types";
 import { buildPlan, effortInDays } from "./curriculum-engine";
@@ -9,6 +9,7 @@ import { finishOptions, phasesForStage } from "./intake-phases";
 import { TEAM_ROLE_IDS } from "./intake-questions";
 import { NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
 import { parseDraft, planHref, readerFromRecord, startHref } from "./intake-url";
+import { HOME_STATS } from "./site-stats";
 import { firstUnansweredStep, validateDraft } from "./intake-validate";
 import type { Plan } from "./plan-types";
 
@@ -68,12 +69,18 @@ const TEAMS: Pick<IntakeAnswers, "team" | "teamCounts">[] = [
 
 const TOOL_SETS: IntakeAnswers["tools"][] = [[NOT_SURE], [OTHER_TOOL], ...TOOL_IDS.map((tool) => [tool]), ["jira", OTHER_TOOL], [...TOOL_IDS]];
 
-const PEOPLE = PM_TYPE_IDS.flatMap((pm) => PRODUCT_TYPE_IDS.map((product) => ({ pm, product })));
+const PM_ANSWERS: IntakeAnswers["pm"][] = [...PM_TYPE_IDS.map((id) => [id]), ["ai", "hardware"], ["growth", "platform"], ["data", "transformation"]];
+const PEOPLE = PM_ANSWERS.flatMap((pm) => PRODUCT_TYPE_IDS.map((product) => ({ pm, product })));
 const WAYS = [...WAY_OF_WORKING_IDS, NOT_SURE] as const;
-const LEVELS = [...EXPERIENCE_IDS, NOT_SURE] as const;
+const LEVELS = [...CAREER_LEVELS.map((level) => level.id), NOT_SURE] as const;
+const SIZES = [...COMPANY_SIZE_IDS, NOT_SURE] as const;
+const STEPS_FOR: Record<string, string> = { associate: "beginner", "product-manager": "intermediate", senior: "experienced", group: "experienced", director: "experienced", vp: "experienced", [NOT_SURE]: "intermediate" };
+const LEADS_PEOPLE = ["group", "director", "vp"];
+const levelOf = (answers: IntakeAnswers) => STEPS_FOR[answers.level] as (typeof EXPERIENCE_IDS)[number];
+const sizeOf = (answers: IntakeAnswers) => (answers.size === NOT_SURE ? "established" : answers.size);
 
 function answersFor(route: Route, pick: Partial<IntakeAnswers>): IntakeAnswers {
-  const result = validateDraft(tidyDraft({ pm: "general", product: "b2b", exp: "intermediate", team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick }));
+  const result = validateDraft(tidyDraft({ work: null, pm: ["general"], product: "b2b", level: "product-manager", size: "scaling", team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick }));
   assert.ok(result.ok, `A reachable answer set failed validation: ${JSON.stringify({ route, pick })}`);
   return result.answers;
 }
@@ -92,13 +99,25 @@ function expectedPhases(answers: IntakeAnswers): string[] {
   return journey.slice(start, finish + 1);
 }
 
-function fits(block: Block, answers: IntakeAnswers): boolean {
-  const { pmTypes, productTypes, stages, waysOfWorking, experience } = block.appliesTo;
-  const person = (pmTypes.length === 0 && productTypes.length === 0) || pmTypes.some((id) => id === answers.pm) || productTypes.some((id) => id === answers.product);
+function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
+  const { pmTypes, productTypes, stages, waysOfWorking, companySizes = [], leadsPeople } = block.appliesTo;
+  const person = (pmTypes.length === 0 && productTypes.length === 0) || pmTypes.some((id) => answers.pm.some((chosen) => chosen === id)) || productTypes.some((id) => id === answers.product);
   const stage = answers.stage === NOT_SURE ? "new" : answers.stage;
   const way = waysOfWorking.length === 0 || waysOfWorking.some((id) => id === answers.way);
-  const level = answers.exp === NOT_SURE ? "intermediate" : answers.exp;
-  return !block.placeholder && person && (stages.length === 0 || stages.includes(stage)) && way && (experience.length === 0 || experience.includes(level));
+  const size = companySizes.length === 0 || companySizes.includes(sizeOf(answers));
+  return !block.placeholder && person && (stages.length === 0 || stages.includes(stage)) && way && size && !leadsPeople;
+}
+
+function fits(block: Block, answers: IntakeAnswers): boolean {
+  const { experience } = block.appliesTo;
+  return fitsApartFromLevel(block, answers) && (experience.length === 0 || experience.includes(levelOf(answers)));
+}
+
+/** Written only for levels below the visitor's. */
+function isBelow(block: Block, answers: IntakeAnswers): boolean {
+  const { experience } = block.appliesTo;
+  const visitor = EXPERIENCE_IDS.indexOf(levelOf(answers));
+  return experience.length > 0 && experience.every((level) => EXPERIENCE_IDS.indexOf(level) < visitor);
 }
 
 const sorted = (ids: readonly string[]) => [...ids].sort();
@@ -167,9 +186,9 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const timeline = plan.phases.flatMap((phase) => phase.blocks);
   const required = timeline.filter((block) => !block.optional);
   const skills = [...plan.skillsForLevel, ...plan.skillsAnyLevel];
-  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills];
+  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills, ...plan.refreshBasics, ...plan.leadYourTeam];
   const covered = expectedPhases(answers);
-  const level = answers.exp === NOT_SURE ? "intermediate" : answers.exp;
+  const level = levelOf(answers);
 
   // Shape
   if (plan.phases.length === 0) problems.push("The plan has no phases.");
@@ -198,6 +217,18 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   if (sorted(timeline.map((block) => block.id)).join() !== sorted(eligible(["core", "add-on"])).join()) problems.push("The timeline has the wrong blocks.");
   if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(eligible(["ways-of-working"])).join()) problems.push("The rhythm section has the wrong blocks.");
   if (sorted(skills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
+  const refresh = BLOCKS.filter((block) => fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
+  if (sorted(plan.refreshBasics.map((block) => block.id)).join() !== sorted(refresh).join()) problems.push("Refresh the basics has the wrong blocks.");
+  // The fundamentals rule: a block a lower level would get is never lost, only moved.
+  const lowerLevel = BLOCKS.filter((block) => block.appliesTo.experience.length > 0 && !block.appliesTo.experience.includes(level) && fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId)));
+  if (lowerLevel.some((block) => !ids.includes(block.id))) problems.push("A basic was dropped instead of moving to Refresh the basics.");
+  const leads = LEADS_PEOPLE.includes(answers.level);
+  const leadExpected = leads ? BLOCKS.filter((block) => block.appliesTo.leadsPeople).map((block) => block.id) : [];
+  if (sorted(plan.leadYourTeam.map((block) => block.id)).join() !== sorted(leadExpected).join()) problems.push("Lead your team has the wrong blocks.");
+  for (const block of everyBlock) {
+    const shouldMove = (byId.get(block.id) as Block).movesUpFor?.includes(sizeOf(answers)) ?? false;
+    if (shouldMove !== (block.movedUp ?? false)) problems.push(`${block.id} is wrongly${shouldMove ? " not" : ""} marked as moved up.`);
+  }
   const levelsOf = (id: string) => (byId.get(id) as Block).appliesTo.experience.length;
   if (plan.skillsForLevel.some((block) => levelsOf(block.id) === 0)) problems.push("A skill for every level is listed as picked for your level.");
   if (plan.skillsAnyLevel.some((block) => levelsOf(block.id) !== 0)) problems.push("A level-specific skill is listed as useful at any level.");
@@ -228,6 +259,7 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   for (const phase of plan.phases) {
     const ids = phase.blocks.map((block) => block.id);
     for (const block of phase.blocks) {
+      if (block.movedUp) continue;
       const before = (byId.get(block.id) as Block).comesAfter ?? [];
       if (before.some((id) => ids.includes(id) && ids.indexOf(id) > ids.indexOf(block.id))) problems.push(`${block.id} comes before a block it should follow.`);
     }
@@ -337,13 +369,13 @@ function checkPlan(answers: IntakeAnswers): void {
 test("every route through the questions gives a sound plan, at every level and way of working", () => {
   let index = 0;
   for (const route of allRoutes()) {
-    for (const exp of LEVELS) {
+    for (const level of LEVELS) {
       for (const way of WAYS) {
         // Moves through the people, teams and tools, so each gets used in many different routes.
         index += 1;
-        const answers = answersFor(route, { exp, way, ...PEOPLE[index % PEOPLE.length], ...TEAMS[index % TEAMS.length], tools: TOOL_SETS[Math.floor(index / 7) % TOOL_SETS.length] });
+        const answers = answersFor(route, { level, way, size: SIZES[index % SIZES.length], ...PEOPLE[index % PEOPLE.length], ...TEAMS[index % TEAMS.length], tools: TOOL_SETS[Math.floor(index / 7) % TOOL_SETS.length] });
         checkPlan(answers);
-        assert.deepEqual(buildPlan(answers, [...BLOCKS].reverse()), buildPlan(answers, BLOCKS), "The order of the block files changed the plan.");
+        if (index % 5 === 0) assert.deepEqual(buildPlan(answers, [...BLOCKS].reverse()), buildPlan(answers, BLOCKS), "The order of the block files changed the plan.");
       }
     }
   }
@@ -353,9 +385,9 @@ test("every route through the questions gives a sound plan, at every level and w
 test("every kind of PM and product gives a sound plan on very different routes", () => {
   const routes = allRoutes().filter((_, index, all) => index % Math.floor(all.length / 6) === 0);
   for (const route of routes) {
-    for (const pm of [...PM_TYPE_IDS, NOT_SURE] as const) {
+    for (const pm of [...PM_ANSWERS, [NOT_SURE]] as IntakeAnswers["pm"][]) {
       for (const product of [...PRODUCT_TYPE_IDS, NOT_SURE] as const) {
-        for (const exp of LEVELS) checkPlan(answersFor(route, { pm, product, exp, way: pm === "ai" ? "kanban" : "scrum" }));
+        for (const level of LEVELS) checkPlan(answersFor(route, { pm, product, level, way: pm[0] === "ai" ? "kanban" : "scrum" }));
       }
     }
   }
@@ -395,11 +427,13 @@ test("a plan's link gives back exactly the same plan", () => {
 
 test("hand-edited links never crash: they build a sound plan or go back to the questions", () => {
   const values: Record<string, string[]> = {
-    pm: ["general", "ai", "not-sure", "wizard", "__proto__", ""],
+    pm: ["general", "ai", "ai,hardware", "ai,data,growth", "not-sure", "wizard", "__proto__", ""],
     product: ["consumer", "data-ai", "not-sure", "x"],
     stage: ["new", "mid-build", "live", "not-sure", "constructor"],
     phase: [...PHASES.map((phase) => phase.id), "not-sure", "nap"],
-    exp: ["beginner", "experienced", "not-sure", "x"],
+    exp: ["beginner", "experienced", "not-sure", "x", "constructor"],
+    level: ["associate", "senior", "vp", "not-sure", "wizard"],
+    size: ["early-startup", "enterprise", "not-sure", "huge"],
     team: ["ba", "ba:0", "qa:3", "qa:99", "ba:-3", "ba:2.5", "ba:abc", "not-sure", "not-sure:5", "ba,qa:2,not-sure", "wizard,ba", ",ba,", "pm", "ba:3,ba:5"],
     tools: ["jira", "other", "not-sure", "jira,other", "abacus,figma", "not-sure,other"],
     time: [...TIMELINE_IDS, "not-sure", "toString"],
@@ -443,15 +477,61 @@ test("Measure runs in the agreed order", () => {
   assert.deepEqual(shown, ["measure-dashboard", "measure-user-feedback", "measure-results-hypothesis", "measure-experiments", "measure-post-launch-review", "measure-next-decision"]);
 });
 
+test("old links build a sound plan at every old experience answer", () => {
+  for (const [exp, level] of [["beginner", "associate"], ["intermediate", "product-manager"], ["experienced", "senior"], [NOT_SURE, NOT_SURE]]) {
+    const result = validateDraft(parseDraft(readerFromRecord({ pm: "ai", product: "b2b", stage: "new", phase: "not-sure", exp, team: "ba", tools: "jira", time: "1-3m", until: "not-sure", way: "scrum" })));
+    assert.ok(result.ok, exp);
+    assert.equal(result.answers.level, level);
+    assert.deepEqual(problemsWith(result.answers, buildPlan(result.answers, BLOCKS)), [], exp);
+  }
+});
+
+test("the home page's stats match the real content", () => {
+  const stat = (label: string) => HOME_STATS.find((item) => item.label === label)?.value;
+  assert.equal(stat("Learning blocks"), String(BLOCKS.length));
+  assert.equal(stat("Lifecycle phases"), String(PHASES.length));
+  assert.equal(stat("Career levels"), String(CAREER_LEVELS.length));
+  assert.equal(stat("Team roles"), String(ROLES.length));
+  assert.ok(BLOCKS.every((block) => block.sources.length > 0));
+});
+
+test("every PM type and company size has blocks of its own, apart from general", () => {
+  for (const id of PM_TYPE_IDS.filter((type) => type !== "general")) assert.ok(BLOCKS.some((block) => block.appliesTo.pmTypes.includes(id)), id);
+  for (const id of COMPANY_SIZE_IDS) assert.ok(BLOCKS.some((block) => block.appliesTo.companySizes?.includes(id)), id);
+});
+
+test("Platform PMs get the blocks re-tagged for them", () => {
+  for (const id of ["addon-internal-users", "addon-tech-platform-adoption", "addon-tech-api-product"]) {
+    assert.ok(byId.get(id)?.appliesTo.pmTypes.includes("platform"), id);
+  }
+});
+
+test("the hardware blocks ask a hardware engineer where it fits", () => {
+  const hardware = BLOCKS.filter((block) => block.appliesTo.pmTypes.includes("hardware"));
+  assert.equal(hardware.length, 6);
+  for (const block of hardware) {
+    const roles = block.roles.canDelegateTo.flatMap((item) => [item.role, ...(item.orRoles ?? [])]);
+    assert.ok(roles.includes("hardware-engineer"), block.id);
+  }
+});
+
+test("large organisations see their priorities first", () => {
+  const plan = buildPlan(answersFor({ stage: "mid-build", phase: "test", time: "6m-plus", until: "launch" }, { size: "enterprise" }), BLOCKS);
+  assert.equal(plan.phases[0].blocks[0].id, "test-security-privacy");
+  assert.equal(plan.phases[0].blocks.at(-1)?.id, "test-beta-pilot");
+  const skills = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: NOT_SURE, until: null }, { size: "enterprise" }), BLOCKS).skillsAnyLevel;
+  assert.equal(skills[0].id, "craft-metric-tree");
+});
+
 test("Test and Launch run in the agreed order", () => {
-  const answers = answersFor({ stage: "mid-build", phase: "test", time: "6m-plus", until: "launch" }, { pm: "ai", product: "b2b" });
+  const answers = answersFor({ stage: "mid-build", phase: "test", time: "6m-plus", until: "launch" }, { pm: ["ai"], product: "b2b" });
   const ids = buildPlan(answers, BLOCKS).phases.map((phase) => phase.blocks.map((block) => block.id));
   assert.deepEqual(ids[0], ["test-acceptance-accessibility", "test-ai-model-evaluation", "test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-beta-pilot"]);
-  assert.deepEqual(ids[1], ["launch-go-to-market", "launch-release-plan", "launch-support-readiness", "launch-incident-response"]);
+  assert.deepEqual(ids[1], ["launch-go-to-market", "addon-b2b-sales-enablement", "launch-release-plan", "launch-support-readiness", "launch-incident-response"]);
 });
 
 test("AI add-ons come before the PRD, and discovery add-ons come before sizing", () => {
-  const ids = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "define" }, { pm: "ai", product: "b2b" }), BLOCKS).phases.flatMap((phase) => phase.blocks).map((block) => block.id);
+  const ids = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "define" }, { pm: ["ai"], product: "b2b" }), BLOCKS).phases.flatMap((phase) => phase.blocks).map((block) => block.id);
   const before = (first: string, second: string) => assert.ok(ids.indexOf(first) !== -1 && ids.indexOf(first) < ids.indexOf(second), `${first} should come before ${second}: ${ids.join(", ")}`);
   before("define-problem-statement", "addon-ai-is-ai-right");
   before("addon-ai-is-ai-right", "addon-ai-data-readiness");

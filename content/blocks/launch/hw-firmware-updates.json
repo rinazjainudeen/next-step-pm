@@ -1,0 +1,91 @@
+{
+  "id": "hw-firmware-updates",
+  "title": "Plan secure firmware updates after launch, including UK connected-device security law (PSTI)",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "Connected devices need security updates for years. In the UK, consumer connected products must meet baseline security rules, including how long you will provide updates.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Check whether your product connects to the internet or a home network.",
+      "Read the UK rules for consumer connectable products (the PSTI regime).",
+      "Make sure there are no default passwords shared across devices.",
+      "Publish how people can report security issues.",
+      "Decide and publish how long you will provide security updates."
+    ],
+    "intermediate": [
+      "Plan secure over-the-air updates, including how to recover from a failed update.",
+      "Prepare the statement of compliance with your legal team.",
+      "Agree how quickly security fixes ship after a report."
+    ],
+    "experienced": [
+      "Set an update and support-period policy across devices.",
+      "Budget for updates over the whole support period.",
+      "Track related rules in other markets, such as the EU Cyber Resilience Act."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "hardware-engineer",
+        "orRoles": [
+          "tech-lead",
+          "backend-engineer"
+        ],
+        "task": "Design the update mechanism",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Prepare the statement of compliance",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "policy-legal",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Keep firmware release notes with each tagged release.",
+    "confluence": "Publish the security reporting page and support period."
+  },
+  "definitionOfDone": [
+    "No shared default passwords",
+    "Security reporting route published",
+    "Support period published",
+    "Update mechanism tested"
+  ],
+  "pitfalls": [
+    "Treating launch as the end of the work",
+    "No way to recover a device after a failed update",
+    "A support period nobody has budgeted for"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "hw-safety-certification"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "Regulations: consumer connectable product security (GOV.UK)",
+      "url": "https://www.gov.uk/guidance/regulations-consumer-connectable-product-security"
+    },
+    {
+      "title": "The UK Product Security and Telecommunications Infrastructure (Product Security) regime (GOV.UK)",
+      "url": "https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,19 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { PHASE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOLS } from "../content/taxonomy";
+import { CAREER_LEVELS, PHASE_IDS, PM_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOLS } from "../content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "./intake-draft";
 import { finishOptions, phasesCovered, phasesForStage } from "./intake-phases";
-import { INTAKE_QUESTIONS, TEAM_ROLE_IDS, TOOL_ANSWER_IDS, TOTAL_STEPS, summariseAnswers } from "./intake-questions";
-import { EMPTY_DRAFT, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
+import { INTAKE_QUESTIONS, TEAM_ROLE_IDS, TOOL_ANSWER_IDS, TOTAL_STEPS, questionsFor, summariseAnswers } from "./intake-questions";
+import { EMPTY_DRAFT, KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
 import { draftToQuery, parseDraft, parseEditing, parseStep, planHref, readerFromRecord, startHref } from "./intake-url";
 import { canJumpTo, firstUnansweredStep, questionError, validateDraft } from "./intake-validate";
 
 const FULL: IntakeAnswers = {
-  pm: "ai",
+  work: null,
+  pm: ["ai"],
+  level: "associate",
   product: "public",
+  size: "scaling",
   stage: "mid-build",
   phase: "build",
-  exp: "beginner",
   team: ["ba", "ux-designer", "qa"],
   teamCounts: {},
   tools: ["jira", "confluence", "figma"],
@@ -23,19 +25,97 @@ const FULL: IntakeAnswers = {
 };
 
 const FULL_QUERY =
-  "pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,ux-designer,qa&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum";
+  "pm=ai&level=associate&product=public&size=scaling&stage=mid-build&phase=build&team=ba,ux-designer,qa&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum";
 
 const ids = (phases: readonly { id: string }[]) => phases.map((phase) => phase.id);
 const parse = (query: string) => parseDraft(new URLSearchParams(query));
 
 // --- The questions ---
 
-test("there are eight questions, in the agreed order", () => {
-  assert.deepEqual(
-    INTAKE_QUESTIONS.map((question) => question.id),
-    ["pm", "product", "stage", "exp", "team", "tools", "time", "way"],
-  );
-  assert.equal(TOTAL_STEPS, 8);
+const CORE_ORDER = ["pm", "level", "product", "size", "stage", "team", "tools", "time", "way"];
+
+test("the kind of work question is built, but switched off", () => {
+  assert.equal(KIND_OF_WORK_ENABLED, false);
+  assert.deepEqual(INTAKE_QUESTIONS.map((question) => question.id), CORE_ORDER);
+  assert.equal(TOTAL_STEPS, 9);
+});
+
+test("switching it on gives ten questions, with the kind of work first", () => {
+  const questions = questionsFor(true);
+  assert.deepEqual(questions.map((question) => question.id), ["work", ...CORE_ORDER]);
+  assert.equal(questions[0].options.length, 3);
+});
+
+test("a work answer in a link is ignored while the question is off", () => {
+  assert.equal(parse("work=strategy").work, null);
+  assert.ok(!draftToQuery(parse(`work=strategy&${FULL_QUERY}`)).includes("work="));
+});
+
+test("every question has a Not sure line", () => {
+  for (const question of questionsFor(true)) assert.ok(question.notSure.length > 0, question.id);
+});
+
+// --- Old shared links ---
+
+const OLD_LINK = "pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,ux-designer,qa&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum";
+
+test("old experience answers map onto the new levels", () => {
+  const level = (exp: string) => parse(OLD_LINK.replace("exp=beginner", `exp=${exp}`)).level;
+  assert.equal(level("beginner"), "associate");
+  assert.equal(level("intermediate"), "product-manager");
+  assert.equal(level("experienced"), "senior");
+  assert.equal(level(NOT_SURE), NOT_SURE);
+});
+
+test("an old link still opens as a finished plan, with no new question to answer", () => {
+  const result = validateDraft(parse(OLD_LINK));
+  assert.ok(result.ok);
+  assert.deepEqual(result.answers, { ...FULL, size: NOT_SURE });
+});
+
+test("an old link carries on as a new link once it's changed", () => {
+  const address = planHref(parse(OLD_LINK));
+  assert.ok(address.includes("level=associate&"));
+  assert.ok(address.includes("size=not-sure"));
+  assert.ok(!address.includes("exp="));
+});
+
+test("a level beats an old experience answer, and nonsense counts as neither", () => {
+  assert.equal(parse("level=vp&exp=beginner").level, "vp");
+  assert.equal(parse("level=vp&exp=beginner").size, null);
+  for (const value of ["constructor", "__proto__", "toString", "wizard"]) {
+    assert.equal(parse(`exp=${value}`).level, null, value);
+    assert.equal(parse(`exp=${value}`).size, null, value);
+  }
+});
+
+// --- Up to two PM types ---
+
+test("two PM types survive a round trip, in a fixed order", () => {
+  assert.deepEqual(parse("pm=hardware,ai").pm, ["ai", "hardware"]);
+  assert.equal(draftToQuery({ ...EMPTY_DRAFT, pm: ["ai", "hardware"] }), "pm=ai,hardware");
+});
+
+test("a hand-edited link can't pick more than two PM types", () => {
+  assert.equal(parse(`pm=${PM_TYPE_IDS.join(",")}`).pm.length, MAX_PM_TYPES);
+});
+
+test("a third PM type can't be ticked until one is unticked", () => {
+  const two = toggleMulti(toggleMulti(EMPTY_DRAFT, "pm", "ai"), "pm", "data");
+  assert.deepEqual(two.pm, ["ai", "data"]);
+  assert.deepEqual(toggleMulti(two, "pm", "growth").pm, ["ai", "data"]);
+  assert.deepEqual(toggleMulti(toggleMulti(two, "pm", "data"), "pm", "growth").pm, ["growth", "ai"]);
+});
+
+test("Not sure replaces PM types, and real types replace Not sure", () => {
+  const two = toggleMulti(toggleMulti(EMPTY_DRAFT, "pm", "ai"), "pm", "data");
+  assert.deepEqual(toggleMulti(two, "pm", NOT_SURE).pm, [NOT_SURE]);
+  assert.deepEqual(toggleMulti({ ...EMPTY_DRAFT, pm: [NOT_SURE] }, "pm", "ai").pm, ["ai"]);
+});
+
+test("there are six career levels, and the top three lead people", () => {
+  assert.deepEqual(CAREER_LEVELS.map((level) => level.leadsPeople), [false, false, false, true, true, true]);
+  assert.deepEqual(CAREER_LEVELS.map((level) => level.steps), ["beginner", "intermediate", "experienced", "experienced", "experienced", "experienced"]);
 });
 
 test("every question explains why it's asked and what Not sure means", () => {
@@ -66,11 +146,13 @@ test("answers survive a round trip through the web address", () => {
 
 test("Not sure survives a round trip on every question", () => {
   const draft: IntakeDraft = {
-    pm: NOT_SURE,
+    work: null,
+    pm: [NOT_SURE],
+    level: NOT_SURE,
     product: NOT_SURE,
+    size: NOT_SURE,
     stage: NOT_SURE,
     phase: null,
-    exp: NOT_SURE,
     team: [NOT_SURE],
     teamCounts: {},
     tools: [NOT_SURE],
@@ -87,7 +169,7 @@ test("an empty address gives an empty draft", () => {
 });
 
 test("unrecognised values are ignored", () => {
-  assert.deepEqual(parse("pm=wizard&exp=&team=ba,pm,nobody&tools=hammer&way=scrum&evil=1"), {
+  assert.deepEqual(parse("pm=wizard&level=&team=ba,pm,nobody&tools=hammer&way=scrum&evil=1"), {
     ...EMPTY_DRAFT,
     team: ["ba"],
     way: "scrum",
@@ -122,8 +204,8 @@ test("the step is read safely", () => {
   const step = (query: string) => parseStep(new URLSearchParams(query));
   assert.equal(step(""), 1);
   assert.equal(step("step=5"), 5);
-  assert.equal(step("step=8"), 8);
-  for (const bad of ["step=0", "step=9", "step=-1", "step=2.5", "step=abc"]) {
+  assert.equal(step("step=9"), 9);
+  for (const bad of ["step=0", "step=10", "step=-1", "step=2.5", "step=abc"]) {
     assert.equal(step(bad), 1, bad);
   }
 });
@@ -131,8 +213,8 @@ test("the step is read safely", () => {
 test("addresses carry the step and the answers", () => {
   assert.equal(startHref(EMPTY_DRAFT, 1), "/start");
   assert.equal(startHref(EMPTY_DRAFT, 3), "/start?step=3");
-  assert.equal(startHref({ ...EMPTY_DRAFT, pm: "ai" }, 2), "/start?step=2&pm=ai");
-  assert.equal(startHref({ ...EMPTY_DRAFT, pm: "ai" }, 1), "/start?pm=ai");
+  assert.equal(startHref({ ...EMPTY_DRAFT, pm: ["ai"] }, 2), "/start?step=2&pm=ai");
+  assert.equal(startHref({ ...EMPTY_DRAFT, pm: ["ai"] }, 1), "/start?pm=ai");
   assert.equal(planHref(FULL), `/plan?${FULL_QUERY}`);
 });
 
@@ -142,16 +224,16 @@ test("the plan address leaves out the step, so a shared link is the same however
 
 test("server pages read answers the same way as the browser", () => {
   const reader = readerFromRecord({ pm: "ai", team: ["ba,qa", "ignored"], way: undefined });
-  assert.deepEqual(parseDraft(reader), { ...EMPTY_DRAFT, pm: "ai", team: ["ba", "qa"] });
+  assert.deepEqual(parseDraft(reader), { ...EMPTY_DRAFT, pm: ["ai"], team: ["ba", "qa"] });
 });
 
 // --- Changing answers ---
 
 test("choosing an answer doesn't change the old draft", () => {
   const before = { ...EMPTY_DRAFT };
-  const after = chooseSingle(before, "pm", "ai");
-  assert.equal(after.pm, "ai");
-  assert.equal(before.pm, null);
+  const after = chooseSingle(before, "product", "b2b");
+  assert.equal(after.product, "b2b");
+  assert.equal(before.product, null);
 });
 
 test("changing stage keeps a phase that still fits and clears one that doesn't", () => {
@@ -382,7 +464,7 @@ test("every combination of stage, start, timeline and finish makes sense", () =>
 
 test("the longest possible address stays well within browser limits", () => {
   const draft = parse(
-    `pm=transformation&product=data-ai&stage=mid-build&phase=build&exp=intermediate&team=${TEAM_ROLE_IDS.map((id) => `${id}:20`).join(",")}&tools=${TOOL_ANSWER_IDS.join(",")}&time=6m-plus&until=measure&way=hybrid`,
+    `pm=transformation,hardware&level=product-manager&product=data-ai&size=enterprise&stage=mid-build&phase=build&team=${TEAM_ROLE_IDS.map((id) => `${id}:20`).join(",")}&tools=${TOOL_ANSWER_IDS.join(",")}&time=6m-plus&until=measure&way=hybrid`,
   );
   assert.equal(draft.team.length, TEAM_ROLE_IDS.length);
   assert.ok(planHref(draft).length < 2000);
@@ -391,10 +473,13 @@ test("the longest possible address stays well within browser limits", () => {
 // --- Checking answers ---
 
 test("a blank question gets a friendly message and an answered one doesn't", () => {
+  const product = INTAKE_QUESTIONS[2];
+  assert.match(questionError(EMPTY_DRAFT, product) ?? "", /choose an option/);
+  assert.equal(questionError({ ...EMPTY_DRAFT, product: NOT_SURE }, product), null);
   const [pm] = INTAKE_QUESTIONS;
-  assert.match(questionError(EMPTY_DRAFT, pm) ?? "", /choose an option/);
-  assert.equal(questionError({ ...EMPTY_DRAFT, pm: NOT_SURE }, pm), null);
-  const team = INTAKE_QUESTIONS[4];
+  assert.match(questionError(EMPTY_DRAFT, pm) ?? "", /tick at least one/);
+  assert.equal(questionError({ ...EMPTY_DRAFT, pm: [NOT_SURE] }, pm), null);
+  const team = INTAKE_QUESTIONS[5];
   assert.match(questionError(EMPTY_DRAFT, team) ?? "", /tick at least one/);
   assert.equal(questionError({ ...EMPTY_DRAFT, team: [NOT_SURE] }, team), null);
 });
@@ -405,18 +490,18 @@ test("complete answers pass", () => {
 });
 
 test("a follow-up on screen must be answered, and Not sure is never assumed", () => {
-  const [stage, time] = [INTAKE_QUESTIONS[2], INTAKE_QUESTIONS[6]];
+  const [stage, time] = [INTAKE_QUESTIONS[4], INTAKE_QUESTIONS[7]];
   assert.match(questionError({ ...FULL, phase: null }, stage) ?? "", /phase you're in/);
   assert.match(questionError({ ...FULL, until: null }, time) ?? "", /phase to finish/);
   assert.equal(questionError({ ...FULL, until: NOT_SURE }, time), null);
-  assert.equal(firstUnansweredStep({ ...FULL, until: null }), 7);
-  assert.equal(firstUnansweredStep({ ...FULL, phase: null }), 3);
+  assert.equal(firstUnansweredStep({ ...FULL, until: null }), 8);
+  assert.equal(firstUnansweredStep({ ...FULL, phase: null }), 5);
 });
 
 test("a follow-up that isn't shown isn't required", () => {
   const noStage: IntakeDraft = { ...FULL, stage: NOT_SURE, phase: null, until: NOT_SURE };
   assert.equal(validateDraft(noStage).ok, true);
-  assert.equal(firstUnansweredStep({ ...noStage, until: null }), 7);
+  assert.equal(firstUnansweredStep({ ...noStage, until: null }), 8);
   const noDate: IntakeDraft = { ...FULL, time: NOT_SURE, until: null };
   assert.equal(validateDraft(noDate).ok, true);
 });
@@ -424,7 +509,7 @@ test("a follow-up that isn't shown isn't required", () => {
 test("a change that rules out a later answer sends the visitor back to it", () => {
   const changed = chooseSingle({ ...FULL, stage: "new", phase: NOT_SURE, until: "discover" }, "stage", "mid-build");
   assert.equal(changed.until, null);
-  assert.equal(firstUnansweredStep(changed), 7);
+  assert.equal(firstUnansweredStep(changed), 8);
 });
 
 test("incomplete answers list every missing question", () => {
@@ -436,26 +521,26 @@ test("incomplete answers list every missing question", () => {
 
 test("the first unanswered step is found", () => {
   assert.equal(firstUnansweredStep(EMPTY_DRAFT), 1);
-  assert.equal(firstUnansweredStep({ ...FULL, exp: null, way: null }), 4);
+  assert.equal(firstUnansweredStep({ ...FULL, level: null, way: null }), 2);
   assert.equal(firstUnansweredStep(FULL), null);
 });
 
 test("going back to change an answer never locks the visitor out of later answers", () => {
-  // Stage changes from Not sure, so the phase follow-up is now a gap at question 3.
+  // Stage changes from Not sure, so the phase follow-up is now a gap at question 5.
   const changed = chooseSingle({ ...FULL, stage: NOT_SURE, phase: null }, "stage", "new");
-  assert.equal(firstUnansweredStep(changed), 3);
-  assert.equal(canJumpTo(changed, 4), true);
-  assert.equal(canJumpTo(changed, 8), true);
+  assert.equal(firstUnansweredStep(changed), 5);
+  assert.equal(canJumpTo(changed, 6), true);
+  assert.equal(canJumpTo(changed, 9), true);
 });
 
 test("a visitor can jump to any answered question or to the first gap", () => {
   assert.equal(canJumpTo(EMPTY_DRAFT, 1), true);
   assert.equal(canJumpTo(EMPTY_DRAFT, 2), false);
-  const gap = { ...FULL, exp: null };
+  const gap = { ...FULL, level: null };
+  assert.equal(canJumpTo(gap, 2), true);
   assert.equal(canJumpTo(gap, 3), true);
-  assert.equal(canJumpTo(gap, 4), true);
-  assert.equal(canJumpTo(FULL, 8), true);
-  assert.equal(canJumpTo({ ...EMPTY_DRAFT, pm: "ai" }, 3), false);
+  assert.equal(canJumpTo(FULL, 9), true);
+  assert.equal(canJumpTo({ ...EMPTY_DRAFT, pm: ["ai"] }, 3), false);
 });
 
 test("changing one answer has its own address, which never reaches the plan link", () => {
@@ -473,17 +558,18 @@ test("changing one answer has its own address, which never reaches the plan link
 
 test("each answer links to its own question, and the worked-out row doesn't", () => {
   const summary = summariseAnswers(FULL);
-  assert.deepEqual(summary.slice(0, 8).map((row) => row.step), [1, 2, 3, 4, 5, 6, 7, 8]);
-  assert.equal(summary[8].step, undefined);
+  assert.deepEqual(summary.slice(0, 9).map((row) => row.step), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  assert.equal(summary[9].step, undefined);
 });
 
 
 test("answers are summarised in readable words", () => {
   assert.deepEqual(summariseAnswers(FULL).map(({ label, value }) => ({ label, value })), [
-    { label: "Kind of PM", value: "AI and innovation" },
+    { label: "Kind of PM", value: "AI" },
+    { label: "What you own", value: "Features someone else has shaped" },
     { label: "Kind of product", value: "Public sector service" },
+    { label: "Size of organisation", value: "Scaling" },
     { label: "Where the product is", value: "Partway through a build (Build)" },
-    { label: "Experience", value: "Beginner (under 1 year)" },
     { label: "Team", value: "Business Analyst, UX Designer, QA / Tester" },
     { label: "Tools", value: "Jira, Confluence, Figma" },
     { label: "Timeline", value: "1 to 3 months, finishing Launch" },
@@ -494,9 +580,9 @@ test("answers are summarised in readable words", () => {
 
 test("team numbers and an unlisted tool read as words", () => {
   const summary = summariseAnswers({ ...FULL, teamCounts: { "ux-designer": 2 }, tools: ["jira", OTHER_TOOL] });
-  assert.equal(summary[4].value, "Business Analyst, UX Designer (2), QA / Tester");
-  assert.match(summariseAnswers({ ...FULL, teamCounts: { ba: MAX_TEAM_COUNT } })[4].value, /Business Analyst \(20\+\)/);
-  assert.equal(summary[5].value, "Jira, A tool that isn't listed");
+  assert.equal(summary[5].value, "Business Analyst, UX Designer (2), QA / Tester");
+  assert.match(summariseAnswers({ ...FULL, teamCounts: { ba: MAX_TEAM_COUNT } })[5].value, /Business Analyst \(20\+\)/);
+  assert.equal(summary[6].value, "Jira, A tool that isn't listed");
 });
 
 test("every option a visitor might not know has an explanation", () => {
@@ -510,14 +596,15 @@ test("every option a visitor might not know has an explanation", () => {
 });
 
 test("the milestone question says what a milestone is and what the answer does", () => {
-  const { why } = INTAKE_QUESTIONS[6];
+  const { why } = INTAKE_QUESTIONS[7];
   assert.match(why, /milestone is/);
   assert.match(why, /week by week/);
 });
 
 test("Not sure reads as words, not an id", () => {
-  const summary = summariseAnswers({ ...FULL, pm: NOT_SURE, stage: NOT_SURE, phase: null, team: [NOT_SURE] });
-  assert.equal(summary[0].value, "Not sure");
-  assert.equal(summary[2].value, "Not sure");
-  assert.equal(summary[4].value, "Not sure");
+  const summary = summariseAnswers({ ...FULL, pm: [NOT_SURE], stage: NOT_SURE, phase: null, team: [NOT_SURE] });
+  const value = (label: string) => summary.find((row) => row.label === label)?.value;
+  assert.equal(value("Kind of PM"), "Not sure");
+  assert.equal(value("Where the product is"), "Not sure");
+  assert.equal(value("Team"), "Not sure");
 });

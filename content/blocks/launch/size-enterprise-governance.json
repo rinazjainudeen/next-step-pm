@@ -1,0 +1,93 @@
+{
+  "id": "size-enterprise-governance",
+  "title": "Get through governance: security reviews, procurement and change boards",
+  "phase": "launch",
+  "kind": "add-on",
+  "summary": "Large organisations protect themselves with reviews and approvals. Learn the routes early, plan their lead times, and treat reviewers as partners.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "enterprise"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Find out which approvals your release needs, such as a security review or a change board.",
+      "Ask how long each one usually takes and what it needs from you.",
+      "Put the lead times into your plan.",
+      "Prepare the paperwork early, with help from people who have done it before.",
+      "Meet reviewers before the formal review to hear their concerns."
+    ],
+    "intermediate": [
+      "Map every approval route for your product, including buying new tools or suppliers.",
+      "Agree standard, lower-risk change types that need lighter approval.",
+      "Track approvals as dependencies in the plan."
+    ],
+    "experienced": [
+      "Work with governance owners to speed up low-risk approvals.",
+      "Use data on delays to argue for lighter routes.",
+      "Coach PMs on how to plan for governance."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Track approvals and deadlines",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Advise on security, legal and procurement requirements",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "devops",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Prepare change requests",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Track each approval as a dependency with a due date.",
+    "confluence": "Keep a checklist of approvals for your product."
+  },
+  "definitionOfDone": [
+    "Approvals listed with lead times",
+    "Plan includes them",
+    "Reviewers met early"
+  ],
+  "pitfalls": [
+    "Finding out about a review a week before launch",
+    "Treating reviewers as blockers",
+    "Repeating the same paperwork from scratch"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "launch-release-plan"
+  ],
+  "comesAfter": ["launch-release-plan"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Change advisory board (Atlassian)",
+      "url": "https://www.atlassian.com/itsm/change-management/change-advisory-board"
+    },
+    {
+      "title": "Supply chain security guidance (NCSC)",
+      "url": "https://www.ncsc.gov.uk/collection/supply-chain-security"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

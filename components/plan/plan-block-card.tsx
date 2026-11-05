@@ -34,6 +34,13 @@ export function PlanBlockCard({ block, heading: Heading, open = false }: { block
         <ChevronDown className="no-print mt-1 size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
         <div className="min-w-0">
           <Heading className="text-lg font-bold tracking-tight sm:text-xl">{block.title}</Heading>
+          {block.movedUp && (
+            <p className="mt-2">
+              <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">
+                Priority at your size of organisation
+              </span>
+            </p>
+          )}
           {block.optional && (
             <p className="mt-2">
               <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">Go further</span>

@@ -1,7 +1,8 @@
 import { finishOptions, phasesForStage } from "./intake-phases";
 import { TEAM_ROLE_IDS, TOOL_ANSWER_IDS } from "./intake-questions";
-import type { PhaseId } from "../content/taxonomy";
+import { PM_TYPE_IDS, type PhaseId } from "../content/taxonomy";
 import {
+  MAX_PM_TYPES,
   MAX_TEAM_COUNT,
   NOT_SURE,
   type IntakeDraft,
@@ -49,7 +50,10 @@ export function choosePhase(draft: IntakeDraft, question: "phase" | "until", val
  */
 export function toggleMulti(draft: IntakeDraft, question: MultiQuestionId, value: string): IntakeDraft {
   const current: string[] = draft[question];
-  const allowed: readonly string[] = question === "team" ? TEAM_ROLE_IDS : TOOL_ANSWER_IDS;
+  const allowed: readonly string[] = question === "team" ? TEAM_ROLE_IDS : question === "pm" ? PM_TYPE_IDS : TOOL_ANSWER_IDS;
+  // A visitor at the limit has to untick one first, so no answer disappears unnoticed.
+  const adding = value !== NOT_SURE && !current.includes(value);
+  if (question === "pm" && adding && current.filter((id) => id !== NOT_SURE).length >= MAX_PM_TYPES) return draft;
   let chosen: string[];
   if (value === NOT_SURE) {
     chosen = current.includes(NOT_SURE) ? [] : [NOT_SURE];

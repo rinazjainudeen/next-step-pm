@@ -1,0 +1,89 @@
+{
+  "id": "hw-supply-lead-times",
+  "title": "Plan around long lead times and supply risk",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Some parts take months to arrive, and a single supplier can stop production. Find the risky parts early and plan around them.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Ask purchasing or your manufacturer for the lead time of every major part.",
+      "Mark the parts with the longest lead times and the ones with only one supplier.",
+      "Put the longest lead times into the roadmap as fixed dates.",
+      "Ask engineering whether a second, interchangeable part exists for the riskiest items.",
+      "Check lead times again every month, because they change."
+    ],
+    "intermediate": [
+      "Score each part for lead time, single-source risk and end-of-life risk.",
+      "Order long-lead parts early where the risk justifies the cost.",
+      "Design in second sources for the highest-risk parts."
+    ],
+    "experienced": [
+      "Set a supply-risk policy across products, including buffer stock.",
+      "Agree with finance how much to spend to reduce schedule risk.",
+      "Review end-of-life notices and plan redesigns before parts disappear."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Track lead times and order dates",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "hardware-engineer",
+        "orRoles": [
+          "tech-lead",
+          "architect"
+        ],
+        "task": "Find second sources for risky parts",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Add each long-lead part as a dependency on the roadmap.",
+    "google-docs": "Keep a risk score for each part in the BOM sheet."
+  },
+  "definitionOfDone": [
+    "Lead time known for every major part",
+    "Highest-risk parts have a plan",
+    "Monthly check booked"
+  ],
+  "pitfalls": [
+    "Checking lead times once and never again",
+    "Relying on one supplier for a critical part",
+    "Ordering too late to save money"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "plan-prioritise-roadmap"
+  ],
+  "comesAfter": ["plan-prioritise-roadmap"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Managing ever-lengthening lead times (Supplyframe)",
+      "url": "https://medium.com/supplyframe-hardware/managing-ever-lengthening-lead-times-c89f206aa32e"
+    },
+    {
+      "title": "Managing component obsolescence and second-source risk (Avnet)",
+      "url": "https://www.avnet.com/apac/resources/article/managing-component-obsolescence-and-second-source-risk-in-era/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -65,6 +65,7 @@
   ],
   "estimatedEffort": "1-2 hours",
   "dependsOn": [],
+  "movesUpFor": ["established", "enterprise"],
   "freshness": "evergreen",
   "sources": [
     {

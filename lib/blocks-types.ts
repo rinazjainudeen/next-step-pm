@@ -3,6 +3,7 @@ import {
   CROSS_PHASE_FOLDER,
   PHASES,
   PHASE_IDS,
+  type CompanySizeId,
   type ExperienceId,
   type FreshnessId,
   type KindId,
@@ -48,6 +49,10 @@ export type Block = {
     waysOfWorking: WayOfWorkingId[];
     /** Leaves the block out for other levels. "Not sure" counts as intermediate. */
     experience: ExperienceId[];
+    /** Optional. Only these sizes get the block. Not sure counts as established. */
+    companySizes?: CompanySizeId[];
+    /** Optional. Only people leaders get it, in "Lead your team". */
+    leadsPeople?: boolean;
   };
   steps: Record<ExperienceId, string[]>;
   roles: {
@@ -66,6 +71,8 @@ export type Block = {
    * plan. Unlike dependsOn, a missing block is ignored and never becomes a check.
    */
   comesAfter?: string[];
+  /** Optional. For these sizes, the block goes as early as its dependsOn allows. */
+  movesUpFor?: CompanySizeId[];
   freshness: FreshnessId;
   sources: { title: string; url: string }[];
   /** A date written as YYYY-MM-DD. */

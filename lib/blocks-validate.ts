@@ -1,5 +1,6 @@
 import {
   ANY_PHASE,
+  COMPANY_SIZE_IDS,
   EXPERIENCE_IDS,
   FRESHNESS_IDS,
   KIND_IDS,
@@ -49,6 +50,7 @@ const TOP_LEVEL_KEYS = [
   "estimatedEffort",
   "dependsOn",
   "comesAfter",
+  "movesUpFor",
   "freshness",
   "sources",
   "lastReviewed",
@@ -156,8 +158,14 @@ function checkAppliesTo(value: unknown, errors: string[]): void {
     errors.push(`appliesTo: is missing. It needs pmTypes, productTypes, stages, waysOfWorking and experience. An empty list means "applies to all".`);
     return;
   }
-  const keys = ["pmTypes", "productTypes", "stages", "waysOfWorking", "experience"];
+  const keys = ["pmTypes", "productTypes", "stages", "waysOfWorking", "experience", "companySizes", "leadsPeople"];
   checkUnknownKeys(value, keys, "appliesTo: ", errors);
+  if ("companySizes" in value) {
+    checkIdList(value.companySizes, COMPANY_SIZE_IDS, "appliesTo.companySizes", errors, "Leave it out to apply to every size.");
+  }
+  if ("leadsPeople" in value && value.leadsPeople !== true) {
+    errors.push(`appliesTo.leadsPeople: leave it out, or set it to true.`);
+  }
   const hint = "Use [] to mean applies to all.";
   const lists: [string, readonly string[]][] = [
     ["pmTypes", PM_TYPE_IDS],
@@ -214,6 +222,9 @@ function checkRoles(value: unknown, errors: string[]): void {
       if (!isOneOf(ROLE_IDS, item.role)) {
         errors.push(`${where}.role: ${JSON.stringify(item.role)} isn't a role. Use one of: ${listOf(ROLE_IDS)}.`);
       }
+      if (item.role === "pm" || (Array.isArray(item.orRoles) && item.orRoles.includes("pm"))) {
+        errors.push(`${where}: a task can't be handed to "pm". The PM is the visitor, so they're never in their own team. Use ifMissing: "pm" instead.`);
+      }
       if ("orRoles" in item) {
         checkIdList(item.orRoles, ROLE_IDS, `${where}.orRoles`, errors, "Leave it out if only one role can do this.");
         if (Array.isArray(item.orRoles) && item.orRoles.includes(item.role)) {
@@ -228,6 +239,9 @@ function checkRoles(value: unknown, errors: string[]): void {
   }
 
   checkIdList(value.reviewers, ROLE_IDS, "roles.reviewers", errors, "Use [] if nobody needs to review.");
+  if (Array.isArray(value.reviewers) && value.reviewers.includes("pm")) {
+    errors.push(`roles.reviewers: "pm" can't review, because the PM is the visitor.`);
+  }
 }
 
 function checkToolExamples(value: unknown, errors: string[]): void {
@@ -335,6 +349,10 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
         if (typeof id === "string") seen.add(id);
       }
     }
+  }
+
+  if ("movesUpFor" in b) {
+    checkIdList(b.movesUpFor, COMPANY_SIZE_IDS, "movesUpFor", errors, "Leave it out if the block doesn't move.");
   }
 
   if (!isOneOf(FRESHNESS_IDS, b.freshness)) {

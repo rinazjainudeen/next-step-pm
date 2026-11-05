@@ -1,0 +1,88 @@
+{
+  "id": "hw-safety-certification",
+  "title": "Plan safety testing and certification, such as UKCA or CE marking and radio rules",
+  "phase": "test",
+  "kind": "add-on",
+  "summary": "Physical products must meet safety and conformity rules before they can be sold. Find out which rules apply early, because testing takes time and failures mean redesigns.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the markets you will sell in, such as Great Britain, Northern Ireland or the EU.",
+      "Ask a compliance specialist which rules apply, such as electrical safety, radio and electromagnetic compatibility.",
+      "Find out which tests you can self-declare and which need an approved test body.",
+      "Book test slots early and put them on the roadmap.",
+      "Keep the technical file: test reports, design documents and risk assessments."
+    ],
+    "intermediate": [
+      "Map the rules for each market and plan one test campaign that covers them.",
+      "Run pre-compliance tests on early builds to avoid late surprises.",
+      "Agree who signs the declaration of conformity."
+    ],
+    "experienced": [
+      "Set a compliance roadmap across products and markets.",
+      "Track rule changes that affect future products.",
+      "Budget for re-testing when designs change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Confirm which rules apply in each market",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "qa",
+        "orRoles": [
+          "hardware-engineer"
+        ],
+        "task": "Run pre-compliance tests",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep the technical file index on one page.",
+    "jira": "Track each certification as an item with a due date."
+  },
+  "definitionOfDone": [
+    "Rules listed for every target market",
+    "Test slots booked",
+    "Technical file started"
+  ],
+  "pitfalls": [
+    "Finding out about radio rules after the design is fixed",
+    "Skipping pre-compliance testing",
+    "Forgetting Northern Ireland has different marking rules"
+  ],
+  "estimatedEffort": "10-40 days",
+  "dependsOn": [
+    "hw-prototype-builds"
+  ],
+  "comesAfter": ["test-security-privacy"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "Using the UKCA marking (GOV.UK)",
+      "url": "https://www.gov.uk/guidance/using-the-ukca-marking"
+    },
+    {
+      "title": "Placing UKCA or CE marked products on the market in Great Britain (GOV.UK)",
+      "url": "https://www.gov.uk/guidance/placing-ukca-or-ce-marked-products-on-the-market-in-great-britain"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

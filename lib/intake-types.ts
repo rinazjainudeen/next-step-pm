@@ -1,5 +1,6 @@
 import type {
-  ExperienceId,
+  CareerLevelId,
+  CompanySizeId,
   PhaseId,
   PmTypeId,
   ProductTypeId,
@@ -8,6 +9,7 @@ import type {
   TimelineId,
   ToolId,
   WayOfWorkingId,
+  WorkKindId,
 } from "../content/taxonomy";
 
 /**
@@ -28,21 +30,31 @@ export type OtherTool = typeof OTHER_TOOL;
 /** The biggest number the team question offers for one role. */
 export const MAX_TEAM_COUNT = 20;
 
+/** How many PM types a visitor can pick. */
+export const MAX_PM_TYPES = 2;
+
+/** Off until the strategy and coaching tracks exist. Switched on when Phase 7b is merged. */
+export const KIND_OF_WORK_ENABLED = false;
+
 /** The team question lists everyone except the visitor. */
 export type TeamRoleId = Exclude<RoleId, "pm">;
 
-export type SingleQuestionId = "pm" | "product" | "stage" | "exp" | "time" | "way";
-export type MultiQuestionId = "team" | "tools";
+export type SingleQuestionId = "work" | "level" | "product" | "size" | "stage" | "time" | "way";
+export type MultiQuestionId = "pm" | "team" | "tools";
 export type QuestionId = SingleQuestionId | MultiQuestionId;
 
 /** A finished set of answers: every question has one. */
 export type IntakeAnswers = {
-  pm: Answer<PmTypeId>;
+  /** The kind of product work. Null while the question is switched off. */
+  work: Answer<WorkKindId> | null;
+  /** One or two PM types, or "Not sure". */
+  pm: Answer<PmTypeId>[];
+  level: Answer<CareerLevelId>;
   product: Answer<ProductTypeId>;
+  size: Answer<CompanySizeId>;
   stage: Answer<StageId>;
   /** Follow-up to `stage`: where the plan starts. Null only when it wasn't asked. */
   phase: Answer<PhaseId> | null;
-  exp: Answer<ExperienceId>;
   team: Answer<TeamRoleId>[];
   /** How many of a role, for roles with more than one. Others count as 1. */
   teamCounts: Partial<Record<TeamRoleId, number>>;
@@ -59,11 +71,13 @@ export type IntakeDraft = Omit<IntakeAnswers, SingleQuestionId> & {
 };
 
 export const EMPTY_DRAFT: IntakeDraft = {
-  pm: null,
+  work: null,
+  pm: [],
+  level: null,
   product: null,
+  size: null,
   stage: null,
   phase: null,
-  exp: null,
   team: [],
   teamCounts: {},
   tools: [],

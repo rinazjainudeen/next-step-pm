@@ -1,0 +1,90 @@
+{
+  "id": "hw-manufacturing-partner",
+  "title": "Choose and work with a manufacturing partner",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Most hardware teams use a contract manufacturer. Choose one that fits your volume and product, and treat them as part of the team.",
+  "appliesTo": {
+    "pmTypes": [
+      "hardware"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn what a contract manufacturer does: buys parts, assembles, tests and ships.",
+      "List what you need: volume, product type, certifications and location.",
+      "Shortlist three manufacturers, ideally through referrals.",
+      "Send each the same request for a quote and compare more than price.",
+      "Visit or video-tour the shortlisted factories before you sign."
+    ],
+    "intermediate": [
+      "Match your volume to a partner where you are a meaningful customer.",
+      "Agree quality checks, change control and who orders parts.",
+      "Hold a regular call on cost, quality and lead times."
+    ],
+    "experienced": [
+      "Set a manufacturing strategy across products, including a second partner.",
+      "Negotiate contracts that cover intellectual property and capacity.",
+      "Measure partners on quality, cost and delivery each quarter."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "hardware-engineer",
+        "orRoles": [
+          "tech-lead",
+          "architect"
+        ],
+        "task": "Assess each manufacturer's technical capability",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Review the contract and IP terms",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "hardware-engineer",
+      "tech-lead",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep a scorecard for each manufacturer on one page.",
+    "notion": "Track quotes and visit notes in one database."
+  },
+  "definitionOfDone": [
+    "Needs written down",
+    "At least three quotes compared",
+    "Partner chosen with quality and change-control terms agreed"
+  ],
+  "pitfalls": [
+    "Choosing on price alone",
+    "Being too small a customer to get attention",
+    "No written change control"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "hw-cost-targets"
+  ],
+  "comesAfter": ["plan-prioritise-roadmap"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Choosing the right contract manufacturer (Arrow Electronics)",
+      "url": "https://arrow.com/en/research-and-events/articles/choosing-the-right-contract-manufacturer"
+    },
+    {
+      "title": "Best practices for startups working with manufacturers (US Department of Energy)",
+      "url": "https://www.energy.gov/sites/default/files/2021-07/App_J_BestPractices-for-Training-Startups-to-work-with_Manufacturers.pdf"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

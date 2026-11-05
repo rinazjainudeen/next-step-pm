@@ -5,7 +5,7 @@
   "kind": "add-on",
   "summary": "Staff who use internal tools deserve the same care as customers. Research their work and design for it.",
   "appliesTo": {
-    "pmTypes": [],
+    "pmTypes": ["platform"],
     "productTypes": [
       "internal"
     ],

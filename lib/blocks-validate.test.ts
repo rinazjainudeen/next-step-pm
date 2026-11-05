@@ -242,6 +242,28 @@ test("a dependency on a later phase is reported", () => {
   assert.ok(mentions(validateBlockSet(files(early, late)), "later phase"));
 });
 
+test("the visitor can't be given a task or asked to review", () => {
+  const task = { owner: "pm", canDelegateTo: [{ role: "pm", task: "x", ifMissing: "pm" }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles: task }), "can't be handed"));
+  const orRole = { owner: "pm", canDelegateTo: [{ role: "ba", orRoles: ["pm"], task: "x", ifMissing: "pm" }], reviewers: [] };
+  assert.ok(mentions(errorsFor({ roles: orRole }), "can't be handed"));
+  assert.ok(mentions(errorsFor({ roles: { owner: "pm", canDelegateTo: [], reviewers: ["pm"] } }), "can't review"));
+});
+
+test("company sizes and moves must use real sizes", () => {
+  const base = { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: [] };
+  assert.deepEqual(errorsFor({ appliesTo: { ...base, companySizes: ["scaling", "enterprise"] } }), []);
+  assert.ok(mentions(errorsFor({ appliesTo: { ...base, companySizes: ["huge"] } }), "appliesTo.companySizes"));
+  assert.deepEqual(errorsFor({ movesUpFor: ["enterprise"] }), []);
+  assert.ok(mentions(errorsFor({ movesUpFor: ["huge"] }), "movesUpFor"));
+});
+
+test("leadsPeople is true or left out", () => {
+  const base = { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: [] };
+  assert.deepEqual(errorsFor({ appliesTo: { ...base, leadsPeople: true } }), []);
+  assert.ok(mentions(errorsFor({ appliesTo: { ...base, leadsPeople: false } }), "appliesTo.leadsPeople"));
+});
+
 test("comesAfter must be a list of block ids", () => {
   assert.deepEqual(errorsFor({ comesAfter: ["define-other"] }), []);
   assert.ok(mentions(errorsFor({ comesAfter: [] }), "comesAfter:"));

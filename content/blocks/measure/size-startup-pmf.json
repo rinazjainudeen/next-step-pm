@@ -1,0 +1,79 @@
+{
+  "id": "size-startup-pmf",
+  "title": "Test whether you have product-market fit",
+  "phase": "measure",
+  "kind": "add-on",
+  "summary": "Early start-ups live or die on product-market fit. Measure it directly, find who loves the product most, and build for them.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "companySizes": [
+      "early-startup"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Ask active users: how would you feel if you could no longer use this product?",
+      "Count the share who answer very disappointed.",
+      "Look at who those users are and what they value most.",
+      "Ask the others what would make the product better for them.",
+      "Repeat the survey regularly and track the share over time."
+    ],
+    "intermediate": [
+      "Segment results to find your highest-expectation customers.",
+      "Split the roadmap between what fans love and what holds others back.",
+      "Track the product-market fit score alongside retention."
+    ],
+    "experienced": [
+      "Use the score to decide whether to scale, refocus or pivot.",
+      "Run the survey for each new segment or market you enter.",
+      "Share the results with the founders and investors as a standing measure."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Run and analyse the survey",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "task": "Link answers to usage data",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Run the survey with a simple form and keep results in a sheet.",
+    "amplitude": "Compare usage of very disappointed users with others."
+  },
+  "definitionOfDone": [
+    "Survey sent to active users",
+    "Score calculated and segmented",
+    "Roadmap changes agreed from the results"
+  ],
+  "pitfalls": [
+    "Surveying people who barely used the product",
+    "Building for everyone instead of the fans",
+    "Running it once and stopping"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "define-success-metrics"
+  ],
+  "comesAfter": ["measure-results-hypothesis"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How Superhuman built an engine to find product-market fit (First Round Review)",
+      "url": "https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

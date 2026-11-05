@@ -4,7 +4,7 @@
 
 - **Goal:** a working, public product that shows hiring managers that Rinaz can ship an AI-assisted product to production, and that real PMs find useful.
 - **Audience:** hiring managers for AI PM and AI Builder roles first, then product managers of every level, then colleagues.
-- **Main action:** "Build my plan": answer about 8 questions and get a tailored, step-by-step curriculum.
+- **Main action:** "Build my plan": answer about 10 questions and get a tailored, step-by-step curriculum.
 - **Pages:** Home · Build my plan (intake) · Your plan · Library (all blocks) · How I built this · Decision log · Privacy.
 - **Tier:** Standard, with no visitor accounts.
   - Content lives in the code.
@@ -76,28 +76,30 @@ Clear up the purpose on the home page: the headline, subtitle, search descriptio
 ### Phase 7a: Intake v2 and engine
 The intake moves to the ten questions in the replan of 5 November 2026.
 - Questions 2, 3 and 5 updated: PM types, what you own, and company size.
+- The 20 blocks of batch 1 from Phase 7b, which need the new PM types and sizes.
+- A Hardware / manufacturing engineer team role.
 - Up to two PM types.
 - The career-level mapping and the "leads people" flag.
 - The fundamentals rule and the "Refresh the basics" section.
 - Old links still work.
 - Question 1 ("kind of work") is built but switched off, until the track content exists.
-- The stats band updates to: 6 career levels, 21 team roles, and the new block count.
+- The stats band updates to: 120 blocks, 6 career levels and 20 team roles. Only roles that exist are counted.
+- "Lead your team" is built, and stays hidden until the 7b blocks exist.
 
 **Check:** open an old shared plan link, then build a plan at each career level, with two PM types.
 
 ### Phase 7b: New content
-Written in batches, like Phase 5. About 46 new blocks:
+Written in batches, like Phase 5. 33 new blocks, on top of the 20 added in Phase 7a, take the library to 153:
 
 | Content | New blocks |
 |---|---|
-| Strategy track | 14 |
-| Coaching track (includes the leads-people add-ons) | 15 |
-| Hardware or IoT add-ons | about 6 |
-| Platform add-ons | about 3 |
-| Company-size add-ons | about 8 |
-| **Total** | **about 46** |
+| Strategy track | 15 |
+| Executive communication craft block | 1 |
+| Coaching track | 15 |
+| Leads-people add-ons | 2 |
+| **Total** | **33** |
 
-Two new team roles: Senior leader or sponsor, and People or HR partner. Question 1 is switched on when 7b is merged.
+Two new team roles: Senior leader or sponsor, and People or HR partner. Question 1 is switched on when 7b is merged. The stats band updates to match.
 
 **Check:** Rinaz reads each batch in the library and approves it, then builds a strategy plan and a coaching plan.
 

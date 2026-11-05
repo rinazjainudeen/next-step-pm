@@ -40,18 +40,22 @@ These are the usual phases. A live product can also say it's in any phase, becau
 
 The allowed values live in `content/taxonomy.ts`, so blocks and questions can't drift apart.
 
-1. **What kind of PM are you?** General · AI and innovation · Data · Technical / platform · Product transformation · Growth / commercial · Not sure.
-2. **What kind of product?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
-3. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase.
-4. **Your experience as a PM:** Beginner (under 1 year) · Intermediate (1 to 4 years) · Experienced (5+ years).
-5. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner.
-6. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini). There is also "A tool that isn't listed", with no text box, which leads to tool-agnostic tips.
-7. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. A follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It's shown when there's a real date, must be answered when shown, and offers the phases from where the visitor is to the end of the stage's journey.
-8. **How does your team work?** Scrum · Kanban · Hybrid / stage gates · Not sure.
+There are ten questions. Question 1 is built but switched off by `KIND_OF_WORK_ENABLED`, so visitors see nine until the strategy and coaching tracks exist. The list below numbers the nine they see.
+
+0. **What kind of product work are you doing right now?** Building or improving a product · Setting product strategy · Building a team's skills or coaching · Not sure. Switched off.
+1. **What kind of product manager are you?** Pick up to two: General · Growth · AI · Data · Technical · Platform · Transformation · Hardware or IoT · Not sure.
+2. **What best describes what you own?** Six career levels, from "Features someone else has shaped" to "Product strategy for the whole company". Each points to the beginner, intermediate or experienced steps, and the top three count as leading people.
+3. **What kind of product is it?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
+4. **How big is your organisation?** Early start-up · Scaling · Established · Large enterprise · Not sure.
+5. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase.
+6. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner, Hardware / manufacturing engineer.
+7. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini). There is also "A tool that isn't listed", with no text box, which leads to tool-agnostic tips.
+8. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. A follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It's shown when there's a real date, must be answered when shown, and offers the phases from where the visitor is to the end of the stage's journey.
+9. **How does your team work?** Scrum · Kanban · Hybrid / stage gates · Not sure.
 
 Every question also has a **Not sure** option, with a one-line explanation of what it means for the plan. Its value is `not-sure`. It's an intake answer only, so it isn't in `content/taxonomy.ts` and blocks can't use it. On the team and tools questions it can't be ticked alongside anything else.
 
-Answers are encoded in the URL using the taxonomy ids, for example `/plan?pm=ai&product=public&stage=mid-build&phase=build&exp=beginner&team=ba,backend-engineer:3,ux-designer&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum`. `phase` is the follow-up to question 3 (where the plan starts), and `until` is the follow-up to question 7 (where it finishes). Both can be `not-sure`. A number after a role is how many; no number means one. That way a plan can be shared and refreshed with no database. While the visitor is answering, `/start` adds `step=3` to show which question they're on.
+Answers are encoded in the URL using the taxonomy ids, for example `/plan?pm=ai,growth&level=senior&product=public&size=established&stage=mid-build&phase=build&team=ba,backend-engineer:3,ux-designer&tools=jira,confluence,figma&time=1-3m&until=launch&way=scrum`. Links from before Phase 7a use `exp` and have no `size`: they still open, with `exp` mapped onto a career level and the size counted as Not sure. `phase` is the follow-up to question 3 (where the plan starts), and `until` is the follow-up to question 7 (where it finishes). Both can be `not-sure`. A number after a role is how many; no number means one. That way a plan can be shared and refreshed with no database. While the visitor is answering, `/start` adds `step=3` to show which question they're on.
 
 ## 3. A learning block
 
@@ -69,7 +73,9 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
     "productTypes": [],
     "stages": ["new", "mid-build"],
     "waysOfWorking": [],                // scrum | kanban | hybrid
-    "experience": []                    // beginner | intermediate | experienced
+    "experience": [],                   // beginner | intermediate | experienced
+    "companySizes": [],                 // optional. early-startup | scaling | established | enterprise
+    "leadsPeople": true                 // optional. Only for people leaders, in "Lead your team"
   },
   "steps": {
     "beginner":    ["Detailed step with guidance…", "…"],
@@ -94,6 +100,7 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
   "estimatedEffort": "2-4 hours",
   "dependsOn": ["discover-user-research-plan"],
   // "comesAfter": ["define-success-metrics"], // optional. Order only, within a phase
+  // "movesUpFor": ["enterprise"],             // optional. Goes early for these sizes
   "freshness": "evergreen",             // evergreen | changes-yearly | fast-moving
   "sources": [{ "title": "…", "url": "https://…" }],
   "lastReviewed": "2026-11-04"
@@ -125,6 +132,10 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 
 **`comesAfter`** is an order-only link. The block comes after the listed blocks when they're in the same phase of the plan. Unlike `dependsOn`, a missing block is ignored and never becomes "check this exists". Use `dependsOn` for work a block really needs, and `comesAfter` for the order to read in. Every add-on must name the core block it extends, and it then sits straight after that block. Decision blocks list everything that must come first.
 
+**`movesUpFor`** lists company sizes for which the block matters more. It goes as early as its `dependsOn` allows, ignores its `comesAfter`, and is marked "Priority at your size of organisation".
+
+**`appliesTo.companySizes`** limits a block to certain sizes. "Not sure" counts as established. **`appliesTo.leadsPeople`** limits a block to Group PMs, Directors and VPs, and puts it in "Lead your team".
+
 **`appliesTo.experience`** limits a block to certain levels. An empty list means every level. "Not sure" counts as intermediate. Nothing can depend on a block that some of its own visitors won't get.
 
 **Placeholder blocks** carry `"placeholder": true` and the word PLACEHOLDER in the title. They are dummy content for testing the Library. The site marks them, keeps them out of search engines and the sitemap, and `pnpm validate:content` warns until they are removed.
@@ -137,6 +148,8 @@ Each block on its own:
 - `phase`, `kind`, PM types, product types, stages, ways of working, roles, tools and freshness all use values from `content/taxonomy.ts`.
 - `appliesTo` has all five lists. An empty list means "applies to all".
 - A craft block uses phase `"any"`.
+- `companySizes` and `movesUpFor` use real sizes, and `leadsPeople` is `true` or left out.
+- `pm` is never given a task or asked to review, because the PM is the visitor.
 - `optional` is `true` or left out, and only appears on core and add-on blocks.
 - `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
 - Every delegable task has a valid `ifMissing`, and any `orRoles` are real roles other than the main one.
@@ -152,14 +165,14 @@ Across all blocks:
 - Required work doesn't depend on a "Go further" block, and no block depends on a block some of its experience levels never see.
 - Every `comesAfter` id exists, shares a phase with the block and isn't the block itself, and loops are caught across `dependsOn` and `comesAfter`.
 
-Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`. Tool ids are listed in `content/taxonomy.ts`.
+Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`, `hardware-engineer`. Tool ids are listed in `content/taxonomy.ts`.
 
 ## 4. The curriculum engine (`lib/curriculum-engine.ts`)
 
 A pure function, `buildPlan(answers, blocks) -> Plan`, with no database, no AI and no randomness.
 
 1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. A block's experience limit must always fit. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type or product type (an empty list never counts as a match). A block's stage and way-of-working tags must always fit. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
-2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. Within a phase, `dependsOn` and `comesAfter` set the order. Add-ons sit straight after the block they extend, and "Go further" blocks come last. Onboarding, ways-of-working and craft blocks sit outside the timeline, in "Get up to speed", "Your team's rhythm" and "Grow your skills".
+2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. A block written only for levels below the visitor's isn't dropped: it goes in "Refresh the basics". Within a phase, `dependsOn` and `comesAfter` set the order. Add-ons sit straight after the block they extend, and "Go further" blocks come last. Onboarding, ways-of-working and craft blocks sit outside the timeline, in "Get up to speed", "Your team's rhythm" and "Grow your skills".
 3. **Shape** the steps to the visitor's experience level. If "Not sure" was chosen, use intermediate.
 4. **Assign** roles. For each delegable task, the first person in the team from `role`, then `orRoles`, gets it, as in "Ask your BA" or "Ask your 3 Backend Engineers". A full-stack engineer covers frontend and backend tasks. If nobody can do it, `ifMissing` sets the note. Use the team list to suggest who reviews.
 5. **Tools.** Show tool examples only for the tools the visitor picked. `other` (a tool that isn't listed) matches no examples. If none match, show a short tool-agnostic tip.

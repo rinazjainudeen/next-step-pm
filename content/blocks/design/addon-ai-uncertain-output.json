@@ -1,0 +1,89 @@
+{
+  "id": "addon-ai-uncertain-output",
+  "title": "Design for uncertain AI output",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "AI features can give different answers to the same question, and sometimes wrong ones. Design so people know what to expect, can check results and can recover easily.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down what the AI feature can and cannot do, in plain words.",
+      "Show this to users before they rely on it.",
+      "Make it easy to check, edit or undo what the AI produced.",
+      "Give a clear way to report a bad result.",
+      "Test the design with real examples of good and bad output."
+    ],
+    "intermediate": [
+      "Design for the common failure cases, such as wrong, missing or slow answers.",
+      "Show confidence or sources where it helps people judge results.",
+      "Use the human-AI interaction guidelines as a review checklist."
+    ],
+    "experienced": [
+      "Set design standards for AI features across products.",
+      "Balance automation with human control based on the risk of errors.",
+      "Review failure reports regularly and feed them into design."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Design the interaction, including failure states",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Write how the feature explains itself",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-scientist",
+        "task": "Provide examples of real failures",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Design every failure state next to the happy path.",
+    "claude": "Collect real examples of good and bad output to test with."
+  },
+  "definitionOfDone": [
+    "Limits explained to users",
+    "Check, edit and undo designed",
+    "Failure states tested with users"
+  ],
+  "pitfalls": [
+    "Designing only the happy path",
+    "Hiding limits",
+    "No way to report a bad result"
+  ],
+  "estimatedEffort": "3-8 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "comesAfter": ["design-explore-solutions"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Guidelines for Human-AI Interaction (Microsoft HAX Toolkit)",
+      "url": "https://www.microsoft.com/en-us/haxtoolkit/ai-guidelines/"
+    },
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}
