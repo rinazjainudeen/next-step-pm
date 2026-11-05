@@ -1,0 +1,89 @@
+{
+  "id": "measure-next-decision",
+  "title": "Decide what next: iterate, scale or stop",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "Use what you have learned to decide the product's next step: keep improving it, invest to grow it, or stop and move the team to something more valuable.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Bring together the results, user feedback and post-launch review.",
+      "Ask: did it meet its goal, partly meet it or miss it?",
+      "If it met it, look at what would help it grow.",
+      "If it partly met it, pick the biggest problem to fix next.",
+      "If it missed, consider stopping. Stopping frees the team for better work.",
+      "Write the recommendation and agree it with your sponsor."
+    ],
+    "intermediate": [
+      "Assess results against the goal and the cost of continuing.",
+      "Recommend iterate, scale or stop, with evidence.",
+      "Set the next goal and metric if continuing.",
+      "Agree and record the decision."
+    ],
+    "experienced": [
+      "Compare continuing with the best alternative use of the team.",
+      "Watch for sunk-cost thinking in yourself and stakeholders.",
+      "Plan how to retire features cleanly if stopping, including user communication.",
+      "Update the roadmap and strategy to match."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Summarise results and trends",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "delivery-manager",
+        "task": "Show the cost of continuing",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Record the decision on the product brief page so the history is in one place.",
+    "google-docs": "Write a short decision memo with evidence for and against.",
+    "claude": "Paste your results summary and ask it to argue for the option you are not recommending."
+  },
+  "definitionOfDone": [
+    "Recommendation written with evidence",
+    "Next goal set if continuing",
+    "Decision agreed and recorded"
+  ],
+  "pitfalls": [
+    "Carrying on because of effort already spent",
+    "Scaling before the product works well",
+    "Stopping without telling users"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "measure-post-launch-review"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Two-way door decision (Product Talk glossary)",
+      "url": "https://www.producttalk.org/glossary-discovery-two-way-door-decision/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

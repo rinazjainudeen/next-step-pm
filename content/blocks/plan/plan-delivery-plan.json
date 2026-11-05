@@ -1,0 +1,94 @@
+{
+  "id": "plan-delivery-plan",
+  "title": "Turn the roadmap into a delivery plan",
+  "phase": "plan",
+  "kind": "core",
+  "summary": "A delivery plan shows how the first release will actually get built: the order of work, the milestones, who is needed and what could get in the way. It turns intentions into commitments the team believes in.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start from the ordered backlog for the first release. Ask the team to size the epics roughly, for example small, medium or large.",
+      "Group the work into a few milestones, each one something you could demonstrate, such as 'a user can sign up' or 'payments work end to end'.",
+      "Check the team's real capacity: holidays, other commitments and support work. Plan for about 70 to 80 percent of their time, not 100.",
+      "List dependencies on other teams, suppliers and approvals, and agree dates with them.",
+      "Write down the top risks and what you will do if each one happens.",
+      "Share a simple plan with ranges, such as 'June to July', rather than single dates, and agree how often you will update it."
+    ],
+    "intermediate": [
+      "Size epics with the team and group them into demonstrable milestones.",
+      "Plan against real capacity and agree cross-team dependencies.",
+      "Record risks with owners and mitigations.",
+      "Publish a plan with date ranges and a regular update rhythm."
+    ],
+    "experienced": [
+      "Use past team throughput, not optimism, to forecast, and show confidence levels.",
+      "Sequence work to retire the biggest delivery risks first.",
+      "Agree explicit trade-off rules with stakeholders: which of scope, date and quality moves first.",
+      "Keep the plan live and re-forecast as soon as reality changes."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Build the plan, track capacity and manage dependencies",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Size the epics and identify technical risks",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use a timeline view to place epics against milestones and show dependencies between them.",
+    "azure-devops": "Use delivery plans to see each team's work and dependencies on one timeline.",
+    "linear": "Set project target dates and milestones, and link blocking issues across teams.",
+    "confluence": "Keep a release planning page with the team, goals, non-goals, milestones and risks."
+  },
+  "definitionOfDone": [
+    "Milestones agreed and each one demonstrable",
+    "Plan based on real capacity, with dependencies agreed",
+    "Risks recorded with owners",
+    "Plan shared with date ranges and an update rhythm"
+  ],
+  "pitfalls": [
+    "Planning to 100 percent of the team's time",
+    "Giving single dates months ahead",
+    "Finding out about a dependency when it blocks the team"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "plan-epics-backlog"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A product manager's guide to release planning (Atlassian)",
+      "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning"
+    },
+    {
+      "title": "Epics, stories and initiatives (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/epics-stories-themes"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

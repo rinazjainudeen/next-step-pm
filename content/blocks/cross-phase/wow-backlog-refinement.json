@@ -1,0 +1,93 @@
+{
+  "id": "wow-backlog-refinement",
+  "title": "Refine the backlog",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "Refinement is a regular session where the team makes upcoming backlog items clear, small and ready to build. It makes sprint planning quick and calm.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "scrum",
+      "hybrid"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Hold a short session once or twice a sprint.",
+      "Bring the top items in priority order.",
+      "For each, explain the user need and ask the team questions.",
+      "Agree acceptance criteria and split items that are too big.",
+      "Ask the team to estimate the size.",
+      "Aim to have about two sprints of ready work."
+    ],
+    "intermediate": [
+      "Run regular refinement with clear entry and exit criteria.",
+      "Split large items by user value.",
+      "Keep about two sprints of ready work."
+    ],
+    "experienced": [
+      "Involve design and engineering early so items arrive well shaped.",
+      "Use refinement to surface risk and dependencies.",
+      "Keep refinement light and avoid over-specifying."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "product-owner",
+        "task": "Prepare and order the items",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Facilitate the session",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Draft acceptance criteria",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "scrum-master"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use a 'ready' status or label so the team can see what is ready for planning.",
+    "azure-devops": "Use the backlog view with a 'ready' tag.",
+    "linear": "Use a triage and backlog state for unrefined and ready work."
+  },
+  "definitionOfDone": [
+    "Top items have clear acceptance criteria",
+    "Items small enough for a sprint",
+    "About two sprints of ready work"
+  ],
+  "pitfalls": [
+    "Refining items months away",
+    "PM presenting with no team questions",
+    "Skipping refinement and doing it in planning"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    },
+    {
+      "title": "Epics, stories and initiatives (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/epics-stories-themes"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

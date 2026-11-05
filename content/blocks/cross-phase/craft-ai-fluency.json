@@ -1,0 +1,75 @@
+{
+  "id": "craft-ai-fluency",
+  "title": "Understand how AI products work and fail",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "AI is now part of most products. PMs need to understand what AI does well, where it fails, how it is evaluated and what risks it brings, whether or not they build AI features.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Learn the basics: AI models learn patterns from data and make predictions or generate content. They can be wrong with confidence.",
+      "Use AI tools in your own work and notice where they help and where they fail.",
+      "Learn what an evaluation is: a set of test cases that checks how well an AI performs.",
+      "Learn the main risks: wrong answers, bias, privacy, security and over-reliance.",
+      "Ask your team or organisation how AI is used and governed today."
+    ],
+    "intermediate": [
+      "Understand model choice, prompting, retrieval and fine-tuning at a high level.",
+      "Know how to define success criteria and evaluations.",
+      "Know the main risks and controls."
+    ],
+    "experienced": [
+      "Make build, buy or partner decisions for AI capabilities.",
+      "Design human oversight and fallback into AI features.",
+      "Track cost, quality and risk of AI in production."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "task": "Explain how your team's AI features work",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "data-scientist"
+    ]
+  },
+  "toolExamples": {
+    "claude": "Ask it to explain a term, then test its answer against official documentation.",
+    "chatgpt": "Compare answers between AI tools to see how they differ.",
+    "gemini": "Try the same task in several tools and note the failure patterns."
+  },
+  "definitionOfDone": [
+    "You can explain how AI products work and fail",
+    "You understand evaluations",
+    "You know the main risks"
+  ],
+  "pitfalls": [
+    "Treating AI output as fact",
+    "Adding AI because it is fashionable",
+    "Ignoring cost and risk"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    },
+    {
+      "title": "Define success criteria and build evaluations (Anthropic docs)",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/define-success"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

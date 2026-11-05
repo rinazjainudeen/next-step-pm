@@ -1,0 +1,88 @@
+{
+  "id": "addon-b2b-enterprise-readiness",
+  "title": "Get ready for enterprise customers",
+  "phase": "test",
+  "kind": "add-on",
+  "summary": "Large organisations need security, compliance, admin controls and support before they buy. Plan these early.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "b2b"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Collect common enterprise requirements from sales.",
+      "Check what you have for security, single sign-on, permissions and audit logs.",
+      "Check data protection and contract needs.",
+      "Prepare answers to security questionnaires.",
+      "Plan the gaps on the roadmap."
+    ],
+    "intermediate": [
+      "Assess security, admin and compliance gaps.",
+      "Prepare standard security answers.",
+      "Plan enterprise features."
+    ],
+    "experienced": [
+      "Decide which certifications are worth the investment.",
+      "Package enterprise features in a plan.",
+      "Build an enterprise support model."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Review contracts and compliance",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Assess security and admin features",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "policy-legal",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep a security and compliance answers library.",
+    "jira": "Track enterprise gaps as epics."
+  },
+  "definitionOfDone": [
+    "Requirements collected",
+    "Gaps assessed",
+    "Plan agreed"
+  ],
+  "pitfalls": [
+    "Finding gaps in a sales deal",
+    "Building custom features for one customer",
+    "Underestimating compliance effort"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "test-security-privacy"
+  ],
+  "comesAfter": ["test-security-privacy"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "OWASP Top Ten (OWASP Foundation)",
+      "url": "https://owasp.org/www-project-top-ten/"
+    },
+    {
+      "title": "ICO resources to help designers embed data protection by default (ICO)",
+      "url": "https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/03/ico-shares-resources-to-help-designers-embed-data-protection-by-default"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

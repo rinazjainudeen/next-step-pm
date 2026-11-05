@@ -1,0 +1,84 @@
+{
+  "id": "craft-continuous-discovery",
+  "title": "Make talking to users a weekly habit",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "The best product teams talk to users every week, not just at the start of a project. Small, regular contact keeps decisions grounded in reality.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Book one user conversation a week.",
+      "Ask about their recent experience.",
+      "Share notes with the team.",
+      "Look for patterns.",
+      "Use them in decisions."
+    ],
+    "intermediate": [
+      "Automate recruiting so you have a conversation booked every week.",
+      "Interview as a trio: PM, designer and engineer.",
+      "Ask about specific recent stories, not opinions.",
+      "Add what you learn to your opportunity map."
+    ],
+    "experienced": [
+      "Make weekly discovery a team norm.",
+      "Connect discovery to outcomes and the opportunity tree.",
+      "Coach other teams to build the habit."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Set up recruiting and coach interviewing",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Join interviews and synthesise",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "notion": "Keep an interview snapshot per conversation.",
+    "miro": "Update your opportunity map after each interview.",
+    "claude": "Paste anonymised notes and ask for opportunities and quotes. Check against the notes."
+  },
+  "definitionOfDone": [
+    "A user conversation booked every week",
+    "Notes shared with the team",
+    "Learning used in decisions"
+  ],
+  "pitfalls": [
+    "Stopping when things get busy",
+    "Asking people what features they want",
+    "Only the PM talks to users"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

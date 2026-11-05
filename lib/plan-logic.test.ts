@@ -25,7 +25,8 @@ const byId = new Map(BLOCKS.map((block) => [block.id, block]));
 const DAYS_PER_WEEK = 5;
 
 // Written out here on purpose, so changing a number in the engine fails a test.
-const MIN_BUILD_DAYS = 10;
+const MIN_PHASE_DAYS: Record<string, number> = { build: 20, measure: 20 };
+const OVERLAP_SHARE = 1 / 4;
 const BUILD_SHARE = 2 / 3;
 const MAX_STRETCH = 3;
 const RULES = {
@@ -92,11 +93,12 @@ function expectedPhases(answers: IntakeAnswers): string[] {
 }
 
 function fits(block: Block, answers: IntakeAnswers): boolean {
-  const { pmTypes, productTypes, stages, waysOfWorking } = block.appliesTo;
+  const { pmTypes, productTypes, stages, waysOfWorking, experience } = block.appliesTo;
   const person = (pmTypes.length === 0 && productTypes.length === 0) || pmTypes.some((id) => id === answers.pm) || productTypes.some((id) => id === answers.product);
   const stage = answers.stage === NOT_SURE ? "new" : answers.stage;
   const way = waysOfWorking.length === 0 || waysOfWorking.some((id) => id === answers.way);
-  return !block.placeholder && person && (stages.length === 0 || stages.includes(stage)) && way;
+  const level = answers.exp === NOT_SURE ? "intermediate" : answers.exp;
+  return !block.placeholder && person && (stages.length === 0 || stages.includes(stage)) && way && (experience.length === 0 || experience.includes(level));
 }
 
 const sorted = (ids: readonly string[]) => [...ids].sort();
@@ -126,8 +128,10 @@ const weekRange = (label: string): [number, number] => {
 /** Works out each phase's weeks from the timing rules in docs/content-model.md. */
 function expectedSchedule(plan: Plan, answers: IntakeAnswers) {
   const needed = plan.phases.map((phase) => {
-    const days = phase.blocks.reduce((total, block) => total + effortInDays(block.effort), 0);
-    return phase.id === "build" ? Math.max(days, MIN_BUILD_DAYS) : days;
+    const efforts = phase.blocks.filter((block) => !block.optional).map((block) => effortInDays(block.effort));
+    const longest = Math.max(0, ...efforts);
+    const days = longest + (efforts.reduce((total, effort) => total + effort, 0) - longest) * OVERLAP_SHARE;
+    return Math.max(days, MIN_PHASE_DAYS[phase.id] ?? 0);
   });
   const neededDays = needed.reduce((sum, days) => sum + days, 0);
   const build = plan.phases.findIndex((phase) => phase.id === "build");
@@ -161,13 +165,22 @@ function expectedSchedule(plan: Plan, answers: IntakeAnswers) {
 export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const problems: string[] = [];
   const timeline = plan.phases.flatMap((phase) => phase.blocks);
-  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm];
+  const required = timeline.filter((block) => !block.optional);
+  const skills = [...plan.skillsForLevel, ...plan.skillsAnyLevel];
+  const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills];
   const covered = expectedPhases(answers);
   const level = answers.exp === NOT_SURE ? "intermediate" : answers.exp;
 
   // Shape
   if (plan.phases.length === 0) problems.push("The plan has no phases.");
-  if (plan.nextActions.length !== Math.min(3, timeline.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
+  if (plan.nextActions.length !== Math.min(3, required.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
+  if (plan.nextActions.some((action) => !required.some((block) => block.id === action.blockId))) problems.push("A next action comes from a Go further block.");
+  if (plan.nextActions.some((action, index) => action.text !== required.flatMap((block) => block.steps)[index]?.text)) problems.push("The next actions aren't the first required steps.");
+  if (timeline.some((block) => (byId.get(block.id) as Block).optional !== block.optional)) problems.push("A Go further block isn't marked.");
+  for (const phase of plan.phases) {
+    const firstOptional = phase.blocks.findIndex((block) => block.optional);
+    if (firstOptional !== -1 && phase.blocks.slice(firstOptional).some((block) => !block.optional)) problems.push(`${phase.id} has a required block after a Go further block.`);
+  }
   if (plan.phases.some((phase) => phase.blocks.length === 0)) problems.push("A phase has no blocks.");
   const ids = everyBlock.map((block) => block.id);
   if (new Set(ids).size !== ids.length) problems.push(`A block appears twice: ${ids.join(", ")}.`);
@@ -184,6 +197,12 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const eligible = (kinds: readonly string[]) => BLOCKS.filter((block) => kinds.includes(block.kind) && fits(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
   if (sorted(timeline.map((block) => block.id)).join() !== sorted(eligible(["core", "add-on"])).join()) problems.push("The timeline has the wrong blocks.");
   if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(eligible(["ways-of-working"])).join()) problems.push("The rhythm section has the wrong blocks.");
+  if (sorted(skills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
+  const levelsOf = (id: string) => (byId.get(id) as Block).appliesTo.experience.length;
+  if (plan.skillsForLevel.some((block) => levelsOf(block.id) === 0)) problems.push("A skill for every level is listed as picked for your level.");
+  if (plan.skillsAnyLevel.some((block) => levelsOf(block.id) !== 0)) problems.push("A level-specific skill is listed as useful at any level.");
+  const narrowing = plan.skillsForLevel.map((block) => levelsOf(block.id));
+  if (narrowing.some((levels, index) => index > 0 && levels < narrowing[index - 1])) problems.push("The most specific skills don't come first.");
   const onboarding = answers.stage === "mid-build" || answers.stage === "live" ? eligible(["onboarding"]) : [];
   if (sorted(plan.getUpToSpeed.map((block) => block.id)).join() !== sorted(onboarding).join()) problems.push("Get up to speed has the wrong blocks.");
 
@@ -206,6 +225,26 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const actionBlocks = new Set(plan.nextActions.map((action) => action.blockId));
   const hidden = timeline.filter((block) => actionBlocks.has(block.id)).flatMap((block) => block.checkFirst).filter((check) => !plan.checkBeforeActions.some((item) => item.id === check.id));
   if (hidden.length > 0) problems.push(`The next actions hide a prerequisite: ${hidden[0].id}.`);
+  for (const phase of plan.phases) {
+    const ids = phase.blocks.map((block) => block.id);
+    for (const block of phase.blocks) {
+      const before = (byId.get(block.id) as Block).comesAfter ?? [];
+      if (before.some((id) => ids.includes(id) && ids.indexOf(id) > ids.indexOf(block.id))) problems.push(`${block.id} comes before a block it should follow.`);
+    }
+    const required = phase.blocks.filter((block) => !block.optional).map((block) => block.id);
+    if (required.includes("discover-decision") && required.at(-1) !== "discover-decision") problems.push(`The discovery decision isn't last: ${required.join(", ")}.`);
+    if (ids.includes("measure-next-decision") && ids.at(-1) !== "measure-next-decision") problems.push(`The next decision isn't last: ${ids.join(", ")}.`);
+    if (ids.includes("test-beta-pilot") && ids.at(-1) !== "test-beta-pilot") problems.push(`The pilot isn't last in Test: ${ids.join(", ")}.`);
+    if (ids.includes("launch-incident-response") && ids.indexOf("launch-support-readiness") > ids.indexOf("launch-incident-response")) problems.push(`Incident response comes before support: ${ids.join(", ")}.`);
+    for (const [index, id] of ids.entries()) {
+      const source = byId.get(id) as Block;
+      const anchors = (source.comesAfter ?? []).filter((other) => ids.includes(other));
+      if (source.kind !== "add-on" || anchors.length === 0) continue;
+      const anchorAt = Math.max(...anchors.map((other) => ids.indexOf(other)));
+      const between = ids.slice(anchorAt + 1, index).map((other) => byId.get(other) as Block);
+      if (between.some((other) => other.kind !== "add-on")) problems.push(`${id} doesn't sit straight after what it extends: ${ids.join(", ")}.`);
+    }
+  }
   const laterTask = plan.checkBeforeActions.find((check) => timeline.some((block) => block.id === check.id));
   if (laterTask && !plan.checkBeforeLabel.startsWith("From your last release")) problems.push(`${laterTask.id} is called done first, but it's also a task later.`);
 
@@ -268,6 +307,9 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   if (/spare time going to Build/.test(plan.pace.message) && (!spareTime || plan.phases.length === 1)) problems.push("The plan mentions spare time for Build when there isn't any to share.");
   if (!hasBuild && status === "fits" && spareTime && Math.ceil(neededDays / DAYS_PER_WEEK) !== lastWeek && !/may well need less/.test(plan.pace.message)) problems.push("A stretched plan doesn't say it may need less.");
   if (plan.phases.some((phase) => (phase.id === "build") !== (phase.note?.startsWith("Build depends") ?? false))) problems.push("The Build note is missing or misplaced.");
+  if (status === "tight" && answers.time === "under-1m" && !/To make this realistic/.test(plan.pace.message)) problems.push("A tight under-1-month plan gives no advice.");
+  if (answers.time !== "under-1m" && /To make this realistic/.test(plan.pace.message)) problems.push("Only under-1-month plans get this advice.");
+  if (/earlier finish/.test(plan.pace.message) && (plan.phases.length < 2 || finishOptions(answers).length === 0)) problems.push("The plan suggests an earlier finish that doesn't exist.");
   const finishes = finishOptions(answers).map((option) => option.id);
   const lastPhase = covered[covered.length - 1];
   const laterExists = finishes.indexOf(lastPhase as never) !== -1 && finishes.indexOf(lastPhase as never) < finishes.length - 1;
@@ -389,6 +431,60 @@ test("hand-edited links never crash: they build a sound plan or go back to the q
 });
 
 // --- Rules for the blocks themselves ---
+
+test("every add-on names the block it extends, so none falls to the end of a phase", () => {
+  assert.deepEqual(BLOCKS.filter((block) => block.kind === "add-on" && !block.comesAfter?.length).map((block) => block.id), []);
+});
+
+test("Measure runs in the agreed order", () => {
+  const plan = buildPlan(answersFor({ stage: "new", phase: "plan", time: "6m-plus", until: "measure" }, {}), BLOCKS);
+  const core = BLOCKS.filter((block) => block.kind === "core" && block.phase === "measure").map((block) => block.id);
+  const shown = plan.phases.flatMap((phase) => phase.blocks).map((block) => block.id).filter((id) => core.includes(id));
+  assert.deepEqual(shown, ["measure-dashboard", "measure-user-feedback", "measure-results-hypothesis", "measure-experiments", "measure-post-launch-review", "measure-next-decision"]);
+});
+
+test("Test and Launch run in the agreed order", () => {
+  const answers = answersFor({ stage: "mid-build", phase: "test", time: "6m-plus", until: "launch" }, { pm: "ai", product: "b2b" });
+  const ids = buildPlan(answers, BLOCKS).phases.map((phase) => phase.blocks.map((block) => block.id));
+  assert.deepEqual(ids[0], ["test-acceptance-accessibility", "test-ai-model-evaluation", "test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-beta-pilot"]);
+  assert.deepEqual(ids[1], ["launch-go-to-market", "launch-release-plan", "launch-support-readiness", "launch-incident-response"]);
+});
+
+test("AI add-ons come before the PRD, and discovery add-ons come before sizing", () => {
+  const ids = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "define" }, { pm: "ai", product: "b2b" }), BLOCKS).phases.flatMap((phase) => phase.blocks).map((block) => block.id);
+  const before = (first: string, second: string) => assert.ok(ids.indexOf(first) !== -1 && ids.indexOf(first) < ids.indexOf(second), `${first} should come before ${second}: ${ids.join(", ")}`);
+  before("define-problem-statement", "addon-ai-is-ai-right");
+  before("addon-ai-is-ai-right", "addon-ai-data-readiness");
+  before("addon-ai-data-readiness", "define-product-brief");
+  before("discover-user-research", "addon-b2b-customer-discovery");
+  before("addon-b2b-customer-discovery", "discover-opportunity-sizing");
+  before("discover-decision", "discover-opportunity-tree");
+});
+
+test("no real block is a placeholder", () => {
+  assert.deepEqual(BLOCKS.filter((block) => block.placeholder).map((block) => block.id), []);
+});
+
+test("every kind of PM and product has blocks of its own", () => {
+  const addOns = BLOCKS.filter((block) => block.kind === "add-on");
+  const pmTypes = new Set(addOns.flatMap((block) => block.appliesTo.pmTypes));
+  const productTypes = new Set<string>(addOns.flatMap((block) => block.appliesTo.productTypes));
+  // A general PM gets the core blocks, so needs no add-ons.
+  assert.deepEqual(PM_TYPE_IDS.filter((id) => id !== "general" && !pmTypes.has(id)), []);
+  assert.deepEqual(PRODUCT_TYPE_IDS.filter((id) => !productTypes.has(id)), []);
+});
+
+test("every way of working has a rhythm", () => {
+  const rhythm = BLOCKS.filter((block) => block.kind === "ways-of-working");
+  for (const way of WAY_OF_WORKING_IDS) assert.ok(rhythm.some((block) => block.appliesTo.waysOfWorking.includes(way)), way);
+  assert.ok(rhythm.some((block) => block.appliesTo.waysOfWorking.length === 0), "Not sure needs at least one block for any team.");
+});
+
+test("every experience level has skills picked for it, and some for everyone", () => {
+  const craft = BLOCKS.filter((block) => block.kind === "craft");
+  for (const level of EXPERIENCE_IDS) assert.ok(craft.some((block) => block.appliesTo.experience.includes(level)), level);
+  assert.ok(craft.some((block) => block.appliesTo.experience.length === 0));
+});
 
 test("every role in the team question can actually receive a task", () => {
   const roles = new Set<string>(BLOCKS.flatMap((block) => block.roles.canDelegateTo.flatMap((item) => [item.role, ...(item.orRoles ?? [])])));

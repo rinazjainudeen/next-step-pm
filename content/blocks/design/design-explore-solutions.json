@@ -1,0 +1,95 @@
+{
+  "id": "design-explore-solutions",
+  "title": "Explore several solutions before choosing one",
+  "phase": "design",
+  "kind": "core",
+  "summary": "The first idea is rarely the best. Generate several different ways to solve the problem, compare them, and only then pick one to develop.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Reread the problem statement and success metrics with the team.",
+      "Turn the problem into 'How might we...' questions, for example 'How might we help new customers finish setup in one sitting?'",
+      "Run a session where everyone sketches ideas on their own first, then shares. Aim for quantity.",
+      "Group similar ideas and pick three that are genuinely different.",
+      "Compare the three on user value, effort, risk and fit with the metrics.",
+      "Choose one or two to prototype, and record why you set the others aside."
+    ],
+    "intermediate": [
+      "Frame 'How might we' questions from the problem statement.",
+      "Run a divergent ideation session, with solo sketching before group discussion.",
+      "Shortlist at least three distinct concepts and compare them against agreed criteria.",
+      "Select concepts to prototype and record the reasoning."
+    ],
+    "experienced": [
+      "Push the team beyond incremental ideas by including at least one bold option and one 'do less' option.",
+      "Involve engineering early so technical insight shapes the options.",
+      "Compare concepts using evidence and the four risks, not opinion or seniority.",
+      "Keep discarded options on file; they are often useful later."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Facilitate the ideation session and sketch concepts",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Bring technical options and constraints to the session",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "content-designer",
+        "task": "Explore how each concept would be explained to users",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Use a crazy eights template: each person sketches eight ideas in eight minutes.",
+    "figma": "Lay the shortlisted concepts side by side on one page for comparison.",
+    "mural": "Run silent dot voting on concepts after everyone has presented.",
+    "claude": "Describe the problem and ask for ten very different solution ideas, including some that use no technology."
+  },
+  "definitionOfDone": [
+    "At least three distinct concepts explored",
+    "Concepts compared against agreed criteria",
+    "Chosen concept and reasons recorded"
+  ],
+  "pitfalls": [
+    "Going with the first idea or the most senior person's idea",
+    "Generating variations of one idea instead of different ideas",
+    "Leaving engineers out until the design is finished"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Framework for innovation: the Double Diamond (Design Council)",
+      "url": "https://www.designcouncil.org.uk/our-resources/framework-for-innovation/"
+    },
+    {
+      "title": "Parallel and iterative design (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/parallel-and-iterative-design/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

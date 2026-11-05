@@ -1,0 +1,72 @@
+{
+  "id": "craft-decision-making",
+  "title": "Make good decisions quickly",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Most product decisions can be reversed, so they should be made quickly. A few cannot, and deserve care. Knowing the difference speeds teams up.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Ask if the decision can be undone.",
+      "If yes, decide quickly.",
+      "If not, take more care.",
+      "Write down what you decided and why.",
+      "Check later if it worked."
+    ],
+    "intermediate": [
+      "Sort decisions into reversible and hard to reverse.",
+      "Decide reversible ones quickly, with the people closest to the work.",
+      "For hard ones, gather evidence, consult and agree a single approver.",
+      "Record decisions and review outcomes."
+    ],
+    "experienced": [
+      "Look for ways to make one-way decisions reversible, such as pilots.",
+      "Push decisions down to teams.",
+      "Review decision quality, not just outcomes."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use a DACI page for hard-to-reverse decisions.",
+    "notion": "Keep a decision log with date, decision, reason and review date."
+  },
+  "definitionOfDone": [
+    "Decisions sorted by reversibility",
+    "Hard decisions have one approver",
+    "Decisions recorded and reviewed"
+  ],
+  "pitfalls": [
+    "Treating every decision as permanent",
+    "Waiting for perfect information",
+    "Judging decisions only by outcomes"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Two-way door decision (Product Talk glossary)",
+      "url": "https://www.producttalk.org/glossary-discovery-two-way-door-decision/"
+    },
+    {
+      "title": "DACI decision-making framework (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/daci"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

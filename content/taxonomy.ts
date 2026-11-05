@@ -81,6 +81,7 @@ export const KINDS = [
     label: "Ways of working",
     description: "How the team works, such as sprint planning, stand-ups or Kanban flow. Chosen by the team's way of working.",
   },
+  { id: "craft", label: "Craft", description: "Skills that grow over time, such as strategy or influencing. Chosen by experience." },
 ] as const;
 
 export type KindId = (typeof KINDS)[number]["id"];

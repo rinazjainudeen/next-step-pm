@@ -1,0 +1,79 @@
+{
+  "id": "wow-retrospective",
+  "title": "Run a retrospective",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "A regular session where the team looks at how it is working and agrees one or two improvements. It is how teams get better over time.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Hold it at the end of each sprint or every few weeks.",
+      "Make it safe: what is said stays in the room, and no blame.",
+      "Ask what went well, what did not and what to try.",
+      "Group the ideas and vote on the most important.",
+      "Agree one or two actions with owners.",
+      "Check last time's actions at the start of the next one."
+    ],
+    "intermediate": [
+      "Vary the format to keep it fresh.",
+      "Agree a small number of actions.",
+      "Follow up actions next time."
+    ],
+    "experienced": [
+      "Look at patterns across several retrospectives.",
+      "Use data such as cycle time to inform discussion.",
+      "Address team health, not just process."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Facilitate the retrospective",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "scrum-master"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Use a retrospective template with sticky notes.",
+    "confluence": "Use the retrospective page template to record actions.",
+    "mural": "Run anonymous input then group and vote."
+  },
+  "definitionOfDone": [
+    "Held regularly",
+    "One or two actions with owners",
+    "Previous actions reviewed"
+  ],
+  "pitfalls": [
+    "Too many actions",
+    "Same complaints every time with no change",
+    "The most senior person dominates"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Retrospective play (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/retrospective"
+    },
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

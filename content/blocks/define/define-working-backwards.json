@@ -1,0 +1,91 @@
+{
+  "id": "define-working-backwards",
+  "title": "Write a press release and FAQ (working backwards)",
+  "phase": "define",
+  "kind": "core",
+  "optional": true,
+  "summary": "Before building, write a one-page press release announcing the finished product, plus a list of tough questions and answers. If you cannot write a convincing release, the idea is not ready yet.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write a headline that names the product and the main benefit for the user.",
+      "In the first paragraph, say who it is for and what it lets them do.",
+      "Describe the problem it solves, in the user's words.",
+      "Explain how it solves it, without technical detail.",
+      "Add a made-up quote from a user describing the difference it makes.",
+      "Write an FAQ: the questions users would ask, then the hard internal ones about cost, risk and how it will be built."
+    ],
+    "intermediate": [
+      "Write a one-page press release from the user's point of view.",
+      "Write customer and internal FAQs covering the hardest questions.",
+      "Review with the team and stakeholders, and rewrite until the benefit is clear.",
+      "Use open FAQ questions to guide the next round of testing."
+    ],
+    "experienced": [
+      "Use the PR/FAQ to test whether the customer benefit is big enough to justify the investment.",
+      "Run a review where readers read silently first, then challenge the document.",
+      "Iterate several drafts; be willing to stop if the benefit stays weak.",
+      "Keep the final PR/FAQ as the reference point for scope decisions later."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Edit the press release so it is short, clear and free of jargon",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Answer the internal FAQ questions on feasibility and cost",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Write the press release on page one and the FAQ after it, and ask reviewers to comment before the meeting.",
+    "confluence": "Keep each draft as a page version so you can see how the idea sharpened.",
+    "claude": "Ask it to read your press release as a sceptical customer and list what is unclear or unconvincing."
+  },
+  "definitionOfDone": [
+    "One-page press release written from the user's point of view",
+    "Customer and internal FAQs answer the hardest questions",
+    "Reviewed and revised at least once"
+  ],
+  "pitfalls": [
+    "Writing marketing copy instead of a clear user benefit",
+    "Skipping the hard internal questions",
+    "Treating the document as approval rather than a test of the idea"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Working backwards PR/FAQ (Working Backwards)",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/"
+    },
+    {
+      "title": "Product management at Amazon (AWS Executive Insights)",
+      "url": "https://aws.amazon.com/executive-insights/content/product-management-at-amazon/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

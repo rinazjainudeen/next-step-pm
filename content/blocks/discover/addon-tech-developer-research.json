@@ -1,0 +1,85 @@
+{
+  "id": "addon-tech-developer-research",
+  "title": "Research developers as users",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "When your users are developers, research how they actually work: their tools, their workflows and what slows them down.",
+  "appliesTo": {
+    "pmTypes": [
+      "technical"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Identify the developer groups who use or will use your platform.",
+      "Watch them complete a real task with your product.",
+      "Ask about their tools, workflow and biggest time-wasters.",
+      "Look at support tickets, forum posts and usage data.",
+      "Summarise the top pain points with evidence."
+    ],
+    "intermediate": [
+      "Segment developer users.",
+      "Observe real tasks and review usage data.",
+      "Prioritise pain points."
+    ],
+    "experienced": [
+      "Measure developer experience with time-to-first-success and satisfaction.",
+      "Build a developer advisory group.",
+      "Use research to shape the platform roadmap."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Plan and run sessions with developers",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Help interpret technical findings",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "github": "Review issues and discussions for recurring problems.",
+    "gitlab": "Review issues and merge request comments for pain points.",
+    "miro": "Map the developer workflow and mark pain points."
+  },
+  "definitionOfDone": [
+    "Developer groups identified",
+    "Real tasks observed",
+    "Pain points prioritised with evidence"
+  ],
+  "pitfalls": [
+    "Assuming you know because you are technical",
+    "Only listening to power users",
+    "Ignoring documentation problems"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "API design guide (Google Cloud)",
+      "url": "https://cloud.google.com/apis/design"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

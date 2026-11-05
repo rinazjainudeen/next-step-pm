@@ -1,0 +1,82 @@
+{
+  "id": "wow-hybrid-planning",
+  "title": "Plan with fixed milestones and agile delivery",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "Many organisations need fixed dates and approval points, but teams still work in short cycles. Plan so both work together.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "hybrid"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the fixed milestones and approval points, and what each needs.",
+      "Plan the work in short cycles that lead to each milestone.",
+      "Agree what is fixed, such as the date, and what can flex, such as scope.",
+      "Show progress against milestones in a way leaders understand.",
+      "Raise risks to milestones early."
+    ],
+    "intermediate": [
+      "Map milestones and their requirements.",
+      "Plan short delivery cycles towards them.",
+      "Agree what is fixed and what flexes."
+    ],
+    "experienced": [
+      "Negotiate milestone criteria that reward outcomes, not documents.",
+      "Bridge agile reporting and governance needs.",
+      "Reduce unnecessary approval steps over time."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Build and maintain the plan",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Prepare milestone documents",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use versions or milestones linked to sprints.",
+    "azure-devops": "Use delivery plans with milestone markers.",
+    "sharepoint-word": "Keep governance documents in one place."
+  },
+  "definitionOfDone": [
+    "Milestones and requirements mapped",
+    "Short cycles planned towards each",
+    "Fixed and flexible elements agreed"
+  ],
+  "pitfalls": [
+    "Waterfall disguised as sprints",
+    "Fixing date, scope and quality all at once",
+    "Late surprises at milestones"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A product manager's guide to release planning (Atlassian)",
+      "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning"
+    },
+    {
+      "title": "What happens at a service assessment (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/service-assessments/how-service-assessments-work"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

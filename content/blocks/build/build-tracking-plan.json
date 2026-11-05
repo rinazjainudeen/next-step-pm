@@ -1,0 +1,98 @@
+{
+  "id": "build-tracking-plan",
+  "title": "Plan your analytics before you build",
+  "phase": "build",
+  "kind": "core",
+  "summary": "Decide what data you need to measure success before the code is written. Adding tracking afterwards is slower, and you lose the baseline you need to prove the change worked.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start from your success metrics and guardrails. For each, ask: what user actions do we need to record to calculate it?",
+      "List those actions as events with clear names, such as 'Order Completed', and the details each needs, such as order value.",
+      "Check what is already tracked so you do not duplicate it.",
+      "Check with your privacy or legal colleague that you are not collecting personal data you do not need.",
+      "Add the tracking work to the user stories so it is built and tested with the feature.",
+      "After release, check the events arrive correctly before relying on them."
+    ],
+    "intermediate": [
+      "Map each metric to the events and properties needed.",
+      "Write a tracking plan with naming conventions and owners.",
+      "Review for privacy and add tracking to story acceptance criteria.",
+      "Validate the data in a test environment and after release."
+    ],
+    "experienced": [
+      "Maintain one shared tracking plan so teams use consistent definitions.",
+      "Design events around user intent so they stay useful as the interface changes.",
+      "Build data quality checks so broken tracking is caught within a day.",
+      "Plan the experiment and attribution needs up front."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Write the tracking plan and check the data after release",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "frontend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Add the events and check they fire correctly",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Check consent and data minimisation",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "ga4": "Plan custom events and parameters, and check them in DebugView before release.",
+    "amplitude": "Use the data planning features to define events so unplanned ones are flagged.",
+    "mixpanel": "Use Lexicon to document each event so everyone reads the data the same way.",
+    "jira": "Add 'events fire as described in the tracking plan' to the acceptance criteria."
+  },
+  "definitionOfDone": [
+    "Every success metric mapped to events",
+    "Tracking plan reviewed for privacy",
+    "Tracking included in stories and checked after release"
+  ],
+  "pitfalls": [
+    "Tracking everything and understanding nothing",
+    "Vague event names that mean different things to different people",
+    "Collecting personal data you do not need"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "define-success-metrics"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Tracking plan (Twilio Segment docs)",
+      "url": "https://www.twilio.com/docs/segment/protocols/tracking-plan/"
+    },
+    {
+      "title": "Planning a full installation (Twilio Segment docs)",
+      "url": "https://www.twilio.com/docs/segment/getting-started/03-planning-full-install"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

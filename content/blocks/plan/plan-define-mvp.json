@@ -1,0 +1,93 @@
+{
+  "id": "plan-define-mvp",
+  "title": "Define the smallest valuable release",
+  "phase": "plan",
+  "kind": "core",
+  "summary": "Decide the smallest version that real users can use and get value from, so you start learning as early as possible. Small does not mean broken: it should solve a real part of the problem well.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Go back to the user need and the main success metric.",
+      "List everything in the full idea, then ask for each item: does a user need this to get value the first time?",
+      "Look for a thin slice through the whole journey rather than one finished piece of it.",
+      "Write down what is in the first release, what comes next, and what is out for now.",
+      "Check the first release is still usable, safe, accessible and legal.",
+      "Agree it with the team and stakeholders, and say clearly what you will learn from it."
+    ],
+    "intermediate": [
+      "Map the full scope against the user journey and identify the thinnest valuable slice.",
+      "Agree in, next and out lists.",
+      "Confirm the release meets quality, safety and accessibility standards.",
+      "State what the release will teach you and how you will measure it."
+    ],
+    "experienced": [
+      "Choose the slice that tests the riskiest remaining assumption with real users.",
+      "Separate the release you learn from and the release you market; they are often different.",
+      "Hold the line on scope under pressure by tying every addition to evidence.",
+      "Plan the next two increments so stakeholders see the path, not just the first step."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "product-owner",
+        "task": "Draft the in, next and out lists from the backlog",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Check the slice still makes a complete, usable journey",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Confirm the slice can be built and released independently",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Build a story map with the journey across the top and draw a line for the first release.",
+    "jira": "Create a release version and assign only the first-slice stories to it.",
+    "linear": "Use a project with a clear first milestone and move everything else to later cycles.",
+    "claude": "List your features and ask it to suggest the thinnest end-to-end slice, then check it with your team."
+  },
+  "definitionOfDone": [
+    "First release defined as a thin, usable slice of the journey",
+    "In, next and out lists agreed",
+    "What you will learn and how you will measure it written down"
+  ],
+  "pitfalls": [
+    "Shipping something so small it gives no value or no learning",
+    "Building one perfect component instead of a usable journey",
+    "Letting 'just one more feature' creep back in"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "plan-prioritise-roadmap"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Making sense of MVP (Henrik Kniberg, Crisp)",
+      "url": "https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp"
+    },
+    {
+      "title": "Epics, stories and initiatives (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/epics-stories-themes"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

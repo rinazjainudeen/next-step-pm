@@ -1,0 +1,90 @@
+{
+  "id": "define-stakeholder-alignment",
+  "title": "Align stakeholders on the problem and the plan",
+  "phase": "define",
+  "kind": "core",
+  "summary": "Work goes faster when the people who can help or block it agree on the problem, the goal and who decides what. Get that agreement early, in writing, and keep it fresh.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List everyone who is affected by, has a say in or can block the work.",
+      "For each, note what they care about and how much influence they have.",
+      "Meet the most important ones one to one before any big meeting. Listen to their concerns.",
+      "Agree who decides what. A simple way is to name a Driver, an Approver, Contributors and people who just need to be Informed.",
+      "Hold a short kick-off to share the problem, goals, scope and decision roles.",
+      "Agree how and how often you will update each group, and write it down."
+    ],
+    "intermediate": [
+      "Map stakeholders by interest and influence.",
+      "Pre-meet key stakeholders and address concerns before group sessions.",
+      "Agree decision roles and record them.",
+      "Run a kick-off and agree a communications plan."
+    ],
+    "experienced": [
+      "Identify hidden stakeholders and conflicting incentives, and address them directly.",
+      "Use pre-reads and written decisions so alignment does not depend on who was in the room.",
+      "Escalate early and constructively when goals conflict, with options and a recommendation.",
+      "Revisit alignment at each major decision, not just at the start."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Organise the kick-off and set up the communications plan",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Build the stakeholder map",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use a DACI decision page for each big decision and link them from the product brief.",
+    "miro": "Plot stakeholders on an interest and influence grid during a team session.",
+    "notion": "Keep a stakeholder table with what each person cares about and when you last spoke.",
+    "claude": "Describe a stakeholder's concerns and ask it to help you prepare for the conversation, including likely objections."
+  },
+  "definitionOfDone": [
+    "Stakeholder map completed",
+    "Decision roles agreed and recorded",
+    "Kick-off held and communications plan shared"
+  ],
+  "pitfalls": [
+    "Surprising senior stakeholders in a group meeting",
+    "Several people believing they have the final say",
+    "Aligning once and assuming it will last"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "define-product-brief"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "DACI decision-making framework (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/daci"
+    },
+    {
+      "title": "Stakeholder communications plan (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/stakeholder-communications-plan"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

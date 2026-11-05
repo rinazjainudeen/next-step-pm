@@ -1,0 +1,89 @@
+{
+  "id": "addon-transformation-legacy",
+  "title": "Plan a move off a legacy system",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Replacing an old system all at once is risky. Move piece by piece, delivering value along the way.",
+  "appliesTo": {
+    "pmTypes": [
+      "transformation"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List what the old system does, including hidden jobs nobody mentions.",
+      "Find out who depends on it and what data it holds.",
+      "Split the move into small pieces you can switch over one at a time.",
+      "Start with a piece that is valuable and low risk.",
+      "Plan how data will move and how you will switch back if needed.",
+      "Agree when the old system will be switched off."
+    ],
+    "intermediate": [
+      "Inventory functions, users and data.",
+      "Plan incremental migration slices.",
+      "Plan data migration and rollback."
+    ],
+    "experienced": [
+      "Use an incremental replacement pattern rather than a big-bang rewrite.",
+      "Deliver new value alongside migration to keep support.",
+      "Manage the cost of running both systems."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "architect",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Design the migration approach",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ba",
+        "task": "Inventory functions and hidden jobs",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "architect",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Map legacy functions and plan which moves first.",
+    "jira": "Track each migration slice as an epic."
+  },
+  "definitionOfDone": [
+    "Functions, users and data inventoried",
+    "Incremental plan agreed",
+    "Rollback and switch-off plans agreed"
+  ],
+  "pitfalls": [
+    "Big-bang replacement",
+    "Missing hidden functions",
+    "Never switching the old system off"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "plan-prioritise-roadmap"
+  ],
+  "comesAfter": ["plan-define-mvp"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Strangler fig (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/StranglerFigApplication.html"
+    },
+    {
+      "title": "Technical debt quadrant (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/TechnicalDebtQuadrant.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

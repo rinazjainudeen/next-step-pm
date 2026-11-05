@@ -8,7 +8,8 @@
     "pmTypes": [],
     "productTypes": [],
     "stages": [],
-    "waysOfWorking": []
+    "waysOfWorking": [],
+    "experience": []
   },
   "steps": {
     "beginner": [
@@ -60,7 +61,7 @@
     "Running one large study instead of several small rounds"
   ],
   "estimatedEffort": "5-10 days",
-  "dependsOn": ["define-problem-statement"],
+  "dependsOn": ["design-user-journey"],
   "freshness": "evergreen",
   "sources": [
     { "title": "Using moderated usability testing (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing" },

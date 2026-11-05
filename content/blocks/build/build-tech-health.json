@@ -1,0 +1,91 @@
+{
+  "id": "build-tech-health",
+  "title": "Balance new features with technical health",
+  "phase": "build",
+  "kind": "core",
+  "summary": "Shortcuts in code, known as technical debt, slow the team down over time. A good PM makes room for fixing them, so the team can keep delivering at speed.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Ask the engineers which parts of the system slow them down or break most often.",
+      "Ask what each problem costs: slower delivery, more bugs, outages or security risk.",
+      "Agree a regular share of capacity for technical health, often 15 to 25 percent.",
+      "Put technical health items in the same backlog and prioritise them openly.",
+      "Explain the business value of this work to stakeholders in plain terms."
+    ],
+    "intermediate": [
+      "Build a list of technical debt with the team, sorted by cost and risk.",
+      "Agree a standing share of capacity and track it.",
+      "Prioritise debt alongside features using the same criteria.",
+      "Report the benefit in delivery speed and reliability."
+    ],
+    "experienced": [
+      "Separate deliberate, sensible debt from reckless debt, and set rules for each.",
+      "Tie technical health to measures such as lead time, failed changes and incidents.",
+      "Fund larger platform or architecture work through the roadmap, not just spare capacity.",
+      "Make technical health a shared goal for product and engineering leaders."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "List the debt and estimate its cost and risk",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "devops",
+        "task": "Supply data on incidents and failed releases",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "architect"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Label technical health items and track the share of each sprint spent on them.",
+    "github": "Use code scanning and dependency alerts to spot health risks.",
+    "gitlab": "Use code quality reports to show where health is getting worse."
+  },
+  "definitionOfDone": [
+    "Technical debt list agreed with the team",
+    "Capacity share agreed and tracked",
+    "Value explained to stakeholders"
+  ],
+  "pitfalls": [
+    "Treating all technical work as optional",
+    "Hiding technical work from stakeholders",
+    "Big rewrites with no plan to deliver value along the way"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "build-user-stories"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Technical debt quadrant (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/TechnicalDebtQuadrant.html"
+    },
+    {
+      "title": "Strangler fig (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/StranglerFigApplication.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,88 @@
+{
+  "id": "wow-stage-gates",
+  "title": "Prepare for a stage-gate review",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "A stage gate is a formal review before moving to the next phase or funding. Prepare evidence, not paperwork, and treat it as a chance to get help.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "hybrid"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Find out what the gate needs to see and who decides.",
+      "Gather the evidence: research, results, plans, risks and costs.",
+      "Tell the story clearly: what you learned, what you will do next and why.",
+      "Meet the decision-makers beforehand to hear concerns.",
+      "Record the decision and any conditions."
+    ],
+    "intermediate": [
+      "Understand gate criteria and decision-makers.",
+      "Prepare a concise evidence pack.",
+      "Pre-brief decision-makers and record outcomes."
+    ],
+    "experienced": [
+      "Push for gates based on evidence of value and risk, not documents.",
+      "Use gates to secure resources and remove blockers.",
+      "Help shape governance to support agile delivery."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Prepare the plan, risks and costs",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Summarise user evidence",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Prepare governance documents",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "sharepoint-word": "Use the governance template and keep it short.",
+    "confluence": "Link the gate pack to live evidence rather than copying it.",
+    "power-bi": "Show progress and cost charts in the pack."
+  },
+  "definitionOfDone": [
+    "Gate criteria understood",
+    "Evidence pack prepared",
+    "Decision and conditions recorded"
+  ],
+  "pitfalls": [
+    "Producing documents nobody reads",
+    "Hiding problems",
+    "Treating the gate as a test rather than help"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "What happens at a service assessment (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/service-assessments/how-service-assessments-work"
+    },
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

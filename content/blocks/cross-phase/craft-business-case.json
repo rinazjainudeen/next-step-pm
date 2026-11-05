@@ -1,0 +1,85 @@
+{
+  "id": "craft-business-case",
+  "title": "Build a business case",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "A business case shows why an investment is worth making: the problem, the options, the costs, the benefits and the risks. It helps leaders decide and gives you a baseline to measure against.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "State the problem and why it matters now.",
+      "List the options, including doing nothing.",
+      "For each, estimate costs: people, tools, running costs.",
+      "Estimate benefits: money, time saved, risk reduced, user value.",
+      "List the main risks and assumptions.",
+      "Recommend an option and say how you will measure success."
+    ],
+    "intermediate": [
+      "Compare options including 'do nothing'.",
+      "Estimate costs and benefits with ranges.",
+      "Recommend an option with success measures."
+    ],
+    "experienced": [
+      "Model sensitivity to the biggest assumptions.",
+      "Stage investment so later money depends on early evidence.",
+      "Write it so a senior reader can decide in ten minutes."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ba",
+        "task": "Gather cost and benefit figures",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Estimate build and running costs",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Write the narrative with a short options table.",
+    "sharepoint-word": "Use your organisation's template if there is one.",
+    "claude": "Ask it to check your arithmetic and find missing costs."
+  },
+  "definitionOfDone": [
+    "Options compared including 'do nothing'",
+    "Costs and benefits estimated with ranges",
+    "Recommendation and success measures stated"
+  ],
+  "pitfalls": [
+    "Only one real option",
+    "Benefits that cannot be measured",
+    "Hiding the risks"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Working backwards PR/FAQ (Working Backwards)",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

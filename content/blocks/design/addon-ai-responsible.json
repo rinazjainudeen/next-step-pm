@@ -1,0 +1,94 @@
+{
+  "id": "addon-ai-responsible",
+  "title": "Design for responsible AI and human oversight",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "Users need to know when AI is involved, how far to trust it and how to correct it. Design for mistakes, fairness and human oversight from the start.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [
+      "data-ai"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Tell users clearly when they are dealing with AI.",
+      "Show how confident the AI is, or why it gave an answer, where that helps.",
+      "Let users correct, override or report wrong answers.",
+      "Decide where a human must check before anything important happens.",
+      "Test with a range of users to spot unfair results.",
+      "Plan what the product does when the AI fails or is unavailable."
+    ],
+    "intermediate": [
+      "Design transparency, control and feedback into the experience.",
+      "Define human review points by risk.",
+      "Test for fairness and failure."
+    ],
+    "experienced": [
+      "Run a structured risk assessment using a recognised framework.",
+      "Set red lines for uses you will not support.",
+      "Build governance with legal, security and ethics colleagues."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Design transparency, correction and fallback",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Assess legal and ethical risks",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "data-scientist",
+        "task": "Test for bias and failure modes",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "policy-legal",
+      "data-scientist"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Design error, low-confidence and fallback states, not just the happy path.",
+    "confluence": "Keep an AI risk register linked to design decisions."
+  },
+  "definitionOfDone": [
+    "AI use is clear to users",
+    "Users can correct or override",
+    "Human review points defined",
+    "Fairness and failure tested"
+  ],
+  "pitfalls": [
+    "Hiding that AI is involved",
+    "Designing only for correct answers",
+    "No human check on high-impact decisions"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "comesAfter": ["design-explore-solutions"],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    },
+    {
+      "title": "AI Risk Management Framework (NIST)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

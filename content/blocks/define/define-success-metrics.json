@@ -1,0 +1,93 @@
+{
+  "id": "define-success-metrics",
+  "title": "Choose success metrics and guardrails",
+  "phase": "define",
+  "kind": "core",
+  "summary": "Decide how you will know the work succeeded, and what must not get worse along the way. Clear metrics make every later decision easier.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start from the outcome in your problem statement. Ask: what would we see if this worked?",
+      "Pick one main metric that shows the outcome, such as task completion, time saved, adoption or retention.",
+      "Add one or two supporting metrics that show progress earlier, such as how many people try the new step.",
+      "Add one or two guardrail metrics: things that must not get worse, such as support calls, errors, satisfaction or cost.",
+      "For each metric, write how it is calculated, where the data comes from and today's baseline.",
+      "Set a target and a date, and agree them with your team and sponsor."
+    ],
+    "intermediate": [
+      "Define one primary outcome metric with a clear formula and data source.",
+      "Add leading indicators and guardrails.",
+      "Record baselines and set targets with dates.",
+      "Confirm the data can be collected; if not, add tracking to the plan."
+    ],
+    "experienced": [
+      "Link the primary metric to the product's north star and to company goals.",
+      "Choose guardrails that protect users, quality and the business, and set thresholds that would stop a launch.",
+      "Check that metrics cannot be easily gamed and that they reflect long-term value, not short-term spikes.",
+      "Agree how and when results will be reviewed and who decides what happens next."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst",
+          "data-scientist"
+        ],
+        "task": "Define formulas, find baselines and check the data exists",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Confirm what can be tracked and what new tracking is needed",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "data-analyst",
+      "ux-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Add a metrics table to the problem statement page: name, formula, source, baseline, target, date.",
+    "amplitude": "Save each metric as a chart now, so you can watch the baseline before anything changes.",
+    "ga4": "Check which events already exist for the journey and list the ones you will need to add.",
+    "looker": "Define the metrics once in a shared model so every report uses the same definition.",
+    "claude": "Describe your outcome and ask for candidate metrics and guardrails, then ask how each could be gamed."
+  },
+  "definitionOfDone": [
+    "One primary metric, supporting metrics and guardrails agreed",
+    "Formula, data source and baseline recorded for each",
+    "Targets and review dates agreed"
+  ],
+  "pitfalls": [
+    "Measuring activity, such as features shipped, instead of outcomes",
+    "No guardrails, so a win in one place hides harm in another",
+    "Choosing metrics you cannot measure yet without planning the tracking"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Guardrail metrics: a guide to balanced product growth (Mixpanel)",
+      "url": "https://mixpanel.com/blog/guardrail-metrics/"
+    },
+    {
+      "title": "Service Standard point 10: define what success looks like (GOV.UK)",
+      "url": "https://www.gov.uk/service-manual/service-standard/point-10-define-success-publish-performance-data"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "craft-product-vision",
+  "title": "Write a product vision",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "A product vision describes the future you want to create for users, typically three to five years out. It helps teams make good decisions without being told what to do.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Describe the users and the problem in their words.",
+      "Describe what their life looks like when the product succeeds.",
+      "Keep it short enough to remember.",
+      "Test it with your team and some users.",
+      "Use it to explain decisions."
+    ],
+    "intermediate": [
+      "Ground the vision in research about users and market trends.",
+      "Write it from the user's point of view, three to five years out.",
+      "Make it inspiring but believable, and test it with the team and leaders.",
+      "Use it to check whether roadmap items move you towards it."
+    ],
+    "experienced": [
+      "Create a vision that connects several teams' work into one story.",
+      "Use a narrative or prototype of the future to make it concrete.",
+      "Keep the vision stable while letting strategy change.",
+      "Revisit it each year with fresh evidence."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Create a visual or prototype of the future experience",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Supply research on user needs and trends",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "ux-designer",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Mock up a 'day in the life' of a user in the future.",
+    "google-docs": "Write a one-page vision narrative.",
+    "claude": "Ask it to challenge your vision: which assumptions would have to be true?"
+  },
+  "definitionOfDone": [
+    "Vision written from the user's point of view",
+    "Tested with team and leaders",
+    "Used to explain roadmap decisions"
+  ],
+  "pitfalls": [
+    "Writing a list of features",
+    "So vague it guides nothing",
+    "Changing it every quarter"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product vision vs strategy (SVPG)",
+      "url": "https://www.svpg.com/product-vision-vs-strategy/"
+    },
+    {
+      "title": "Working backwards PR/FAQ (Working Backwards)",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

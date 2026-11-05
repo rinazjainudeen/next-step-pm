@@ -11,7 +11,7 @@ export function makeBlock(overrides: Partial<Block> = {}): Block {
     phase: "define",
     kind: "core",
     summary: "Dummy text for tests.",
-    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [] },
+    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: [] },
     steps: {
       beginner: ["Dummy beginner step."],
       intermediate: ["Dummy intermediate step."],

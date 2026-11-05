@@ -68,8 +68,11 @@ export default async function PlanPage({
   if (!result.ok) redirect(startHref(draft, firstUnansweredStep(draft) ?? 1));
 
   const plan = buildPlan(result.answers, BLOCKS);
-  // Progress follows the timeline. Onboarding can be skipped, and rhythm blocks repeat.
-  const stepIds = plan.phases.flatMap((phase) => phase.blocks).flatMap((block) => block.steps.map((step) => step.id));
+  // Progress follows the required timeline. Everything else is skippable or repeats.
+  const stepIds = plan.phases
+    .flatMap((phase) => phase.blocks)
+    .filter((block) => !block.optional)
+    .flatMap((block) => block.steps.map((step) => step.id));
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
@@ -187,6 +190,37 @@ export default async function PlanPage({
               {plan.rhythm.map((block) => (
                 <PlanBlockCard key={block.id} block={block} heading="h3" />
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {plan.skillsForLevel.length + plan.skillsAnyLevel.length > 0 && (
+        <section id="grow-your-skills" aria-label="Grow your skills" className={cn("border-t", plan.rhythm.length === 0 && "bg-secondary/40")}>
+          <div className={CONTAINER}>
+            <SectionHeading eyebrow="Whenever you're ready" title="Grow your skills" lead="These build your craft as a PM. They sit outside the timeline, so pick them up as you need them." />
+            <div className="mt-8 space-y-10">
+              {plan.skillsForLevel.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">Picked for your level</h3>
+                  <div className="mt-4 space-y-4">
+                    {plan.skillsForLevel.map((block) => (
+                      <PlanBlockCard key={block.id} block={block} heading="h4" />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {plan.skillsAnyLevel.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">Useful at any level</h3>
+                  <p className="mt-1 max-w-3xl text-pretty leading-relaxed text-muted-foreground">The steps are written for your experience.</p>
+                  <div className="mt-4 space-y-4">
+                    {plan.skillsAnyLevel.map((block) => (
+                      <PlanBlockCard key={block.id} block={block} heading="h4" />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>

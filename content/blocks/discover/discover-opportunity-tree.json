@@ -1,0 +1,85 @@
+{
+  "id": "discover-opportunity-tree",
+  "title": "Map opportunities with an opportunity solution tree",
+  "phase": "discover",
+  "kind": "core",
+  "optional": true,
+  "summary": "An opportunity solution tree links one outcome to the user needs that could drive it, the ideas that could meet each need and the tests that check each idea. It keeps the team focused on outcomes rather than a list of features.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Put your desired outcome at the top of a board.",
+      "Under it, add the user needs, pain points and desires you found in research. These are opportunities. Write them from the user's point of view.",
+      "Group related opportunities and break big ones into smaller, more specific ones.",
+      "Pick one opportunity to focus on, based on size and evidence.",
+      "Under it, list at least three different solution ideas.",
+      "Under each idea, list the assumptions that must be true, and a quick test for the riskiest one."
+    ],
+    "intermediate": [
+      "Set the outcome at the top and map research-backed opportunities beneath it.",
+      "Structure opportunities into a tree and choose a target opportunity.",
+      "Generate at least three solutions for it and identify the riskiest assumptions.",
+      "Keep the tree updated weekly as you learn."
+    ],
+    "experienced": [
+      "Use the tree to make prioritisation visible to stakeholders and to defend outcome-led choices.",
+      "Compare and contrast solutions rather than testing one idea at a time.",
+      "Prune branches as evidence comes in and record why.",
+      "Coach the team to use the tree in planning and review conversations."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Supply the opportunities from research and check their wording",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Generate solution ideas for the target opportunity",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Use an opportunity solution tree template and colour-code opportunities by strength of evidence.",
+    "mural": "Build the tree live with the team and use voting to choose the target opportunity.",
+    "notion": "Keep each opportunity as a page with linked research notes, so the tree stays traceable."
+  },
+  "definitionOfDone": [
+    "Outcome, opportunities, solutions and assumption tests mapped on one tree",
+    "Target opportunity chosen with a reason",
+    "At least three solutions for the target opportunity"
+  ],
+  "pitfalls": [
+    "Writing solutions in the opportunity layer",
+    "Building the tree once and never updating it",
+    "Only listing one solution per opportunity"
+  ],
+  "estimatedEffort": "4-8 hours",
+  "dependsOn": [
+    "discover-user-research"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

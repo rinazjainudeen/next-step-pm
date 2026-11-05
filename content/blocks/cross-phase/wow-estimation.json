@@ -1,0 +1,86 @@
+{
+  "id": "wow-estimation",
+  "title": "Estimate work as a team",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "Estimating together helps a team understand the work and plan realistically. The conversation matters more than the number.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "scrum",
+      "hybrid"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Use relative sizes, such as story points or T-shirt sizes, rather than hours.",
+      "Pick a small, well-understood item as a reference point.",
+      "Each person estimates privately, then everyone reveals at once.",
+      "Discuss big differences; they often reveal hidden work or risk.",
+      "Use past results to see how much the team usually completes."
+    ],
+    "intermediate": [
+      "Use relative estimation with reference items.",
+      "Discuss outliers to surface risk.",
+      "Use velocity or throughput for forecasting."
+    ],
+    "experienced": [
+      "Forecast with ranges and confidence levels.",
+      "Consider counting items instead of estimating when items are similar in size.",
+      "Never use estimates to judge individuals."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Facilitate estimation",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Explain technical complexity",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use the story points field and the velocity chart.",
+    "azure-devops": "Use effort fields and the velocity widget.",
+    "miro": "Run affinity sizing by placing items in size columns."
+  },
+  "definitionOfDone": [
+    "Items estimated by the team",
+    "Big differences discussed",
+    "Forecasts based on past results"
+  ],
+  "pitfalls": [
+    "Treating estimates as promises",
+    "One person estimating for the team",
+    "Comparing teams by points"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Story points and estimation (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/estimation"
+    },
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

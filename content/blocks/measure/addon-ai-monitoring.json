@@ -1,0 +1,91 @@
+{
+  "id": "addon-ai-monitoring",
+  "title": "Monitor AI quality in production",
+  "phase": "measure",
+  "kind": "add-on",
+  "summary": "AI quality can change after launch as users, data and models change. Monitor quality, cost and safety continuously, and act quickly when they slip.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [
+      "data-ai"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick a few measures: answer quality, user corrections, complaints and cost per use.",
+      "Sample real outputs every week and check them by hand.",
+      "Re-run your evaluation set whenever the model or prompts change.",
+      "Set alerts for sudden changes in quality or cost.",
+      "Have a way to roll back to a previous version."
+    ],
+    "intermediate": [
+      "Track quality, safety and cost measures.",
+      "Review samples and re-run evaluations on change.",
+      "Alert on drift and keep rollback ready."
+    ],
+    "experienced": [
+      "Automate evaluation on live samples.",
+      "Feed failures back into the evaluation set.",
+      "Report AI quality and cost to leaders like any other product health measure."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Set up monitoring and evaluation",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "qa",
+        "task": "Review samples of live outputs",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-scientist",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "claude": "Use a grading prompt to score samples of outputs against your criteria, and check a share by hand.",
+    "looker": "Chart quality and cost per use over time."
+  },
+  "definitionOfDone": [
+    "Quality, safety and cost measures tracked",
+    "Weekly sample review",
+    "Evaluations re-run on change",
+    "Rollback ready"
+  ],
+  "pitfalls": [
+    "Assuming launch quality lasts",
+    "Only watching cost",
+    "Changing models without re-testing"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "test-ai-model-evaluation"
+  ],
+  "comesAfter": ["measure-results-hypothesis"],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "Define success criteria and build evaluations (Anthropic docs)",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/define-success"
+    },
+    {
+      "title": "AI Risk Management Framework (NIST)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,92 @@
+{
+  "id": "addon-ai-is-ai-right",
+  "title": "Decide whether AI is the right solution",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "AI is powerful but costly, unpredictable and sometimes unnecessary. Check that AI is the best way to solve the user's problem before committing to it.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [
+      "data-ai"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write the user problem without mentioning AI.",
+      "List simpler options: rules, better design, search or a manual process.",
+      "Ask where AI would add real value: handling variety, scale or language that rules cannot.",
+      "Ask what happens when the AI is wrong, and how bad that would be.",
+      "Estimate the running cost per use.",
+      "Decide and record why AI is, or is not, the right choice."
+    ],
+    "intermediate": [
+      "Compare AI with non-AI options on value, cost and risk.",
+      "Assess the cost of errors and the need for human review.",
+      "Record the decision and the evidence."
+    ],
+    "experienced": [
+      "Check the AI approach creates lasting advantage, not just novelty.",
+      "Assess build, buy or partner options.",
+      "Agree quality and cost thresholds before committing."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Assess feasibility and likely quality",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Flag legal and ethical constraints",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-scientist",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "claude": "Prototype the AI part quickly with a handful of real examples to see if quality is close to good enough.",
+    "google-docs": "Write a one-page options comparison."
+  },
+  "definitionOfDone": [
+    "Problem stated without AI",
+    "Non-AI options compared",
+    "Cost of errors and running cost assessed",
+    "Decision recorded"
+  ],
+  "pitfalls": [
+    "Starting with 'we need AI'",
+    "Ignoring running costs",
+    "Underestimating the impact of wrong answers"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "comesAfter": ["define-problem-statement"],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    },
+    {
+      "title": "Define success criteria and build evaluations (Anthropic docs)",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/define-success"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

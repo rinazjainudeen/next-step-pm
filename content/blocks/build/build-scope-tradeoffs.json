@@ -1,0 +1,97 @@
+{
+  "id": "build-scope-tradeoffs",
+  "title": "Make scope trade-offs without losing the goal",
+  "phase": "build",
+  "kind": "core",
+  "summary": "Every build hits surprises. When time runs short, cut or simplify work in a way that still meets the user need and the success metric, and make the decision openly.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "When the team raises a problem, first ask what it affects: the date, the scope or the quality.",
+      "Go back to the goal and the main user need. Which items are essential to meet it?",
+      "Look for simpler versions of the hard parts, such as a manual step behind the scenes for the first release.",
+      "Never cut accessibility, security or legal requirements to save time.",
+      "Agree the change with the team, then tell stakeholders what changed and why.",
+      "Move anything cut to the 'next' list so it is not lost."
+    ],
+    "intermediate": [
+      "Assess the impact of each issue on date, scope and quality.",
+      "Use the goal and metric to decide what to simplify or defer.",
+      "Protect non-negotiables such as accessibility and security.",
+      "Record and communicate each trade-off."
+    ],
+    "experienced": [
+      "Set trade-off rules with stakeholders before the build starts.",
+      "Spot scope creep early and challenge it with evidence.",
+      "Use trade-off decisions to keep the team focused and morale high.",
+      "Review trade-offs at the end to improve future planning."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Propose simpler technical options",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Design a simpler version that still meets the user need",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Show the impact on the plan",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Move deferred items to the next release version so the decision is visible.",
+    "confluence": "Keep a short decision log with each trade-off and the reason.",
+    "linear": "Label deferred issues and move them to a later cycle."
+  },
+  "definitionOfDone": [
+    "Trade-off decided against the goal and metric",
+    "Non-negotiables protected",
+    "Decision recorded and shared, with deferred work kept"
+  ],
+  "pitfalls": [
+    "Cutting quality or accessibility quietly",
+    "Adding scope without removing anything",
+    "Making trade-offs without telling stakeholders"
+  ],
+  "estimatedEffort": "1-4 hours",
+  "dependsOn": [
+    "build-user-stories"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Making sense of MVP (Henrik Kniberg, Crisp)",
+      "url": "https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp"
+    },
+    {
+      "title": "A product manager's guide to release planning (Atlassian)",
+      "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

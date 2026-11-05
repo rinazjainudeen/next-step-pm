@@ -1,0 +1,94 @@
+{
+  "id": "define-product-brief",
+  "title": "Write a product brief (PRD)",
+  "phase": "define",
+  "kind": "core",
+  "summary": "A product brief, often called a PRD, brings the problem, users, goals, scope and open questions into one short document. It becomes the place the whole team goes to understand why you are building this and what is in and out.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Start with a template: background, problem, users, goals and metrics, scope, out of scope, assumptions, open questions, and links.",
+      "Copy in your problem statement and success metrics rather than rewriting them.",
+      "Describe the main users and what they need to be able to do, in plain language.",
+      "List what is in scope for the first release and, just as important, what is not.",
+      "Add the open questions and who will answer each one.",
+      "Share it for comments with design, engineering and key stakeholders, and keep it up to date as decisions are made."
+    ],
+    "intermediate": [
+      "Write a short brief covering problem, users, goals, metrics, scope, non-goals and open questions.",
+      "Link out to research, designs and the backlog rather than copying detail in.",
+      "Review with the team and stakeholders and resolve major comments.",
+      "Keep it as a living document with a change log."
+    ],
+    "experienced": [
+      "Write it as a narrative that a senior reader can understand in ten minutes, leading with the customer and the why.",
+      "Make trade-offs, non-goals and risks explicit so they can be challenged early.",
+      "Use the review to surface disagreement and force decisions.",
+      "Keep the brief at the right level, leaving solution detail to designers and engineers."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ba",
+        "task": "Draft the scope, requirements and open questions sections",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "content-designer",
+        "task": "Edit the brief so it is short and clear",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Add technical constraints and dependencies",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use the product requirements template and link each requirement to its Jira epic.",
+    "notion": "Create the brief as a page with linked databases for open questions and decisions.",
+    "google-docs": "Ask reviewers to use comments and resolve each one with a decision.",
+    "sharepoint-word": "Keep one shared version and turn on tracked changes for the review round.",
+    "claude": "Paste your notes and ask it to draft the brief in your template, then ask it to list what a sceptical engineer would challenge."
+  },
+  "definitionOfDone": [
+    "Brief covers problem, users, goals, metrics, scope, non-goals and open questions",
+    "Reviewed by design, engineering and key stakeholders",
+    "Major comments resolved and owners assigned to open questions"
+  ],
+  "pitfalls": [
+    "Writing a long specification nobody reads",
+    "Leaving out what is not in scope",
+    "Letting the brief go out of date after the first review"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "define-success-metrics"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to create a product requirements document (Atlassian)",
+      "url": "https://www.atlassian.com/agile/product-management/requirements"
+    },
+    {
+      "title": "Product management at Amazon (AWS Executive Insights)",
+      "url": "https://aws.amazon.com/executive-insights/content/product-management-at-amazon/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

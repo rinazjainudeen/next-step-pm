@@ -1,0 +1,98 @@
+{
+  "id": "discover-frame-opportunity",
+  "title": "Frame the opportunity and what you need to learn",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Before any research, agree why this work matters, what outcome you are aiming for and what you do not yet know. A clear frame stops discovery from drifting and tells you when it is finished.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down where the idea came from: a business goal, a user complaint, data, a leadership request or a new technology. Be honest if the source is a solution someone already wants.",
+      "Turn it into an outcome, not a feature. Ask: if this worked, what would change for users and for the organisation? Write one or two sentences.",
+      "List what you already know and what evidence supports it. Then list what you do not know.",
+      "Sort the unknowns into four risks: will people want it (value), can they use it (usability), can we build it (feasibility) and does it work for the business (viability).",
+      "Turn the biggest unknowns into three to five learning questions, for example 'Why do new customers stop using the product in week one?'",
+      "Agree a time box for discovery, who is in the core team and what decision you will make at the end. Share this one-page frame with your sponsor."
+    ],
+    "intermediate": [
+      "Restate the request as a desired outcome with a measure you could track.",
+      "Map known facts, assumptions and unknowns against value, usability, feasibility and viability risk.",
+      "Write three to five learning questions and the evidence that would answer each.",
+      "Agree the time box, core team, sponsor and end-of-discovery decision."
+    ],
+    "experienced": [
+      "Tie the opportunity to company or product strategy and a measurable outcome; challenge solution-first requests openly.",
+      "Rank the four risks by severity and cost of being wrong, and plan discovery around the top two.",
+      "Set an explicit decision point and kill criteria up front, so stopping is a normal result rather than a failure.",
+      "Get the sponsor to agree the frame in writing before the team starts."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Turn the unknowns into research questions and suggest the right methods",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Pull existing data that confirms or challenges what you think you know",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "tech-lead",
+        "task": "Flag early technical constraints and feasibility unknowns",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "ux-designer",
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Create a one-page opportunity frame with fixed headings: source, outcome, knowns, unknowns, risks, learning questions, time box.",
+    "notion": "Use a database of learning questions, each tagged with its risk type and linked to the research that answers it.",
+    "miro": "Run a 45-minute session where the team sorts sticky notes into knowns, assumptions and unknowns, then votes on the riskiest.",
+    "claude": "Paste the original request and ask for the outcome it implies, the hidden assumptions and five learning questions. Check the questions with your team."
+  },
+  "definitionOfDone": [
+    "Outcome written in one or two sentences, without naming a solution",
+    "Unknowns sorted by risk type, with the riskiest ones highlighted",
+    "Three to five learning questions agreed",
+    "Time box, team and end decision agreed with the sponsor"
+  ],
+  "pitfalls": [
+    "Treating a requested feature as the outcome",
+    "Starting research without agreeing what decision it will inform",
+    "No time box, so discovery runs on until it loses support"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    },
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

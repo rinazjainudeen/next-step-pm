@@ -1,0 +1,100 @@
+{
+  "id": "test-beta-pilot",
+  "title": "Run a beta or pilot with real users",
+  "phase": "test",
+  "kind": "core",
+  "summary": "Before opening to everyone, let a small group use the real product for real tasks. A beta finds the problems testing cannot and builds confidence for the full launch.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Decide what you want to learn from the beta and what would make you ready to launch more widely.",
+      "Choose a small group of real users who represent your main audience, including some who may struggle.",
+      "Tell them what to expect, how to give feedback and how to get help.",
+      "Watch the data and feedback closely, and talk to some users directly.",
+      "Fix the most important problems quickly and tell users what changed.",
+      "At the end, decide: go wider, run longer or change direction."
+    ],
+    "intermediate": [
+      "Set beta goals and exit criteria.",
+      "Recruit a representative group and set up feedback and support routes.",
+      "Monitor data, feedback and support tickets, and fix the top issues.",
+      "Make a documented go or no-go decision."
+    ],
+    "experienced": [
+      "Use staged rollout with feature flags to widen access gradually.",
+      "Compare beta users with a control group where possible.",
+      "Agree exit criteria with stakeholders before the beta starts.",
+      "Use beta evidence to sharpen positioning and launch messages."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Recruit beta users and run follow-up interviews",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Monitor beta metrics against the exit criteria",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "devops",
+        "orRoles": [
+          "backend-engineer"
+        ],
+        "task": "Set up feature flags or a separate beta environment",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Create a cohort of beta users and compare their behaviour with others.",
+    "ga4": "Add a user property for beta users so you can filter reports.",
+    "jira": "Create a beta feedback board and triage it daily.",
+    "notion": "Keep a beta log of issues, fixes and what you told users."
+  },
+  "definitionOfDone": [
+    "Beta goals and exit criteria agreed",
+    "Representative users recruited and supported",
+    "Top issues fixed",
+    "Go or no-go decision recorded"
+  ],
+  "pitfalls": [
+    "Recruiting only friendly or expert users",
+    "No clear exit criteria, so the beta never ends",
+    "Collecting feedback but not acting on it"
+  ],
+  "estimatedEffort": "5-20 days",
+  "dependsOn": [
+    "test-acceptance-accessibility"
+  ],
+  "comesAfter": ["test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-ai-model-evaluation"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "What happens at a service assessment (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/service-assessments/how-service-assessments-work"
+    },
+    {
+      "title": "Making sense of MVP (Henrik Kniberg, Crisp)",
+      "url": "https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

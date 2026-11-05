@@ -1,0 +1,91 @@
+{
+  "id": "design-user-journey",
+  "title": "Map the user journey end to end",
+  "phase": "design",
+  "kind": "core",
+  "summary": "A journey map shows every step a user takes to reach their goal, including steps outside your product. It reveals where the experience breaks and makes sure the design solves the whole problem, not just one screen.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Choose one type of user and one goal, for example 'a new customer setting up their first account'.",
+      "List every step they take from start to finish, including emails, phone calls and offline steps.",
+      "For each step, note what they are doing, thinking and feeling, using research evidence.",
+      "Mark the pain points and moments that matter most.",
+      "Add the behind-the-scenes steps your organisation or systems take.",
+      "Mark where your chosen solution changes the journey, and check nothing breaks before or after it."
+    ],
+    "intermediate": [
+      "Map the current journey for one user type and goal, using research evidence.",
+      "Include touchpoints outside the product and the behind-the-scenes processes.",
+      "Highlight pain points and map the future journey with the chosen concept.",
+      "Share the map and use it to scope the work."
+    ],
+    "experienced": [
+      "Map journeys for the main user segments and show where they differ.",
+      "Connect journey pain points to data and to the business processes behind them.",
+      "Use the future journey to spot dependencies on other teams and systems early.",
+      "Make the journey map a shared artefact that guides prioritisation across teams."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "orRoles": [
+          "user-researcher"
+        ],
+        "task": "Draw the current and future journey maps",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Supply research evidence for each step",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Map the behind-the-scenes processes and systems",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "content-designer"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Use a journey map template with lanes for actions, thoughts, feelings, pain points and back-stage processes.",
+    "mural": "Build the map with the team and add research quotes on each step.",
+    "figma": "Create a polished version of the map to share with stakeholders.",
+    "claude": "Paste research notes and ask it to draft the steps of the journey, then check every step against the evidence."
+  },
+  "definitionOfDone": [
+    "Current journey mapped with evidence and pain points",
+    "Future journey shows how the chosen concept changes it",
+    "Map shared and used to agree scope"
+  ],
+  "pitfalls": [
+    "Mapping only the steps inside your product",
+    "Filling the map with assumptions instead of research",
+    "Making the map once and never using it again"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Journey mapping 101 (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/journey-mapping-101/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

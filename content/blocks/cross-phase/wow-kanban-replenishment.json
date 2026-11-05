@@ -1,0 +1,81 @@
+{
+  "id": "wow-kanban-replenishment",
+  "title": "Decide what comes next in a Kanban team",
+  "phase": "any",
+  "kind": "ways-of-working",
+  "summary": "In Kanban, work flows continuously. A regular replenishment meeting decides what enters the board next, so the team always works on the most valuable items.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [
+      "kanban"
+    ],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Hold a short meeting weekly or when the 'ready' column runs low.",
+      "Review the options and the latest priorities.",
+      "Choose the next items and check they are clear enough to start.",
+      "Respect work-in-progress limits; do not overload the board.",
+      "Tell stakeholders what was chosen and what was not."
+    ],
+    "intermediate": [
+      "Hold regular replenishment with clear criteria.",
+      "Respect work-in-progress limits.",
+      "Use cycle time to set expectations."
+    ],
+    "experienced": [
+      "Use classes of service for urgent and fixed-date work.",
+      "Forecast with throughput data.",
+      "Balance new features, fixes and technical health."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Facilitate and track flow metrics",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "product-owner",
+        "task": "Prepare options",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Use a Kanban board with column limits.",
+    "trello": "Use a 'ready' list with a card limit.",
+    "linear": "Use triage to choose what enters the backlog."
+  },
+  "definitionOfDone": [
+    "Regular replenishment in place",
+    "Work-in-progress limits respected",
+    "Choices shared with stakeholders"
+  ],
+  "pitfalls": [
+    "Adding work whenever someone asks",
+    "Ignoring work-in-progress limits",
+    "No visible priorities"
+  ],
+  "estimatedEffort": "30-60 minutes",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Kanban Guide (Kanban Guides)",
+      "url": "https://kanbanguides.org/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

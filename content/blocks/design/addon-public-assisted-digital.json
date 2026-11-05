@@ -1,0 +1,84 @@
+{
+  "id": "addon-public-assisted-digital",
+  "title": "Design for people who cannot or will not go online",
+  "phase": "design",
+  "kind": "add-on",
+  "summary": "Public services must work for everyone, including people without internet, skills or confidence. Design support routes alongside the digital service.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "public"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Research users who struggle with or avoid digital services.",
+      "Find out why: access, skills, confidence or trust.",
+      "Design support by phone, in person or webchat.",
+      "Tell people the support exists.",
+      "Measure how well the support works."
+    ],
+    "intermediate": [
+      "Research non-digital users.",
+      "Design and publicise support routes.",
+      "Measure support performance."
+    ],
+    "experienced": [
+      "Plan support funding and capacity.",
+      "Use support data to improve the digital service.",
+      "Help people move online over time without forcing them."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Research users who need support",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Design the support routes",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Map the journey across online and offline channels.",
+    "confluence": "Document support routes and staff guides."
+  },
+  "definitionOfDone": [
+    "Non-digital users researched",
+    "Support routes designed",
+    "Measures in place"
+  ],
+  "pitfalls": [
+    "Assuming everyone is online",
+    "Hiding offline options",
+    "Paper forms as the only alternative"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "design-inclusive"
+  ],
+  "comesAfter": ["design-inclusive"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Designing assisted digital support (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service/designing-assisted-digital"
+    },
+    {
+      "title": "Understanding users who do not use digital services (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/user-research/understanding-users-who-dont-use-digital-services"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,96 @@
+{
+  "id": "define-riskiest-assumptions",
+  "title": "Test your riskiest assumptions",
+  "phase": "define",
+  "kind": "core",
+  "summary": "Every idea rests on assumptions. Find the ones that would sink the idea if they were wrong and that you have least evidence for, then test those first with the cheapest test that will give you an answer.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List every assumption behind your idea. Ask: what must be true about users, the business and the technology for this to work?",
+      "For each, mark how important it is and how much evidence you have.",
+      "Pick the two or three that are most important and have the least evidence. These are your riskiest assumptions.",
+      "For each, design a small test: a few user interviews, a clickable mock-up, a landing page, a manual trial or a quick technical spike.",
+      "Before you run the test, write what result would prove you wrong.",
+      "Run the tests, record the results and update your plan."
+    ],
+    "intermediate": [
+      "Map assumptions by importance and evidence.",
+      "Pick the top two or three and design the cheapest valid test for each.",
+      "Set pass and fail criteria before testing.",
+      "Run, record and adjust the plan based on results."
+    ],
+    "experienced": [
+      "Cover desirability, viability, feasibility and ethical risk, not just user appeal.",
+      "Sequence tests so cheap, fast ones come first and stronger evidence follows where needed.",
+      "Hold the team to the pre-agreed criteria, especially when results are disappointing.",
+      "Make assumption testing a continuing habit rather than a one-off step."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Design and run the user-facing tests",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Build mock-ups or prototypes for testing",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "fullstack-engineer",
+          "backend-engineer"
+        ],
+        "task": "Run a short technical spike for feasibility assumptions",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Use a two-by-two grid with importance on one axis and evidence on the other, and plot each assumption as a sticky note.",
+    "figma": "Build a quick clickable mock-up to test whether users understand the idea.",
+    "notion": "Keep a test log: assumption, test, pass and fail criteria, result, decision.",
+    "claude": "Paste your idea and ask it to list hidden assumptions you have missed, grouped by user, business and technology."
+  },
+  "definitionOfDone": [
+    "Assumptions mapped by importance and evidence",
+    "Riskiest two or three tested with criteria set in advance",
+    "Results recorded and the plan updated"
+  ],
+  "pitfalls": [
+    "Testing the easy assumptions instead of the risky ones",
+    "Deciding what success looks like after seeing the results",
+    "Building too much before testing"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "define-problem-statement"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How assumptions mapping focuses teams on experiments that matter (Strategyzer)",
+      "url": "https://www.strategyzer.com/library/how-assumptions-mapping-can-focus-your-teams-on-running-experiments-that-matter"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

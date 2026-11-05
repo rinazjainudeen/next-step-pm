@@ -1,0 +1,90 @@
+{
+  "id": "addon-ai-data-readiness",
+  "title": "Check your data is ready for AI",
+  "phase": "define",
+  "kind": "add-on",
+  "summary": "AI is only as good as the data behind it. Check you have the right data, of good enough quality, and that you are allowed to use it.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": [
+      "data-ai"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the data the AI will need, for training, examples or retrieval.",
+      "Find where it lives and who owns it.",
+      "Check quality: is it complete, accurate, up to date and representative of all your users?",
+      "Check you have the legal right and consent to use it this way.",
+      "Plan how you will fill any gaps."
+    ],
+    "intermediate": [
+      "Inventory data sources and owners.",
+      "Assess quality and bias.",
+      "Confirm legal basis and plan gaps."
+    ],
+    "experienced": [
+      "Design a data strategy that improves as the product is used.",
+      "Plan data governance and retention for AI use.",
+      "Assess the risk of sensitive data leaking through outputs."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Assess data quality and fitness",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Confirm legal basis and consent",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-scientist",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "looker": "Profile the data to see gaps and distributions.",
+    "power-bi": "Chart data completeness by source and user group."
+  },
+  "definitionOfDone": [
+    "Data sources and owners listed",
+    "Quality and bias assessed",
+    "Legal basis confirmed"
+  ],
+  "pitfalls": [
+    "Assuming the data is clean",
+    "Data that does not represent all users",
+    "Using data without the right to"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "addon-ai-is-ai-right"
+  ],
+  "comesAfter": ["addon-ai-is-ai-right"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    },
+    {
+      "title": "AI Risk Management Framework (NIST)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

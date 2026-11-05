@@ -1,0 +1,85 @@
+{
+  "id": "onboarding-live-health-check",
+  "title": "Check the health of a live product",
+  "phase": "any",
+  "kind": "onboarding",
+  "summary": "When you take over a live product, check how it is really doing: usage, quality, reliability, costs and user satisfaction.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "live"
+    ],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Find the dashboards and ask what each number means.",
+      "Look at usage trends over the last year.",
+      "Check reliability, incidents and support volumes.",
+      "Read recent user feedback.",
+      "Write a short health summary with the top three concerns."
+    ],
+    "intermediate": [
+      "Review usage, quality, reliability and cost.",
+      "Identify trends and risks.",
+      "Write a health summary."
+    ],
+    "experienced": [
+      "Compare health with goals and peers.",
+      "Find the biggest opportunities and risks.",
+      "Use the summary to set your first priorities."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "performance-analyst",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Walk you through the data",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "devops",
+        "task": "Share reliability and incident data",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "looker": "Review existing dashboards.",
+    "power-bi": "Review existing reports.",
+    "jira": "Review recent incidents and support tickets."
+  },
+  "definitionOfDone": [
+    "Usage, quality, reliability and cost reviewed",
+    "Health summary written",
+    "Top concerns agreed"
+  ],
+  "pitfalls": [
+    "Trusting dashboards without asking how they work",
+    "Ignoring support data",
+    "Changing things before understanding them"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Measuring the user experience on a large scale: the HEART framework (Google Research)",
+      "url": "https://research.google.com/pubs/archive/36299.pdf"
+    },
+    {
+      "title": "Service level objectives (Google SRE book)",
+      "url": "https://sre.google/sre-book/service-level-objectives/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

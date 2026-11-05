@@ -1,0 +1,93 @@
+{
+  "id": "measure-post-launch-review",
+  "title": "Hold a post-launch review",
+  "phase": "measure",
+  "kind": "core",
+  "summary": "A few weeks after launch, step back as a team: did the product achieve what you hoped, what did you learn, and what will you do differently next time?",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Book the review two to six weeks after launch, once there is real data.",
+      "Gather the results against your hypothesis and success metrics.",
+      "Ask everyone what went well, what did not and what surprised them.",
+      "Focus on the process and decisions, never on blaming people.",
+      "Agree three or four actions with owners.",
+      "Share a short summary with stakeholders."
+    ],
+    "intermediate": [
+      "Review outcomes against the hypothesis and metrics.",
+      "Review delivery: plan versus actual, and why.",
+      "Agree actions with owners.",
+      "Publish a short summary."
+    ],
+    "experienced": [
+      "Compare the outcome with the original business case and be honest about the gap.",
+      "Look for patterns across several launches.",
+      "Feed lessons into planning and estimation practices.",
+      "Share learning across teams, including failures."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "scrum-master",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Facilitate the review",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Present results against the metrics",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager",
+      "tech-lead"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Use a retrospective template and link it to the product brief.",
+    "miro": "Run the review on a board with sections for results, delivery and actions.",
+    "google-docs": "Write a one-page summary for stakeholders."
+  },
+  "definitionOfDone": [
+    "Results reviewed against the hypothesis",
+    "Actions agreed with owners",
+    "Summary shared"
+  ],
+  "pitfalls": [
+    "Holding it too early, before there is data",
+    "Turning it into blame",
+    "Agreeing actions nobody follows up"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "measure-results-hypothesis"
+  ],
+  "comesAfter": ["measure-experiments"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Retrospective play (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/retrospective"
+    },
+    {
+      "title": "Postmortem culture: learning from failure (Google SRE book)",
+      "url": "https://sre.google/sre-book/postmortem-culture/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

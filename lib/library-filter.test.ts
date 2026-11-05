@@ -11,7 +11,7 @@ const aiAddOn = toSummary(
     id: "define-ai",
     phase: "define",
     kind: "add-on",
-    appliesTo: { pmTypes: ["ai"], productTypes: [], stages: [], waysOfWorking: [] },
+    appliesTo: { pmTypes: ["ai"], productTypes: [], stages: [], waysOfWorking: [], experience: [] },
   }),
 );
 const scrumAny = toSummary(
@@ -19,7 +19,7 @@ const scrumAny = toSummary(
     id: "any-scrum",
     phase: "any",
     kind: "ways-of-working",
-    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ["scrum"] },
+    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ["scrum"], experience: [] },
   }),
 );
 const kanbanAny = toSummary(
@@ -27,7 +27,7 @@ const kanbanAny = toSummary(
     id: "any-kanban",
     phase: "any",
     kind: "ways-of-working",
-    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ["kanban"] },
+    appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: ["kanban"], experience: [] },
   }),
 );
 const all = [define, designPlan, aiAddOn, scrumAny, kanbanAny];

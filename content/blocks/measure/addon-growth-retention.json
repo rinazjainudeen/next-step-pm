@@ -1,0 +1,87 @@
+{
+  "id": "addon-growth-retention",
+  "title": "Understand and improve retention",
+  "phase": "measure",
+  "kind": "add-on",
+  "summary": "Retention shows whether people keep getting value. Without it, growth leaks away.",
+  "appliesTo": {
+    "pmTypes": [
+      "growth"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick the action that shows someone got value.",
+      "Measure how many new users come back and do it again after a day, a week and a month.",
+      "Compare groups who stay with groups who leave.",
+      "Talk to people who left to learn why.",
+      "Test changes that help people reach value sooner."
+    ],
+    "intermediate": [
+      "Build retention curves by cohort.",
+      "Find behaviours linked to staying.",
+      "Test improvements to early experience."
+    ],
+    "experienced": [
+      "Separate new, current and returning users.",
+      "Link retention to lifetime value.",
+      "Set retention goals by segment."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "data-scientist"
+        ],
+        "task": "Build retention analysis",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Interview people who left",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Use a retention analysis chart by sign-up cohort.",
+    "mixpanel": "Use retention reports to compare cohorts."
+  },
+  "definitionOfDone": [
+    "Value action defined",
+    "Retention curves built",
+    "Improvement experiments planned"
+  ],
+  "pitfalls": [
+    "Measuring logins instead of value",
+    "Looking only at averages",
+    "Focusing on acquisition while users leave"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "measure-dashboard"
+  ],
+  "comesAfter": ["measure-results-hypothesis"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Build a retention analysis (Amplitude docs)",
+      "url": "https://amplitude.com/docs/analytics/charts/retention-analysis/retention-analysis-build"
+    },
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

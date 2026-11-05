@@ -1,0 +1,83 @@
+{
+  "id": "addon-growth-funnel",
+  "title": "Map and analyse the growth funnel",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "Map how people discover, try, adopt, pay for and recommend your product, and find where most are lost.",
+  "appliesTo": {
+    "pmTypes": [
+      "growth"
+    ],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the stages: discover, sign up, first value, regular use, pay, recommend.",
+      "Measure how many people reach each stage.",
+      "Find the biggest drop-off.",
+      "Split by channel and user type.",
+      "Pick the stage where improvement would matter most."
+    ],
+    "intermediate": [
+      "Map and measure the full funnel.",
+      "Segment by channel and cohort.",
+      "Prioritise the highest-leverage stage."
+    ],
+    "experienced": [
+      "Model growth loops, not just the funnel.",
+      "Link funnel stages to unit economics.",
+      "Set growth goals by stage."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "data-scientist"
+        ],
+        "task": "Build the funnel analysis",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "data-analyst"
+    ]
+  },
+  "toolExamples": {
+    "amplitude": "Build a funnel from sign-up to first value and break it down by channel.",
+    "mixpanel": "Use funnels and cohorts to find drop-offs.",
+    "ga4": "Use a funnel exploration for acquisition stages."
+  },
+  "definitionOfDone": [
+    "Funnel mapped and measured",
+    "Biggest drop-off found",
+    "Priority stage chosen"
+  ],
+  "pitfalls": [
+    "Focusing only on acquisition",
+    "Ignoring cohorts",
+    "Vanity metrics"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "discover-data-signals"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Funnel analysis: find drop-offs (Amplitude)",
+      "url": "https://amplitude.com/guides/funnel-analysis"
+    },
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

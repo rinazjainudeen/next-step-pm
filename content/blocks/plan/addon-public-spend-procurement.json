@@ -1,0 +1,84 @@
+{
+  "id": "addon-public-spend-procurement",
+  "title": "Work within spend controls and procurement",
+  "phase": "plan",
+  "kind": "add-on",
+  "summary": "Public bodies often need approval to spend money on technology and must buy through set routes. Plan for this early.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "public"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Find out which spend approvals apply and their thresholds.",
+      "Find out how your organisation buys technology and services.",
+      "Build approval and procurement time into the plan.",
+      "Prepare the information approvers will need.",
+      "Ask colleagues who have done it before."
+    ],
+    "intermediate": [
+      "Identify approvals and routes.",
+      "Plan timelines.",
+      "Prepare evidence."
+    ],
+    "experienced": [
+      "Engage approvers early as partners.",
+      "Choose routes that keep flexibility.",
+      "Share lessons across teams."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Manage approvals and procurement",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Advise on procurement rules",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "sharepoint-word": "Use your organisation's approval templates.",
+    "confluence": "Track approvals and dates."
+  },
+  "definitionOfDone": [
+    "Approvals and routes identified",
+    "Timelines in plan",
+    "Evidence prepared"
+  ],
+  "pitfalls": [
+    "Discovering approvals late",
+    "Locking into long contracts too early",
+    "Ignoring procurement time"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "plan-delivery-plan"
+  ],
+  "comesAfter": ["plan-delivery-plan"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "Service toolkit: spend controls and buying technology (GOV.UK)",
+      "url": "https://www.gov.uk/service-toolkit"
+    },
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

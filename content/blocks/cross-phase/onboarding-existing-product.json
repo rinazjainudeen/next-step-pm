@@ -8,7 +8,8 @@
     "pmTypes": [],
     "productTypes": [],
     "stages": ["mid-build", "live"],
-    "waysOfWorking": []
+    "waysOfWorking": [],
+    "experience": []
   },
   "steps": {
     "beginner": [

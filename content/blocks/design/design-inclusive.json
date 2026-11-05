@@ -1,0 +1,101 @@
+{
+  "id": "design-inclusive",
+  "title": "Design for accessibility and inclusion from the start",
+  "phase": "design",
+  "kind": "core",
+  "summary": "Designing for people with disabilities and different circumstances from the start is cheaper than fixing it later, and it usually makes the product better for everyone. In many countries it is also a legal duty.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Find out which accessibility standard applies to you. Most organisations aim for WCAG 2.2 level AA.",
+      "Think about who might be excluded: people with visual, hearing, motor or cognitive impairments, and people with temporary limits, low confidence, poor connections or older devices.",
+      "Check the designs for colour contrast, text size, clear labels, keyboard use and plain language.",
+      "Make sure nothing relies on colour alone, sound alone or precise mouse movements.",
+      "Include disabled people in your usability testing.",
+      "Write accessibility requirements into the user stories so they are built and tested."
+    ],
+    "intermediate": [
+      "Agree the accessibility standard and build its checks into design reviews.",
+      "Identify excluded groups and design for the hardest cases first.",
+      "Test with disabled users and assistive technologies.",
+      "Add accessibility acceptance criteria to stories."
+    ],
+    "experienced": [
+      "Make inclusion a product principle with an owner, not a final check.",
+      "Use a design system with accessible components to make the right thing the easy thing.",
+      "Track accessibility issues as product quality debt and report on them.",
+      "Plan for legal duties in each market you serve."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Check the designs against the accessibility standard",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "content-designer",
+        "task": "Check language, labels and error messages are plain and clear",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "frontend-engineer",
+        "orRoles": [
+          "fullstack-engineer"
+        ],
+        "task": "Confirm designs can be built accessibly and flag issues",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Recruit disabled participants for testing",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "qa",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "figma": "Use a contrast checker plugin and annotate focus order and screen reader labels on the designs.",
+    "miro": "Build persona spectrums showing permanent, temporary and situational versions of each limitation.",
+    "jira": "Add accessibility criteria to the definition of done so every story includes them.",
+    "claude": "Paste your page copy and ask it to rewrite it in plain English at a reading age of about nine, then review the result."
+  },
+  "definitionOfDone": [
+    "Accessibility standard agreed",
+    "Designs checked for contrast, labels, keyboard use and plain language",
+    "Disabled users included in testing",
+    "Accessibility criteria added to user stories"
+  ],
+  "pitfalls": [
+    "Leaving accessibility to testing at the end",
+    "Treating automated checks as enough",
+    "Only thinking about permanent disabilities"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [
+    "design-explore-solutions"
+  ],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "Inclusive design toolkit (Microsoft Design)",
+      "url": "https://inclusive.microsoft.design/"
+    },
+    {
+      "title": "WCAG 2 overview (W3C Web Accessibility Initiative)",
+      "url": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

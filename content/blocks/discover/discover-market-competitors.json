@@ -1,0 +1,92 @@
+{
+  "id": "discover-market-competitors",
+  "title": "Analyse the market and competitors",
+  "phase": "discover",
+  "kind": "core",
+  "summary": "Find out how others solve the same problem, including tools, workarounds and doing nothing. This shows you what users expect, where the gaps are and how you could do better.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the alternatives a user has today: direct competitors, indirect ones, internal tools, spreadsheets, paper and simply not doing the task.",
+      "Pick two to four of the most relevant to look at closely.",
+      "For each, try the main journey yourself and note what works, what is confusing and what it costs the user in time or money.",
+      "Read reviews, forums and analyst write-ups to see what their users praise and complain about.",
+      "Put your findings in a simple comparison table: who it is for, key features, strengths, weaknesses and price if relevant.",
+      "Write three takeaways: what users will expect as standard, where there is a gap, and what you should not copy."
+    ],
+    "intermediate": [
+      "Map direct, indirect and 'do nothing' alternatives, then pick two to four to study closely.",
+      "Run a competitive review of the key journey and gather review and forum evidence.",
+      "Summarise table stakes, gaps and differentiators.",
+      "Note market trends that could change the picture in the next year."
+    ],
+    "experienced": [
+      "Analyse the market structure: segments, buyers, switching costs, pricing models and where value is captured.",
+      "Run competitive usability testing with real users where the stakes justify it.",
+      "Identify the job users hire alternatives for and where incumbents are structurally weak.",
+      "Turn findings into a point of view on where to compete and where not to."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ux-designer",
+        "task": "Review competitors' journeys and capture screenshots and notes",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Run competitive usability sessions with users",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "ba",
+        "task": "Compile the comparison table and pricing information",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "tech-lead",
+      "ux-designer"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Make a board with one column per competitor, pasting screenshots of each step of the journey side by side.",
+    "notion": "Keep a competitor database with a page per competitor and a view that compares features.",
+    "google-docs": "Write the three takeaways at the top of the document, with the detailed table below.",
+    "claude": "Ask it to draft a comparison table structure and a list of alternatives you may have missed. Check every fact against the competitor's own site."
+  },
+  "definitionOfDone": [
+    "Alternatives mapped, including 'do nothing'",
+    "Two to four alternatives reviewed in depth",
+    "Comparison table and three takeaways shared with the team"
+  ],
+  "pitfalls": [
+    "Only looking at direct competitors and missing workarounds",
+    "Copying features without knowing whether they work for users",
+    "Relying on AI or memory for competitor facts without checking them"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Competitive usability evaluations (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/competitive-usability-evaluations/"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

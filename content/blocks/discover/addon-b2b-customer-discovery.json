@@ -1,0 +1,84 @@
+{
+  "id": "addon-b2b-customer-discovery",
+  "title": "Involve customers and sales in discovery",
+  "phase": "discover",
+  "kind": "add-on",
+  "summary": "Business products have buyers, users and sales teams with different views. Involve them in discovery without letting the loudest customer set the roadmap.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [
+      "b2b"
+    ],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Talk to sales and customer success about what they hear.",
+      "Interview users and buyers at several customers, not just one.",
+      "Separate what customers ask for from the problem behind it.",
+      "Check how many customers share each problem.",
+      "Share what you learned with sales."
+    ],
+    "intermediate": [
+      "Research across several customers and roles.",
+      "Separate requests from needs.",
+      "Size problems across the customer base."
+    ],
+    "experienced": [
+      "Run a customer advisory group.",
+      "Balance key accounts with the wider market.",
+      "Use win and loss analysis to shape strategy."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Interview users and buyers",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ba",
+        "task": "Analyse requests and themes",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "user-researcher"
+    ]
+  },
+  "toolExamples": {
+    "notion": "Keep a customer request database linked to problems.",
+    "miro": "Map needs by customer and role."
+  },
+  "definitionOfDone": [
+    "Several customers and roles interviewed",
+    "Requests linked to problems",
+    "Problems sized"
+  ],
+  "pitfalls": [
+    "Building for one big customer",
+    "Only talking to buyers",
+    "Treating sales requests as requirements"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [
+    "discover-frame-opportunity"
+  ],
+  "comesAfter": ["discover-user-research"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Opportunity solution tree (Product Talk)",
+      "url": "https://www.producttalk.org/opportunity-solution-tree/"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -108,6 +108,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
 
       <p className="mt-8 text-sm font-bold uppercase tracking-[0.18em] text-accent">
         {phaseLabel(block.phase)} · {labelOf(KINDS, block.kind)}
+        {block.optional && " · Go further"}
       </p>
       <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{block.title}</h1>
       <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{block.summary}</p>
@@ -127,6 +128,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
           <Chips label="Product types" values={block.appliesTo.productTypes.map((v) => labelOf(PRODUCT_TYPES, v))} />
           <Chips label="Starting points" values={block.appliesTo.stages.map((v) => labelOf(STAGES, v))} />
           <Chips label="Ways of working" values={block.appliesTo.waysOfWorking.map((v) => labelOf(WAYS_OF_WORKING, v))} />
+          <Chips label="Experience" values={block.appliesTo.experience.map((v) => labelOf(EXPERIENCE_LEVELS, v))} />
         </dl>
       </Section>
 

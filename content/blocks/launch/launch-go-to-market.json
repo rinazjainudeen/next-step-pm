@@ -1,0 +1,93 @@
+{
+  "id": "launch-go-to-market",
+  "title": "Plan the launch and go-to-market",
+  "phase": "launch",
+  "kind": "core",
+  "summary": "A good product can still fail if the right people do not hear about it or understand it. Plan who you are launching to, what you will tell them and how they will find out.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down who the launch is for and what you want them to do.",
+      "Write the main message in one or two sentences: the problem it solves and why it is better.",
+      "Choose the channels that reach those people, such as email, in-product messages, sales teams, partners or internal communications.",
+      "Prepare the materials: help pages, announcements, screenshots and answers to common questions.",
+      "Brief everyone who talks to users, including support and sales.",
+      "Agree launch day steps and the measures you will watch in the first weeks."
+    ],
+    "intermediate": [
+      "Define the target audience, positioning and main message.",
+      "Plan channels, materials and timing.",
+      "Brief support, sales and operations teams.",
+      "Set launch success measures and a review date."
+    ],
+    "experienced": [
+      "Decide the launch tier: a quiet release, a feature launch or a major launch, and size the effort to match.",
+      "Align with marketing and sales on positioning, pricing and enablement.",
+      "Sequence the launch by audience and region to manage risk.",
+      "Measure adoption against the launch goal and adjust quickly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Write the announcement, help pages and in-product messages",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "delivery-manager",
+        "task": "Coordinate the launch checklist across teams",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "ux-designer",
+        "task": "Design launch screens and onboarding moments",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "content-designer",
+      "policy-legal"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep a launch page with audience, message, channels, dates and owners.",
+    "notion": "Use a launch checklist template with owners and due dates.",
+    "google-docs": "Draft the announcement and FAQ together and share for comments.",
+    "claude": "Give it your product brief and ask for three versions of the launch message for different audiences, then edit them."
+  },
+  "definitionOfDone": [
+    "Audience and message agreed",
+    "Channels and materials ready",
+    "User-facing teams briefed",
+    "Launch success measures set"
+  ],
+  "pitfalls": [
+    "Assuming users will find the feature on their own",
+    "Briefing support after launch",
+    "One message for every audience"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "plan-share-roadmap"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Positioning resources (April Dunford)",
+      "url": "https://www.aprildunford.com/"
+    },
+    {
+      "title": "Working backwards PR/FAQ (Working Backwards)",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

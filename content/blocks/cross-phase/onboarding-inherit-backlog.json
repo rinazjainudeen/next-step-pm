@@ -1,0 +1,80 @@
+{
+  "id": "onboarding-inherit-backlog",
+  "title": "Take over a backlog and roadmap",
+  "phase": "any",
+  "kind": "onboarding",
+  "summary": "An inherited backlog contains past decisions, promises and clutter. Understand it before changing it.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "mid-build",
+      "live"
+    ],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Ask the previous owner or team to walk you through the roadmap and backlog.",
+      "Find out what has been promised to whom.",
+      "Mark items that are old, unclear or duplicated.",
+      "Check the top items still fit the goals.",
+      "Agree any changes with the team and stakeholders."
+    ],
+    "intermediate": [
+      "Review the backlog and commitments.",
+      "Clean up stale items.",
+      "Re-prioritise against goals."
+    ],
+    "experienced": [
+      "Reset the roadmap around outcomes.",
+      "Handle commitments openly.",
+      "Use the reset to build trust."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "product-owner",
+        "orRoles": [
+          "delivery-manager"
+        ],
+        "task": "Walk you through the backlog",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "delivery-manager"
+    ]
+  },
+  "toolExamples": {
+    "jira": "Filter for items not updated in six months to find clutter.",
+    "linear": "Use views to find stale issues."
+  },
+  "definitionOfDone": [
+    "Backlog and commitments understood",
+    "Stale items cleaned up",
+    "Priorities agreed"
+  ],
+  "pitfalls": [
+    "Deleting everything",
+    "Breaking promises without explanation",
+    "Keeping everything"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Epics, stories and initiatives (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/epics-stories-themes"
+    },
+    {
+      "title": "Building better roadmaps with Janna Bastow (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/building-better-roadmaps-janna-bastow"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

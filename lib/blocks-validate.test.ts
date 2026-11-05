@@ -68,21 +68,36 @@ test("a list of phases needs at least two, with no repeats", () => {
   assert.ok(mentions(errorsFor({ phase: ["design", "design"] }), "listed twice"));
 });
 
-test("every kind is accepted, including ways-of-working", () => {
+test("every kind is accepted, including ways-of-working and craft", () => {
   for (const kind of ["core", "add-on", "onboarding", "ways-of-working"]) {
     assert.deepEqual(errorsFor({ kind }), [], kind);
   }
+  assert.deepEqual(errorsFor({ kind: "craft", phase: "any" }), []);
   assert.ok(mentions(errorsFor({ kind: "extra" }), "kind:"));
 });
 
-test("appliesTo needs all four lists, including waysOfWorking", () => {
-  const without = { pmTypes: [], productTypes: [], stages: [] };
-  assert.ok(mentions(errorsFor({ appliesTo: without }), "appliesTo.waysOfWorking: is missing"));
+test("a craft block sits outside the timeline, so its phase must be any", () => {
+  assert.ok(mentions(errorsFor({ kind: "craft", phase: "define" }), "a craft block must use"));
+});
+
+test("only timeline blocks can be Go further, and the flag must be true", () => {
+  assert.deepEqual(errorsFor({ optional: true }), []);
+  assert.deepEqual(errorsFor({ optional: true, kind: "add-on" }), []);
+  assert.ok(mentions(errorsFor({ optional: true, kind: "onboarding" }), "only core and add-on"));
+  assert.ok(mentions(errorsFor({ optional: true, kind: "craft", phase: "any" }), "only core and add-on"));
+  assert.ok(mentions(errorsFor({ optional: false }), "optional:"));
+});
+
+test("appliesTo needs all five lists, including experience", () => {
+  const without = { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [] };
+  assert.ok(mentions(errorsFor({ appliesTo: without }), "appliesTo.experience: is missing"));
   assert.ok(mentions(errorsFor({ appliesTo: undefined }), "appliesTo: is missing"));
 });
 
 test("appliesTo values must come from the taxonomy", () => {
-  const base = { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [] };
+  const base = { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: [] };
+  assert.ok(mentions(errorsFor({ appliesTo: { ...base, experience: ["guru"] } }), "appliesTo.experience"));
+  assert.deepEqual(errorsFor({ appliesTo: { ...base, experience: ["beginner", "experienced"] } }), []);
   assert.ok(mentions(errorsFor({ appliesTo: { ...base, pmTypes: ["wizard"] } }), "appliesTo.pmTypes"));
   assert.ok(mentions(errorsFor({ appliesTo: { ...base, stages: ["later"] } }), "appliesTo.stages"));
   assert.ok(mentions(errorsFor({ appliesTo: { ...base, waysOfWorking: ["waterfall"] } }), "appliesTo.waysOfWorking"));
@@ -225,6 +240,52 @@ test("a dependency on a later phase is reported", () => {
   const early = makeBlock({ id: "define-early", phase: "define", dependsOn: ["build-late"] });
   const late = makeBlock({ id: "build-late", phase: "build" });
   assert.ok(mentions(validateBlockSet(files(early, late)), "later phase"));
+});
+
+test("comesAfter must be a list of block ids", () => {
+  assert.deepEqual(errorsFor({ comesAfter: ["define-other"] }), []);
+  assert.ok(mentions(errorsFor({ comesAfter: [] }), "comesAfter:"));
+  assert.ok(mentions(errorsFor({ comesAfter: "define-other" }), "comesAfter:"));
+  assert.ok(mentions(errorsFor({ comesAfter: ["Not An Id"] }), "isn't a block id"));
+  assert.ok(mentions(errorsFor({ comesAfter: ["define-a", "define-a"] }), "listed twice"));
+});
+
+test("comesAfter must point at a real block in a shared phase", () => {
+  const define = makeBlock({ id: "define-a", comesAfter: ["define-b"] });
+  const sameLater = makeBlock({ id: "define-b" });
+  assert.deepEqual(validateBlockSet(files(define, sameLater)), []);
+  assert.ok(mentions(validateBlockSet(files(makeBlock({ id: "define-a", comesAfter: ["define-gone"] }))), "no block has that id"));
+  assert.ok(mentions(validateBlockSet(files(makeBlock({ id: "define-a", comesAfter: ["define-a"] }))), "come after itself"));
+  const other = makeBlock({ id: "build-b", phase: "build" });
+  assert.ok(mentions(validateBlockSet(files(makeBlock({ id: "define-a", comesAfter: ["build-b"] }), other)), "shares no phase"));
+});
+
+test("a loop through comesAfter is reported", () => {
+  const a = makeBlock({ id: "define-a", comesAfter: ["define-b"] });
+  const b = makeBlock({ id: "define-b", dependsOn: ["define-a"] });
+  assert.ok(mentions(validateBlockSet(files(a, b)), "Circular dependency"));
+});
+
+test("required work can't depend on a Go further block", () => {
+  const extra = makeBlock({ id: "define-extra", optional: true });
+  const required = makeBlock({ id: "define-required", dependsOn: ["define-extra"] });
+  assert.ok(mentions(validateBlockSet(files(extra, required)), "Go further"));
+  const alsoExtra = makeBlock({ id: "define-also-extra", optional: true, dependsOn: ["define-extra"] });
+  assert.deepEqual(validateBlockSet(files(extra, alsoExtra)), []);
+});
+
+test("a block can't depend on work some of its experience levels never see", () => {
+  const limits = (experience: Block["appliesTo"]["experience"]) => ({ appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience } });
+  const senior = makeBlock({ id: "define-senior", ...limits(["experienced"]) });
+  const forAll = makeBlock({ id: "define-all", dependsOn: ["define-senior"] });
+  assert.ok(mentions(validateBlockSet(files(senior, forAll)), "experience levels"));
+  const midUp = makeBlock({ id: "define-mid-up", dependsOn: ["define-senior"], ...limits(["intermediate", "experienced"]) });
+  assert.ok(mentions(validateBlockSet(files(senior, midUp)), "experience levels"));
+  const sameLevel = makeBlock({ id: "define-same", dependsOn: ["define-senior"], ...limits(["experienced"]) });
+  assert.deepEqual(validateBlockSet(files(senior, sameLevel)), []);
+  const reachesAll = makeBlock({ id: "define-open" });
+  const limited = makeBlock({ id: "define-limited", dependsOn: ["define-open"], ...limits(["beginner"]) });
+  assert.deepEqual(validateBlockSet(files(reachesAll, limited)), []);
 });
 
 test("a block for any phase can depend on, and be depended on by, any other", () => {
