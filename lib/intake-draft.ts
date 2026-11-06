@@ -1,4 +1,4 @@
-import { finishOptions, phasesForStage } from "./intake-phases";
+import { finishOptions, phasesForStage, stageFits } from "./intake-phases";
 import { TEAM_ROLE_IDS, TOOL_ANSWER_IDS } from "./intake-questions";
 import { PM_TYPE_IDS, type PhaseId } from "../content/taxonomy";
 import {
@@ -18,12 +18,15 @@ import {
  */
 
 /**
- * Keeps the two phase follow-ups consistent with the answers they depend on.
- * Every change and every web address goes through this one rule. A start phase
- * must belong to the stage, and a finish must be reachable from that start.
+ * Keeps the starting point and the two phase follow-ups consistent with the
+ * answers they depend on. Every change and every web address goes through this
+ * one rule. A starting point must belong to the track, a start phase to the
+ * stage, and a finish must be reachable from that start.
  */
 export function tidyDraft(draft: IntakeDraft): IntakeDraft {
-  const tidied = { ...draft, phase: keepIfOffered(draft.phase, phasesForStage(draft.stage)) };
+  // Each track has its own starting points, so changing track clears the old one.
+  const stage = draft.stage !== null && draft.stage !== NOT_SURE && !stageFits(draft.stage, draft.work) ? null : draft.stage;
+  const tidied = { ...draft, stage, phase: keepIfOffered(draft.phase, phasesForStage(stage)) };
   return { ...tidied, until: keepIfOffered(draft.until, finishOptions(tidied)) };
 }
 

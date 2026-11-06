@@ -69,6 +69,7 @@
   ],
   "estimatedEffort": "1-3 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "strategy-plan", "after": ["strat-choose-bets"], "forEveryone": true}],
   "freshness": "evergreen",
   "sources": [
     {

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import type { PHASES, PhaseId } from "@/content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "@/lib/intake-draft";
 import { finishOptions, phasesForStage } from "@/lib/intake-phases";
-import { INTAKE_QUESTIONS, TOTAL_STEPS, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
+import { INTAKE_QUESTIONS, TOTAL_STEPS, questionFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
 import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
 import { firstUnansweredStep, followUpError, questionError } from "@/lib/intake-validate";
@@ -42,7 +42,7 @@ export function IntakeWizard() {
   const draft = parseDraft(searchParams);
   const step = parseStep(searchParams);
   const editing = parseEditing(searchParams);
-  const question = INTAKE_QUESTIONS[step - 1];
+  const question = questionFor(INTAKE_QUESTIONS[step - 1], draft);
   // The hero is only for arriving. After that, the question comes straight away.
   const compact = step > 1 || editing;
 

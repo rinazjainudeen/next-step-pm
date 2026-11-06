@@ -1,0 +1,70 @@
+{
+  "id": "cap-listen",
+  "title": "Interview PMs, leaders and partner teams",
+  "phase": "assess",
+  "kind": "core",
+  "summary": "Before changing anything, find out how product work really happens. Talk to PMs, their managers and the teams they work with.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write a short interview guide with open questions.",
+      "Interview a mix of PMs, leaders, designers and engineers.",
+      "Ask about recent real examples, not general opinions.",
+      "Take notes and look for common themes.",
+      "Share the themes without naming people."
+    ],
+    "intermediate": [
+      "Include partner teams such as sales, support and finance.",
+      "Probe for the causes behind common complaints.",
+      "Test early themes with a second round of conversations."
+    ],
+    "experienced": [
+      "Interview senior leaders about their expectations of product.",
+      "Spot differences between what leaders say and what teams experience.",
+      "Use the themes to build support for change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "user-researcher",
+        "task": "Help design the guide and analyse themes",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Group interview notes into themes.",
+    "google-docs": "Keep the interview guide and notes together."
+  },
+  "definitionOfDone": [
+    "At least eight people interviewed across roles",
+    "Themes written up",
+    "Themes shared anonymously"
+  ],
+  "pitfalls": [
+    "Only talking to PMs",
+    "Asking leading questions",
+    "Naming people in the findings"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [
+    "cap-mandate"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Stakeholder interviews 101 (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/stakeholder-interviews/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

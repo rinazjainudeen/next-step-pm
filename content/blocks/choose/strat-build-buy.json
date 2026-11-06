@@ -1,0 +1,84 @@
+{
+  "id": "strat-build-buy",
+  "title": "Decide whether to build, buy or partner",
+  "phase": "choose",
+  "kind": "core",
+  "summary": "Build what makes you different, and buy or partner for the rest. Make the choice on purpose for each major capability, including AI.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the capabilities your bets need.",
+      "Mark which ones make you different from competitors.",
+      "For the others, find out what you could buy or use from a partner.",
+      "Compare total cost over several years, not just the first year.",
+      "Write down the choice and the reason for each capability."
+    ],
+    "intermediate": [
+      "Include running, support and switching costs in the comparison.",
+      "Check data, security and lock-in risks for bought or partner options.",
+      "For AI, compare using an existing model, adapting one and building your own."
+    ],
+    "experienced": [
+      "Set build, buy and partner principles across the portfolio.",
+      "Review past choices as markets change: today's differentiator can become a commodity.",
+      "Negotiate partnerships that keep your options open."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "architect",
+        "orRoles": [
+          "tech-lead"
+        ],
+        "task": "Assess technical fit and integration effort",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Review contracts, data and lock-in risks",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "architect"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Compare options on cost, time, risk and fit in one table.",
+    "confluence": "Record each decision and its reason."
+  },
+  "definitionOfDone": [
+    "Each major capability has a build, buy or partner decision",
+    "Multi-year costs compared",
+    "Risks recorded"
+  ],
+  "pitfalls": [
+    "Building commodity functions",
+    "Buying a package and then customising it heavily",
+    "Comparing first-year cost only"
+  ],
+  "estimatedEffort": "3-8 days",
+  "dependsOn": [
+    "strat-choose-bets"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Utility vs strategic dichotomy (Martin Fowler)",
+      "url": "https://martinfowler.com/bliki/UtilityVsStrategicDichotomy.html"
+    },
+    {
+      "title": "What is Wardley Mapping? (Learn Wardley Mapping)",
+      "url": "https://learnwardleymapping.com/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,78 @@
+{
+  "id": "cap-self-sustaining",
+  "title": "Make the practice run without you",
+  "phase": "sustain",
+  "kind": "core",
+  "summary": "Capability work succeeds when it no longer depends on one person. Hand over ownership, build it into routines and step back.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List everything you do to keep the practice going.",
+      "Find an owner for each item.",
+      "Build key practices into normal routines, such as planning and reviews.",
+      "Hand over gradually and support the new owners.",
+      "Check after a few months that things still run."
+    ],
+    "intermediate": [
+      "Make community leaders and coaches self-sufficient.",
+      "Secure ongoing time and budget.",
+      "Write down how the practice is run."
+    ],
+    "experienced": [
+      "Embed product practice into how the organisation is managed.",
+      "Grow the next generation of practice leaders.",
+      "Plan your own exit from the work."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "senior-leader",
+        "task": "Secure ongoing time and budget",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Document how the practice runs and who owns each part.",
+    "notion": "Keep a handover checklist."
+  },
+  "definitionOfDone": [
+    "Owner for each part of the practice",
+    "Practices built into routines",
+    "Practice running without you"
+  ],
+  "pitfalls": [
+    "Staying the single point of failure",
+    "Handing over without support",
+    "No ongoing budget"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "cap-measure"
+  ],
+  "comesAfter": ["cap-hiring-onboarding"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The 8 steps for leading change (Kotter)",
+      "url": "https://www.kotterinc.com/8-step-process-for-leading-change/"
+    },
+    {
+      "title": "Introduction to communities of practice (Wenger-Trayner)",
+      "url": "https://www.wenger-trayner.com/introduction-to-communities-of-practice/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

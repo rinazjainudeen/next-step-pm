@@ -1,0 +1,87 @@
+{
+  "id": "cap-operating-model",
+  "title": "Design the target way of working for product",
+  "phase": "coaching-design",
+  "kind": "core",
+  "summary": "Describe how product teams should be set up and work together: who owns what, how decisions are made and how teams relate to each other.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Describe how product teams are set up today.",
+      "List the problems this causes, from your interviews.",
+      "Sketch a target setup that fixes the biggest problems.",
+      "Check it with a few leaders and PMs.",
+      "Write it up in plain language."
+    ],
+    "intermediate": [
+      "Decide whether teams are given problems to solve or features to build.",
+      "Define team types and how they work with each other.",
+      "Plan the move from today's setup in steps."
+    ],
+    "experienced": [
+      "Design the operating model across product, engineering and design.",
+      "Align funding and planning with the new team setup.",
+      "Agree the leadership roles the model needs."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "senior-leader",
+        "task": "Agree the target model and its funding",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Advise on team boundaries and architecture",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Draw today's and the target team setup side by side.",
+    "confluence": "Publish the target model with the reasons."
+  },
+  "definitionOfDone": [
+    "Current and target setups described",
+    "Target agreed by the sponsor",
+    "Steps to get there planned"
+  ],
+  "pitfalls": [
+    "Copying another company's model whole",
+    "Changing structure without changing how decisions are made",
+    "Redesigning everything at once"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "cap-maturity"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Key concepts (Team Topologies)",
+      "url": "https://teamtopologies.com/key-concepts"
+    },
+    {
+      "title": "Product vs feature teams (SVPG)",
+      "url": "https://www.svpg.com/product-vs-feature-teams/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

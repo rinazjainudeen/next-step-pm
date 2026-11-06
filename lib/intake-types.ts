@@ -33,8 +33,8 @@ export const MAX_TEAM_COUNT = 20;
 /** How many PM types a visitor can pick. */
 export const MAX_PM_TYPES = 2;
 
-/** Off until the strategy and coaching tracks exist. Switched on when Phase 7b is merged. */
-export const KIND_OF_WORK_ENABLED = false;
+/** Asks for the kind of work first. Turn off to take the strategy and coaching tracks away. */
+export const KIND_OF_WORK_ENABLED = true;
 
 /** The team question lists everyone except the visitor. */
 export type TeamRoleId = Exclude<RoleId, "pm">;
@@ -45,7 +45,7 @@ export type QuestionId = SingleQuestionId | MultiQuestionId;
 
 /** A finished set of answers: every question has one. */
 export type IntakeAnswers = {
-  /** The kind of product work. Null while the question is switched off. */
+  /** The kind of product work, which sets the track. Null while the question is switched off. */
   work: Answer<WorkKindId> | null;
   /** One or two PM types, or "Not sure". */
   pm: Answer<PmTypeId>[];

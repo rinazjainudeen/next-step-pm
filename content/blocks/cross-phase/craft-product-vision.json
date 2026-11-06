@@ -71,6 +71,7 @@
   ],
   "estimatedEffort": "2-5 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "choose", "after": ["strat-diagnose-challenge"], "forEveryone": true}],
   "freshness": "evergreen",
   "sources": [
     {

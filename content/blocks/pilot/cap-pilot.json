@@ -1,0 +1,79 @@
+{
+  "id": "cap-pilot",
+  "title": "Pilot the new way of working with one or two teams",
+  "phase": "pilot",
+  "kind": "core",
+  "summary": "Try the change with one or two willing teams first. Learn what works, fix what doesn't and build proof before scaling.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Choose one or two teams that want to try the change.",
+      "Agree what they will try and for how long.",
+      "Support them closely during the pilot.",
+      "Collect evidence of what changed.",
+      "Share the results, including problems."
+    ],
+    "intermediate": [
+      "Set clear measures of success before the pilot starts.",
+      "Remove blockers for the pilot teams quickly.",
+      "Adjust the approach based on what you learn."
+    ],
+    "experienced": [
+      "Choose pilots that will convince sceptical leaders.",
+      "Use early wins to build support for scaling.",
+      "Plan the move from pilot to wider rollout."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Support the pilot teams day to day",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Keep a pilot log of what was tried and learned.",
+    "miro": "Run pilot retrospectives on a shared board."
+  },
+  "definitionOfDone": [
+    "Pilot teams chosen",
+    "Measures set",
+    "Results shared"
+  ],
+  "pitfalls": [
+    "Piloting with unwilling teams",
+    "No measures",
+    "Hiding problems"
+  ],
+  "estimatedEffort": "20-60 days",
+  "dependsOn": [
+    "cap-standards"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The 8 steps for leading change (Kotter)",
+      "url": "https://www.kotterinc.com/8-step-process-for-leading-change/"
+    },
+    {
+      "title": "The Prosci ADKAR model (Prosci)",
+      "url": "https://www.prosci.com/methodology/adkar"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

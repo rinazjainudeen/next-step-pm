@@ -1,0 +1,74 @@
+{
+  "id": "cap-mandate",
+  "title": "Agree the mandate, sponsor and goals",
+  "phase": "assess",
+  "kind": "core",
+  "summary": "Building product capability changes how people work, so it needs a clear mandate and a senior sponsor. Agree what success looks like before you start.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down why the organisation wants to improve product practice.",
+      "Name a senior sponsor who will back the work.",
+      "Agree two or three goals, such as faster decisions or better outcomes.",
+      "Agree the scope: which teams and roles.",
+      "Share the mandate on one page."
+    ],
+    "intermediate": [
+      "Link the goals to business outcomes, not just training numbers.",
+      "Agree how much time people can give to the change.",
+      "Agree how progress will be reported."
+    ],
+    "experienced": [
+      "Align the mandate with company strategy and leadership priorities.",
+      "Secure budget and people for the work.",
+      "Set expectations that change takes time."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Advise on people and HR implications",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Publish the mandate as the first page of the programme.",
+    "notion": "Keep the mandate and goals in one place."
+  },
+  "definitionOfDone": [
+    "Sponsor named",
+    "Goals agreed",
+    "Scope agreed"
+  ],
+  "pitfalls": [
+    "No sponsor",
+    "Goals measured only by attendance",
+    "Scope that is too big to start"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Prosci ADKAR model (Prosci)",
+      "url": "https://www.prosci.com/methodology/adkar"
+    },
+    {
+      "title": "The 8 steps for leading change (Kotter)",
+      "url": "https://www.kotterinc.com/8-step-process-for-leading-change/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -26,17 +26,31 @@ export function isOneOf<T extends string>(allowed: readonly T[], value: unknown)
 // ---------------------------------------------------------------------------
 
 export const PHASES = [
-  { id: "discover", label: "Discover", description: "Understanding your users and the problem.", order: 1, lead: "PM, User Researcher", readyWhen: "The problem, the users and the evidence are clear, and the opportunity is sized." },
-  { id: "define", label: "Define", description: "Agreeing the problem, the goal and how you'll measure success.", order: 2, lead: "PM, BA", readyWhen: "The problem statement, hypothesis, measures of success and constraints are agreed." },
-  { id: "design", label: "Design", description: "Shaping a solution and testing it with users.", order: 3, lead: "UX / Content Designer, PM", readyWhen: "A solution has been tested with users and judged feasible by engineering." },
-  { id: "plan", label: "Plan and prioritise", description: "Setting the scope, estimates and roadmap.", order: 4, lead: "PM, Delivery Manager", readyWhen: "Scope is set, estimates exist, the work is on the roadmap and epics are created." },
-  { id: "build", label: "Build", description: "Engineers build the product in small pieces.", order: 5, lead: "Tech Lead, Engineers", readyWhen: "Stories meet acceptance criteria, code is reviewed and tests pass." },
-  { id: "test", label: "Test", description: "Checking it works and is accessible and secure.", order: 6, lead: "QA, PM", readyWhen: "Acceptance criteria, accessibility, security and performance are checked." },
-  { id: "launch", label: "Launch", description: "Releasing it to real users.", order: 7, lead: "Delivery Manager, DevOps, PM", readyWhen: "The release plan, monitoring, support and comms are ready." },
-  { id: "measure", label: "Measure and improve", description: "Checking the results and choosing what comes next.", order: 8, lead: "PM, Analyst", readyWhen: "Results are measured against the hypothesis and the next iteration is chosen." },
+  { id: "discover", label: "Discover", description: "Understanding your users and the problem.", order: 1, track: "product", lead: "PM, User Researcher", readyWhen: "The problem, the users and the evidence are clear, and the opportunity is sized." },
+  { id: "define", label: "Define", description: "Agreeing the problem, the goal and how you'll measure success.", order: 2, track: "product", lead: "PM, BA", readyWhen: "The problem statement, hypothesis, measures of success and constraints are agreed." },
+  { id: "design", label: "Design", description: "Shaping a solution and testing it with users.", order: 3, track: "product", lead: "UX / Content Designer, PM", readyWhen: "A solution has been tested with users and judged feasible by engineering." },
+  { id: "plan", label: "Plan and prioritise", description: "Setting the scope, estimates and roadmap.", order: 4, track: "product", lead: "PM, Delivery Manager", readyWhen: "Scope is set, estimates exist, the work is on the roadmap and epics are created." },
+  { id: "build", label: "Build", description: "Engineers build the product in small pieces.", order: 5, track: "product", lead: "Tech Lead, Engineers", readyWhen: "Stories meet acceptance criteria, code is reviewed and tests pass." },
+  { id: "test", label: "Test", description: "Checking it works and is accessible and secure.", order: 6, track: "product", lead: "QA, PM", readyWhen: "Acceptance criteria, accessibility, security and performance are checked." },
+  { id: "launch", label: "Launch", description: "Releasing it to real users.", order: 7, track: "product", lead: "Delivery Manager, DevOps, PM", readyWhen: "The release plan, monitoring, support and comms are ready." },
+  { id: "measure", label: "Measure and improve", description: "Checking the results and choosing what comes next.", order: 8, track: "product", lead: "PM, Analyst", readyWhen: "Results are measured against the hypothesis and the next iteration is chosen." },
+  { id: "understand", label: "Understand", description: "Agreeing the scope and learning the context.", order: 9, track: "strategy", lead: "PM, Senior leader", readyWhen: "The scope, the sponsor and the decision are agreed, and the context is clear." },
+  { id: "diagnose", label: "Diagnose", description: "Finding the core challenge and what you can do about it.", order: 10, track: "strategy", lead: "PM, Senior leader", readyWhen: "The core challenge is named, and your strengths and gaps are clear." },
+  { id: "choose", label: "Choose", description: "Deciding where to play and what you won't do.", order: 11, track: "strategy", lead: "PM, Senior leader", readyWhen: "The vision, strategy and bets are chosen, and so is what you won't do." },
+  { id: "strategy-plan", label: "Plan", description: "Turning the strategy into measures and a roadmap of bets.", order: 12, track: "strategy", lead: "PM", readyWhen: "Measures, goals, the business case and a roadmap of bets exist." },
+  { id: "align", label: "Align", description: "Getting leaders and teams behind the strategy.", order: 13, track: "strategy", lead: "PM, Senior leader", readyWhen: "Leaders have committed, and teams know what the strategy means for them." },
+  { id: "review", label: "Review", description: "Checking results and deciding when to change course.", order: 14, track: "strategy", lead: "PM, Senior leader", readyWhen: "Results have been reviewed, and the next decision is made." },
+  { id: "assess", label: "Assess", description: "Agreeing the mandate and finding out how things work today.", order: 15, track: "coaching", lead: "PM, Senior leader", readyWhen: "The mandate is agreed, and you know how mature product practice is." },
+  { id: "coaching-design", label: "Design", description: "Shaping the target way of working, roles and standards.", order: 16, track: "coaching", lead: "PM, People partner", readyWhen: "The way of working, roles and light standards are drafted." },
+  { id: "pilot", label: "Pilot", description: "Trying the new way of working with one or two teams.", order: 17, track: "coaching", lead: "PM", readyWhen: "A pilot has run, and you know what to keep and change." },
+  { id: "scale", label: "Scale", description: "Spreading what works to more teams.", order: 18, track: "coaching", lead: "PM, Senior leader", readyWhen: "More teams use the new way of working, with leaders behind it." },
+  { id: "sustain", label: "Sustain", description: "Measuring progress and making it last without you.", order: 19, track: "coaching", lead: "PM, People partner", readyWhen: "Capability is measured, and the practice runs without you." },
 ] as const;
 
 export type PhaseId = (typeof PHASES)[number]["id"];
+
+/** The route a plan follows. Phases and starting points each belong to one track. */
+export type TrackId = (typeof PHASES)[number]["track"];
 export const PHASE_IDS: readonly PhaseId[] = PHASES.map((phase) => phase.id);
 
 /** `phase: "any"` in a block means it applies in every phase. */
@@ -60,9 +74,15 @@ export const CROSS_PHASE_FOLDER = "cross-phase";
  * back from Measure.
  */
 export const STAGES = [
-  { id: "new", label: "Starting something new", description: "The idea or problem is new, and nothing has been built yet.", phases: ["discover", "define", "design", "plan"], startPhases: ["discover", "define", "design", "plan"], journey: ["discover", "define", "design", "plan", "build", "test", "launch", "measure"] },
-  { id: "mid-build", label: "Partway through a build", description: "The work is under way, whether you've just joined or have been on it from the start.", phases: ["design", "plan", "build", "test", "launch"], startPhases: ["design", "plan", "build", "test", "launch"], journey: ["design", "plan", "build", "test", "launch", "measure"] },
-  { id: "live", label: "Running a live product", description: "Real people use it today, and your job is to run and improve it.", phases: ["measure", "discover", "define", "design"], startPhases: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"], journey: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"] },
+  { id: "new", track: "product", label: "Starting something new", description: "The idea or problem is new, and nothing has been built yet.", phases: ["discover", "define", "design", "plan"], startPhases: ["discover", "define", "design", "plan"], journey: ["discover", "define", "design", "plan", "build", "test", "launch", "measure"] },
+  { id: "mid-build", track: "product", label: "Partway through a build", description: "The work is under way, whether you've just joined or have been on it from the start.", phases: ["design", "plan", "build", "test", "launch"], startPhases: ["design", "plan", "build", "test", "launch"], journey: ["design", "plan", "build", "test", "launch", "measure"] },
+  { id: "live", track: "product", label: "Running a live product", description: "Real people use it today, and your job is to run and improve it.", phases: ["measure", "discover", "define", "design"], startPhases: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"], journey: ["measure", "discover", "define", "design", "plan", "build", "test", "launch"] },
+  { id: "strategy-none", track: "strategy", label: "No strategy yet", description: "There's no strategy, or nobody can say what it is.", phases: ["understand", "diagnose", "choose", "strategy-plan", "align", "review"], startPhases: [], journey: ["understand", "diagnose", "choose", "strategy-plan", "align", "review"] },
+  { id: "strategy-stale", track: "strategy", label: "Strategy out of date", description: "There is one, but the world has moved on.", phases: ["diagnose", "choose", "strategy-plan", "align", "review"], startPhases: [], journey: ["diagnose", "choose", "strategy-plan", "align", "review"] },
+  { id: "strategy-ready", track: "strategy", label: "Strategy needs turning into plans", description: "It's agreed, but teams can't act on it yet.", phases: ["strategy-plan", "align", "review"], startPhases: [], journey: ["strategy-plan", "align", "review"] },
+  { id: "coaching-new", track: "coaching", label: "Just starting", description: "Product practice is new here, or it varies a lot.", phases: ["assess", "coaching-design", "pilot", "scale", "sustain"], startPhases: [], journey: ["assess", "coaching-design", "pilot", "scale", "sustain"] },
+  { id: "coaching-some", track: "coaching", label: "Some teams do it well", description: "Good practice exists, but not everywhere.", phases: ["pilot", "scale", "sustain"], startPhases: [], journey: ["pilot", "scale", "sustain"] },
+  { id: "coaching-established", track: "coaching", label: "Well established, needs scaling", description: "It works well, and now it needs to reach further.", phases: ["scale", "sustain"], startPhases: [], journey: ["scale", "sustain"] },
 ] as const;
 
 export type StageId = (typeof STAGES)[number]["id"];
@@ -174,6 +194,13 @@ export const WORK_KINDS = [
 ] as const;
 
 export type WorkKindId = (typeof WORK_KINDS)[number]["id"];
+
+/** The starting-point question for each track. */
+export const STARTING_QUESTIONS: Record<TrackId, { shortLabel: string; title: string; why: string }> = {
+  product: { shortLabel: "Where the product is", title: "Where is the product now?", why: "This sets where your plan starts and which phases it usually covers." },
+  strategy: { shortLabel: "Where the strategy is", title: "Is there a strategy today?", why: "This sets where your plan starts." },
+  coaching: { shortLabel: "Where the practice is", title: "How mature is product practice where you work?", why: "This sets where your plan starts." },
+};
 export const WORK_KIND_IDS: readonly WorkKindId[] = WORK_KINDS.map((kind) => kind.id);
 
 // ---------------------------------------------------------------------------
@@ -202,6 +229,8 @@ export const ROLES = [
   { id: "policy-legal", label: "Policy / Legal / Compliance", person: "Policy / Legal / Compliance colleague", plural: "Policy / Legal / Compliance colleagues", description: "Checks the rules, risks and legal duties.", inTeamQuestion: true },
   { id: "product-owner", label: "Product Owner", description: "Manages the backlog and day-to-day priorities.", inTeamQuestion: true },
   { id: "hardware-engineer", label: "Hardware / manufacturing engineer", plural: "Hardware / manufacturing engineers", description: "Designs the physical product and how it gets made.", inTeamQuestion: true },
+  { id: "senior-leader", label: "Senior leader / sponsor", plural: "Senior leaders / sponsors", description: "Backs the work and makes the big decisions.", inTeamQuestion: true },
+  { id: "people-partner", label: "People / HR partner", plural: "People / HR partners", description: "Helps with roles, careers, hiring and change.", inTeamQuestion: true },
 ] as const;
 
 export type RoleId = (typeof ROLES)[number]["id"];

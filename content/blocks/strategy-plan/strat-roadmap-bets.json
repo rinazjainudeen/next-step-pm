@@ -1,0 +1,77 @@
+{
+  "id": "strat-roadmap-bets",
+  "title": "Turn the strategy into a roadmap of bets",
+  "phase": "strategy-plan",
+  "kind": "core",
+  "summary": "A strategy roadmap shows the bets, the outcomes they aim for and roughly when, without promising every feature and date.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write each bet as an outcome to achieve.",
+      "Place the bets in Now, Next and Later.",
+      "Add how you will know each bet is working.",
+      "Show what is not on the roadmap and why.",
+      "Share it with the sponsor and the teams."
+    ],
+    "intermediate": [
+      "Size each bet by how much time it is worth.",
+      "Show dependencies between bets and teams.",
+      "Plan checkpoints to continue, change or stop each bet."
+    ],
+    "experienced": [
+      "Combine roadmaps across teams into one strategic view.",
+      "Link bets to budgets and people.",
+      "Keep the roadmap honest as plans change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Map dependencies and checkpoints",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Lay out bets in Now, Next and Later columns.",
+    "jira": "Track each bet as an initiative linked to team work."
+  },
+  "definitionOfDone": [
+    "Bets written as outcomes",
+    "Now, Next and Later set",
+    "Checkpoints agreed"
+  ],
+  "pitfalls": [
+    "Turning bets back into a feature list",
+    "Fixed dates for uncertain work",
+    "No checkpoints to stop a failing bet"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "strat-choose-bets"
+  ],
+  "comesAfter": ["craft-okrs", "craft-business-case"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Building better roadmaps with Janna Bastow (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/building-better-roadmaps-janna-bastow"
+    },
+    {
+      "title": "Shape Up: stop running in circles and ship work that matters (Basecamp)",
+      "url": "https://basecamp.com/shapeup"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

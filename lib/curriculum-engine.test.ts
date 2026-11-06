@@ -90,7 +90,7 @@ test("every real block has an effort the engine can read", () => {
 // --- Choosing blocks ---
 
 test("each starting point covers its own phases", () => {
-  for (const stage of STAGES) {
+  for (const stage of STAGES.filter((item) => item.track === "product")) {
     const plan = buildPlan({ ...ANSWERS, stage: stage.id }, PLAN_BLOCKS);
     assert.deepEqual(phaseIds(plan), [...stage.phases], stage.id);
   }
@@ -358,6 +358,70 @@ test("people leaders get leads-people blocks outside the timeline, and nobody el
 test("the top three levels get the same steps as a senior PM", () => {
   const steps = (level: IntakeAnswers["level"]) => allBlocks(buildPlan({ ...ANSWERS, level }, PLAN_BLOCKS)).flatMap((block) => block.steps);
   for (const level of ["group", "director", "vp"] as const) assert.deepEqual(steps(level), steps("senior"), level);
+});
+
+// --- Tracks ---
+
+const strategyAnswers: IntakeAnswers = { ...ANSWERS, work: "strategy", stage: "strategy-none", phase: null, until: NOT_SURE };
+const trackBlock = (id: string, phase: Block["phase"], dependsOn: string[] = []) => fixture(id, phase, "1 day", dependsOn);
+const reused = (place: NonNullable<Block["alsoIn"]>[number]) => fixture("craft-reused", "any", "1 day", ["product-thing"], { kind: "craft", alsoIn: [place], appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["experienced"] } });
+
+test("a plan only uses its own track's phases", () => {
+  const blocks = [trackBlock("define-one", "define"), trackBlock("strat-one", "understand")];
+  assert.deepEqual(blockIds(buildPlan(strategyAnswers, blocks)), ["strat-one"]);
+  assert.deepEqual(blockIds(buildPlan(ANSWERS, blocks)), ["define-one"]);
+});
+
+test("a reused block joins the track's timeline, and leaves Grow your skills", () => {
+  const blocks = [trackBlock("strat-first", "understand"), reused({ phase: "understand", after: ["strat-first"], forEveryone: true })];
+  const plan = buildPlan(strategyAnswers, blocks);
+  assert.deepEqual(blockIds(plan), ["strat-first", "craft-reused"]);
+  assert.deepEqual(plan.skillsAnyLevel, []);
+  assert.deepEqual(plan.skillsForLevel, []);
+});
+
+test("a reused block keeps its usual place on the product track", () => {
+  const plan = buildPlan({ ...ANSWERS, level: "senior" }, [reused({ phase: "understand", after: [] })]);
+  assert.deepEqual(blockIds(plan), []);
+  assert.deepEqual(plan.skillsForLevel.map((block) => block.id), ["craft-reused"]);
+});
+
+test("a reused block swaps its dependencies for the track's", () => {
+  const plan = buildPlan({ ...strategyAnswers, level: "senior" }, [reused({ phase: "understand", after: [] })]);
+  assert.deepEqual(allBlocks(plan)[0].checkFirst, []);
+});
+
+test("forEveryone drops a reused block's limits on that track only", () => {
+  const limited = (forEveryone?: true) => [reused({ phase: "understand", after: [], ...(forEveryone ? { forEveryone } : {}) })];
+  assert.deepEqual(blockIds(buildPlan({ ...strategyAnswers, level: "associate" }, limited(true))), ["craft-reused"]);
+  assert.deepEqual(blockIds(buildPlan({ ...strategyAnswers, level: "associate" }, limited())), []);
+});
+
+test("a reused add-on stays an add-on unless it's for everyone", () => {
+  const change = addOn({ id: "add-change", alsoIn: [{ phase: "scale", after: [], forEveryone: true }] });
+  const coaching: IntakeAnswers = { ...ANSWERS, work: "coaching", stage: "coaching-established", phase: null, until: NOT_SURE };
+  const plan = buildPlan(coaching, [change]);
+  assert.equal(allBlocks(plan)[0].kind, "core");
+  assert.deepEqual(blockIds(buildPlan(ANSWERS, [change])), []);
+});
+
+test("a plan names the kind of work when it isn't a product plan", () => {
+  assert.match(buildPlan(strategyAnswers, []).who, /^Work: Setting product strategy/);
+  assert.doesNotMatch(buildPlan(ANSWERS, []).who, /Work:/);
+});
+
+test("a block marked for Lead your team reaches leaders on the product track only", () => {
+  const coaching = trackBlock("cap-one", "pilot");
+  const marked = { ...coaching, inLeadYourTeam: true };
+  assert.deepEqual(buildPlan({ ...ANSWERS, level: "vp" }, [marked]).leadYourTeam.map((block) => block.id), ["cap-one"]);
+  assert.deepEqual(buildPlan({ ...ANSWERS, level: "senior" }, [marked]).leadYourTeam, []);
+  assert.deepEqual(buildPlan({ ...strategyAnswers, level: "vp" }, [marked]).leadYourTeam, []);
+});
+
+test("tight advice on a track talks about scope, not learning", () => {
+  const long = trackBlock("strat-long", "understand");
+  const plan = buildPlan({ ...strategyAnswers, stage: "strategy-none", time: "under-1m", until: "understand" }, [{ ...long, estimatedEffort: "30 days" }]);
+  assert.match(plan.pace.message, /narrow the scope, or move the milestone\.$/);
 });
 
 test("placeholder blocks never reach a plan", () => {
@@ -890,7 +954,7 @@ test("every mix of the main answers builds a sensible plan from the real blocks"
   let checked = 0;
   for (const pm of withNotSure(PM_TYPE_IDS).map((id) => [id])) {
     for (const product of withNotSure(PRODUCT_TYPE_IDS)) {
-      for (const stage of withNotSure(STAGES.map((item) => item.id))) {
+      for (const stage of withNotSure(STAGES.filter((item) => item.track === "product").map((item) => item.id))) {
         for (const time of withNotSure(TIMELINE_IDS)) {
           for (const way of withNotSure(WAY_OF_WORKING_IDS)) {
             checked += 1;

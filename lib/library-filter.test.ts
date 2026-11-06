@@ -84,3 +84,10 @@ test("hasFilters tells whether anything is chosen", () => {
   assert.equal(hasFilters(NO_FILTERS), false);
   assert.equal(hasFilters({ ...NO_FILTERS, kind: "core" }), true);
 });
+
+test("a reused block shows under its track phase as well as its own", () => {
+  const reused = [{ phase: "discover", kind: "core", appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: [] }, alsoIn: [{ phase: "understand", after: [] }] }] as const;
+  const shown = (phase: "understand" | "choose") => filterBlocks([...reused] as never, { phase, pm: null, kind: null, way: null } as never).length;
+  assert.equal(shown("understand"), 1);
+  assert.equal(shown("choose"), 0);
+});

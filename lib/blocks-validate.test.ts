@@ -264,6 +264,44 @@ test("leadsPeople is true or left out", () => {
   assert.ok(mentions(errorsFor({ appliesTo: { ...base, leadsPeople: false } }), "appliesTo.leadsPeople"));
 });
 
+test("alsoIn must name a strategy or coaching phase and an after list", () => {
+  assert.deepEqual(errorsFor({ alsoIn: [{ phase: "choose", after: ["define-x"], forEveryone: true }] }), []);
+  assert.ok(mentions(errorsFor({ alsoIn: [] }), "alsoIn:"));
+  assert.ok(mentions(errorsFor({ alsoIn: [{ phase: "define", after: [] }] }), "alsoIn[1].phase"));
+  assert.ok(mentions(errorsFor({ alsoIn: [{ phase: "nowhere", after: [] }] }), "alsoIn[1].phase"));
+  assert.ok(mentions(errorsFor({ alsoIn: [{ phase: "choose" }] }), "alsoIn[1].after"));
+  assert.ok(mentions(errorsFor({ alsoIn: [{ phase: "choose", after: [], forEveryone: false }] }), "forEveryone"));
+});
+
+test("alsoIn must follow a real block on that track", () => {
+  const strat = makeBlock({ id: "strat-a", phase: "choose" });
+  const good = makeBlock({ id: "define-a", alsoIn: [{ phase: "choose", after: ["strat-a"] }] });
+  assert.deepEqual(validateBlockSet(files(strat, good)), []);
+  assert.ok(mentions(validateBlockSet(files(makeBlock({ id: "define-a", alsoIn: [{ phase: "choose", after: ["strat-gone"] }] }))), "no block has that id"));
+  const other = makeBlock({ id: "define-b" });
+  assert.ok(mentions(validateBlockSet(files(other, makeBlock({ id: "define-a", alsoIn: [{ phase: "choose", after: ["define-b"] }] }))), "isn't on the strategy track"));
+});
+
+test("a block can't depend on a block from another track", () => {
+  const product = makeBlock({ id: "define-a" });
+  const strategy = makeBlock({ id: "strat-a", phase: "choose", dependsOn: ["define-a"] });
+  assert.ok(mentions(validateBlockSet(files(product, strategy)), "different track"));
+});
+
+test("order within a track uses that track's phases", () => {
+  const first = makeBlock({ id: "strat-a", phase: "understand" });
+  const later = makeBlock({ id: "strat-b", phase: "review", dependsOn: ["strat-a"] });
+  assert.deepEqual(validateBlockSet(files(first, later)), []);
+  const wrong = makeBlock({ id: "strat-c", phase: "understand", dependsOn: ["strat-d"] });
+  const after = makeBlock({ id: "strat-d", phase: "review" });
+  assert.ok(mentions(validateBlockSet(files(wrong, after)), "later phase"));
+});
+
+test("inLeadYourTeam is true or left out", () => {
+  assert.deepEqual(errorsFor({ inLeadYourTeam: true }), []);
+  assert.ok(mentions(errorsFor({ inLeadYourTeam: false }), "inLeadYourTeam"));
+});
+
 test("comesAfter must be a list of block ids", () => {
   assert.deepEqual(errorsFor({ comesAfter: ["define-other"] }), []);
   assert.ok(mentions(errorsFor({ comesAfter: [] }), "comesAfter:"));

@@ -1,0 +1,82 @@
+{
+  "id": "strat-capabilities",
+  "title": "Assess your organisation's strengths and gaps",
+  "phase": "diagnose",
+  "kind": "core",
+  "summary": "A strategy only works if the organisation can deliver it. Be honest about what you are good at, what you lack and what you could build or buy.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List what your team and company do well, with examples.",
+      "List the skills, systems or data you would need but don't have.",
+      "Ask a few colleagues to challenge the list.",
+      "Mark which gaps matter most for the core challenge.",
+      "Note which gaps could be filled quickly and which take years."
+    ],
+    "intermediate": [
+      "Compare your strengths with competitors and alternatives.",
+      "Decide which capabilities make you different and which are commodities.",
+      "Estimate the cost and time to close the biggest gaps."
+    ],
+    "experienced": [
+      "Assess capabilities across the portfolio and shared platforms.",
+      "Decide where to invest in people, where to partner and where to stop.",
+      "Build the capability plan into the strategy, not after it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "tech-lead",
+        "orRoles": [
+          "architect"
+        ],
+        "task": "Assess technical strengths and gaps",
+        "ifMissing": "ask-around"
+      },
+      {
+        "role": "people-partner",
+        "task": "Assess skills and hiring gaps",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Map capabilities as strengths and gaps on one board.",
+    "google-docs": "Score each capability for importance and current strength."
+  },
+  "definitionOfDone": [
+    "Strengths and gaps listed",
+    "Gaps ranked by importance",
+    "Time and cost to close the top gaps estimated"
+  ],
+  "pitfalls": [
+    "Listing only strengths",
+    "Ignoring how long it takes to build skills",
+    "Treating every capability as unique"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "strat-diagnose-challenge"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The big lie of strategic planning (Roger Martin, Harvard Business Review)",
+      "url": "https://hbr.org/2014/01/the-big-lie-of-strategic-planning"
+    },
+    {
+      "title": "What is Wardley Mapping? (Learn Wardley Mapping)",
+      "url": "https://learnwardleymapping.com/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

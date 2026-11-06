@@ -88,8 +88,8 @@ The intake moves to the ten questions in the replan of 5 November 2026.
 
 **Check:** open an old shared plan link, then build a plan at each career level, with two PM types.
 
-### Phase 7b: New content
-Written in batches, like Phase 5. 33 new blocks, on top of the 20 added in Phase 7a, take the library to 153:
+### Phase 7b: Strategy and coaching tracks
+The strategy and coaching tracks, each with their own phases and starting-point question, and 33 new blocks, taking the library to 153:
 
 | Content | New blocks |
 |---|---|
@@ -99,9 +99,9 @@ Written in batches, like Phase 5. 33 new blocks, on top of the 20 added in Phase
 | Leads-people add-ons | 2 |
 | **Total** | **33** |
 
-Two new team roles: Senior leader or sponsor, and People or HR partner. Question 1 is switched on when 7b is merged. The stats band updates to match.
+Two new team roles: Senior leader or sponsor, and People or HR partner. Existing blocks are reused on the tracks with `alsoIn`. Question 1 is switched on, and the stats band updates to match.
 
-**Check:** Rinaz reads each batch in the library and approves it, then builds a strategy plan and a coaching plan.
+**Check:** build a strategy plan and a coaching plan from each starting point, and read the new blocks in the library.
 
 ### Phase 8a: Skills and growth
 - Nine PM skills, tagged on every block.

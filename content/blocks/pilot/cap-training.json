@@ -1,0 +1,70 @@
+{
+  "id": "cap-training",
+  "title": "Run hands-on training",
+  "phase": "pilot",
+  "kind": "core",
+  "summary": "People learn product skills by doing them. Keep training short and practical, using real work, and follow it up so it sticks.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick one skill area to train first.",
+      "Design a short session built around an exercise.",
+      "Use people's real products as the examples.",
+      "Set a task to apply the skill within two weeks.",
+      "Check how it went in a follow-up session."
+    ],
+    "intermediate": [
+      "Build a short learning path for each level.",
+      "Mix training with coaching and on-the-job practice.",
+      "Ask experienced PMs to run some sessions."
+    ],
+    "experienced": [
+      "Design a programme across levels and roles.",
+      "Link training to the career framework.",
+      "Measure whether behaviour changes, not just attendance."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Arrange logistics and learning budget",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Run exercises on a shared board.",
+    "confluence": "Publish session materials and follow-up tasks."
+  },
+  "definitionOfDone": [
+    "Session run with an exercise",
+    "Follow-up task set",
+    "Follow-up held"
+  ],
+  "pitfalls": [
+    "Lectures with no practice",
+    "No follow-up",
+    "Generic examples"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "cap-pilot"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How we're developing the product leaders of the future (GOV.UK Digital People blog)",
+      "url": "https://digitalpeople.blog.gov.uk/2019/04/15/how-were-developing-the-product-leaders-of-the-future"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

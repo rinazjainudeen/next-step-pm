@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BlockGrid } from "@/components/library/block-card";
 import { Button } from "@/components/ui/button";
 import { KINDS, PHASES, PM_TYPES, WAYS_OF_WORKING } from "@/content/taxonomy";
+import { phaseName } from "@/lib/blocks-types";
 import type { BlockSummary } from "@/lib/blocks-types";
 import {
   NO_FILTERS,
@@ -22,7 +23,7 @@ type FilterDefinition = {
 };
 
 const FILTERS: FilterDefinition[] = [
-  { key: "phase", label: "Phase", allLabel: "All phases", options: PHASES },
+  { key: "phase", label: "Phase", allLabel: "All phases", options: PHASES.map((phase) => ({ id: phase.id, label: phaseName(phase.id) })) },
   { key: "pm", label: "PM type", allLabel: "All PM types", options: PM_TYPES },
   { key: "kind", label: "Kind of block", allLabel: "All kinds", options: KINDS },
   { key: "way", label: "Way of working", allLabel: "All ways of working", options: WAYS_OF_WORKING },

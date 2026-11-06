@@ -1,0 +1,75 @@
+{
+  "id": "cap-measure",
+  "title": "Measure whether capability is improving",
+  "phase": "sustain",
+  "kind": "core",
+  "summary": "Track whether people are working differently and whether it makes a difference, not just whether they attended training.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Go back to the baseline from your maturity assessment.",
+      "Repeat the assessment after a few months.",
+      "Ask PMs and partners what has changed.",
+      "Collect examples of better outcomes.",
+      "Share the results with the sponsor."
+    ],
+    "intermediate": [
+      "Measure reaction, learning, behaviour and results.",
+      "Link changes to business outcomes where you can.",
+      "Adjust the programme based on the results."
+    ],
+    "experienced": [
+      "Report capability progress to leaders alongside business results.",
+      "Compare teams to find what works best.",
+      "Use the evidence to argue for continued investment."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Run the repeat assessment and survey",
+        "ifMissing": "pm"
+      },
+      {
+        "role": "data-analyst",
+        "task": "Link changes to outcomes",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "power-bi": "Show capability scores over time.",
+    "google-docs": "Compare repeat assessment scores with the baseline."
+  },
+  "definitionOfDone": [
+    "Repeat assessment done",
+    "Behaviour change evidenced",
+    "Results shared"
+  ],
+  "pitfalls": [
+    "Measuring attendance only",
+    "No baseline to compare with",
+    "Ignoring bad news"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The Kirkpatrick Model (Kirkpatrick Partners)",
+      "url": "https://www.kirkpatrickpartners.com/the-kirkpatrick-model/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

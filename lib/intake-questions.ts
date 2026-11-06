@@ -5,7 +5,7 @@ import {
   PM_TYPES,
   PRODUCT_TYPES,
   ROLES,
-  STAGES,
+  STARTING_QUESTIONS,
   TIMELINES,
   TOOLS,
   TOOL_GROUPS,
@@ -14,8 +14,8 @@ import {
   WORK_KINDS,
   labelOf,
 } from "../content/taxonomy";
-import { phasesCovered } from "./intake-phases";
-import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
+import { phasesCovered, stagesFor, trackFor } from "./intake-phases";
+import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
 
 export type IntakeOption = { readonly id: string; readonly label: string; readonly description?: string };
 type OptionGroup = { id: string; label: string; options: readonly IntakeOption[] };
@@ -114,11 +114,9 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
   {
     id: "stage",
     kind: "single",
-    shortLabel: "Where the product is",
-    title: "Where is the product now?",
-    why: "This sets where your plan starts and which phases it usually covers.",
+    ...STARTING_QUESTIONS.product,
     notSure: "Pick this if you can't tell yet. Your plan will start from the beginning.",
-    options: STAGES,
+    options: stagesFor("product"),
   },
   {
     id: "team",
@@ -160,12 +158,18 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
   },
 ];
 
-/** The questions, in the order visitors see them. The first waits for its switch. */
+/** The questions, in the order visitors see them. The first has a switch. */
 export function questionsFor(kindOfWorkEnabled: boolean): readonly IntakeQuestion[] {
   return kindOfWorkEnabled ? [KIND_OF_WORK_QUESTION, ...CORE_QUESTIONS] : CORE_QUESTIONS;
 }
 
 export const INTAKE_QUESTIONS = questionsFor(KIND_OF_WORK_ENABLED);
+
+/** The starting-point question depends on the kind of work. Every other question stays the same. */
+export function questionFor(question: IntakeQuestion, draft: Pick<IntakeDraft, "work">): IntakeQuestion {
+  if (question.id !== "stage") return question;
+  return { ...question, ...STARTING_QUESTIONS[trackFor(draft.work)], options: stagesFor(draft.work) };
+}
 
 export const TOTAL_STEPS = INTAKE_QUESTIONS.length;
 
@@ -183,7 +187,8 @@ function withCount(label: string, count: number | undefined): string {
  * the question to change it; the last row is worked out, so it has none.
  */
 export function summariseAnswers(answers: IntakeAnswers): { label: string; value: string; step?: number }[] {
-  const rows = INTAKE_QUESTIONS.map((question, index) => {
+  const rows = INTAKE_QUESTIONS.map((baseQuestion, index) => {
+    const question = questionFor(baseQuestion, answers);
     const answer = answers[question.id];
     const counts: Record<string, number | undefined> = question.id === "team" ? answers.teamCounts : {};
     const value = Array.isArray(answer)

@@ -1,0 +1,77 @@
+{
+  "id": "strat-review",
+  "title": "Review the strategy against results",
+  "phase": "review",
+  "kind": "core",
+  "summary": "Check regularly whether the bets are working. Use evidence, compare plans with what actually happened and learn before deciding what to change.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Set a regular review, such as every quarter.",
+      "Collect results for each bet against its measures.",
+      "Compare what happened with what you expected.",
+      "Note what you learned, good and bad.",
+      "Share a short review with the sponsor."
+    ],
+    "intermediate": [
+      "Look for patterns across bets, not just single results.",
+      "Separate bad luck from bad assumptions.",
+      "Bring teams' learning into the review."
+    ],
+    "experienced": [
+      "Review the whole portfolio, including stopped bets.",
+      "Be honest about missed targets rather than explaining them away.",
+      "Use the review to update the next planning cycle."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Prepare results for each bet",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "power-bi": "Show results for each bet on one dashboard.",
+    "confluence": "Write a short review page each quarter."
+  },
+  "definitionOfDone": [
+    "Review held on schedule",
+    "Results compared with expectations",
+    "Learning recorded and shared"
+  ],
+  "pitfalls": [
+    "Only reporting good news",
+    "Blaming one-off events every time",
+    "No link to the next plan"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The perils of bad strategy (Richard Rumelt, McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-perils-of-bad-strategy"
+    },
+    {
+      "title": "Objectives and key results play (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/okrs"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

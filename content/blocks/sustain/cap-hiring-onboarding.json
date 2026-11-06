@@ -1,0 +1,81 @@
+{
+  "id": "cap-hiring-onboarding",
+  "title": "Improve how PMs are hired and onboarded",
+  "phase": "sustain",
+  "kind": "core",
+  "summary": "Fair, structured hiring and a good first few months shape the product team for years. Use the career framework to hire and onboard consistently.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Base the job description on the career framework.",
+      "Use the same questions and scoring for every candidate.",
+      "Train interviewers on the questions and scoring.",
+      "Write an onboarding plan for the first 90 days.",
+      "Ask new joiners what helped and what was missing."
+    ],
+    "intermediate": [
+      "Use a work sample that reflects the real job.",
+      "Check the process for bias.",
+      "Pair new joiners with a buddy."
+    ],
+    "experienced": [
+      "Set hiring standards across the product organisation.",
+      "Track hiring quality and new-joiner success.",
+      "Build a pipeline of future product leaders."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Run the hiring process and onboarding logistics",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "people-partner"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Keep a shared interview scorecard.",
+    "confluence": "Publish the 90-day onboarding plan."
+  },
+  "definitionOfDone": [
+    "Structured questions and scoring in use",
+    "Interviewers trained",
+    "90-day onboarding plan published"
+  ],
+  "pitfalls": [
+    "Unstructured chats",
+    "Brainteaser questions",
+    "No onboarding plan"
+  ],
+  "estimatedEffort": "3-8 days",
+  "dependsOn": [
+    "cap-roles-career"
+  ],
+  "comesAfter": ["cap-measure"],
+  "inLeadYourTeam": true,
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Use structured interviewing (Google re:Work)",
+      "url": "https://rework.withgoogle.com/en/guides/hiring-use-structured-interviewing"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

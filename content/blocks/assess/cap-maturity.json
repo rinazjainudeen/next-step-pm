@@ -1,0 +1,74 @@
+{
+  "id": "cap-maturity",
+  "title": "Assess how mature product practice is",
+  "phase": "assess",
+  "kind": "core",
+  "summary": "Use a simple framework to see where product practice is strong and where it is weak. It gives you a baseline to measure progress against.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Choose a simple framework of product skills and practices.",
+      "Score current practice for each area, using your interview themes.",
+      "Ask a few PMs to self-assess against the same framework.",
+      "Compare the two views.",
+      "Pick the two or three areas that matter most."
+    ],
+    "intermediate": [
+      "Use a recognised role framework to describe skills by level.",
+      "Look at how teams work, not just individual skills.",
+      "Record the baseline so you can measure change later."
+    ],
+    "experienced": [
+      "Assess maturity across many teams and spot patterns.",
+      "Separate skill gaps from problems in the operating model.",
+      "Share the baseline with leaders honestly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Run the self-assessment survey",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Score each practice area in a shared sheet.",
+    "miro": "Show the baseline as a simple heat map."
+  },
+  "definitionOfDone": [
+    "Framework chosen",
+    "Baseline scored",
+    "Priority areas picked"
+  ],
+  "pitfalls": [
+    "A framework so detailed nobody uses it",
+    "Scoring without evidence",
+    "Blaming individuals for system problems"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "cap-listen"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    },
+    {
+      "title": "Product vs feature teams (SVPG)",
+      "url": "https://www.svpg.com/product-vs-feature-teams/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

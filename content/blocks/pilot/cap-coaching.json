@@ -1,0 +1,69 @@
+{
+  "id": "cap-coaching",
+  "title": "Coach PMs one to one",
+  "phase": "pilot",
+  "kind": "core",
+  "summary": "Coaching helps PMs apply new skills on their real work. Ask good questions, agree goals and follow up, rather than giving all the answers.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Agree a goal with each PM you coach.",
+      "Meet regularly, such as every two weeks.",
+      "Ask questions that help them think, before giving advice.",
+      "Agree one action after each session.",
+      "Follow up on the action next time."
+    ],
+    "intermediate": [
+      "Use real work as the material for coaching.",
+      "Balance coaching with direct feedback.",
+      "Track progress against the skills framework."
+    ],
+    "experienced": [
+      "Coach PM leaders to coach their own teams.",
+      "Build a coaching culture, not a dependence on you.",
+      "Match PMs with mentors outside their reporting line."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep private coaching notes and actions.",
+    "google-docs": "Share a simple goals and actions log with each PM."
+  },
+  "definitionOfDone": [
+    "Goals agreed with each PM",
+    "Regular sessions held",
+    "Actions followed up"
+  ],
+  "pitfalls": [
+    "Giving answers instead of coaching",
+    "No follow-up",
+    "Coaching only when things go wrong"
+  ],
+  "estimatedEffort": "1-2 hours",
+  "dependsOn": [
+    "cap-pilot"
+  ],
+  "inLeadYourTeam": true,
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Coaching and mentoring factsheet (CIPD)",
+      "url": "https://www.cipd.org/uk/knowledge/factsheets/coaching-mentoring-factsheet/"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

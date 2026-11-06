@@ -1,0 +1,75 @@
+{
+  "id": "cap-playbook",
+  "title": "Publish a product playbook",
+  "phase": "scale",
+  "kind": "core",
+  "summary": "A playbook brings together how product work is done: principles, standards, templates and examples. Keep it short, living and easy to find.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Gather your standards, templates and examples.",
+      "Write a short introduction to how product works here.",
+      "Organise the playbook by the questions people ask.",
+      "Publish it in one place everyone can find.",
+      "Ask readers what is missing."
+    ],
+    "intermediate": [
+      "Add real examples from your teams.",
+      "Name an owner for each section.",
+      "Review it every few months."
+    ],
+    "experienced": [
+      "Make the playbook the single source of truth for product practice.",
+      "Link it to onboarding and the career framework.",
+      "Open it to contributions from teams."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Structure and edit the playbook",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Publish the playbook as one space.",
+    "notion": "Build the playbook as linked pages."
+  },
+  "definitionOfDone": [
+    "Playbook published",
+    "Owners named",
+    "Review date set"
+  ],
+  "pitfalls": [
+    "A long manual nobody reads",
+    "Out-of-date pages",
+    "Hard to find"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [
+    "cap-standards"
+  ],
+  "comesAfter": ["cap-community"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Service Manual (GOV.UK)",
+      "url": "https://www.gov.uk/service-manual"
+    },
+    {
+      "title": "The importance of a handbook-first approach to communication (GitLab Handbook)",
+      "url": "https://handbook.gitlab.com/handbook/company/culture/all-remote/handbook-first/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

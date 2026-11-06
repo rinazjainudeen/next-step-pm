@@ -2,6 +2,7 @@ import {
   CAREER_LEVELS,
   COMPANY_SIZES,
   EXPERIENCE_IDS,
+  WORK_KINDS,
   PHASES,
   PM_TYPES,
   PRODUCT_TYPES,
@@ -17,9 +18,10 @@ import {
   type StageId,
   type TaskFallbackId,
   type TimelineId,
+  type TrackId,
 } from "../content/taxonomy";
 import { blockPhases, type Block, type DelegatedTask } from "./blocks-types";
-import { finishOptions, phasesCovered } from "./intake-phases";
+import { finishOptions, phasesCovered, trackFor } from "./intake-phases";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type TeamRoleId } from "./intake-types";
 import type { Plan, PlanAction, PlanBlock, PlanPace, PlanPhase, PlanTask, PlanToolExample } from "./plan-types";
 
@@ -97,6 +99,27 @@ function sizeFor(answers: IntakeAnswers): CompanySizeId {
 
 // --- 1. Select ---
 
+/**
+ * Places existing blocks on the visitor's track. A reused block becomes a
+ * timeline block there, and follows the track's order, not its usual one. It's
+ * replaced rather than copied, so it can't also appear in "Grow your skills".
+ */
+function placeOnTrack(blocks: readonly Block[], track: TrackId): Block[] {
+  return blocks.map((block) => {
+    const place = block.alsoIn?.find((item) => PHASES.find((phase) => phase.id === item.phase)?.track === track);
+    if (!place) return block;
+    const everyone = place.forEveryone ?? false;
+    return {
+      ...block,
+      phase: place.phase,
+      kind: everyone || block.kind === "craft" ? "core" : block.kind,
+      dependsOn: place.after,
+      comesAfter: place.after.length > 0 ? place.after : undefined,
+      appliesTo: everyone ? { ...block.appliesTo, pmTypes: [], productTypes: [], experience: [] } : block.appliesTo,
+    };
+  });
+}
+
 /** "Not sure" starts from the beginning, so it counts as starting something new. */
 function stageFor(answers: IntakeAnswers): StageId {
   return answers.stage === NOT_SURE ? "new" : answers.stage;
@@ -146,13 +169,9 @@ function fitsCompanySize(block: Block, answers: IntakeAnswers): boolean {
   return sizes.length === 0 || sizes.includes(sizeFor(answers));
 }
 
-function fitsLeadership(block: Block, answers: IntakeAnswers): boolean {
-  return !block.appliesTo.leadsPeople || careerLevelFor(answers).leadsPeople;
-}
-
 /** Everything except the experience limit, which decides where a block goes, not whether it's kept. */
 function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
-  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsCompanySize(block, answers) && fitsLeadership(block, answers);
+  return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsCompanySize(block, answers);
 }
 
 function movesUp(block: Block, answers: IntakeAnswers): boolean {
@@ -412,12 +431,13 @@ function schedulePhases(groups: readonly PhaseGroup[], time: IntakeAnswers["time
 }
 
 /** What a visitor can do about a plan that won't fit in under a month. */
-function tightAdvice(covered: readonly PhaseId[], canFinishEarlier: boolean): string {
+function tightAdvice(covered: readonly PhaseId[], canFinishEarlier: boolean, track: TrackId): string {
   const canNarrow = covered.some((id) => RELEASE_PHASES.includes(id));
   const finishFirst = "finish one phase first by choosing an earlier finish in Your answers";
   if (canNarrow && canFinishEarlier) return `To make this realistic, narrow it to the smallest valuable release, or ${finishFirst}.`;
   if (canNarrow) return "To make this realistic, narrow it to the smallest valuable release.";
   if (canFinishEarlier) return `To make this realistic, ${finishFirst}.`;
+  if (track !== "product") return "To make this realistic, narrow the scope, or move the milestone.";
   return "To make this realistic, narrow what you need to learn, or move the milestone.";
 }
 
@@ -451,7 +471,9 @@ function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: Intake
 // --- The summary ---
 
 function whoText(answers: IntakeAnswers): string {
+  const track = trackFor(answers.work);
   const parts = [
+    track === "product" ? "" : `Work: ${labelOf(WORK_KINDS, track)}`,
     answers.pm.includes(NOT_SURE) ? "" : `PM type: ${answers.pm.map((id) => labelOf(PM_TYPES, id)).join(" and ")}`,
     answers.product === NOT_SURE ? "" : `Product: ${labelOf(PRODUCT_TYPES, answers.product)}`,
     answers.level === NOT_SURE ? "" : `Level: ${careerLevelFor(answers).short}`,
@@ -484,11 +506,15 @@ function checksBeforeActions(phases: readonly PlanPhase[], actions: readonly Pla
 
 // --- Putting it together ---
 
-export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Plan {
+export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): Plan {
+  const track = trackFor(answers.work);
+  const blocks = placeOnTrack(allBlocks, track);
   const covered = phasesCovered(answers).map((phase) => phase.id);
   const kept = blocks.filter((block) => fitsApartFromLevel(block, answers));
-  const leadBlocks = kept.filter((block) => block.appliesTo.leadsPeople);
   const others = kept.filter((block) => !block.appliesTo.leadsPeople);
+  // "Lead your team" belongs to the product track. The other tracks are about this work directly.
+  const leads = track === "product" && careerLevelFor(answers).leadsPeople;
+  const leadBlocks = leads ? kept.filter((block) => block.appliesTo.leadsPeople || block.inLeadYourTeam) : [];
   const eligible = others.filter((block) => fitsExperience(block, answers));
   const inTimeline = eligible.filter((block) => block.kind === "core" || block.kind === "add-on");
 
@@ -508,7 +534,7 @@ export function buildPlan(answers: IntakeAnswers, blocks: readonly Block[]): Pla
   const furthestFinish = finishOptions(answers).at(-1)?.id;
   const canFinishLater = furthestFinish !== undefined && furthestFinish !== covered[covered.length - 1];
   const canFinishEarlier = furthestFinish !== undefined && covered.length > 1;
-  const advice = tightAdvice(covered, canFinishEarlier);
+  const advice = tightAdvice(covered, canFinishEarlier, track);
   const pace = paceFor(schedule, answers, byPhase.some((group) => group.phaseId === BUILD_PHASE), canFinishLater, advice);
   const phaseNote = (phaseId: PhaseId) => {
     if (phaseId === BUILD_PHASE) return BUILD_NOTE;

@@ -70,6 +70,7 @@
   ],
   "estimatedEffort": "2-5 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "strategy-plan", "after": ["strat-choose-bets", "craft-okrs"]}],
   "freshness": "evergreen",
   "sources": [
     {

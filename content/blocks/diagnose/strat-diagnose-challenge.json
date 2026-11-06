@@ -1,0 +1,66 @@
+{
+  "id": "strat-diagnose-challenge",
+  "title": "Diagnose the core challenge",
+  "phase": "diagnose",
+  "kind": "core",
+  "summary": "Good strategy names the main obstacle in the way. A clear diagnosis tells you where to focus, and stops the strategy becoming a list of goals.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "From your summary, list the problems that hold the product or company back.",
+      "Ask which one, if solved, would make the others easier.",
+      "Write it as a short diagnosis: what is going on and why it matters.",
+      "Check it with two or three people who know the area well.",
+      "Keep goals and wishes out of the diagnosis."
+    ],
+    "intermediate": [
+      "Look for root causes rather than symptoms.",
+      "Test the diagnosis against evidence that could prove it wrong.",
+      "Agree the diagnosis with the sponsor before choosing what to do."
+    ],
+    "experienced": [
+      "Diagnose across products or teams, where the real challenge often sits.",
+      "Name uncomfortable causes, such as how the organisation works.",
+      "Use the diagnosis to rule out popular but weak options."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Group problems and draw how they cause each other.",
+    "confluence": "Publish the diagnosis as a short page for comment."
+  },
+  "definitionOfDone": [
+    "One core challenge named",
+    "Diagnosis backed by evidence",
+    "Sponsor agrees the diagnosis"
+  ],
+  "pitfalls": [
+    "Writing goals instead of a diagnosis",
+    "Naming too many challenges",
+    "Avoiding the awkward cause"
+  ],
+  "estimatedEffort": "2-5 days",
+  "dependsOn": [
+    "strat-context-scan"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The perils of bad strategy (Richard Rumelt, McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-perils-of-bad-strategy"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}
