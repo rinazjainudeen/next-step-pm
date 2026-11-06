@@ -8,6 +8,21 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-05 (Phase 7b)
+
+- **Three tracks: product, strategy and coaching.** Rinaz's call. The "kind of work" question is switched on, so visitors see all ten questions. Strategy runs Understand, Diagnose, Choose, Plan, Align and Review. Coaching runs Assess, Design, Pilot, Scale and Sustain. "Not sure" means product.
+- **A track's starting answers are stages, each with its own route.** Why: the existing start, finish and timing rules then work on every track with no new engine code. Each answer's route begins at its starting phase, so there's no "which phase?" follow-up on these tracks. Changing the kind of work clears a starting answer from the old track.
+- **`alsoIn` places an existing block on a track.** Why: it's the simplest way to reuse a block without copying it. On that track the block takes the track phase, joins the timeline, and `after` replaces its usual dependencies, so strategy visitors aren't asked to check for product work. It's replaced, not copied, so it can't also appear in "Grow your skills". The earlier idea of adding phases to the block's `phase` list wouldn't have allowed that. Validator rules keep this honest.
+- **`forEveryone` lifts a reused block's limits on that track only.** Why: the vision, strategy and north star blocks are for intermediate and above in "Grow your skills", but the approved strategy list has them at every level. `addon-transformation-change` is a Transformation add-on on the product track and core on the coaching track, the same way.
+- **`inLeadYourTeam` shows a block in "Lead your team".** Why: `leadsPeople` would hide `cap-coaching` and `cap-hiring-onboarding` from coaching-track visitors who don't manage people. Group PMs, Directors and VPs on the product track now get all four blocks.
+- **"Lead your team" is for the product track only.** On the coaching track these blocks are in the timeline, so showing them again would repeat them. As a result, leaders on the strategy and coaching tracks don't see `lead-one-to-ones` or `lead-delegate-ownership`.
+- **Two new team roles:** Senior leader / sponsor, and People / HR partner. The stats band shows 153 blocks and 22 team roles, and still counts 8 lifecycle phases, which are the product track's.
+- **`strat-portfolio-allocation` is for experienced PMs only**, not "Go further" for others. This changes the approved list, because the alternative needed a new rule for one block. The Library still shows it to everyone.
+- **A block can't depend on a block from another track**, and phase order is compared within a track.
+- **The AI strategy add-ons also reach Data or AI products**, like the other AI add-ons. Why: `addon-ai-data-readiness` reaches those products, and it follows `addon-aistrat-opportunities`, so they'd have been told to check for a block they never get.
+- **Order within the tracks is set with `comesAfter`**, following the approved "After" column. The business case follows OKRs, to match the listed order.
+- **Links with no kind of work open as product plans**, so plans shared before this change keep working.
+
 ## 2026-11-05 (Phase 7a)
 
 Decisions from the replan:
@@ -19,7 +34,7 @@ Decisions from the replan:
 - **New PM types: Platform, and Hardware or IoT.** Visitors can pick up to two PM types.
 - **New question: company size**, with four options. "Not sure" assumes an established organisation.
 - **The "kind of work" question stays.** A level is not the same as the kind of work someone is doing.
-- **Ten questions in total**, each with a "Not sure" option. The first is built but switched off by `KIND_OF_WORK_ENABLED` until the strategy and coaching tracks exist, so visitors see nine for now.
+- **Ten questions in total**, each with a "Not sure" option. The first was built but switched off by `KIND_OF_WORK_ENABLED` until the strategy and coaching tracks existed, in Phase 7b.
 
 Decisions made while building, on Rinaz's instructions:
 

@@ -1,0 +1,73 @@
+{
+  "id": "strat-refresh",
+  "title": "Decide when to change course",
+  "phase": "review",
+  "kind": "core",
+  "summary": "Strategies need changing when the facts change, but not every quarter. Agree in advance what would make you change course, and test plans for weak points.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write down the signals that would show a bet is failing.",
+      "Agree them with the sponsor before results come in.",
+      "Run a premortem: imagine the strategy failed, and list why.",
+      "Fix the biggest risks the premortem found.",
+      "Revisit the signals at each review."
+    ],
+    "intermediate": [
+      "Separate small adjustments from real changes of direction.",
+      "Decide in advance who can change the strategy and how.",
+      "Communicate changes clearly, with the reason."
+    ],
+    "experienced": [
+      "Spot when the core challenge itself has changed.",
+      "Stop sunk-cost thinking about failing bets.",
+      "Lead the organisation through a change of direction."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Run the premortem on a shared board.",
+    "confluence": "Record the change signals with the strategy."
+  },
+  "definitionOfDone": [
+    "Change signals agreed in advance",
+    "Premortem run",
+    "Change process agreed"
+  ],
+  "pitfalls": [
+    "Changing direction every quarter",
+    "Never changing despite the evidence",
+    "Changes without explanation"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "strat-review"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Performing a project premortem (Gary Klein, Harvard Business Review)",
+      "url": "https://hbr.org/2007/09/performing-a-project-premortem"
+    },
+    {
+      "title": "The perils of bad strategy (Richard Rumelt, McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-perils-of-bad-strategy"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

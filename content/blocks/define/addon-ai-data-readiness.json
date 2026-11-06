@@ -74,6 +74,7 @@
   "dependsOn": [
     "addon-ai-is-ai-right"
   ],
+  "alsoIn": [{"phase": "diagnose", "after": ["addon-aistrat-opportunities"]}],
   "comesAfter": ["addon-ai-is-ai-right"],
   "freshness": "evergreen",
   "sources": [

@@ -1,0 +1,73 @@
+{
+  "id": "cap-leaders",
+  "title": "Get leaders to support and model the change",
+  "phase": "scale",
+  "kind": "core",
+  "summary": "People copy what leaders do. If leaders keep asking for feature lists and dates, the new way of working won't last.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Show leaders the results from the pilots.",
+      "Explain what you need them to do differently.",
+      "Agree two or three visible behaviours, such as asking about outcomes.",
+      "Give them simple prompts to use in meetings.",
+      "Check in with them regularly."
+    ],
+    "intermediate": [
+      "Build a guiding group of leaders who champion the change.",
+      "Address leaders who block the change directly.",
+      "Celebrate teams that work the new way."
+    ],
+    "experienced": [
+      "Change leadership routines, such as planning and reviews.",
+      "Link leaders' goals to the new way of working.",
+      "Coach senior leaders through their own change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "senior-leader",
+        "task": "Champion the change with peers",
+        "ifMissing": "ask-around"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Share a one-page guide for leaders.",
+    "confluence": "Publish pilot results for leaders."
+  },
+  "definitionOfDone": [
+    "Leaders shown the pilot results",
+    "Behaviours agreed",
+    "Regular check-ins set"
+  ],
+  "pitfalls": [
+    "Assuming leaders will change on their own",
+    "Ignoring blockers",
+    "One-off briefings"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "cap-pilot"
+  ],
+  "comesAfter": ["cap-playbook"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The 8 steps for leading change (Kotter)",
+      "url": "https://www.kotterinc.com/8-step-process-for-leading-change/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

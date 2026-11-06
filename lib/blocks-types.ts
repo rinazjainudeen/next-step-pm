@@ -32,6 +32,18 @@ export type DelegatedTask = {
   ifMissing: TaskFallbackId;
 };
 
+/**
+ * A place for an existing block in another track. On that track the block joins
+ * the timeline, and `after` replaces its dependencies and order.
+ */
+export type TrackPlacement = {
+  phase: PhaseId;
+  /** Blocks this follows on the track. Works like dependsOn, and may be empty. */
+  after: string[];
+  /** On this track, drop the block's PM type, product type and experience limits. */
+  forEveryone?: boolean;
+};
+
 /** One phase, a list of phases, or "any" (every phase). */
 export type BlockPhase = PhaseId | PhaseId[] | typeof ANY_PHASE;
 
@@ -73,6 +85,10 @@ export type Block = {
   comesAfter?: string[];
   /** Optional. For these sizes, the block goes as early as its dependsOn allows. */
   movesUpFor?: CompanySizeId[];
+  /** Optional. Also places this block on another track's timeline. */
+  alsoIn?: TrackPlacement[];
+  /** Optional. People leaders on the product track also get this in "Lead your team". */
+  inLeadYourTeam?: boolean;
   freshness: FreshnessId;
   sources: { title: string; url: string }[];
   /** A date written as YYYY-MM-DD. */
@@ -86,7 +102,7 @@ export type Block = {
 /** The small part of a block the Library list needs. */
 export type BlockSummary = Pick<
   Block,
-  "id" | "title" | "phase" | "kind" | "summary" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder"
+  "id" | "title" | "phase" | "kind" | "summary" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder" | "alsoIn"
 >;
 
 export function toSummary(block: Block): BlockSummary {
@@ -99,6 +115,7 @@ export function toSummary(block: Block): BlockSummary {
     appliesTo: block.appliesTo,
     estimatedEffort: block.estimatedEffort,
     ...(block.optional ? { optional: true } : {}),
+    ...(block.alsoIn ? { alsoIn: block.alsoIn } : {}),
     ...(block.placeholder ? { placeholder: true } : {}),
   };
 }
@@ -120,10 +137,15 @@ export function expectedFolder(phase: BlockPhase): string {
   return isSinglePhase(phase) ? phase : CROSS_PHASE_FOLDER;
 }
 
+/** A phase's name, with its track where the name alone could mislead, such as "Strategy: Plan". */
+export function phaseName(id: PhaseId): string {
+  const phase = PHASES.find((p) => p.id === id);
+  if (!phase) return id;
+  return phase.track === "product" ? phase.label : `${phase.track === "strategy" ? "Strategy" : "Coaching"}: ${phase.label}`;
+}
+
 /** A readable phase label, such as "Define", "Design, Plan and prioritise" or "Any phase". */
 export function phaseLabel(phase: BlockPhase): string {
   if (phase === ANY_PHASE) return "Any phase";
-  return blockPhases(phase)
-    .map((id) => PHASES.find((p) => p.id === id)?.label ?? id)
-    .join(", ");
+  return blockPhases(phase).map(phaseName).join(", ");
 }

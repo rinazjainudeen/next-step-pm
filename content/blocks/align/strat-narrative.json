@@ -1,0 +1,76 @@
+{
+  "id": "strat-narrative",
+  "title": "Write the strategy as a short narrative",
+  "phase": "align",
+  "kind": "core",
+  "summary": "A short written narrative explains the strategy better than slides. It forces clear thinking and lets people read, question and remember it.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write no more than two pages in plain sentences.",
+      "Cover the diagnosis, the bets, what you won't do and how you will measure progress.",
+      "Use one real example to make it concrete.",
+      "Ask someone outside the team to read it and tell it back to you.",
+      "Cut anything they didn't need."
+    ],
+    "intermediate": [
+      "Tie every bet back to the diagnosis.",
+      "Answer the obvious objections in the text.",
+      "Run a reading session where people read first, then discuss."
+    ],
+    "experienced": [
+      "Write a version for the board and one for teams, with the same core.",
+      "Remove fluff and buzzwords that hide weak thinking.",
+      "Make the narrative the reference for later decisions."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Edit for clarity",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "google-docs": "Write the narrative and collect comments in one document.",
+    "confluence": "Publish the final narrative as the strategy's home page."
+  },
+  "definitionOfDone": [
+    "Narrative of two pages or fewer",
+    "Tested with an outside reader",
+    "Objections answered"
+  ],
+  "pitfalls": [
+    "Slides with bullet points instead of an argument",
+    "Buzzwords",
+    "Too long to read"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "strat-roadmap-bets"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product management at Amazon (AWS Executive Insights)",
+      "url": "https://aws.amazon.com/executive-insights/content/product-management-at-amazon/"
+    },
+    {
+      "title": "The perils of bad strategy (Richard Rumelt, McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-perils-of-bad-strategy"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

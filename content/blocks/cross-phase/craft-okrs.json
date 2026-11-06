@@ -70,6 +70,7 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "strategy-plan", "after": ["craft-north-star"]}],
   "freshness": "evergreen",
   "sources": [
     {

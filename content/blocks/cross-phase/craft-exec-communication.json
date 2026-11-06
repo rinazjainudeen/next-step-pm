@@ -1,0 +1,70 @@
+{
+  "id": "craft-exec-communication",
+  "title": "Brief executives and boards: the short story, the ask, the decision",
+  "phase": "any",
+  "kind": "craft",
+  "summary": "Senior people have little time. Lead with the point and the decision you need, then give only the detail that supports it.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Start with the bottom line: what you want and why, in one or two sentences.",
+      "State the decision or help you need.",
+      "Add three supporting points at most.",
+      "Put detail in an appendix.",
+      "Practise saying it in under two minutes."
+    ],
+    "intermediate": [
+      "Tailor the story to what each leader cares about.",
+      "Bring options with a recommendation, not just a problem.",
+      "Pre-brief key people before the meeting."
+    ],
+    "experienced": [
+      "Brief boards on strategy, risk and results with the same structure.",
+      "Handle tough questions by going back to the bottom line.",
+      "Coach your PMs to brief leaders well."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Write a one-page brief with the bottom line at the top.",
+    "claude": "Ask an AI assistant to shorten your draft, then check it still says what you mean."
+  },
+  "definitionOfDone": [
+    "Brief leads with the bottom line",
+    "Clear ask stated",
+    "Detail moved to an appendix"
+  ],
+  "pitfalls": [
+    "Building up to the point slowly",
+    "No clear ask",
+    "Too much detail"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [],
+  "alsoIn": [{"phase": "align", "after": ["strat-narrative"]}],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to write email with military precision (Harvard Business Review)",
+      "url": "https://hbr.org/2016/11/how-to-write-email-with-military-precision"
+    },
+    {
+      "title": "Technical writing courses for engineers and product managers (Google for Developers)",
+      "url": "https://developers.google.com/tech-writing"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,67 @@
+{
+  "id": "lead-delegate-ownership",
+  "title": "Give your PMs clear ownership, then step back",
+  "phase": "any",
+  "kind": "add-on",
+  "summary": "Your PMs grow when they own real problems and decisions. Agree who decides what, and resist taking decisions back.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "leadsPeople": true
+  },
+  "steps": {
+    "beginner": [
+      "List the main decisions in your area.",
+      "For each, agree who decides: you, your PM or both.",
+      "Write the agreement down.",
+      "Support your PMs' decisions, even when you'd have chosen differently.",
+      "Review the split every few months."
+    ],
+    "intermediate": [
+      "Use clear levels of delegation, from tell to fully delegate.",
+      "Delegate more as trust and skills grow.",
+      "Give your PMs problems to solve, not features to build."
+    ],
+    "experienced": [
+      "Set delegation norms across your product organisation.",
+      "Spot when leaders are taking decisions back.",
+      "Build a team that can run without you day to day."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Map decisions against levels of delegation.",
+    "confluence": "Publish the agreed decision split."
+  },
+  "definitionOfDone": [
+    "Decisions listed",
+    "Delegation levels agreed",
+    "Review date set"
+  ],
+  "pitfalls": [
+    "Delegating tasks but not decisions",
+    "Taking decisions back under pressure",
+    "Unclear ownership"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Delegation Poker (Management 3.0)",
+      "url": "https://management30.com/product/delegation-poker"
+    },
+    {
+      "title": "The 7 levels of delegation (Jurgen Appelo)",
+      "url": "https://medium.com/@jurgenappelo/the-7-levels-of-delegation-672ec2a48103"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

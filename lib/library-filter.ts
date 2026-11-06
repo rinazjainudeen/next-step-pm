@@ -62,12 +62,13 @@ export function hasFilters(filters: LibraryFilters): boolean {
  * - PM type and way of working: the block names it, or names none (applies to all).
  * - Kind: the block is of that kind.
  */
-export function filterBlocks<T extends Pick<BlockSummary, "phase" | "kind" | "appliesTo">>(
+export function filterBlocks<T extends Pick<BlockSummary, "phase" | "kind" | "appliesTo" | "alsoIn">>(
   blocks: readonly T[],
   filters: LibraryFilters,
 ): T[] {
   return blocks.filter((block) => {
-    if (filters.phase && !blockPhases(block.phase).includes(filters.phase)) return false;
+    const placements = (block.alsoIn ?? []).map((place) => place.phase);
+    if (filters.phase && !blockPhases(block.phase).includes(filters.phase) && !placements.includes(filters.phase)) return false;
     if (filters.kind && block.kind !== filters.kind) return false;
     const { pmTypes, waysOfWorking } = block.appliesTo;
     if (filters.pm && pmTypes.length > 0 && !pmTypes.includes(filters.pm)) return false;

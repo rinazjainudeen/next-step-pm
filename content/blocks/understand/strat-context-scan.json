@@ -1,0 +1,82 @@
+{
+  "id": "strat-context-scan",
+  "title": "Understand company goals, customers and trends",
+  "phase": "understand",
+  "kind": "core",
+  "summary": "Strategy starts from the facts: what the company is trying to achieve, what customers need and what is changing around you. Gather these before forming a view.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Read the company's goals and the last year of results.",
+      "Collect what you know about customers: research, feedback and usage data.",
+      "List the trends that could change your market, such as new technology or regulation.",
+      "Talk to a few people in sales, support and finance.",
+      "Summarise what you found on two pages."
+    ],
+    "intermediate": [
+      "Map the value chain from customer need to the parts that deliver it.",
+      "Mark which parts are changing fast and which are commodities.",
+      "Separate facts from assumptions, and note where evidence is thin."
+    ],
+    "experienced": [
+      "Scan across the portfolio, not just one product.",
+      "Test your view against outside perspectives, such as analysts or advisers.",
+      "Identify the few forces most likely to change the business."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-analyst",
+        "orRoles": [
+          "performance-analyst"
+        ],
+        "task": "Pull results and usage data",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "user-researcher",
+        "task": "Summarise existing customer research",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Draw the value chain and trends on one board.",
+    "google-docs": "Keep the two-page summary with links to the evidence."
+  },
+  "definitionOfDone": [
+    "Goals, customers and trends summarised",
+    "Facts and assumptions separated",
+    "Summary shared with the sponsor"
+  ],
+  "pitfalls": [
+    "Only looking inside the company",
+    "Treating opinions as facts",
+    "Endless research with no summary"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "strat-scope-mandate"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "What is Wardley Mapping? (Learn Wardley Mapping)",
+      "url": "https://learnwardleymapping.com/"
+    },
+    {
+      "title": "The big lie of strategic planning (Roger Martin, Harvard Business Review)",
+      "url": "https://hbr.org/2014/01/the-big-lie-of-strategic-planning"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

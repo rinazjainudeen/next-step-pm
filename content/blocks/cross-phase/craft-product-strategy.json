@@ -74,6 +74,7 @@
   ],
   "estimatedEffort": "5-10 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "choose", "after": ["craft-product-vision"], "forEveryone": true}],
   "freshness": "evergreen",
   "sources": [
     {

@@ -1,0 +1,67 @@
+{
+  "id": "lead-one-to-ones",
+  "title": "Run one-to-ones and give useful feedback",
+  "phase": "any",
+  "kind": "add-on",
+  "summary": "Regular one-to-ones are where you learn what your PMs need and help them grow. Make them about the person, and give feedback that is specific and kind.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [],
+    "leadsPeople": true
+  },
+  "steps": {
+    "beginner": [
+      "Hold a one-to-one with each PM every week or two.",
+      "In the first one, ask how they like to work and receive feedback.",
+      "Let them set most of the agenda.",
+      "Give feedback on specific situations, what they did and its impact.",
+      "Write down agreed actions and follow up."
+    ],
+    "intermediate": [
+      "Balance support, coaching and feedback.",
+      "Give positive feedback as specifically as critical feedback.",
+      "Talk about career growth regularly, not just at reviews."
+    ],
+    "experienced": [
+      "Coach your managers to run good one-to-ones.",
+      "Spot patterns across the team from one-to-ones.",
+      "Handle hard conversations early."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep a shared agenda and action list for each person.",
+    "google-docs": "Use a running one-to-one document."
+  },
+  "definitionOfDone": [
+    "Regular one-to-ones booked",
+    "Feedback preferences known",
+    "Actions followed up"
+  ],
+  "pitfalls": [
+    "Cancelling one-to-ones",
+    "Turning them into status updates",
+    "Vague feedback"
+  ],
+  "estimatedEffort": "1 hour",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Questions for our first 1:1 (Lara Hogan)",
+      "url": "https://larahogan.me/blog/first-one-on-one-questions/"
+    },
+    {
+      "title": "Coaching and mentoring factsheet (CIPD)",
+      "url": "https://www.cipd.org/uk/knowledge/factsheets/coaching-mentoring-factsheet/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

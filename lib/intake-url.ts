@@ -63,6 +63,12 @@ function parseSize(params: ParamReader): IntakeDraft["size"] {
   return pickOne(params, "size", COMPANY_SIZE_IDS) ?? (isOldLink(params) ? NOT_SURE : null);
 }
 
+/** Links from before the kind of work question have a stage and no work. They were always product plans. */
+function parseWork(params: ParamReader): IntakeDraft["work"] {
+  if (!KIND_OF_WORK_ENABLED) return null;
+  return pickOne(params, "work", WORK_KIND_IDS) ?? (params.get("stage") !== null ? "product" : null);
+}
+
 /** Reads `team=ba,backend-engineer:3`. A role with no number counts as 1. */
 function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"> {
   const entries = splitList(params.get("team")).map((entry) => entry.split(":"));
@@ -79,7 +85,7 @@ function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"
 
 export function parseDraft(params: ParamReader): IntakeDraft {
   return tidyDraft({
-    work: KIND_OF_WORK_ENABLED ? pickOne(params, "work", WORK_KIND_IDS) : null,
+    work: parseWork(params),
     pm: pickMany(splitList(params.get("pm")), PM_TYPE_IDS).slice(0, MAX_PM_TYPES),
     level: parseLevel(params),
     product: pickOne(params, "product", PRODUCT_TYPE_IDS),

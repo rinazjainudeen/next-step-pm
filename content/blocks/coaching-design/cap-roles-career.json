@@ -1,0 +1,76 @@
+{
+  "id": "cap-roles-career",
+  "title": "Define product roles and a career framework",
+  "phase": "coaching-design",
+  "kind": "core",
+  "summary": "Clear roles and levels help PMs know what is expected and how to grow. Base them on skills and scope, not just titles.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the product roles you have today and what each does.",
+      "Describe each level by what the person owns and the skills they show.",
+      "Start from a published framework rather than from scratch.",
+      "Test the draft with PMs at different levels.",
+      "Agree it with HR and leaders."
+    ],
+    "intermediate": [
+      "Include both people-leader and senior individual paths.",
+      "Use the framework for hiring, reviews and development plans.",
+      "Keep it short enough to use in a conversation."
+    ],
+    "experienced": [
+      "Align product levels with engineering and design levels.",
+      "Link the framework to pay and promotion with HR.",
+      "Review it each year as roles change."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "people-partner",
+        "task": "Align with HR policies, pay and promotion",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "people-partner",
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Publish the framework with examples for each level.",
+    "google-docs": "Draft levels and collect comments."
+  },
+  "definitionOfDone": [
+    "Roles and levels described",
+    "Tested with PMs",
+    "Agreed with HR"
+  ],
+  "pitfalls": [
+    "Levels defined only by years",
+    "No senior individual path",
+    "A framework too long to use"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "cap-operating-model"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

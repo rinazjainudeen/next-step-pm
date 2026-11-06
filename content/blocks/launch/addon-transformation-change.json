@@ -69,6 +69,7 @@
   "dependsOn": [
     "launch-release-plan"
   ],
+  "alsoIn": [{"phase": "scale", "after": ["cap-leaders"], "forEveryone": true}],
   "comesAfter": ["launch-release-plan"],
   "freshness": "evergreen",
   "sources": [

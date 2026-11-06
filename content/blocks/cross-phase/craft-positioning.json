@@ -70,6 +70,7 @@
   ],
   "estimatedEffort": "2-4 days",
   "dependsOn": [],
+  "alsoIn": [{"phase": "choose", "after": ["craft-product-strategy"]}],
   "freshness": "evergreen",
   "sources": [
     {

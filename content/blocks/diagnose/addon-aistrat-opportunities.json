@@ -1,0 +1,84 @@
+{
+  "id": "addon-aistrat-opportunities",
+  "title": "Find and rank AI opportunities",
+  "phase": "diagnose",
+  "kind": "add-on",
+  "summary": "AI is useful for some problems and wasteful for others. Find where it could help with your core challenge, and rank the opportunities by value, feasibility and risk.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": ["data-ai"],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the tasks and decisions in your product or organisation that are slow, repetitive or data-heavy.",
+      "For each, ask whether AI could genuinely help.",
+      "Score each one for value, feasibility and risk.",
+      "Pick the top two or three to explore.",
+      "Check each one against your organisation's AI rules."
+    ],
+    "intermediate": [
+      "Check data availability and quality for each opportunity.",
+      "Estimate running cost as well as build cost.",
+      "Plan small experiments to test the top opportunities."
+    ],
+    "experienced": [
+      "Build an AI opportunity portfolio across products.",
+      "Balance quick wins with deeper bets.",
+      "Link AI opportunities to the strategy's core challenge."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "data-scientist",
+        "task": "Assess feasibility and data needs",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "policy-legal",
+        "task": "Check legal and ethical risks",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "data-scientist"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Plot opportunities on a value and feasibility grid.",
+    "claude": "Use an AI assistant to brainstorm use cases, then check them with experts."
+  },
+  "definitionOfDone": [
+    "Opportunities listed and scored",
+    "Top opportunities chosen",
+    "Experiments planned"
+  ],
+  "pitfalls": [
+    "Using AI because it is fashionable",
+    "Ignoring data quality",
+    "Forgetting running costs"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "strat-capabilities"
+  ],
+  "comesAfter": ["strat-capabilities"],
+  "freshness": "fast-moving",
+  "sources": [
+    {
+      "title": "Artificial Intelligence Playbook for the UK Government (GOV.UK)",
+      "url": "https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government"
+    },
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

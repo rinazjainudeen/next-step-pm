@@ -29,7 +29,9 @@ These are generic phases drawn from common industry practice, such as the UK Gov
 | 7 | Launch | Delivery Manager, DevOps, PM | Release plan, monitoring, support and comms are ready |
 | 8 | Measure and improve | PM, Analyst | Results are measured against the hypothesis and the next iteration is chosen |
 
-**Starting points** shown to the visitor:
+There are two more tracks, each with its own phases. **Strategy:** `understand`, `diagnose`, `choose`, `strategy-plan` (shown as Plan), `align`, `review`. **Coaching:** `assess`, `coaching-design` (shown as Design), `pilot`, `scale`, `sustain`. Every phase and starting point belongs to one track in `content/taxonomy.ts`, and the Build and Measure minimums only apply to the product track.
+
+**Starting points** shown to the visitor on the product track:
 - **Starting something new**: phases 1 to 4.
 - **Partway through a build**: phases 3 to 7, plus an "onboarding onto an existing product" pack.
 - **Running a live product**: phases 8 and then 1 to 3 again, plus a "taking over a live product" pack.
@@ -40,15 +42,15 @@ These are the usual phases. A live product can also say it's in any phase, becau
 
 The allowed values live in `content/taxonomy.ts`, so blocks and questions can't drift apart.
 
-There are ten questions. Question 1 is built but switched off by `KIND_OF_WORK_ENABLED`, so visitors see nine until the strategy and coaching tracks exist. The list below numbers the nine they see.
+There are ten questions. The first sets the track, and `KIND_OF_WORK_ENABLED` can switch it off.
 
-0. **What kind of product work are you doing right now?** Building or improving a product · Setting product strategy · Building a team's skills or coaching · Not sure. Switched off.
+0. **What kind of product work are you doing right now?** Building or improving a product · Setting product strategy · Building a team's skills or coaching · Not sure, which means product.
 1. **What kind of product manager are you?** Pick up to two: General · Growth · AI · Data · Technical · Platform · Transformation · Hardware or IoT · Not sure.
 2. **What best describes what you own?** Six career levels, from "Features someone else has shaped" to "Product strategy for the whole company". Each points to the beginner, intermediate or experienced steps, and the top three count as leading people.
 3. **What kind of product is it?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
 4. **How big is your organisation?** Early start-up · Scaling · Established · Large enterprise · Not sure.
-5. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase.
-6. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner, Hardware / manufacturing engineer.
+5. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase. The strategy track asks "Is there a strategy today?" (No strategy yet · Strategy out of date · Strategy needs turning into plans). The coaching track asks "How mature is product practice where you work?" (Just starting · Some teams do it well · Well established, needs scaling).
+6. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner, Hardware / manufacturing engineer, Senior leader / sponsor, People / HR partner.
 7. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini). There is also "A tool that isn't listed", with no text box, which leads to tool-agnostic tips.
 8. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. A follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It's shown when there's a real date, must be answered when shown, and offers the phases from where the visitor is to the end of the stage's journey.
 9. **How does your team work?** Scrum · Kanban · Hybrid / stage gates · Not sure.
@@ -136,6 +138,10 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 
 **`appliesTo.companySizes`** limits a block to certain sizes. "Not sure" counts as established. **`appliesTo.leadsPeople`** limits a block to Group PMs, Directors and VPs, and puts it in "Lead your team".
 
+**`alsoIn`** places an existing block on another track, such as `[{ "phase": "choose", "after": ["strat-diagnose-challenge"] }]`. On that track the block joins the timeline, leaves "Grow your skills", and `after` replaces its usual `dependsOn` and `comesAfter`. `"forEveryone": true` drops its PM type, product type and experience limits on that track only.
+
+**`inLeadYourTeam`** also shows a block in "Lead your team" to people leaders on the product track. Use it rather than `leadsPeople` when the block must stay available to others elsewhere.
+
 **`appliesTo.experience`** limits a block to certain levels. An empty list means every level. "Not sure" counts as intermediate. Nothing can depend on a block that some of its own visitors won't get.
 
 **Placeholder blocks** carry `"placeholder": true` and the word PLACEHOLDER in the title. They are dummy content for testing the Library. The site marks them, keeps them out of search engines and the sitemap, and `pnpm validate:content` warns until they are removed.
@@ -163,9 +169,11 @@ Across all blocks:
 - Every `dependsOn` id exists, is not the block itself, and is not in a later phase.
 - There are no circular dependencies.
 - Required work doesn't depend on a "Go further" block, and no block depends on a block some of its experience levels never see.
+- A block can only depend on blocks from its own track, and phase order is compared within a track.
+- Every `alsoIn` phase is a strategy or coaching phase, and its `after` ids exist on that track.
 - Every `comesAfter` id exists, shares a phase with the block and isn't the block itself, and loops are caught across `dependsOn` and `comesAfter`.
 
-Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`, `hardware-engineer`. Tool ids are listed in `content/taxonomy.ts`.
+Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`, `hardware-engineer`, `senior-leader`, `people-partner`. Tool ids are listed in `content/taxonomy.ts`.
 
 ## 4. The curriculum engine (`lib/curriculum-engine.ts`)
 
@@ -194,14 +202,14 @@ Rinaz reviews the pull request on the Vercel preview link and merges it, or clos
 
 ## 6. Content production
 
-- **First release:** **100 blocks** (5 November 2026):
+- **Now:** **153 blocks** (5 November 2026):
 
   | Kind | Blocks |
   |---|---|
-  | Core lifecycle | 41 |
+  | Core (all tracks) | 69 |
+  | Add-ons | 49 |
+  | Craft | 17 |
   | Ways of working | 13 |
-  | Add-ons (PM type and product type) | 27 |
-  | Craft | 14 |
   | Onboarding | 5 |
 
 - **Phase 2 starts with about 12 blocks**, drafted by Rinaz in a separate planning chat and added to `content/blocks/` by Claude Code, which fixes anything the validator flags. Claude Code does not write block content in Phase 2. Two clearly marked placeholder blocks stand in until then.

@@ -1,0 +1,64 @@
+{
+  "id": "cap-community",
+  "title": "Build a community of practice",
+  "phase": "scale",
+  "kind": "core",
+  "summary": "A community of practice is a group of people who share a craft and learn from each other regularly. It spreads good practice without needing a central team for everything.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Invite PMs to a regular, informal meeting.",
+      "Agree a simple purpose, such as sharing what worked.",
+      "Ask members to present real examples.",
+      "Keep a shared space for notes and resources.",
+      "Rotate who leads sessions."
+    ],
+    "intermediate": [
+      "Grow the community around topics members care about.",
+      "Link it to the standards and training.",
+      "Ask leaders to give people time to take part."
+    ],
+    "experienced": [
+      "Connect communities across product, design and engineering.",
+      "Give the community a voice in how practice evolves.",
+      "Support community leaders so it doesn't depend on you."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Keep a community space with notes and recordings.",
+    "notion": "Keep a shared list of topics and resources."
+  },
+  "definitionOfDone": [
+    "Regular sessions running",
+    "Shared space set up",
+    "Members lead sessions"
+  ],
+  "pitfalls": [
+    "Turning it into a lecture series",
+    "Depending on one person",
+    "No time given to take part"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "cap-pilot"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Introduction to communities of practice (Wenger-Trayner)",
+      "url": "https://www.wenger-trayner.com/introduction-to-communities-of-practice/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -51,6 +51,8 @@ const TOP_LEVEL_KEYS = [
   "dependsOn",
   "comesAfter",
   "movesUpFor",
+  "alsoIn",
+  "inLeadYourTeam",
   "freshness",
   "sources",
   "lastReviewed",
@@ -283,6 +285,27 @@ function checkSources(value: unknown, errors: string[]): void {
   });
 }
 
+function checkAlsoIn(value: unknown, errors: string[]): void {
+  if (!Array.isArray(value) || value.length === 0) {
+    errors.push(`alsoIn: must be a list, such as [{ "phase": "choose", "after": [] }]. Leave it out if the block has no other place.`);
+    return;
+  }
+  value.forEach((place, i) => {
+    const where = `alsoIn[${i + 1}]`;
+    if (!isRecord(place)) {
+      errors.push(`${where}: must have a phase and an after list.`);
+      return;
+    }
+    checkUnknownKeys(place, ["phase", "after", "forEveryone"], `${where}: `, errors);
+    const phase = PHASES.find((item) => item.id === place.phase);
+    if (!phase || phase.track === "product") {
+      errors.push(`${where}.phase: ${JSON.stringify(place.phase)} must be a strategy or coaching phase.`);
+    }
+    if (!Array.isArray(place.after)) errors.push(`${where}.after: must be a list of block ids. Use [] if nothing comes first.`);
+    if ("forEveryone" in place && place.forEveryone !== true) errors.push(`${where}.forEveryone: leave it out, or set it to true.`);
+  });
+}
+
 export function validateBlock(input: unknown, options: ValidateOptions = {}): BlockValidation {
   if (!isRecord(input)) {
     return { ok: false, errors: ["The file must hold one block, written as a JSON object that starts with { and ends with }."] };
@@ -355,6 +378,12 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
     checkIdList(b.movesUpFor, COMPANY_SIZE_IDS, "movesUpFor", errors, "Leave it out if the block doesn't move.");
   }
 
+  if ("alsoIn" in b) checkAlsoIn(b.alsoIn, errors);
+
+  if ("inLeadYourTeam" in b && b.inLeadYourTeam !== true) {
+    errors.push(`inLeadYourTeam: leave it out, or set it to true.`);
+  }
+
   if (!isOneOf(FRESHNESS_IDS, b.freshness)) {
     errors.push(`freshness: ${JSON.stringify(b.freshness)} isn't allowed. Use one of: ${listOf(FRESHNESS_IDS)}.`);
   }
@@ -394,10 +423,25 @@ export type BlockFile = {
   block: Block;
 };
 
-/** The first and last lifecycle position of a block's phases. */
-function phaseSpan(block: Block): { first: number; last: number } {
-  const orders = blockPhases(block.phase).map((id) => PHASES.find((p) => p.id === (id as PhaseId))?.order ?? 0);
-  return { first: Math.min(...orders), last: Math.max(...orders) };
+/** Every phase a block sits in, on any track. */
+function allPhases(block: Block): PhaseId[] {
+  return [...blockPhases(block.phase), ...(block.alsoIn ?? []).map((place) => place.phase)];
+}
+
+const phaseDetails = (id: PhaseId) => PHASES.find((p) => p.id === id);
+
+/**
+ * Compares two blocks within the tracks they share, because a track's order
+ * means nothing on another track. `later` is true if the second block can only
+ * come after the first on every track they share. Null means they share none.
+ */
+function trackOrder(block: Block, dep: Block): { later: boolean } | null {
+  const shared = PHASES.map((phase) => phase.track).filter((track, i, all) => all.indexOf(track) === i).filter(
+    (track) => allPhases(block).some((id) => phaseDetails(id)?.track === track) && allPhases(dep).some((id) => phaseDetails(id)?.track === track),
+  );
+  if (shared.length === 0) return null;
+  const orders = (item: Block, track: string) => allPhases(item).filter((id) => phaseDetails(id)?.track === track).map((id) => phaseDetails(id)?.order ?? 0);
+  return { later: shared.every((track) => Math.min(...orders(dep, track)) > Math.max(...orders(block, track))) };
 }
 
 /** Checks that need more than one block. Returns a list of problems (empty if fine). */
@@ -436,7 +480,10 @@ export function validateBlockSet(files: BlockFile[]): string[] {
         errors.push(`${file.path}: dependsOn "${depId}", but no block has that id.`);
         continue;
       }
-      if (phaseSpan(dep.block).first > phaseSpan(file.block).last) {
+      const order = trackOrder(file.block, dep.block);
+      if (!order) {
+        errors.push(`${file.path}: depends on "${depId}", which is on a different track. A block can only depend on blocks from its own track.`);
+      } else if (order.later) {
         errors.push(`${file.path}: depends on "${depId}", which belongs to a later phase. A block can only depend on blocks from the same or an earlier phase.`);
       }
       if (dep.block.optional && !file.block.optional) {
@@ -457,8 +504,24 @@ export function validateBlockSet(files: BlockFile[]): string[] {
         errors.push(`${file.path}: a block can't come after itself.`);
       } else if (!other) {
         errors.push(`${file.path}: comesAfter "${id}", but no block has that id.`);
-      } else if (!blockPhases(other.block.phase).some((phase) => blockPhases(file.block.phase).includes(phase))) {
+      } else if (!allPhases(other.block).some((phase) => allPhases(file.block).includes(phase))) {
         errors.push(`${file.path}: comesAfter "${id}", which shares no phase with it. It only sets the order within a phase, so this does nothing.`);
+      }
+    }
+  }
+
+  for (const file of files) {
+    for (const place of file.block.alsoIn ?? []) {
+      const track = phaseDetails(place.phase)?.track;
+      for (const id of place.after) {
+        const other = byId.get(id);
+        if (id === file.block.id) {
+          errors.push(`${file.path}: alsoIn can't come after itself.`);
+        } else if (!other) {
+          errors.push(`${file.path}: alsoIn comes after "${id}", but no block has that id.`);
+        } else if (!allPhases(other.block).some((phase) => phaseDetails(phase)?.track === track)) {
+          errors.push(`${file.path}: alsoIn comes after "${id}", which isn't on the ${track} track.`);
+        }
       }
     }
   }

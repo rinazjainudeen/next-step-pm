@@ -1,0 +1,80 @@
+{
+  "id": "strat-cascade",
+  "title": "Help teams turn the strategy into their own plans",
+  "phase": "align",
+  "kind": "core",
+  "summary": "Teams need to see how their work links to the strategy. Help them set their own goals and plans from it, rather than handing down a list of tasks.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "intermediate",
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Walk each team through the strategy and the bets.",
+      "Ask each team how their work could move the bets forward.",
+      "Help them set goals that link to the bets.",
+      "Check the goals add up across teams.",
+      "Share the combined view."
+    ],
+    "intermediate": [
+      "Use objectives and key results to link team goals to the strategy.",
+      "Spot gaps and overlaps between teams.",
+      "Agree how teams will report progress against the bets."
+    ],
+    "experienced": [
+      "Run the cascade across many teams in one planning cycle.",
+      "Give teams problems to solve, not features to build.",
+      "Adjust the strategy when teams find it doesn't work in practice."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "orRoles": [
+          "scrum-master"
+        ],
+        "task": "Collect and combine team goals",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "jira": "Link team goals to strategic initiatives.",
+    "confluence": "Publish team goals next to the strategy."
+  },
+  "definitionOfDone": [
+    "Every team has goals linked to the bets",
+    "Gaps and overlaps resolved",
+    "Progress reporting agreed"
+  ],
+  "pitfalls": [
+    "Handing down tasks",
+    "Team goals that don't add up",
+    "No way to report progress"
+  ],
+  "estimatedEffort": "3-10 days",
+  "dependsOn": [
+    "strat-align-leaders"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Objectives and key results play (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/okrs"
+    },
+    {
+      "title": "Product strategy: focus (SVPG)",
+      "url": "https://www.svpg.com/product-strategy-focus/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

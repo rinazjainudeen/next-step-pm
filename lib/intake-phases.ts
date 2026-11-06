@@ -1,4 +1,4 @@
-import { PHASES, STAGES, type PhaseId, type TimelineId } from "../content/taxonomy";
+import { PHASES, STAGES, type PhaseId, type StageId, type TimelineId, type TrackId } from "../content/taxonomy";
 import { NOT_SURE, type IntakeDraft } from "./intake-types";
 
 /**
@@ -13,8 +13,30 @@ type StageAnswer = IntakeDraft["stage"];
 const toPhases = (ids: readonly PhaseId[]): Phase[] =>
   ids.flatMap((id) => PHASES.filter((phase) => phase.id === id));
 
+type WorkAnswer = IntakeDraft["work"] | undefined;
+
+/** The route a plan follows. No answer, or "Not sure", means building a product. */
+export function trackFor(work: WorkAnswer): TrackId {
+  return work === "strategy" || work === "coaching" ? work : "product";
+}
+
+/** The starting points for a track, which are the options on its starting-point question. */
+export function stagesFor(work: WorkAnswer) {
+  return STAGES.filter((stage) => stage.track === trackFor(work));
+}
+
 function findStage(stage: StageAnswer) {
   return STAGES.find((item) => item.id === stage);
+}
+
+/** The visitor's stage. Not knowing it means starting at the beginning of their track. */
+function stageOrFirst(stage: StageAnswer, work: WorkAnswer) {
+  return findStage(stage) ?? stagesFor(work)[0];
+}
+
+/** True when a starting point can be used on this track. */
+export function stageFits(stage: StageId, work: WorkAnswer): boolean {
+  return findStage(stage)?.track === trackFor(work);
 }
 
 /** True for a real phase, as opposed to blank or "Not sure". */
@@ -42,8 +64,8 @@ export function hasTimeline(time: TimelineId | typeof NOT_SURE | null): boolean 
  * starting from the beginning, so it gets the same route as starting something
  * new. Empty without a real timeline, because "by then" has no meaning.
  */
-export function finishOptions(draft: Pick<IntakeDraft, "stage" | "phase" | "time">): Phase[] {
-  const stage = draft.stage === NOT_SURE ? STAGES[0] : findStage(draft.stage);
+export function finishOptions(draft: Pick<IntakeDraft, "stage" | "phase" | "time"> & { work?: WorkAnswer }): Phase[] {
+  const stage = draft.stage === NOT_SURE ? stagesFor(draft.work)[0] : findStage(draft.stage);
   if (!stage || !hasTimeline(draft.time)) return [];
   const journey: readonly PhaseId[] = stage.journey;
   const options = toPhases(journey.slice(startIndex(journey, draft.phase)));
@@ -56,8 +78,8 @@ export function finishOptions(draft: Pick<IntakeDraft, "stage" | "phase" | "time
  * chosen finish, or otherwise to the end of the stage's usual phases. Not knowing the
  * stage means starting from the beginning, the same as "Starting something new".
  */
-export function phasesCovered(answers: Pick<IntakeDraft, "stage" | "phase" | "until">): Phase[] {
-  const stage = findStage(answers.stage) ?? STAGES[0];
+export function phasesCovered(answers: Pick<IntakeDraft, "stage" | "phase" | "until"> & { work?: WorkAnswer }): Phase[] {
+  const stage = stageOrFirst(answers.stage, answers.work);
   const journey: readonly PhaseId[] = stage.journey;
   const start = startIndex(journey, answers.phase);
   const lastUsual = journey.indexOf(stage.phases[stage.phases.length - 1]);

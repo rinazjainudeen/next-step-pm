@@ -1,0 +1,71 @@
+{
+  "id": "strat-choose-bets",
+  "title": "Choose your strategic bets and what you won't do",
+  "phase": "choose",
+  "kind": "core",
+  "summary": "Strategy is choosing where to play and how to win, and saying no to the rest. Pick a few bets that tackle the core challenge, and write down what you are stopping.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "List the options that could tackle the core challenge.",
+      "For each, write where you would play and how you would win.",
+      "Pick no more than three bets.",
+      "Write down what you will not do, and why.",
+      "Note what must be true for each bet to work."
+    ],
+    "intermediate": [
+      "Compare options against the diagnosis and your capabilities.",
+      "Test the riskiest assumption behind each bet quickly.",
+      "Agree the guiding approach that links the bets together."
+    ],
+    "experienced": [
+      "Make choices that cut across teams and budgets.",
+      "Stop or shrink work that doesn't fit, and say so openly.",
+      "Balance bold bets with protecting the core business."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "miro": "Compare options side by side against the diagnosis.",
+    "confluence": "Publish the chosen bets and the stop list together."
+  },
+  "definitionOfDone": [
+    "No more than three bets chosen",
+    "Stop list written",
+    "Key assumptions noted for each bet"
+  ],
+  "pitfalls": [
+    "Choosing everything",
+    "No stop list",
+    "Bets that don't address the diagnosis"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "strat-diagnose-challenge"
+  ],
+  "comesAfter": ["craft-product-strategy", "craft-positioning"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "The big lie of strategic planning (Roger Martin, Harvard Business Review)",
+      "url": "https://hbr.org/2014/01/the-big-lie-of-strategic-planning"
+    },
+    {
+      "title": "Product strategy: focus (SVPG)",
+      "url": "https://www.svpg.com/product-strategy-focus/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "addon-aistrat-governance",
+  "title": "Set up AI governance and policy",
+  "phase": "align",
+  "kind": "add-on",
+  "summary": "Using AI safely needs clear rules: who approves AI uses, how risks are assessed and how people stay in control. Set them up before AI spreads across the organisation.",
+  "appliesTo": {
+    "pmTypes": [
+      "ai"
+    ],
+    "productTypes": ["data-ai"],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Find out what AI rules your organisation already has.",
+      "Agree who approves new AI uses.",
+      "Set a simple risk check for each new use, including personal data.",
+      "Decide where human review is required.",
+      "Publish the rules in plain language."
+    ],
+    "intermediate": [
+      "Use a recognised risk framework to shape the checks.",
+      "Require a data protection impact assessment where personal data is used.",
+      "Keep a register of AI uses and their owners."
+    ],
+    "experienced": [
+      "Set AI policy across the organisation with legal and security leaders.",
+      "Review the policy as rules and technology change.",
+      "Report AI risks to senior leaders regularly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "policy-legal",
+        "task": "Draft the policy and risk checks",
+        "ifMissing": "find-someone"
+      },
+      {
+        "role": "data-scientist",
+        "task": "Advise on technical risks",
+        "ifMissing": "find-someone"
+      }
+    ],
+    "reviewers": [
+      "policy-legal",
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Publish the AI policy and the register of AI uses.",
+    "jira": "Track approvals for new AI uses."
+  },
+  "definitionOfDone": [
+    "Approval route agreed",
+    "Risk check in place",
+    "Register of AI uses started",
+    "Policy published"
+  ],
+  "pitfalls": [
+    "Rules nobody can follow",
+    "No owner for each AI use",
+    "Ignoring personal data"
+  ],
+  "estimatedEffort": "5-15 days",
+  "dependsOn": [
+    "strat-align-leaders"
+  ],
+  "comesAfter": ["strat-align-leaders"],
+  "freshness": "changes-yearly",
+  "sources": [
+    {
+      "title": "AI Risk Management Framework (NIST)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    },
+    {
+      "title": "Guidance on AI and data protection (ICO)",
+      "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/artificial-intelligence/guidance-on-ai-and-data-protection/about-this-guidance/"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

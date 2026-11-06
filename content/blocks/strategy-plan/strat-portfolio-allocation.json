@@ -1,0 +1,77 @@
+{
+  "id": "strat-portfolio-allocation",
+  "title": "Allocate people and budget across a portfolio",
+  "phase": "strategy-plan",
+  "kind": "core",
+  "summary": "Leaders decide how much to invest in today's products, the next growth areas and future options. Make the split on purpose and review it regularly.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": [
+      "experienced"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the products and initiatives in the portfolio.",
+      "Group them into core business, emerging growth and future options.",
+      "Show how people and budget are split today.",
+      "Propose the split the strategy needs.",
+      "Agree it with finance and the sponsor."
+    ],
+    "intermediate": [
+      "Use evidence, not history, to set each allocation.",
+      "Protect a share for future options so they aren't squeezed out.",
+      "Agree triggers to move people and money between areas."
+    ],
+    "experienced": [
+      "Review the allocation every quarter against results.",
+      "Stop or merge work that no longer earns its place.",
+      "Explain the trade-offs openly to teams and leaders."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "ba",
+        "orRoles": [
+          "data-analyst"
+        ],
+        "task": "Model the current and proposed split",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "power-bi": "Show spend and people by portfolio area.",
+    "google-docs": "Model the proposed split in a shared sheet."
+  },
+  "definitionOfDone": [
+    "Current split shown",
+    "Target split agreed",
+    "Review rhythm set"
+  ],
+  "pitfalls": [
+    "Funding last year's plan again",
+    "No room for future options",
+    "Allocations nobody revisits"
+  ],
+  "estimatedEffort": "3-8 days",
+  "dependsOn": [
+    "strat-roadmap-bets"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Enduring ideas: the three horizons of growth (McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/enduring-ideas-the-three-horizons-of-growth"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

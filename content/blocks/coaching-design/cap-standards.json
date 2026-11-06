@@ -1,0 +1,75 @@
+{
+  "id": "cap-standards",
+  "title": "Set light standards and templates",
+  "phase": "coaching-design",
+  "kind": "core",
+  "summary": "A few shared standards and templates help teams work consistently without slowing them down. Keep them light and explain why each one exists.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Pick the two or three practices that cause the most confusion.",
+      "Write a short standard for each, such as what a product brief must cover.",
+      "Provide a template with an example.",
+      "Explain why each standard exists.",
+      "Ask teams for feedback after they use them."
+    ],
+    "intermediate": [
+      "Separate must-haves from suggestions.",
+      "Remove templates nobody uses.",
+      "Review standards with teams every few months."
+    ],
+    "experienced": [
+      "Align standards across product, design and engineering.",
+      "Use standards to support assessments or reviews where needed.",
+      "Keep the total set small."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "content-designer",
+        "task": "Edit standards and templates for clarity",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "confluence": "Keep templates in one shared space.",
+    "notion": "Publish each standard with an example."
+  },
+  "definitionOfDone": [
+    "Two or three standards published",
+    "Templates with examples",
+    "Feedback collected"
+  ],
+  "pitfalls": [
+    "Too many standards",
+    "Templates without reasons",
+    "Standards nobody reviews"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "cap-maturity"
+  ],
+  "comesAfter": ["cap-roles-career"],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to create a product requirements document (Atlassian)",
+      "url": "https://www.atlassian.com/agile/product-management/requirements"
+    },
+    {
+      "title": "Service Manual (GOV.UK)",
+      "url": "https://www.gov.uk/service-manual"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}

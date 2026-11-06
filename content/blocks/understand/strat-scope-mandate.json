@@ -1,0 +1,74 @@
+{
+  "id": "strat-scope-mandate",
+  "title": "Agree the scope, sponsor and decision the strategy supports",
+  "phase": "understand",
+  "kind": "core",
+  "summary": "A strategy needs a clear question, an owner and someone senior who will act on it. Agree these first, so the work leads to a decision rather than a document.",
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [],
+    "waysOfWorking": [],
+    "experience": []
+  },
+  "steps": {
+    "beginner": [
+      "Write down the question the strategy must answer, in one sentence.",
+      "Name the sponsor: the senior person who will decide and back it.",
+      "Agree what is in scope and what is not, such as which products or markets.",
+      "Agree when the decision is needed and who must be involved.",
+      "Share this on one page and get the sponsor to agree it."
+    ],
+    "intermediate": [
+      "Frame the strategy around a real decision, such as where to invest next year.",
+      "Agree decision rights: who decides, who advises and who is told.",
+      "Set a timebox so the work doesn't drift."
+    ],
+    "experienced": [
+      "Link the mandate to company goals and the budget cycle.",
+      "Spot conflicting mandates across teams and resolve them early.",
+      "Agree how the strategy will be reviewed and refreshed."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [
+      {
+        "role": "delivery-manager",
+        "task": "Set up the timeline and meetings",
+        "ifMissing": "pm"
+      }
+    ],
+    "reviewers": [
+      "senior-leader"
+    ]
+  },
+  "toolExamples": {
+    "confluence": "Write the one-page mandate and link it from the strategy space.",
+    "notion": "Keep the mandate as the first page of the strategy workspace."
+  },
+  "definitionOfDone": [
+    "Strategy question written",
+    "Sponsor named and agreed",
+    "Scope and deadline agreed"
+  ],
+  "pitfalls": [
+    "Starting without a sponsor",
+    "A question too broad to answer",
+    "No date for the decision"
+  ],
+  "estimatedEffort": "1-3 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "DACI decision-making framework (Atlassian Team Playbook)",
+      "url": "https://www.atlassian.com/team-playbook/plays/daci"
+    },
+    {
+      "title": "The perils of bad strategy (Richard Rumelt, McKinsey Quarterly)",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-perils-of-bad-strategy"
+    }
+  ],
+  "lastReviewed": "2026-11-05"
+}
