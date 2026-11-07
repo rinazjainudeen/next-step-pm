@@ -68,6 +68,7 @@
   ],
   "estimatedEffort": "30-60 minutes",
   "dependsOn": [],
+  "worksWithoutTeam": true,
   "freshness": "evergreen",
   "sources": [
     {

@@ -410,12 +410,57 @@ test("a plan names the kind of work when it isn't a product plan", () => {
   assert.doesNotMatch(buildPlan(ANSWERS, []).who, /Work:/);
 });
 
-test("a block marked for Lead your team reaches leaders on the product track only", () => {
+test("a block marked for Lead your team reaches leaders on every track", () => {
   const coaching = trackBlock("cap-one", "pilot");
   const marked = { ...coaching, inLeadYourTeam: true };
   assert.deepEqual(buildPlan({ ...ANSWERS, level: "vp" }, [marked]).leadYourTeam.map((block) => block.id), ["cap-one"]);
   assert.deepEqual(buildPlan({ ...ANSWERS, level: "senior" }, [marked]).leadYourTeam, []);
-  assert.deepEqual(buildPlan({ ...strategyAnswers, level: "vp" }, [marked]).leadYourTeam, []);
+  assert.deepEqual(buildPlan({ ...strategyAnswers, level: "vp" }, [marked]).leadYourTeam.map((block) => block.id), ["cap-one"]);
+});
+
+test("Lead your team skips a block already on the timeline", () => {
+  const marked = { ...trackBlock("cap-one", "pilot"), inLeadYourTeam: true };
+  const coaching: IntakeAnswers = { ...ANSWERS, work: "coaching", stage: "coaching-some", phase: null, until: NOT_SURE, level: "vp" };
+  const plan = buildPlan(coaching, [marked]);
+  assert.deepEqual(plan.leadYourTeam, []);
+  assert.deepEqual(blockIds(plan), ["cap-one"]);
+  assert.deepEqual(buildPlan({ ...coaching, stage: "coaching-established" }, [marked]).leadYourTeam.map((block) => block.id), ["cap-one"]);
+});
+
+test("the leader nudge is for people leaders on the product track", () => {
+  assert.equal(buildPlan({ ...ANSWERS, level: "director" }, []).leaderNudge, true);
+  assert.equal(buildPlan({ ...ANSWERS, level: "director", work: NOT_SURE }, []).leaderNudge, true);
+  assert.equal(buildPlan({ ...ANSWERS, level: "associate" }, []).leaderNudge, false);
+  assert.equal(buildPlan({ ...strategyAnswers, level: "director" }, []).leaderNudge, false);
+});
+
+test("Your team's rhythm is left out of strategy and coaching plans", () => {
+  const blocks = [wow(["scrum"]), wow([])];
+  assert.deepEqual(buildPlan(strategyAnswers, blocks).rhythm, []);
+  assert.deepEqual(buildPlan({ ...ANSWERS, work: "coaching", stage: "coaching-new", phase: null, until: NOT_SURE }, blocks).rhythm, []);
+});
+
+test("with no team roles, the rhythm only keeps blocks that work without a team", () => {
+  const solo = { ...wow([]), id: "wow-solo", worksWithoutTeam: true };
+  const blocks = [wow(["scrum"]), wow([]), solo];
+  const ids = (team: IntakeAnswers["team"]) => buildPlan({ ...ANSWERS, team }, blocks).rhythm.map((block) => block.id).toSorted();
+  assert.deepEqual(ids([NOT_SURE]), ["wow-solo"]);
+  assert.deepEqual(ids(["ba"]), ["wow-all", "wow-scrum", "wow-solo"]);
+});
+
+test("a block can have another name on a live product", () => {
+  const review = fixture("measure-review", "measure", "1 day", [], { title: "Hold a review", titleWhenLive: "Review your latest release" });
+  const titleOn = (stage: IntakeAnswers["stage"], phase: IntakeAnswers["phase"]) => allBlocks(buildPlan({ ...ANSWERS, stage, phase, until: "measure", time: "1-3m" }, [review]))[0].title;
+  assert.equal(titleOn("live", "measure"), "Review your latest release");
+  assert.equal(titleOn("mid-build", "launch"), "Hold a review");
+  assert.equal(titleOn("new", NOT_SURE), "Hold a review");
+});
+
+test("a check on a block uses its live name too", () => {
+  const review = fixture("measure-review", "measure", "1 day", [], { title: "Hold a review", titleWhenLive: "Review your latest release" });
+  const next = fixture("discover-next", "discover", "1 day", ["measure-review"]);
+  const plan = buildPlan({ ...ANSWERS, stage: "live", phase: "discover", until: "discover", time: "1-3m" }, [review, next]);
+  assert.equal(allBlocks(plan)[0].checkFirst[0].title, "Review your latest release");
 });
 
 test("tight advice on a track talks about scope, not learning", () => {
@@ -621,8 +666,12 @@ test("a specialist task never lands on the PM", () => {
 });
 
 test("a task that needs product knowledge points to whoever knows it", () => {
+  const block = makeBlock({ phase: "any", kind: "onboarding", roles: { owner: "pm", canDelegateTo: [{ role: "delivery-manager", task: "Do it", ifMissing: "ask-around" }], reviewers: [] } });
+  const noteOn = (answers: IntakeAnswers) => buildPlan(answers, [block]).getUpToSpeed[0]?.tasks[0].note;
+  assert.match(noteOn({ ...ANSWERS, stage: "live", team: ["ba"] }) ?? "", /worked on the product/);
+  assert.match(noteOn({ ...ANSWERS, stage: "mid-build", team: ["ba"] }) ?? "", /worked on the product/);
   const missing = delegated({ role: "delivery-manager", ifMissing: "ask-around" }, ["ba"]);
-  assert.match(missing.note ?? "", /Ask whoever knows this best/);
+  assert.equal(missing.note, "Ask a colleague who knows this area.");
   assert.doesNotMatch(missing.note ?? "", /sits with you/);
   assert.equal(delegated({ role: "delivery-manager", ifMissing: "ask-around" }, [NOT_SURE]).who, "Ask whoever knows this best");
 });
@@ -932,7 +981,7 @@ test("building a plan doesn't change the answers or the blocks", () => {
 
 test("two very different visitors get clearly different plans", () => {
   const newcomer = buildPlan(
-    { ...ANSWERS, pm: ["general"], stage: "new", level: "associate", team: [NOT_SURE], tools: [NOT_SURE], way: "kanban" },
+    { ...ANSWERS, pm: ["general"], stage: "new", level: "associate", team: ["ba"], tools: [NOT_SURE], way: "kanban" },
     PLAN_BLOCKS,
   );
   const expert = buildPlan(

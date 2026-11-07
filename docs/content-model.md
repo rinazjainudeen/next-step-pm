@@ -140,7 +140,11 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 
 **`alsoIn`** places an existing block on another track, such as `[{ "phase": "choose", "after": ["strat-diagnose-challenge"] }]`. On that track the block joins the timeline, leaves "Grow your skills", and `after` replaces its usual `dependsOn` and `comesAfter`. `"forEveryone": true` drops its PM type, product type and experience limits on that track only.
 
-**`inLeadYourTeam`** also shows a block in "Lead your team" to people leaders on the product track. Use it rather than `leadsPeople` when the block must stay available to others elsewhere.
+**`inLeadYourTeam`** also shows a block in "Lead your team" to people leaders on any track, unless it's already on their timeline. Use it rather than `leadsPeople` when the block must stay available to others elsewhere.
+
+**`titleWhenLive`** gives a block a different name on a live product, where the usual title would mislead.
+
+**`worksWithoutTeam`** marks a ways-of-working block that still applies with no team roles picked. Other ways-of-working blocks are left out of that plan.
 
 **`appliesTo.experience`** limits a block to certain levels. An empty list means every level. "Not sure" counts as intermediate. Nothing can depend on a block that some of its own visitors won't get.
 
@@ -154,6 +158,7 @@ Each block on its own:
 - `phase`, `kind`, PM types, product types, stages, ways of working, roles, tools and freshness all use values from `content/taxonomy.ts`.
 - `appliesTo` has all five lists. An empty list means "applies to all".
 - A craft block uses phase `"any"`.
+- `titleWhenLive` is some text, and only ways-of-working blocks use `worksWithoutTeam`.
 - `companySizes` and `movesUpFor` use real sizes, and `leadsPeople` is `true` or left out.
 - `pm` is never given a task or asked to review, because the PM is the visitor.
 - `optional` is `true` or left out, and only appears on core and add-on blocks.
@@ -180,7 +185,7 @@ Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux
 A pure function, `buildPlan(answers, blocks) -> Plan`, with no database, no AI and no randomness.
 
 1. **Select** core blocks for the phases from `phasesCovered` in `lib/intake-phases.ts`. A block's experience limit must always fit. Add onboarding blocks if they're joining mid-build or live, and add-ons that match their PM type or product type (an empty list never counts as a match). A block's stage and way-of-working tags must always fit. Add **ways-of-working** blocks that match the answer to "How does your team work?": a block is picked when its `waysOfWorking` list is empty or contains the visitor's answer. For "Not sure", only blocks with an empty list are picked. A block whose phase is `"any"` or a list is picked if any of its phases is in the visitor's starting point (the exact rule is settled in Phase 4).
-2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. A block written only for levels below the visitor's isn't dropped: it goes in "Refresh the basics". Within a phase, `dependsOn` and `comesAfter` set the order. Add-ons sit straight after the block they extend, and "Go further" blocks come last. Onboarding, ways-of-working and craft blocks sit outside the timeline, in "Get up to speed", "Your team's rhythm" and "Grow your skills".
+2. **Order** by the plan's phases, then by `dependsOn` within a phase. If a dependency isn't earlier in the plan, show it as "check this exists" rather than as a task. A block written only for levels below the visitor's isn't dropped: it goes in "Refresh the basics". Within a phase, `dependsOn` and `comesAfter` set the order. Add-ons sit straight after the block they extend, and "Go further" blocks come last. Onboarding, ways-of-working and craft blocks sit outside the timeline, in a collapsed "If you're new to this product" section, "Your team's rhythm" and "Grow your skills". "Your team's rhythm" only shows on the product track.
 3. **Shape** the steps to the visitor's experience level. If "Not sure" was chosen, use intermediate.
 4. **Assign** roles. For each delegable task, the first person in the team from `role`, then `orRoles`, gets it, as in "Ask your BA" or "Ask your 3 Backend Engineers". A full-stack engineer covers frontend and backend tasks. If nobody can do it, `ifMissing` sets the note. Use the team list to suggest who reviews.
 5. **Tools.** Show tool examples only for the tools the visitor picked. `other` (a tool that isn't listed) matches no examples. If none match, show a short tool-agnostic tip.

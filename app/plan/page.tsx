@@ -94,9 +94,9 @@ export default async function PlanPage({
                   )}
                   {plan.getUpToSpeed.length > 0 && (
                     <p>
-                      <span className="font-semibold">New to this product?</span> Start{" "}
+                      <span className="font-semibold">New to this product?</span>{" "}
                       <a href="#get-up-to-speed" className="text-primary underline underline-offset-4">
-                        getting up to speed
+                        Get up to speed
                       </a>{" "}
                       alongside these actions.
                     </p>
@@ -141,24 +141,33 @@ export default async function PlanPage({
       </section>
 
       {plan.getUpToSpeed.length > 0 && (
-        <section id="get-up-to-speed" aria-label="Get up to speed">
+        <section aria-label="If you're new to this product">
           <div className={CONTAINER}>
-            <SectionHeading
-              eyebrow="Alongside your plan"
-              title="Get up to speed"
-              lead="This runs alongside the timeline below, so it doesn't add to your weeks. It can take longer than a short plan, so allow for it."
-            />
-            <div className="mt-8 space-y-4">
-              {plan.getUpToSpeed.map((block) => (
-                <PlanBlockCard key={block.id} block={block} heading="h3" />
-              ))}
-            </div>
+            <details data-plan-block className="rounded-2xl border border-border bg-card shadow-sm">
+              <summary className="cursor-pointer rounded-2xl p-5 font-semibold sm:p-6">
+                If you&apos;re new to this product
+                <span className="mt-1 block text-sm font-normal text-muted-foreground">Open this if you need to get up to speed. It runs alongside your timeline, so it doesn&apos;t add to your weeks.</span>
+              </summary>
+              <div id="get-up-to-speed" className="scroll-mt-24 space-y-4 border-t border-border p-5 sm:p-6">
+                {plan.getUpToSpeed.map((block) => (
+                  <PlanBlockCard key={block.id} block={block} heading="h3" />
+                ))}
+              </div>
+            </details>
           </div>
         </section>
       )}
 
       <section id="timeline" aria-label="Your timeline" className={cn(plan.getUpToSpeed.length > 0 && "border-t bg-secondary/40")}>
         <div className={CONTAINER}>
+          {plan.leaderNudge && (
+            <p className="no-print mb-10 rounded-2xl border border-border bg-card p-5 text-pretty leading-relaxed shadow-sm sm:p-6">
+              Leading strategy or building your team&apos;s skills?{" "}
+              <Link href={startHref(draft, 1, true)} className="font-medium text-primary underline underline-offset-4">
+                Build a plan for that instead.
+              </Link>
+            </p>
+          )}
           <SectionHeading eyebrow="Your timeline" title="Phase by phase" lead="Open a block to see its steps, who can help and what done looks like." />
           <div className="mt-10 space-y-12">
             {plan.phases.map((phase, phaseIndex) => (

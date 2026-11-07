@@ -87,8 +87,12 @@ export type Block = {
   movesUpFor?: CompanySizeId[];
   /** Optional. Also places this block on another track's timeline. */
   alsoIn?: TrackPlacement[];
-  /** Optional. People leaders on the product track also get this in "Lead your team". */
+  /** Optional. People leaders also get this in "Lead your team", unless it's on their timeline. */
   inLeadYourTeam?: boolean;
+  /** Optional. The name to use on a live product, where the usual title would mislead. */
+  titleWhenLive?: string;
+  /** Optional. A ways-of-working block that still makes sense with no team roles. */
+  worksWithoutTeam?: boolean;
   freshness: FreshnessId;
   sources: { title: string; url: string }[];
   /** A date written as YYYY-MM-DD. */

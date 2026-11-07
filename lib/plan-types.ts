@@ -71,13 +71,15 @@ export type Plan = {
   /** The words that introduce `checkBeforeActions`. */
   checkBeforeLabel: string;
   pace: PlanPace;
-  /** Onboarding blocks. They run alongside the timeline. */
+  /** Onboarding blocks, shown collapsed. They run alongside the timeline. */
   getUpToSpeed: PlanBlock[];
   phases: PlanPhase[];
-  /** Ways-of-working blocks. They recur, so they sit outside the timeline. */
+  /** Ways-of-working blocks. Product track only, and only team-free ones with no team roles. */
   rhythm: PlanBlock[];
-  /** Blocks for people leaders. Outside the timeline. Empty until the Phase 7b blocks exist. */
+  /** Blocks for people leaders, outside the timeline. Never repeats a block on the timeline. */
   leadYourTeam: PlanBlock[];
+  /** Suggests a strategy or coaching plan to people leaders on the product track. */
+  leaderNudge: boolean;
   /** Basics for levels below the visitor's. A level never removes a block, so they're kept here. */
   refreshBasics: PlanBlock[];
   /** Craft blocks limited to the visitor's level, most specific first. Outside the timeline. */

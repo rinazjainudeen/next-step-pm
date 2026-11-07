@@ -238,15 +238,20 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   }
   const eligible = (kinds: readonly string[]) => BLOCKS.filter((block) => kinds.includes(block.kind) && fits(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
   if (sorted(timeline.map((block) => block.id)).join() !== sorted(eligible(["core", "add-on"])).join()) problems.push("The timeline has the wrong blocks.");
-  if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(eligible(["ways-of-working"])).join()) problems.push("The rhythm section has the wrong blocks.");
+  // Team rituals are for product teams: none on the other tracks, and none with no team roles.
+  const noTeam = answers.team.includes(NOT_SURE);
+  const rhythm = track === "product" ? eligible(["ways-of-working"]).filter((id) => !noTeam || id === "wow-stakeholder-updates") : [];
+  if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(rhythm).join()) problems.push("The rhythm section has the wrong blocks.");
   if (sorted(skills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
   const refresh = BLOCKS.filter((block) => fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
   if (sorted(plan.refreshBasics.map((block) => block.id)).join() !== sorted(refresh).join()) problems.push("Refresh the basics has the wrong blocks.");
   // The fundamentals rule: a block a lower level would get is never lost, only moved.
   const lowerLevel = BLOCKS.filter((block) => block.appliesTo.experience.length > 0 && !block.appliesTo.experience.includes(level) && fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId)));
   if (lowerLevel.some((block) => !ids.includes(block.id))) problems.push("A basic was dropped instead of moving to Refresh the basics.");
-  const leads = track === "product" && LEADS_PEOPLE.includes(answers.level);
-  const leadExpected = leads ? BLOCKS.filter((block) => block.appliesTo.leadsPeople || block.inLeadYourTeam).map((block) => block.id) : [];
+  const leads = LEADS_PEOPLE.includes(answers.level);
+  const onTimeline = timeline.map((block) => block.id);
+  const leadExpected = leads ? BLOCKS.filter((block) => (block.appliesTo.leadsPeople || block.inLeadYourTeam) && !onTimeline.includes(block.id)).map((block) => block.id) : [];
+  if (plan.leaderNudge !== (leads && track === "product")) problems.push(`The leader nudge is wrongly ${plan.leaderNudge ? "shown" : "hidden"}.`);
   const wrongTrack = plan.phases.filter((phase) => PHASES.find((item) => item.id === phase.id)?.track !== track);
   if (wrongTrack.length > 0) problems.push(`A phase is from the wrong track: ${wrongTrack[0].id}.`);
   if (track !== "product" && plan.getUpToSpeed.length > 0) problems.push("A strategy or coaching plan shows product onboarding.");
@@ -372,6 +377,14 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const lastPhase = covered[covered.length - 1];
   const laterExists = finishes.indexOf(lastPhase as never) !== -1 && finishes.indexOf(lastPhase as never) < finishes.length - 1;
   if (/later phase/.test(plan.pace.message) && !laterExists) problems.push("The plan suggests a later phase that doesn't exist.");
+
+  // Wording about the product
+  const existingProduct = answers.stage === "mid-build" || answers.stage === "live";
+  const notes = everyBlock.flatMap((block) => block.tasks.map((task) => task.note ?? ""));
+  if (!existingProduct && notes.some((note) => /worked on the product/.test(note))) problems.push("A plan with no existing product mentions colleagues who've worked on it.");
+  const review = timeline.find((block) => block.id === "measure-post-launch-review");
+  const reviewTitle = answers.stage === "live" ? "Review your latest release" : "Hold a post-launch review";
+  if (review && review.title !== reviewTitle) problems.push(`The review is called "${review.title}".`);
 
   // Wording
   const words = [plan.who, plan.where, plan.pace.message, ...plan.phases.flatMap((phase) => [phase.weeks, phase.note ?? "ok"])];
@@ -568,6 +581,67 @@ test("the Build and Measure minimums only apply to the product track", () => {
   assert.ok(plan.phases.every((phase) => phase.note === undefined));
 });
 
+test("people leaders get one-to-ones and delegation on every track", () => {
+  for (const level of ["group", "director", "vp"] as const) {
+    for (const work of ["strategy", "coaching"] as const) {
+      const ids = trackPlan(work, NOT_SURE, { level }).leadYourTeam.map((block) => block.id);
+      assert.ok(ids.includes("lead-one-to-ones") && ids.includes("lead-delegate-ownership"), `${level} on ${work}`);
+    }
+  }
+});
+
+test("other levels never get Lead your team, on any track", () => {
+  for (const level of ["associate", "product-manager", "senior", NOT_SURE] as const) {
+    assert.deepEqual(trackPlan("strategy", "strategy-none", { level }).leadYourTeam, [], level);
+    assert.deepEqual(trackPlan("coaching", "coaching-new", { level }).leadYourTeam, [], level);
+  }
+});
+
+test("Lead your team picks up a block the coaching plan doesn't reach", () => {
+  const ids = trackPlan("coaching", "coaching-established", { level: "director" }).leadYourTeam.map((block) => block.id);
+  assert.ok(ids.includes("cap-coaching"));
+  assert.ok(!ids.includes("cap-hiring-onboarding"));
+});
+
+test("only people leaders on the product track see the nudge", () => {
+  const product = (level: IntakeAnswers["level"], work: IntakeDraft["work"] = "product") => buildPlan(answersFor({ work, stage: NOT_SURE, phase: null, time: NOT_SURE, until: null }, { level }), BLOCKS).leaderNudge;
+  for (const level of ["group", "director", "vp"] as const) assert.equal(product(level), true, level);
+  assert.equal(product("director", NOT_SURE), true);
+  for (const level of ["associate", "product-manager", "senior", NOT_SURE] as const) assert.equal(product(level), false, level);
+  assert.equal(product("director", "strategy"), false);
+  assert.equal(product("director", "coaching"), false);
+});
+
+test("strategy and coaching plans have no rhythm section", () => {
+  for (const way of ["scrum", "kanban", "hybrid", NOT_SURE] as const) {
+    assert.deepEqual(trackPlan("strategy", "strategy-none", { way, team: ["ba"] }).rhythm, [], way);
+    assert.deepEqual(trackPlan("coaching", "coaching-new", { way, team: ["ba"] }).rhythm, [], way);
+  }
+});
+
+test("a PM with no team roles only sends stakeholder updates", () => {
+  const route: Route = { stage: "new", phase: NOT_SURE, time: "1-3m", until: NOT_SURE };
+  for (const way of ["scrum", "kanban", "hybrid", NOT_SURE] as const) {
+    const plan = buildPlan(answersFor(route, { way, team: [NOT_SURE] }), BLOCKS);
+    assert.deepEqual(plan.rhythm.map((block) => block.id), ["wow-stakeholder-updates"], way);
+    assert.ok(buildPlan(answersFor(route, { way, team: ["ba"] }), BLOCKS).rhythm.length >= 1, way);
+  }
+  assert.ok(buildPlan(answersFor(route, { way: "scrum", team: ["ba"] }), BLOCKS).rhythm.length > 1);
+});
+
+test("only the review block changes its name on a live product", () => {
+  assert.deepEqual(BLOCKS.filter((block) => block.titleWhenLive).map((block) => block.id), ["measure-post-launch-review"]);
+  const live = buildPlan(answersFor({ stage: "live", phase: "measure", time: NOT_SURE, until: null }, {}), BLOCKS);
+  const titles = live.phases.flatMap((phase) => phase.blocks).map((block) => block.title);
+  assert.ok(titles.includes("Review your latest release"));
+  assert.ok(!titles.includes("Hold a post-launch review"));
+});
+
+test("a part-built or live product can still point to people who've worked on it", () => {
+  const plan = buildPlan(answersFor({ stage: "mid-build", phase: NOT_SURE, time: NOT_SURE, until: null }, { team: ["ba"] }), BLOCKS);
+  assert.ok(plan.getUpToSpeed.flatMap((block) => block.tasks).some((task) => /worked on the product/.test(task.note ?? "")));
+});
+
 test("people leaders on the product track get all four Lead your team blocks", () => {
   for (const level of ["group", "director", "vp"] as const) {
     const plan = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: NOT_SURE, until: null }, { level }), BLOCKS);
@@ -577,7 +651,7 @@ test("people leaders on the product track get all four Lead your team blocks", (
 
 test("coaching-track leaders get coaching on their timeline, shown once", () => {
   const plan = trackPlan("coaching", "coaching-new", { level: "director" });
-  assert.deepEqual(plan.leadYourTeam, []);
+  assert.deepEqual(plan.leadYourTeam.map((block) => block.id).toSorted(), ["lead-delegate-ownership", "lead-one-to-ones"]);
   assert.equal(order(plan).flat().filter((id) => id === "cap-coaching").length, 1);
 });
 
