@@ -53,6 +53,8 @@ const TOP_LEVEL_KEYS = [
   "movesUpFor",
   "alsoIn",
   "inLeadYourTeam",
+  "titleWhenLive",
+  "worksWithoutTeam",
   "freshness",
   "sources",
   "lastReviewed",
@@ -382,6 +384,14 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
 
   if ("inLeadYourTeam" in b && b.inLeadYourTeam !== true) {
     errors.push(`inLeadYourTeam: leave it out, or set it to true.`);
+  }
+
+  if ("titleWhenLive" in b && !isNonEmptyString(b.titleWhenLive)) {
+    errors.push(`titleWhenLive: must be some text, or leave it out.`);
+  }
+
+  if ("worksWithoutTeam" in b && (b.worksWithoutTeam !== true || b.kind !== "ways-of-working")) {
+    errors.push(`worksWithoutTeam: only ways-of-working blocks can use it, and it must be true.`);
   }
 
   if (!isOneOf(FRESHNESS_IDS, b.freshness)) {

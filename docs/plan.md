@@ -103,6 +103,11 @@ Two new team roles: Senior leader or sponsor, and People or HR partner. Existing
 
 **Check:** build a strategy plan and a coaching plan from each starting point, and read the new blocks in the library.
 
+### Phase 7d: Plan fixes
+Five small fixes from the usefulness check of 6 November 2026: a collapsed "If you're new to this product" section, a rhythm section that only shows when it applies, "Lead your team" on every track, a nudge for people leaders, and two wording fixes.
+
+**Check:** the acceptance list in the usefulness check.
+
 ### Phase 8a: Skills and growth
 - Nine PM skills, tagged on every block.
 - The plan opening line.

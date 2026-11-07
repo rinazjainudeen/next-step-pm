@@ -78,6 +78,7 @@
     "measure-results-hypothesis"
   ],
   "comesAfter": ["measure-experiments"],
+  "titleWhenLive": "Review your latest release",
   "freshness": "evergreen",
   "sources": [
     {

@@ -297,6 +297,17 @@ test("order within a track uses that track's phases", () => {
   assert.ok(mentions(validateBlockSet(files(wrong, after)), "later phase"));
 });
 
+test("titleWhenLive must be some text", () => {
+  assert.deepEqual(errorsFor({ titleWhenLive: "Review your latest release" }), []);
+  assert.ok(mentions(errorsFor({ titleWhenLive: "" }), "titleWhenLive"));
+});
+
+test("only ways-of-working blocks can work without a team", () => {
+  assert.deepEqual(errorsFor({ worksWithoutTeam: true, kind: "ways-of-working" }), []);
+  assert.ok(mentions(errorsFor({ worksWithoutTeam: true }), "worksWithoutTeam"));
+  assert.ok(mentions(errorsFor({ worksWithoutTeam: false, kind: "ways-of-working" }), "worksWithoutTeam"));
+});
+
 test("inLeadYourTeam is true or left out", () => {
   assert.deepEqual(errorsFor({ inLeadYourTeam: true }), []);
   assert.ok(mentions(errorsFor({ inLeadYourTeam: false }), "inLeadYourTeam"));

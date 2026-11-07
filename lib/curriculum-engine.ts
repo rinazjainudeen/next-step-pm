@@ -244,6 +244,17 @@ const MISSING_ROLE_NOTE: Record<TaskFallbackId, string> = {
   "ask-around": "Ask whoever knows this best, such as a colleague who has worked on the product.",
 };
 
+/** With no existing product, there's nobody who has worked on it. */
+const NO_PRODUCT_ASK_AROUND = "Ask a colleague who knows this area.";
+
+function hasExistingProduct(answers: IntakeAnswers): boolean {
+  return answers.stage === "mid-build" || answers.stage === "live";
+}
+
+function missingRoleNote(ifMissing: TaskFallbackId, answers: IntakeAnswers): string {
+  return ifMissing === "ask-around" && !hasExistingProduct(answers) ? NO_PRODUCT_ASK_AROUND : MISSING_ROLE_NOTE[ifMissing];
+}
+
 const TEAM_UNKNOWN_WHO: Record<TaskFallbackId, string> = {
   pm: "This sits with you for now",
   "find-someone": "Find someone who can do this",
@@ -263,7 +274,7 @@ function assignTask(item: DelegatedTask, answers: IntakeAnswers): PlanTask {
     const note = ifMissing === "pm" ? `${someone} could help, if you have one.` : `${someone} would usually do this.`;
     return { roleLabel, task, inTeam: false, who: TEAM_UNKNOWN_WHO[ifMissing], note };
   }
-  return { roleLabel, task, inTeam: false, who: `No ${person} in your team`, note: MISSING_ROLE_NOTE[ifMissing] };
+  return { roleLabel, task, inTeam: false, who: `No ${person} in your team`, note: missingRoleNote(ifMissing, answers) };
 }
 
 function toolExamples(block: Block, answers: IntakeAnswers): PlanToolExample[] {
@@ -336,12 +347,16 @@ function reviewersFor(block: Block, answers: IntakeAnswers): string[] {
   return [...new Set(reviewers)].filter((role) => !steppedIn.includes(role as TeamRoleId)).map((role) => labelOf(ROLES, role));
 }
 
+function titleFor(block: Block, answers: IntakeAnswers): string {
+  return answers.stage === "live" && block.titleWhenLive ? block.titleWhenLive : block.title;
+}
+
 function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirst: PlanBlock["checkFirst"]): PlanBlock {
   const level = experienceFor(answers);
   const tools = toolExamples(block, answers);
   return {
     id: block.id,
-    title: block.title,
+    title: titleFor(block, answers),
     summary: block.summary,
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
@@ -512,8 +527,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
   const covered = phasesCovered(answers).map((phase) => phase.id);
   const kept = blocks.filter((block) => fitsApartFromLevel(block, answers));
   const others = kept.filter((block) => !block.appliesTo.leadsPeople);
-  // "Lead your team" belongs to the product track. The other tracks are about this work directly.
-  const leads = track === "product" && careerLevelFor(answers).leadsPeople;
+  const leads = careerLevelFor(answers).leadsPeople;
   const leadBlocks = leads ? kept.filter((block) => block.appliesTo.leadsPeople || block.inLeadYourTeam) : [];
   const eligible = others.filter((block) => fitsExperience(block, answers));
   const inTimeline = eligible.filter((block) => block.kind === "core" || block.kind === "add-on");
@@ -527,7 +541,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
 
   const schedule = schedulePhases(byPhase, answers.time);
 
-  const titles = new Map(blocks.map((block) => [block.id, block.title]));
+  const titles = new Map(blocks.map((block) => [block.id, titleFor(block, answers)]));
   const checksFor = (block: Block, done: ReadonlySet<string>) =>
     block.dependsOn.filter((id) => !done.has(id)).map((id) => ({ id, title: titles.get(id) ?? id }));
 
@@ -563,12 +577,15 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
     };
   });
 
-  const stage = stageFor(answers);
-  const showOnboarding = stage === "mid-build" || stage === "live";
+  const showOnboarding = hasExistingProduct(answers);
   const alongside = (kind: Block["kind"]) =>
     orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
 
   const nextActions = firstActions(phases, 3);
+  const onTimeline = new Set(byPhase.flatMap((group) => group.blocks.map((block) => block.id)));
+  // Team rituals suit a product team. A strategy or coaching plan, or a PM with no team, doesn't run them.
+  const noTeam = answers.team.includes(NOT_SURE);
+  const rhythm = track === "product" ? alongside("ways-of-working").filter((block) => !noTeam || block.worksWithoutTeam) : [];
   const skills = alongside("craft");
   const shapeSkill = (block: Block) => shapeBlock(block, answers, whyCraft(block), []);
 
@@ -584,8 +601,9 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
       ? alongside("onboarding").map((block) => shapeBlock(block, answers, whyOnboarding(answers), []))
       : [],
     phases,
-    rhythm: alongside("ways-of-working").map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
-    leadYourTeam: orderByDependency(leadBlocks, answers).map((block) => shapeBlock(block, answers, whyLead(), [])),
+    rhythm: rhythm.map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
+    leadYourTeam: orderByDependency(leadBlocks.filter((block) => !onTimeline.has(block.id)), answers).map((block) => shapeBlock(block, answers, whyLead(), [])),
+    leaderNudge: leads && track === "product",
     refreshBasics: orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) =>
       shapeBlock(block, answers, whyRefresh(), []),
     ),

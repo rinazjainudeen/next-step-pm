@@ -8,6 +8,18 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-06 (Phase 7d)
+
+A usefulness check of 30 realistic profiles found plans that were valid but not always useful. Rinaz approved five small fixes. Longer plans and thin personalisation wait for Phase 8a, and single-product steps for Directors and VPs wait for 8b.
+
+- **"Get up to speed" is now a collapsed "If you're new to this product" section.** Why: everyone on a live or part-built product got 4 or 5 onboarding blocks, even a VP who has run the product for years. It was already left out of the timing, the next actions and progress.
+- **"Your team's rhythm" only shows on the product track.** Why: strategy and coaching plans listed Scrum rituals for work that doesn't use them. This replaces keeping the section on those tracks.
+- **With no team roles picked, the rhythm shows only `wow-stakeholder-updates`.** Why: a solo PM was told to run stand-ups and retrospectives. `worksWithoutTeam` marks the blocks that still apply. "Not sure" on the team counts as no roles, because that answer also covers having no team.
+- **People leaders get "Lead your team" on every track, minus anything on their timeline.** This replaces "product track only". The whole set follows one rule, so a Director on strategy also gets `cap-coaching` and `cap-hiring-onboarding`, and on coaching they only appear if the plan doesn't reach them.
+- **Group PMs, Directors and VPs on the product track see a nudge above the timeline:** "Leading strategy or building your team's skills? Build a plan for that instead." It opens the kind of work question and keeps their other answers. It doesn't print.
+- **The fallback for a missing role no longer mentions "the product" when there isn't one yet.** It says "Ask a colleague who knows this area." The approved fix named the "new" stage. It also covers "Not sure" and the strategy and coaching tracks, because the old wording was wrong for them in the same way.
+- **On a live product, `measure-post-launch-review` is called "Review your latest release".** `titleWhenLive` holds the name. The Library keeps the usual title.
+
 ## 2026-11-05 (Phase 7b)
 
 - **Three tracks: product, strategy and coaching.** Rinaz's call. The "kind of work" question is switched on, so visitors see all ten questions. Strategy runs Understand, Diagnose, Choose, Plan, Align and Review. Coaching runs Assess, Design, Pilot, Scale and Sustain. "Not sure" means product.
