@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "add-on",
   "summary": "Physical products must meet safety and conformity rules before they can be sold. Find out which rules apply early, because testing takes time and failures mean redesigns.",
+  "skills": ["technical", "delivery"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

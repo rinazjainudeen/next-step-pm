@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "New systems fail when people do not change how they work. Plan how people will learn about, want, learn and keep using the new way.",
+  "skills": ["communication", "leadership"],
   "appliesTo": {
     "pmTypes": [
       "transformation"

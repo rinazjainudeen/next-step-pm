@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "core",
   "summary": "Watching real users try a prototype shows you what works before anything is built. Small, repeated rounds of testing are cheaper and more useful than one big study.",
+  "skills": ["design", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

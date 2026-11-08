@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "Numbers tell you what is happening; feedback tells you why. Set up regular ways to hear from users and make sure what they say reaches decisions.",
+  "skills": ["discovery", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

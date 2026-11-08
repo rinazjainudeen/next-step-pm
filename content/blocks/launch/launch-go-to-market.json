@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "core",
   "summary": "A good product can still fail if the right people do not hear about it or understand it. Plan who you are launching to, what you will tell them and how they will find out.",
+  "skills": ["commercial", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

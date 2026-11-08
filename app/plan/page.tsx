@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PlanActions } from "@/components/plan/plan-actions";
 import { PlanBlockCard } from "@/components/plan/plan-block-card";
+import { PlanPhases } from "@/components/plan/plan-phases";
 import { PlanProgress } from "@/components/plan/plan-progress";
 import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -12,7 +13,7 @@ import { loadBlocks } from "@/lib/blocks-load";
 import { buildPlan } from "@/lib/curriculum-engine";
 import { summariseAnswers } from "@/lib/intake-questions";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
-import { parseDraft, readerFromRecord, startHref } from "@/lib/intake-url";
+import { parseDraft, readerFromRecord, startHref, withOldLinkDefaults } from "@/lib/intake-url";
 import { firstUnansweredStep, validateDraft } from "@/lib/intake-validate";
 import { cn } from "@/lib/utils";
 
@@ -62,7 +63,9 @@ export default async function PlanPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const draft = parseDraft(readerFromRecord(await searchParams));
+  // A plan link from before the challenge question has none, so it counts as Not sure. Answers
+  // in progress only ever live on /start, so the intake itself never fills this in.
+  const draft = withOldLinkDefaults(parseDraft(readerFromRecord(await searchParams)));
   const result = validateDraft(draft);
   // An incomplete or hand-edited link goes back to the first gap, keeping what's there.
   if (!result.ok) redirect(startHref(draft, firstUnansweredStep(draft) ?? 1));
@@ -73,6 +76,53 @@ export default async function PlanPage({
     .flatMap((phase) => phase.blocks)
     .filter((block) => !block.optional)
     .flatMap((block) => block.steps.map((step) => step.id));
+  const newToProduct = plan.getUpToSpeed.length > 0 && (
+    <section aria-label="If you're new to this product" className={cn(plan.newToProductFirst && "border-t")}>
+          <div className={CONTAINER}>
+            <details data-plan-block open={plan.newToProductFirst} className="rounded-2xl border border-border bg-card shadow-sm">
+              <summary className="cursor-pointer rounded-2xl p-5 font-semibold sm:p-6">
+                If you&apos;re new to this product
+                <span className="mt-1 block text-sm font-normal text-muted-foreground">Open this if you need to get up to speed. It runs alongside your timeline, so it doesn&apos;t add to your weeks.</span>
+              </summary>
+              <div id="get-up-to-speed" className="scroll-mt-24 space-y-4 border-t border-border p-5 sm:p-6">
+                {plan.getUpToSpeed.map((block) => (
+                  <PlanBlockCard key={block.id} block={block} heading="h3" />
+                ))}
+              </div>
+            </details>
+          </div>
+        </section>
+  );
+  const growSkills = plan.skillsForLevel.length + plan.skillsAnyLevel.length > 0 && (
+    <section id="grow-your-skills" aria-label="Grow your skills" className={cn("border-t", (plan.skillsFirst || plan.rhythm.length === 0) && "bg-secondary/40")}>
+          <div className={CONTAINER}>
+            <SectionHeading eyebrow="Whenever you're ready" title="Grow your skills" lead="These build your craft as a PM. They sit outside the timeline, so pick them up as you need them." />
+            <div className="mt-8 space-y-10">
+              {plan.skillsForLevel.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">Picked for your level</h3>
+                  <div className="mt-4 space-y-4">
+                    {plan.skillsForLevel.map((block) => (
+                      <PlanBlockCard key={block.id} block={block} heading="h4" />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {plan.skillsAnyLevel.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">Useful at any level</h3>
+                  <p className="mt-1 max-w-3xl text-pretty leading-relaxed text-muted-foreground">The steps are written for your experience.</p>
+                  <div className="mt-4 space-y-4">
+                    {plan.skillsAnyLevel.map((block) => (
+                      <PlanBlockCard key={block.id} block={block} heading="h4" />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+  );
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
@@ -80,8 +130,11 @@ export default async function PlanPage({
     <>
       <PageHero size="tool" eyebrow="Your plan" title="Your step-by-step plan" lead={`${plan.who}. ${plan.where}`} />
 
+      {plan.newToProductFirst && newToProduct}
+
       <section aria-label="Summary" className="border-t bg-secondary/40">
         <div className={cn(CONTAINER, "space-y-6")}>
+          <p className="max-w-4xl text-lg text-pretty leading-relaxed">{plan.openingLine}</p>
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm lg:col-span-2">
               <h2 className="text-2xl font-bold tracking-tight">Your next 3 actions</h2>
@@ -140,23 +193,9 @@ export default async function PlanPage({
         </div>
       </section>
 
-      {plan.getUpToSpeed.length > 0 && (
-        <section aria-label="If you're new to this product">
-          <div className={CONTAINER}>
-            <details data-plan-block className="rounded-2xl border border-border bg-card shadow-sm">
-              <summary className="cursor-pointer rounded-2xl p-5 font-semibold sm:p-6">
-                If you&apos;re new to this product
-                <span className="mt-1 block text-sm font-normal text-muted-foreground">Open this if you need to get up to speed. It runs alongside your timeline, so it doesn&apos;t add to your weeks.</span>
-              </summary>
-              <div id="get-up-to-speed" className="scroll-mt-24 space-y-4 border-t border-border p-5 sm:p-6">
-                {plan.getUpToSpeed.map((block) => (
-                  <PlanBlockCard key={block.id} block={block} heading="h3" />
-                ))}
-              </div>
-            </details>
-          </div>
-        </section>
-      )}
+      {!plan.newToProductFirst && newToProduct}
+
+      {plan.skillsFirst && growSkills}
 
       <section id="timeline" aria-label="Your timeline" className={cn(plan.getUpToSpeed.length > 0 && "border-t bg-secondary/40")}>
         <div className={CONTAINER}>
@@ -169,14 +208,17 @@ export default async function PlanPage({
             </p>
           )}
           <SectionHeading eyebrow="Your timeline" title="Phase by phase" lead="Open a block to see its steps, who can help and what done looks like." />
-          <div className="mt-10 space-y-12">
-            {plan.phases.map((phase, phaseIndex) => (
-              <section key={phase.id} aria-labelledby={`phase-${phase.id}`}>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent">{phase.weeks}</p>
-                <h3 id={`phase-${phase.id}`} className="mt-2 text-2xl font-bold tracking-tight">
-                  {phase.label}
-                </h3>
-                <p className="mt-1 max-w-3xl text-pretty leading-relaxed text-muted-foreground">
+          <PlanPhases
+            phases={plan.phases.map((phase) => ({
+              id: phase.id,
+              label: phase.label,
+              weeks: phase.weeks,
+              blockCount: phase.blocks.length,
+              stepIds: phase.blocks.filter((block) => !block.optional).flatMap((block) => block.steps.map((step) => step.id)),
+            }))}
+            contents={plan.phases.map((phase, phaseIndex) => (
+              <div key={phase.id}>
+                <p className="max-w-3xl text-pretty leading-relaxed text-muted-foreground">
                   <span className="font-medium text-foreground">Ready to move on when:</span> {phase.readyWhen}
                 </p>
                 {phase.note && <p className="mt-2 max-w-3xl text-pretty leading-relaxed text-muted-foreground">{phase.note}</p>}
@@ -185,9 +227,9 @@ export default async function PlanPage({
                     <PlanBlockCard key={block.id} block={block} heading="h4" open={phaseIndex === 0 && blockIndex === 0} />
                   ))}
                 </div>
-              </section>
+              </div>
             ))}
-          </div>
+          />
         </div>
       </section>
 
@@ -217,36 +259,7 @@ export default async function PlanPage({
         </section>
       )}
 
-      {plan.skillsForLevel.length + plan.skillsAnyLevel.length > 0 && (
-        <section id="grow-your-skills" aria-label="Grow your skills" className={cn("border-t", plan.rhythm.length === 0 && "bg-secondary/40")}>
-          <div className={CONTAINER}>
-            <SectionHeading eyebrow="Whenever you're ready" title="Grow your skills" lead="These build your craft as a PM. They sit outside the timeline, so pick them up as you need them." />
-            <div className="mt-8 space-y-10">
-              {plan.skillsForLevel.length > 0 && (
-                <div>
-                  <h3 className="text-2xl font-bold tracking-tight">Picked for your level</h3>
-                  <div className="mt-4 space-y-4">
-                    {plan.skillsForLevel.map((block) => (
-                      <PlanBlockCard key={block.id} block={block} heading="h4" />
-                    ))}
-                  </div>
-                </div>
-              )}
-              {plan.skillsAnyLevel.length > 0 && (
-                <div>
-                  <h3 className="text-2xl font-bold tracking-tight">Useful at any level</h3>
-                  <p className="mt-1 max-w-3xl text-pretty leading-relaxed text-muted-foreground">The steps are written for your experience.</p>
-                  <div className="mt-4 space-y-4">
-                    {plan.skillsAnyLevel.map((block) => (
-                      <PlanBlockCard key={block.id} block={block} heading="h4" />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+      {!plan.skillsFirst && growSkills}
 
       {plan.refreshBasics.length > 0 && (
         <section id="refresh-the-basics" aria-label="Refresh the basics" className="border-t">

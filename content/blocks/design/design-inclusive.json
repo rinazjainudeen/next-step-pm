@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "core",
   "summary": "Designing for people with disabilities and different circumstances from the start is cheaper than fixing it later, and it usually makes the product better for everyone. In many countries it is also a legal duty.",
+  "skills": ["design"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

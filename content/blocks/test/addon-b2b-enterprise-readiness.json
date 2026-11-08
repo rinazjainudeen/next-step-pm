@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "add-on",
   "summary": "Large organisations need security, compliance, admin controls and support before they buy. Plan these early.",
+  "skills": ["commercial", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

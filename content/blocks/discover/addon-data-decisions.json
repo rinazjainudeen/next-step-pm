@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "add-on",
   "summary": "Data products succeed when they help someone make a better decision. Start from the decisions, not the data.",
+  "skills": ["data", "discovery"],
   "appliesTo": {
     "pmTypes": [
       "data"

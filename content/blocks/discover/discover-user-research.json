@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Before you commit to building anything, find out who your users are, what they are trying to do and what gets in their way. Discovery research gives you the evidence every later decision rests on.",
+  "skills": ["discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

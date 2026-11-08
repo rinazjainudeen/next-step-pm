@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "PMs rarely manage the people they work with. You get things done by building trust, using evidence and understanding what others care about.",
+  "skills": ["communication", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

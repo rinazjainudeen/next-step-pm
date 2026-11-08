@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Positioning explains what your product is, who it is for and why it is better than the alternatives. Clear positioning makes marketing, sales and even product decisions easier.",
+  "skills": ["commercial", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "core",
   "summary": "A journey map shows every step a user takes to reach their goal, including steps outside your product. It reveals where the experience breaks and makes sure the design solves the whole problem, not just one screen.",
+  "skills": ["design", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

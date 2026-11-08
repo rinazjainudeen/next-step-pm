@@ -4,6 +4,7 @@
   "phase": "coaching-design",
   "kind": "core",
   "summary": "A few shared standards and templates help teams work consistently without slowing them down. Keep them light and explain why each one exists.",
+  "skills": ["leadership", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -42,6 +42,7 @@ const ANSWERS: IntakeAnswers = {
   pm: ["general"],
   product: "b2b",
   size: "scaling",
+  challenge: NOT_SURE,
   stage: "new",
   phase: NOT_SURE,
   level: "product-manager",
@@ -467,6 +468,136 @@ test("tight advice on a track talks about scope, not learning", () => {
   const long = trackBlock("strat-long", "understand");
   const plan = buildPlan({ ...strategyAnswers, stage: "strategy-none", time: "under-1m", until: "understand" }, [{ ...long, estimatedEffort: "30 days" }]);
   assert.match(plan.pace.message, /narrow the scope, or move the milestone\.$/);
+});
+
+// --- The challenge ---
+
+const tagged = (id: string, skills: Block["skills"], overrides: Partial<Block> = {}) => fixture(id, "define", "1 day", [], { skills, ...overrides });
+const challengeBlocks = [tagged("a-plain", ["delivery"]), tagged("b-other", ["commercial"]), tagged("c-data", ["data"]), tagged("d-strategy", ["strategy"])];
+
+test("a block with a favoured skill comes first in its phase, and is marked", () => {
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, challengeBlocks);
+  assert.deepEqual(blockIds(plan), ["c-data", "a-plain", "b-other", "d-strategy"]);
+  assert.deepEqual(allBlocks(plan).map((block) => block.helpsChallenge ?? false), [true, false, false, false]);
+});
+
+test("each challenge favours its own skills", () => {
+  const favoured: Record<string, Block["skills"]> = {
+    "what-to-build": ["discovery", "prioritisation"],
+    "too-many-requests": ["prioritisation", "communication"],
+    measurement: ["data"],
+    alignment: ["strategy", "communication"],
+    "slow-delivery": ["delivery", "technical"],
+    "new-to-role": [],
+    grow: ["leadership", "strategy"],
+  };
+  const everySkill = (["discovery", "strategy", "prioritisation", "data", "design", "delivery", "technical", "communication", "commercial", "leadership"] as const).map((skill) => tagged(`x-${skill}`, [skill]));
+  for (const [challenge, skills] of Object.entries(favoured)) {
+    const plan = buildPlan({ ...ANSWERS, challenge: challenge as IntakeAnswers["challenge"] }, everySkill);
+    const marked = allBlocks(plan).filter((block) => block.helpsChallenge).map((block) => block.id.replace("x-", "")).toSorted();
+    assert.deepEqual(marked, [...skills].toSorted(), challenge);
+    assert.deepEqual(blockIds(plan).slice(0, skills.length).map((id) => id.replace("x-", "")).toSorted(), [...skills].toSorted(), challenge);
+  }
+});
+
+test("Not sure gives exactly the plan a challenge with no favoured skills gives", () => {
+  for (const blocks of [PLAN_BLOCKS, challengeBlocks]) {
+    const notSure = buildPlan(ANSWERS, blocks);
+    const balanced = buildPlan({ ...ANSWERS, challenge: "new-to-role" }, blocks);
+    assert.deepEqual({ ...notSure, newToProductFirst: false }, { ...balanced, newToProductFirst: false });
+    assert.ok(allBlocks(notSure).every((block) => !block.helpsChallenge));
+  }
+});
+
+test("Not sure keeps today's order and next actions", () => {
+  const plan = buildPlan(ANSWERS, challengeBlocks);
+  assert.deepEqual(blockIds(plan), ["a-plain", "b-other", "c-data", "d-strategy"]);
+  assert.equal(plan.nextActions[0].blockId, "a-plain");
+});
+
+test("a favoured block still waits for its dependencies and order links", () => {
+  const blocks = [tagged("a-first", ["delivery"]), tagged("b-second", ["delivery"], { dependsOn: ["a-first"] }), tagged("c-data", ["data"], { dependsOn: ["b-second"] }), tagged("d-data", ["data"], { comesAfter: ["a-first"] })];
+  assert.deepEqual(blockIds(buildPlan({ ...ANSWERS, challenge: "measurement" }, blocks)), ["a-first", "d-data", "b-second", "c-data"]);
+});
+
+test("an add-on still sits straight after what it extends, ahead of a favoured block", () => {
+  const blocks = [tagged("a-core", ["delivery"]), addOn({ id: "b-extra", comesAfter: ["a-core"] }), tagged("c-data", ["data"], { dependsOn: ["a-core"] })];
+  assert.deepEqual(blockIds(buildPlan({ ...ANSWERS, pm: ["ai"], challenge: "measurement" }, blocks)), ["a-core", "b-extra", "c-data"]);
+});
+
+test("a Go further block is never marked or moved by a challenge", () => {
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [tagged("a-plain", ["delivery"]), tagged("b-extra", ["data"], { optional: true })]);
+  assert.deepEqual(blockIds(plan), ["a-plain", "b-extra"]);
+  assert.equal(allBlocks(plan)[1].helpsChallenge, undefined);
+});
+
+test("the next three actions start at the first marked block", () => {
+  const plan = buildPlan({ ...ANSWERS, phase: "discover", until: "define", challenge: "measurement" }, [fixture("discover-plain", "discover", "1 day", [], { skills: ["delivery"] }), tagged("define-data", ["data"])]);
+  assert.ok(plan.nextActions.every((action) => action.blockId === "define-data"));
+  const none = buildPlan({ ...ANSWERS, phase: "discover", until: "define", challenge: "grow" }, [fixture("discover-plain", "discover", "1 day", [], { skills: ["delivery"] }), tagged("define-data", ["data"])]);
+  assert.equal(none.nextActions[0].blockId, "discover-plain");
+});
+
+test("the next actions carry on past the marked block if it runs out of steps", () => {
+  const short = tagged("a-data", ["data"], { steps: { beginner: ["x"], intermediate: ["only step"], experienced: ["x"] } });
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [tagged("z-plain", ["delivery"]), short]);
+  assert.deepEqual(plan.nextActions.map((action) => action.blockId), ["a-data", "z-plain", "z-plain"]);
+});
+
+test("only timeline blocks are marked, not skills or rhythm", () => {
+  const skill = { ...craft("craft-data"), skills: ["data"] } as Block;
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [skill, { ...wow([]), skills: ["data"] }]);
+  assert.ok([...plan.skillsAnyLevel, ...plan.rhythm].every((block) => !block.helpsChallenge));
+});
+
+test("a challenge doesn't reorder the rhythm or skills sections", () => {
+  const rhythm = [{ ...wow([]), id: "wow-a-plain", skills: ["delivery"] }, { ...wow([]), id: "wow-b-data", skills: ["data"] }] as Block[];
+  const skills = [{ ...craft("craft-a-plain"), skills: ["delivery"] }, { ...craft("craft-b-data"), skills: ["data"] }] as Block[];
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [...rhythm, ...skills]);
+  assert.deepEqual(plan.rhythm.map((block) => block.id), ["wow-a-plain", "wow-b-data"]);
+  assert.deepEqual(plan.skillsAnyLevel.map((block) => block.id), ["craft-a-plain", "craft-b-data"]);
+});
+
+test("I'm new puts the new-to-product section first, when there is one", () => {
+  const onboarding = fixture("onboard", "any", "1 day", [], { kind: "onboarding", appliesTo: { pmTypes: [], productTypes: [], stages: ["live"], waysOfWorking: [], experience: [] } });
+  assert.equal(buildPlan({ ...ANSWERS, stage: "live", challenge: "new-to-role" }, [onboarding]).newToProductFirst, true);
+  assert.equal(buildPlan({ ...ANSWERS, stage: "live", challenge: NOT_SURE }, [onboarding]).newToProductFirst, false);
+  assert.equal(buildPlan({ ...ANSWERS, stage: "new", challenge: "new-to-role" }, [onboarding]).newToProductFirst, false);
+});
+
+test("growing into a bigger role puts Grow your skills above the timeline", () => {
+  assert.equal(buildPlan({ ...ANSWERS, challenge: "grow" }, []).skillsFirst, true);
+  for (const challenge of ["measurement", "new-to-role", NOT_SURE] as const) assert.equal(buildPlan({ ...ANSWERS, challenge }, []).skillsFirst, false, challenge);
+});
+
+// --- The opening line ---
+
+test("the opening line names the level, then the first PM type", () => {
+  assert.equal(
+    buildPlan({ ...ANSWERS, level: "associate", pm: ["growth", "ai"] }, []).openingLine,
+    "You're building your craft, so this plan explains each step and why it matters. Growth steps focus on activation, retention and experiments.",
+  );
+  assert.equal(
+    buildPlan({ ...ANSWERS, level: "vp", pm: ["hardware"] }, []).openingLine,
+    "You set product direction for the company, so this plan focuses on strategy, alignment and the organisation you're building. Hardware steps cover cost, manufacturing and certification.",
+  );
+});
+
+test("the opening line uses general for Not sure, and the track on strategy and coaching", () => {
+  assert.equal(
+    buildPlan({ ...ANSWERS, level: NOT_SURE, pm: [NOT_SURE] }, []).openingLine,
+    "We've pitched this at product manager level. Change it in Your answers at any time. It covers the whole lifecycle, so nothing important is missed.",
+  );
+  assert.equal(
+    buildPlan({ ...strategyAnswers, level: "senior", pm: ["ai"] }, []).openingLine,
+    "You own a product line or a hard problem, so this plan focuses on trade-offs, evidence and influence. This plan takes you from understanding the situation to a strategy people act on.",
+  );
+  assert.match(buildPlan({ ...ANSWERS, work: "coaching", stage: "coaching-new", phase: null, until: NOT_SURE }, []).openingLine, /making it run without you\.$/);
+});
+
+test("every level, PM type and track has an opening sentence", () => {
+  for (const { id } of CAREER_LEVELS) assert.ok(buildPlan({ ...ANSWERS, level: id }, []).openingLine.length > 40, id);
+  for (const id of PM_TYPE_IDS) assert.ok(buildPlan({ ...ANSWERS, pm: [id] }, []).openingLine.split(". ").length >= 2, id);
 });
 
 test("placeholder blocks never reach a plan", () => {

@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "In Kanban, work flows continuously. A regular replenishment meeting decides what enters the board next, so the team always works on the most valuable items.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

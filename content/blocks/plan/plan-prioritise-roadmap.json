@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "core",
   "summary": "You will always have more ideas than time. A simple, shared way of scoring them helps you choose, explain your choices and turn them into a roadmap the team and stakeholders can follow.",
+  "skills": ["prioritisation", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "In a small start-up, the PM often does support, testing and marketing too. Do them on purpose, learn from them, and protect time for product decisions.",
+  "skills": ["prioritisation", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

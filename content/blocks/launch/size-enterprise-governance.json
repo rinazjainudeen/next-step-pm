@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "Large organisations protect themselves with reviews and approvals. Learn the routes early, plan their lead times, and treat reviewers as partners.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

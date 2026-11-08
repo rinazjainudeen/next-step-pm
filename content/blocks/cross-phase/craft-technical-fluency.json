@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "You do not need to code, but you do need to understand how your product works, what is hard to build and why. Technical fluency earns engineers' trust and leads to better trade-offs.",
+  "skills": ["technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

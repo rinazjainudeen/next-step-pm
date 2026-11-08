@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "core",
   "summary": "A product brief, often called a PRD, brings the problem, users, goals, scope and open questions into one short document. It becomes the place the whole team goes to understand why you are building this and what is in and out.",
+  "skills": ["communication", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

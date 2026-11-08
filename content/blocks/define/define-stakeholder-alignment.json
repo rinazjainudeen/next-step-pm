@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "core",
   "summary": "Work goes faster when the people who can help or block it agree on the problem, the goal and who decides what. Get that agreement early, in writing, and keep it fresh.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

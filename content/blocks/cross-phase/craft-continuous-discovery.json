@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "The best product teams talk to users every week, not just at the start of a project. Small, regular contact keeps decisions grounded in reality.",
+  "skills": ["discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

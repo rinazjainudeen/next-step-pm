@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Much of a PM's influence happens in writing. Clear, short documents help people understand quickly, decide well and remember why.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

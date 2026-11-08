@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Public bodies often need approval to spend money on technology and must buy through set routes. Plan for this early.",
+  "skills": ["commercial", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "Consumer products can be misused for fraud, abuse or harmful content. Design protections in from the start.",
+  "skills": ["design"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

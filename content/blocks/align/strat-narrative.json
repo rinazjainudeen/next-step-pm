@@ -4,6 +4,7 @@
   "phase": "align",
   "kind": "core",
   "summary": "A short written narrative explains the strategy better than slides. It forces clear thinking and lets people read, question and remember it.",
+  "skills": ["strategy", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

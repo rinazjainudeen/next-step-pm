@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "Shipping is not the finish line. Check whether the change did what your hypothesis predicted, learn why, and use that to decide what to do next.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

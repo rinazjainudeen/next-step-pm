@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "At the end of each sprint, the team shows what it built to stakeholders and discusses what to do next. It is a working session, not a presentation.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

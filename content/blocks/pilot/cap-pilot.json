@@ -4,6 +4,7 @@
   "phase": "pilot",
   "kind": "core",
   "summary": "Try the change with one or two willing teams first. Learn what works, fix what doesn't and build proof before scaling.",
+  "skills": ["leadership", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

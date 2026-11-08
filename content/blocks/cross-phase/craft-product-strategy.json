@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Strategy is how you plan to reach the vision: which problems to focus on, which to ignore and why. Good strategy is mostly about saying no.",
+  "skills": ["strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

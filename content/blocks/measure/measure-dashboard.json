@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "A dashboard puts the numbers that matter in one place, so the team can see how the product is doing every week without waiting for reports.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   COMPANY_SIZES,
   EXPERIENCE_LEVELS,
+  SKILLS,
   FRESHNESS,
   KINDS,
   PM_TYPES,
@@ -125,6 +126,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
 
       <Section title="Who this applies to">
         <dl className="grid gap-5 sm:grid-cols-2">
+          <Chips label="Skills it builds" values={block.skills.map((v) => labelOf(SKILLS, v))} />
           <Chips label="PM types" values={block.appliesTo.pmTypes.map((v) => labelOf(PM_TYPES, v))} />
           <Chips label="Product types" values={block.appliesTo.productTypes.map((v) => labelOf(PRODUCT_TYPES, v))} />
           <Chips label="Starting points" values={block.appliesTo.stages.map((v) => labelOf(STAGES, v))} />

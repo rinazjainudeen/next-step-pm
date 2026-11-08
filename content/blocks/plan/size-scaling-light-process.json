@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "As a company grows, ad hoc decisions stop working. Add just enough process to keep teams aligned, and drop anything that slows them without helping.",
+  "skills": ["delivery", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

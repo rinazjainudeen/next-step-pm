@@ -4,6 +4,7 @@
   "phase": "diagnose",
   "kind": "core",
   "summary": "Good strategy names the main obstacle in the way. A clear diagnosis tells you where to focus, and stops the strategy becoming a list of goals.",
+  "skills": ["strategy", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "add-on",
   "summary": "Regular one-to-ones are where you learn what your PMs need and help them grow. Make them about the person, and give feedback that is specific and kind.",
+  "skills": ["leadership", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

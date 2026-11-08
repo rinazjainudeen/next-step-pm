@@ -154,6 +154,43 @@ export type ExperienceId = (typeof EXPERIENCE_LEVELS)[number]["id"];
 export const EXPERIENCE_IDS: readonly ExperienceId[] = EXPERIENCE_LEVELS.map((item) => item.id);
 
 // ---------------------------------------------------------------------------
+// 5a. The ten PM skills. Every block is tagged with one to three.
+// ---------------------------------------------------------------------------
+
+export const SKILLS = [
+  { id: "discovery", label: "Discovery and research", description: "Finding out what users need and what's worth solving." },
+  { id: "strategy", label: "Strategy and vision", description: "Deciding where to play, what to bet on and what to stop." },
+  { id: "prioritisation", label: "Prioritisation and roadmapping", description: "Choosing what comes first and saying no well." },
+  { id: "data", label: "Data and measurement", description: "Knowing whether it's working, with numbers you trust." },
+  { id: "design", label: "Design and user experience", description: "Shaping solutions people can use and want." },
+  { id: "delivery", label: "Delivery and execution", description: "Getting good work shipped, steadily." },
+  { id: "technical", label: "Technical and AI fluency", description: "Understanding how the product is built and where it can fail." },
+  { id: "communication", label: "Communication and influence", description: "Bringing people with you, at every level." },
+  { id: "commercial", label: "Commercial and business sense", description: "Making it work for the business as well as users." },
+  { id: "leadership", label: "Leadership and coaching", description: "Growing the people and teams around you." },
+] as const;
+
+export type SkillId = (typeof SKILLS)[number]["id"];
+export const SKILL_IDS: readonly SkillId[] = SKILLS.map((skill) => skill.id);
+
+// ---------------------------------------------------------------------------
+// 5b. Intake: what's your biggest challenge right now? It favours some skills.
+// ---------------------------------------------------------------------------
+
+export const CHALLENGES = [
+  { id: "what-to-build", label: "We're not sure what to build next", description: "Lots of ideas, little evidence.", favours: ["discovery", "prioritisation"] },
+  { id: "too-many-requests", label: "Too many requests, and it's hard to say no", description: "Everything feels urgent.", favours: ["prioritisation", "communication"] },
+  { id: "measurement", label: "We ship, but can't tell if it's working", description: "Little or no measurement.", favours: ["data"] },
+  { id: "alignment", label: "People aren't aligned on the direction", description: "Leaders or teams pull different ways.", favours: ["strategy", "communication"] },
+  { id: "slow-delivery", label: "Delivery is slow or unpredictable", description: "Dates slip, and work gets stuck.", favours: ["delivery", "technical"] },
+  { id: "new-to-role", label: "I'm new and need to get up to speed", description: "A new role, product or team.", favours: [] },
+  { id: "grow", label: "I want to grow into a bigger role", description: "Getting ready for the next level.", favours: ["leadership", "strategy"] },
+] as const satisfies readonly { id: string; label: string; description: string; favours: readonly SkillId[] }[];
+
+export type ChallengeId = (typeof CHALLENGES)[number]["id"];
+export const CHALLENGE_IDS: readonly ChallengeId[] = CHALLENGES.map((challenge) => challenge.id);
+
+// ---------------------------------------------------------------------------
 // 6a. Intake: what do you own? Each career level points to one of the three sets of steps.
 // ---------------------------------------------------------------------------
 

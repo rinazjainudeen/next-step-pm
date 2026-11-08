@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "In hardware, the parts list sets most of the cost of every unit you sell. Agree a target cost per unit early and check every design change against it.",
+  "skills": ["commercial", "technical"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

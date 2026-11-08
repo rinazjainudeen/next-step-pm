@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "Use what you have learned to decide the product's next step: keep improving it, invest to grow it, or stop and move the team to something more valuable.",
+  "skills": ["prioritisation", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "choose",
   "kind": "core",
   "summary": "Build what makes you different, and buy or partner for the rest. Make the choice on purpose for each major capability, including AI.",
+  "skills": ["strategy", "commercial", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

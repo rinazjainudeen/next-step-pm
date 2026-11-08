@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CAREER_LEVELS, COMPANY_SIZE_IDS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
+import { CAREER_LEVELS, CHALLENGES, CHALLENGE_IDS, COMPANY_SIZE_IDS, SKILLS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
 import { loadBlocks } from "./blocks-load";
 import { blockPhases, type Block } from "./blocks-types";
 import { buildPlan, effortInDays } from "./curriculum-engine";
@@ -8,7 +8,7 @@ import { tidyDraft } from "./intake-draft";
 import { finishOptions, phasesForStage, stagesFor, trackFor } from "./intake-phases";
 import { TEAM_ROLE_IDS } from "./intake-questions";
 import { NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
-import { parseDraft, planHref, readerFromRecord, startHref } from "./intake-url";
+import { parseDraft, planHref, readerFromRecord, startHref, withOldLinkDefaults } from "./intake-url";
 import { HOME_STATS } from "./site-stats";
 import { firstUnansweredStep, validateDraft } from "./intake-validate";
 import type { Plan } from "./plan-types";
@@ -77,13 +77,15 @@ const PEOPLE = PM_ANSWERS.flatMap((pm) => PRODUCT_TYPE_IDS.map((product) => ({ p
 const WAYS = [...WAY_OF_WORKING_IDS, NOT_SURE] as const;
 const LEVELS = [...CAREER_LEVELS.map((level) => level.id), NOT_SURE] as const;
 const SIZES = [...COMPANY_SIZE_IDS, NOT_SURE] as const;
+const CHALLENGE_ANSWERS = [...CHALLENGE_IDS, NOT_SURE] as const;
+const FAVOURS: Record<string, readonly string[]> = Object.fromEntries(CHALLENGES.map((challenge) => [challenge.id, challenge.favours]));
 const STEPS_FOR: Record<string, string> = { associate: "beginner", "product-manager": "intermediate", senior: "experienced", group: "experienced", director: "experienced", vp: "experienced", [NOT_SURE]: "intermediate" };
 const LEADS_PEOPLE = ["group", "director", "vp"];
 const levelOf = (answers: IntakeAnswers) => STEPS_FOR[answers.level] as (typeof EXPERIENCE_IDS)[number];
 const sizeOf = (answers: IntakeAnswers) => (answers.size === NOT_SURE ? "established" : answers.size);
 
 function answersFor(route: Route, pick: Partial<IntakeAnswers>): IntakeAnswers {
-  const result = validateDraft(tidyDraft({ work: "product", pm: ["general"], product: "b2b", level: "product-manager", size: "scaling", team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick }));
+  const result = validateDraft(tidyDraft({ work: "product", pm: ["general"], product: "b2b", level: "product-manager", size: "scaling", challenge: NOT_SURE, team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick }));
   assert.ok(result.ok, `A reachable answer set failed validation: ${JSON.stringify({ route, pick })}`);
   return result.answers;
 }
@@ -217,7 +219,16 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   if (plan.phases.length === 0) problems.push("The plan has no phases.");
   if (plan.nextActions.length !== Math.min(3, required.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
   if (plan.nextActions.some((action) => !required.some((block) => block.id === action.blockId))) problems.push("A next action comes from a Go further block.");
-  if (plan.nextActions.some((action, index) => action.text !== required.flatMap((block) => block.steps)[index]?.text)) problems.push("The next actions aren't the first required steps.");
+  // The challenge: marked blocks build a favoured skill, and the next actions start at the first one.
+  const favoured = FAVOURS[answers.challenge] ?? [];
+  for (const block of timeline) {
+    const shouldMark = !block.optional && (byId.get(block.id) as Block).skills.some((skill) => favoured.includes(skill));
+    if ((block.helpsChallenge ?? false) !== shouldMark) problems.push(`${block.id} is wrongly${shouldMark ? " not" : ""} marked as helping with the challenge.`);
+  }
+  const fromMarked = required.slice(Math.max(required.findIndex((block) => block.helpsChallenge), 0));
+  if (plan.nextActions.some((action, index) => action.text !== fromMarked.flatMap((block) => block.steps)[index]?.text)) problems.push("The next actions don't start at the right block.");
+  if (plan.skillsFirst !== (answers.challenge === "grow")) problems.push("Grow your skills is in the wrong place.");
+  if (plan.newToProductFirst !== (answers.challenge === "new-to-role" && plan.getUpToSpeed.length > 0)) problems.push("The new-to-product section is in the wrong place.");
   if (timeline.some((block) => (byId.get(block.id) as Block).optional !== block.optional)) problems.push("A Go further block isn't marked.");
   for (const phase of plan.phases) {
     const firstOptional = phase.blocks.findIndex((block) => block.optional);
@@ -412,7 +423,7 @@ test("every route through the questions gives a sound plan, at every level and w
       for (const way of WAYS) {
         // Moves through the people, teams and tools, so each gets used in many different routes.
         index += 1;
-        const answers = answersFor(route, { level, way, size: SIZES[index % SIZES.length], ...PEOPLE[index % PEOPLE.length], ...TEAMS[index % TEAMS.length], tools: TOOL_SETS[Math.floor(index / 7) % TOOL_SETS.length] });
+        const answers = answersFor(route, { level, way, size: SIZES[index % SIZES.length], challenge: CHALLENGE_ANSWERS[index % CHALLENGE_ANSWERS.length], ...PEOPLE[index % PEOPLE.length], ...TEAMS[index % TEAMS.length], tools: TOOL_SETS[Math.floor(index / 7) % TOOL_SETS.length] });
         checkPlan(answers);
         if (index % 5 === 0) assert.deepEqual(buildPlan(answers, [...BLOCKS].reverse()), buildPlan(answers, BLOCKS), "The order of the block files changed the plan.");
       }
@@ -469,6 +480,7 @@ test("hand-edited links never crash: they build a sound plan or go back to the q
     pm: ["general", "ai", "ai,hardware", "ai,data,growth", "not-sure", "wizard", "__proto__", ""],
     product: ["consumer", "data-ai", "not-sure", "x"],
     work: ["product", "strategy", "coaching", "not-sure", "wizard"],
+    challenge: ["measurement", "grow", "new-to-role", "not-sure", "wizard"],
     stage: ["new", "mid-build", "live", "strategy-none", "strategy-ready", "coaching-some", "not-sure", "constructor"],
     phase: [...PHASES.map((phase) => phase.id), "not-sure", "nap"],
     exp: ["beginner", "experienced", "not-sure", "x", "constructor"],
@@ -505,6 +517,31 @@ test("hand-edited links never crash: they build a sound plan or go back to the q
 });
 
 // --- Rules for the blocks themselves ---
+
+test("every block builds one to three real skills", () => {
+  for (const block of BLOCKS) {
+    assert.ok(block.skills.length >= 1 && block.skills.length <= 3, block.id);
+  }
+  const counts = Object.fromEntries(SKILLS.map((skill) => [skill.id, BLOCKS.filter((block) => block.skills.includes(skill.id)).length]));
+  for (const skill of SKILLS) assert.ok(counts[skill.id] > 0, skill.id);
+});
+
+test("data blocks come first and are marked when you can't tell if it's working", () => {
+  const plan = buildPlan(answersFor({ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "measure" }, { challenge: "measurement" }), BLOCKS);
+  const discover = plan.phases[0].blocks;
+  assert.equal(discover[0].id, "discover-frame-opportunity");
+  assert.equal(discover[1].id, "discover-data-signals");
+  assert.equal(discover[1].helpsChallenge, true);
+  assert.equal(plan.nextActions[0].blockId, "discover-data-signals");
+});
+
+test("every challenge keeps the agreed order rules", () => {
+  for (const challenge of CHALLENGE_ANSWERS) {
+    for (const route of [{ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "measure" }, { work: "strategy", stage: "strategy-none", phase: null, time: NOT_SURE, until: null }] as Route[]) {
+      checkPlan(answersFor(route, { challenge, pm: ["ai", "growth"], product: "b2b", level: "senior" }));
+    }
+  }
+});
 
 test("every add-on names the block it extends, so none falls to the end of a phase", () => {
   // Leads-people blocks sit outside the timeline, so they have nothing to follow.
@@ -657,7 +694,8 @@ test("coaching-track leaders get coaching on their timeline, shown once", () => 
 
 test("old links build a sound plan at every old experience answer", () => {
   for (const [exp, level] of [["beginner", "associate"], ["intermediate", "product-manager"], ["experienced", "senior"], [NOT_SURE, NOT_SURE]]) {
-    const result = validateDraft(parseDraft(readerFromRecord({ pm: "ai", product: "b2b", stage: "new", phase: "not-sure", exp, team: "ba", tools: "jira", time: "1-3m", until: "not-sure", way: "scrum" })));
+    // The plan page fills a missing challenge as Not sure for old links, as it does here.
+    const result = validateDraft(withOldLinkDefaults(parseDraft(readerFromRecord({ pm: "ai", product: "b2b", stage: "new", phase: "not-sure", exp, team: "ba", tools: "jira", time: "1-3m", until: "not-sure", way: "scrum" }))));
     assert.ok(result.ok, exp);
     assert.equal(result.answers.level, level);
     assert.deepEqual(problemsWith(result.answers, buildPlan(result.answers, BLOCKS)), [], exp);

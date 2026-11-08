@@ -4,6 +4,7 @@
   "phase": "scale",
   "kind": "core",
   "summary": "People copy what leaders do. If leaders keep asking for feature lists and dates, the new way of working won't last.",
+  "skills": ["leadership", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

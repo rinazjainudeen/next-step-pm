@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "core",
   "summary": "Decide how you will know the work succeeded, and what must not get worse along the way. Clear metrics make every later decision easier.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

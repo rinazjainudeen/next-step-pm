@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Objectives and key results, or OKRs, pair an inspiring goal with a few measurable results. Used well, they focus a team on outcomes rather than a list of tasks.",
+  "skills": ["strategy", "data", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

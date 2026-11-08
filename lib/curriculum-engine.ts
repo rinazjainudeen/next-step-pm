@@ -1,5 +1,6 @@
 import {
   CAREER_LEVELS,
+  CHALLENGES,
   COMPANY_SIZES,
   EXPERIENCE_IDS,
   WORK_KINDS,
@@ -15,6 +16,7 @@ import {
   type ExperienceId,
   type PhaseId,
   type RoleId,
+  type SkillId,
   type StageId,
   type TaskFallbackId,
   type TimelineId,
@@ -23,6 +25,7 @@ import {
 import { blockPhases, type Block, type DelegatedTask } from "./blocks-types";
 import { finishOptions, phasesCovered, trackFor } from "./intake-phases";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type TeamRoleId } from "./intake-types";
+import { OPENING_LINES } from "./plan-wording";
 import type { Plan, PlanAction, PlanBlock, PlanPace, PlanPhase, PlanTask, PlanToolExample } from "./plan-types";
 
 /**
@@ -174,6 +177,16 @@ function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
   return !block.placeholder && fitsPerson(block, answers) && fitsStage(block, answers) && fitsWayOfWorking(block, answers) && fitsCompanySize(block, answers);
 }
 
+/** The skills the visitor's challenge favours. "Not sure" favours none. */
+function favouredSkills(answers: IntakeAnswers): readonly SkillId[] {
+  return CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.favours ?? [];
+}
+
+function helpsChallenge(block: Block, answers: IntakeAnswers): boolean {
+  const favoured = favouredSkills(answers);
+  return !block.optional && block.skills.some((skill) => favoured.includes(skill));
+}
+
 function movesUp(block: Block, answers: IntakeAnswers): boolean {
   return block.movesUpFor?.includes(sizeFor(answers)) ?? false;
 }
@@ -191,14 +204,18 @@ function placeIn(block: Block, covered: readonly PhaseId[]): PhaseId | undefined
  * phase. When several could go next, a block with a place to follow goes first,
  * and an add-on goes before core work, so it sits straight after what it
  * extends. "Go further" blocks always go last. A block that moves up for the
- * visitor's organisation goes as early as its dependencies allow.
+ * visitor's organisation goes as early as its dependencies allow. In the
+ * timeline, a block that helps with the visitor's challenge goes as early as
+ * its dependencies and order links allow, so the agreed order still holds.
  */
-function orderByDependency(blocks: readonly Block[], answers: IntakeAnswers): Block[] {
+function orderByDependency(blocks: readonly Block[], answers: IntakeAnswers, favourChallenge = false): Block[] {
   const present = new Set(blocks.map((block) => block.id));
   const follows = (block: Block) => (movesUp(block, answers) ? [] : (block.comesAfter ?? []).filter((id) => present.has(id)));
   const rank = (block: Block) => {
     if (movesUp(block, answers)) return -1;
     if (block.optional) return 4;
+    // After an add-on that follows the block just placed, so add-ons still sit straight after what they extend.
+    if (favourChallenge && helpsChallenge(block, answers) && !(block.kind === "add-on" && follows(block).length > 0)) return 0.5;
     if (follows(block).length > 0) return block.kind === "add-on" ? 0 : 1;
     return block.kind === "core" ? 2 : 3;
   };
@@ -351,7 +368,7 @@ function titleFor(block: Block, answers: IntakeAnswers): string {
   return answers.stage === "live" && block.titleWhenLive ? block.titleWhenLive : block.title;
 }
 
-function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirst: PlanBlock["checkFirst"]): PlanBlock {
+function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirst: PlanBlock["checkFirst"], helps = false): PlanBlock {
   const level = experienceFor(answers);
   const tools = toolExamples(block, answers);
   return {
@@ -361,6 +378,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
     ...(movesUp(block, answers) ? { movedUp: true } : {}),
+    ...(helps ? { helpsChallenge: true } : {}),
     effort: block.estimatedEffort,
     why,
     steps: block.steps[level].map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
@@ -504,12 +522,25 @@ function whereText(answers: IntakeAnswers, covered: readonly PhaseId[]): string 
   return `${opening}, ${span}.`;
 }
 
+/**
+ * The first steps of the plan, in order. If a block helps with the visitor's
+ * challenge, the actions start there instead.
+ */
 function firstActions(phases: readonly PlanPhase[], count: number): PlanAction[] {
-  return phases
-    .flatMap((phase) => phase.blocks)
-    .filter((block) => !block.optional)
+  const blocks = phases.flatMap((phase) => phase.blocks).filter((block) => !block.optional);
+  const firstHelping = blocks.findIndex((block) => block.helpsChallenge);
+  return blocks
+    .slice(Math.max(firstHelping, 0))
     .flatMap((block) => block.steps.map((step) => ({ blockId: block.id, blockTitle: block.title, text: step.text })))
     .slice(0, count);
+}
+
+/** One sentence for the level, then one for the first PM type or the track. */
+function openingLine(answers: IntakeAnswers, track: TrackId): string {
+  const level = OPENING_LINES.levels[answers.level];
+  if (track !== "product") return `${level} ${OPENING_LINES.tracks[track]}`;
+  const first = answers.pm[0];
+  return `${level} ${OPENING_LINES.pmTypes[first === undefined || first === NOT_SURE ? "general" : first]}`;
 }
 
 /** Earlier work that the next actions rely on, listed once each. */
@@ -535,7 +566,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
   const byPhase = covered
     .map((phaseId) => ({
       phaseId,
-      blocks: orderByDependency(inTimeline.filter((block) => placeIn(block, covered) === phaseId), answers),
+      blocks: orderByDependency(inTimeline.filter((block) => placeIn(block, covered) === phaseId), answers, true),
     }))
     .filter((group) => group.blocks.length > 0);
 
@@ -564,7 +595,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
     const shaped = phaseBlocks.map((block) => {
       const checkFirst = checksFor(block, done);
       done.add(block.id);
-      return shapeBlock(block, answers, whyTimeline(block, answers, phaseId), checkFirst);
+      return shapeBlock(block, answers, whyTimeline(block, answers, phaseId), checkFirst, helpsChallenge(block, answers));
     });
     const phase = PHASES.find((item) => item.id === phaseId);
     return {
@@ -604,6 +635,9 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[]): 
     rhythm: rhythm.map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
     leadYourTeam: orderByDependency(leadBlocks.filter((block) => !onTimeline.has(block.id)), answers).map((block) => shapeBlock(block, answers, whyLead(), [])),
     leaderNudge: leads && track === "product",
+    openingLine: openingLine(answers, track),
+    newToProductFirst: answers.challenge === "new-to-role" && showOnboarding,
+    skillsFirst: answers.challenge === "grow",
     refreshBasics: orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) =>
       shapeBlock(block, answers, whyRefresh(), []),
     ),

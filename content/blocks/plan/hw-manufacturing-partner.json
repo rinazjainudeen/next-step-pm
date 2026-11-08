@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Most hardware teams use a contract manufacturer. Choose one that fits your volume and product, and treat them as part of the team.",
+  "skills": ["commercial", "delivery"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

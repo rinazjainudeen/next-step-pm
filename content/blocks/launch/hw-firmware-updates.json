@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "Connected devices need security updates for years. In the UK, consumer connected products must meet baseline security rules, including how long you will provide updates.",
+  "skills": ["technical", "delivery"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

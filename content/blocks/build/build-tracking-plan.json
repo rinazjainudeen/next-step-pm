@@ -4,6 +4,7 @@
   "phase": "build",
   "kind": "core",
   "summary": "Decide what data you need to measure success before the code is written. Adding tracking afterwards is slower, and you lose the baseline you need to prove the change worked.",
+  "skills": ["data", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

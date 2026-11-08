@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "core",
   "summary": "Decide the smallest version that real users can use and get value from, so you start learning as early as possible. Small does not mean broken: it should solve a real part of the problem well.",
+  "skills": ["prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

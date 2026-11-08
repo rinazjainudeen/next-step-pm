@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "A metric tree breaks your top metric into the drivers and inputs that move it. It shows which levers your team can pull and how your work links to the goal.",
+  "skills": ["data", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

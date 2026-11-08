@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "add-on",
   "summary": "When your users are developers, research how they actually work: their tools, their workflows and what slows them down.",
+  "skills": ["discovery", "technical"],
   "appliesTo": {
     "pmTypes": [
       "technical"

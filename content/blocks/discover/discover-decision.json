@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Discovery ends with a decision: carry on, change direction or stop. Making this call openly, with evidence, saves money and builds trust, even when the answer is no.",
+  "skills": ["discovery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

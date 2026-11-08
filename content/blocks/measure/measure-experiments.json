@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "An A/B test shows two versions to similar groups of users and compares results. It is the most reliable way to know whether a change caused an improvement.",
+  "skills": ["data", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

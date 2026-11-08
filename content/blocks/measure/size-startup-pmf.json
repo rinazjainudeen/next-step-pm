@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "add-on",
   "summary": "Early start-ups live or die on product-market fit. Measure it directly, find who loves the product most, and build for them.",
+  "skills": ["discovery", "data", "commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

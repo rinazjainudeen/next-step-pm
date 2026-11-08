@@ -4,6 +4,7 @@
   "phase": "choose",
   "kind": "core",
   "summary": "Strategy is choosing where to play and how to win, and saying no to the rest. Pick a few bets that tackle the core challenge, and write down what you are stopping.",
+  "skills": ["strategy", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

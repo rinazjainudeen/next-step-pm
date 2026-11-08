@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "core",
   "summary": "A clear problem statement keeps the team solving the right thing. A hypothesis turns your idea into something you can prove or disprove, so you know later whether it worked.",
+  "skills": ["discovery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "core",
   "summary": "A few weeks after launch, step back as a team: did the product achieve what you hoped, what did you learn, and what will you do differently next time?",
+  "skills": ["data", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

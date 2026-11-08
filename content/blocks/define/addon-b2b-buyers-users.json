@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "In business software the person who buys is often not the person who uses it. Meet both needs.",
+  "skills": ["discovery", "commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

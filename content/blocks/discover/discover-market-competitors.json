@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Find out how others solve the same problem, including tools, workarounds and doing nothing. This shows you what users expect, where the gaps are and how you could do better.",
+  "skills": ["discovery", "commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

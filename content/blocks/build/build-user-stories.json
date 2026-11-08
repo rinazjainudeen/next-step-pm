@@ -4,6 +4,7 @@
   "phase": "build",
   "kind": "core",
   "summary": "User stories describe who needs something and why, so the team builds for a real need. Acceptance criteria say exactly when a story is done, so everyone agrees what to build and how to test it.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

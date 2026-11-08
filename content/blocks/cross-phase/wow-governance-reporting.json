@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Steering groups need a clear, honest picture of progress, risks and decisions needed. Good reporting builds trust and gets you help when you need it.",
+  "skills": ["communication", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

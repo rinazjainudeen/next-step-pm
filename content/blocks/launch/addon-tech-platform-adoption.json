@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "Internal platforms only create value when teams adopt them. Make moving easy, show the benefit and support teams through it.",
+  "skills": ["communication", "technical"],
   "appliesTo": {
     "pmTypes": [
       "technical",

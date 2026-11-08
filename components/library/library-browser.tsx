@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BlockGrid } from "@/components/library/block-card";
 import { Button } from "@/components/ui/button";
-import { KINDS, PHASES, PM_TYPES, WAYS_OF_WORKING } from "@/content/taxonomy";
+import { KINDS, PHASES, PM_TYPES, SKILLS, WAYS_OF_WORKING } from "@/content/taxonomy";
 import { phaseName } from "@/lib/blocks-types";
 import type { BlockSummary } from "@/lib/blocks-types";
 import {
@@ -27,6 +27,7 @@ const FILTERS: FilterDefinition[] = [
   { key: "pm", label: "PM type", allLabel: "All PM types", options: PM_TYPES },
   { key: "kind", label: "Kind of block", allLabel: "All kinds", options: KINDS },
   { key: "way", label: "Way of working", allLabel: "All ways of working", options: WAYS_OF_WORKING },
+  { key: "skill", label: "Skill", allLabel: "All skills", options: SKILLS },
 ];
 
 /**
@@ -51,7 +52,7 @@ export function LibraryBrowser({ blocks }: { blocks: BlockSummary[] }) {
       <form
         aria-label="Filter the library"
         onSubmit={(event) => event.preventDefault()}
-        className="grid gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-[repeat(4,1fr)_auto] lg:items-end"
+        className="grid gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,1fr)_auto] lg:items-end"
       >
         {FILTERS.map((filter) => (
           <div key={filter.key} className="flex flex-col gap-1.5">

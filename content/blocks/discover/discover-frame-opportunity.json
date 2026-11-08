@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Before any research, agree why this work matters, what outcome you are aiming for and what you do not yet know. A clear frame stops discovery from drifting and tells you when it is finished.",
+  "skills": ["discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

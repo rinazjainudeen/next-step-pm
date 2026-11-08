@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "onboarding",
   "summary": "Understand the systems behind the product, their constraints and the technical debt, so you can plan realistically.",
+  "skills": ["technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

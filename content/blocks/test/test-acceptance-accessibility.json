@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "core",
   "summary": "Before anything goes to users, check it does what the stories promised and that disabled people can use it. Accessibility is a legal duty for many services, and fixing problems late costs far more.",
+  "skills": ["design", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

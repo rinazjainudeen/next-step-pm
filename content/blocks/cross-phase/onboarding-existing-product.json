@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "onboarding",
   "summary": "Joining a product that is already being built or is live means learning fast without breaking momentum. Spend your first weeks listening and learning the product, the people and the decisions already made before you change anything.",
+  "skills": ["discovery", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

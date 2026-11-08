@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Growth comes from many small, well-chosen tests. Keep a ranked backlog of experiments and run them steadily.",
+  "skills": ["data", "prioritisation"],
   "appliesTo": {
     "pmTypes": [
       "growth"

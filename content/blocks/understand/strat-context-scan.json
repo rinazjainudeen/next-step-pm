@@ -4,6 +4,7 @@
   "phase": "understand",
   "kind": "core",
   "summary": "Strategy starts from the facts: what the company is trying to achieve, what customers need and what is changing around you. Gather these before forming a view.",
+  "skills": ["strategy", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

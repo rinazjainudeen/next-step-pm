@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "Users need to know when AI is involved, how far to trust it and how to correct it. Design for mistakes, fairness and human oversight from the start.",
+  "skills": ["design", "technical"],
   "appliesTo": {
     "pmTypes": [
       "ai"

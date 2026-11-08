@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "When a company grows fast, knowledge lives in a few heads. Write down decisions and how the product works so new people can get up to speed without asking.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

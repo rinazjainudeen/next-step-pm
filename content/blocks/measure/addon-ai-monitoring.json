@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "add-on",
   "summary": "AI quality can change after launch as users, data and models change. Monitor quality, cost and safety continuously, and act quickly when they slip.",
+  "skills": ["data", "technical"],
   "appliesTo": {
     "pmTypes": [
       "ai"

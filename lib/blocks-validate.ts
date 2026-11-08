@@ -9,6 +9,7 @@ import {
   PM_TYPE_IDS,
   PRODUCT_TYPE_IDS,
   ROLE_IDS,
+  SKILL_IDS,
   STAGE_IDS,
   TASK_FALLBACK_IDS,
   TOOL_IDS,
@@ -41,6 +42,7 @@ const TOP_LEVEL_KEYS = [
   "phase",
   "kind",
   "summary",
+  "skills",
   "appliesTo",
   "steps",
   "roles",
@@ -324,6 +326,12 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
   if (!isNonEmptyString(b.summary)) errors.push(`summary: is missing or empty.`);
 
   checkPhase(b.phase, errors);
+
+  if (!Array.isArray(b.skills) || b.skills.length < 1 || b.skills.length > 3) {
+    errors.push(`skills: needs one to three skills, such as ["discovery", "data"]. Use: ${listOf(SKILL_IDS)}.`);
+  } else {
+    checkIdList(b.skills, SKILL_IDS, "skills", errors, "");
+  }
 
   if (!isOneOf(KIND_IDS, b.kind)) {
     errors.push(`kind: ${JSON.stringify(b.kind)} isn't a kind of block. Use one of: ${listOf(KIND_IDS)}.`);

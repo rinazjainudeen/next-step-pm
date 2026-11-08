@@ -4,6 +4,7 @@
   "phase": "diagnose",
   "kind": "core",
   "summary": "A strategy only works if the organisation can deliver it. Be honest about what you are good at, what you lack and what you could build or buy.",
+  "skills": ["strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

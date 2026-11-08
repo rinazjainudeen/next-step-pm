@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "add-on",
   "summary": "Map how people discover, try, adopt, pay for and recommend your product, and find where most are lost.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [
       "growth"

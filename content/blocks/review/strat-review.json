@@ -4,6 +4,7 @@
   "phase": "review",
   "kind": "core",
   "summary": "Check regularly whether the bets are working. Use evidence, compare plans with what actually happened and learn before deciding what to change.",
+  "skills": ["strategy", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "onboarding",
   "summary": "When you take over a live product, check how it is really doing: usage, quality, reliability, costs and user satisfaction.",
+  "skills": ["data", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

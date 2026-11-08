@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "A short daily meeting where the team checks progress towards its goal and removes blockers. It should take 15 minutes or less.",
+  "skills": ["delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

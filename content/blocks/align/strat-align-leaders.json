@@ -4,6 +4,7 @@
   "phase": "align",
   "kind": "core",
   "summary": "A strategy only matters if leaders act on it. Bring them in before the final version, deal with objections and agree a clear decision.",
+  "skills": ["communication", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

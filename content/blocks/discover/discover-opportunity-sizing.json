@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Estimate how many people have the problem and what solving it is worth. A rough, honest number helps you compare this opportunity with others and decide how much to invest.",
+  "skills": ["commercial", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

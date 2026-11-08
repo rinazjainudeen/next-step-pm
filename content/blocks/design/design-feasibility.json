@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "core",
   "summary": "Before committing, check with engineers that the design can be built with the time, skills and technology you have, and roughly what it will cost. Finding out late is far more expensive.",
+  "skills": ["technical", "design"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

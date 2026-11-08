@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Many organisations need fixed dates and approval points, but teams still work in short cycles. Plan so both work together.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

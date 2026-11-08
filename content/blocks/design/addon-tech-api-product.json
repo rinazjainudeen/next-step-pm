@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "An API is a product for developers. Design it to be easy to understand, consistent, well documented and stable.",
+  "skills": ["technical", "design"],
   "appliesTo": {
     "pmTypes": [
       "technical",

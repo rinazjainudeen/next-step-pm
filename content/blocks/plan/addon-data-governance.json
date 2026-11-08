@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Know who owns each data source, where data comes from and who can see it. Good governance keeps data safe, legal and trusted.",
+  "skills": ["data", "technical"],
   "appliesTo": {
     "pmTypes": [
       "data"

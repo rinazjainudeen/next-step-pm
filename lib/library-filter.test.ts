@@ -69,11 +69,11 @@ test("filters combine, and can leave nothing", () => {
 
 test("filters are read from the web address, ignoring anything unrecognised", () => {
   const filters = parseLibraryFilters(new URLSearchParams("phase=define&pm=wizard&kind=ways-of-working&way=scrum&junk=1"));
-  assert.deepEqual(filters, { phase: "define", pm: null, kind: "ways-of-working", way: "scrum" });
+  assert.deepEqual(filters, { phase: "define", pm: null, kind: "ways-of-working", way: "scrum", skill: null });
 });
 
 test("filters turn back into a web address and round-trip", () => {
-  const filters: LibraryFilters = { phase: "plan", pm: "ai", kind: null, way: "hybrid" };
+  const filters: LibraryFilters = { phase: "plan", pm: "ai", kind: null, way: "hybrid", skill: null };
   const query = filtersToQuery(filters);
   assert.equal(query, "phase=plan&pm=ai&way=hybrid");
   assert.deepEqual(parseLibraryFilters(new URLSearchParams(query)), filters);
@@ -90,4 +90,23 @@ test("a reused block shows under its track phase as well as its own", () => {
   const shown = (phase: "understand" | "choose") => filterBlocks([...reused] as never, { phase, pm: null, kind: null, way: null } as never).length;
   assert.equal(shown("understand"), 1);
   assert.equal(shown("choose"), 0);
+});
+
+test("the skills filter works alongside the others", () => {
+  const blocks = [
+    toSummary(makeBlock({ id: "define-data", skills: ["data"] })),
+    toSummary(makeBlock({ id: "define-strategy", skills: ["strategy", "data"] })),
+    toSummary(makeBlock({ id: "build-data", phase: "build", skills: ["data"] })),
+  ];
+  const ids = (filters: Partial<LibraryFilters>) => filterBlocks(blocks, { ...NO_FILTERS, ...filters }).map((block) => block.id);
+  assert.deepEqual(ids({ skill: "data" }), ["define-data", "define-strategy", "build-data"]);
+  assert.deepEqual(ids({ skill: "strategy" }), ["define-strategy"]);
+  assert.deepEqual(ids({ skill: "data", phase: "build" }), ["build-data"]);
+  assert.deepEqual(ids({ skill: "design" }), []);
+});
+
+test("the skills filter lives in the web address", () => {
+  assert.equal(parseLibraryFilters(new URLSearchParams("skill=data")).skill, "data");
+  assert.equal(parseLibraryFilters(new URLSearchParams("skill=juggling")).skill, null);
+  assert.equal(filtersToQuery({ ...NO_FILTERS, skill: "data", pm: "ai" }), "pm=ai&skill=data");
 });

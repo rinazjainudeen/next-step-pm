@@ -1,5 +1,6 @@
 import {
   CAREER_LEVEL_IDS,
+  CHALLENGE_IDS,
   COMPANY_SIZE_IDS,
   PHASE_IDS,
   PM_TYPE_IDS,
@@ -92,6 +93,7 @@ export function parseDraft(params: ParamReader): IntakeDraft {
     size: parseSize(params),
     stage: pickOne(params, "stage", STAGE_IDS),
     phase: pickOne(params, "phase", PHASE_IDS),
+    challenge: pickOne(params, "challenge", CHALLENGE_IDS),
     ...parseTeam(params),
     tools: pickMany(splitList(params.get("tools")), TOOL_ANSWER_IDS),
     time: pickOne(params, "time", TIMELINE_IDS),
@@ -116,7 +118,7 @@ export function parseEditing(params: ParamReader): boolean {
  * ids, which are safe in a web address, so commas stay readable.
  */
 export function draftToQuery(draft: IntakeDraft): string {
-  const { work, pm, level, product, size, stage, phase, team, teamCounts, tools, time, until, way } = draft;
+  const { work, pm, level, product, size, stage, phase, challenge, team, teamCounts, tools, time, until, way } = draft;
   const teamEntries = team.map((id) => {
     const count = teamCounts[id as TeamRoleId];
     return count ? `${id}:${count}` : id;
@@ -129,6 +131,7 @@ export function draftToQuery(draft: IntakeDraft): string {
     ["size", size],
     ["stage", stage],
     ["phase", phase],
+    ["challenge", challenge],
     ["team", teamEntries.join(",")],
     ["tools", tools.join(",")],
     ["time", time],
@@ -157,6 +160,15 @@ export function startHref(draft: IntakeDraft, step: number, editing = false): st
 /** The address of the finished plan. It has no step, so it reads the same however it was reached. */
 export function planHref(draft: IntakeDraft): string {
   return withQuery("/plan", draftToQuery(draft));
+}
+
+/**
+ * Plans shared before the challenge question have no answer for it. On the
+ * plan page only, it counts as "Not sure", so the link still opens. The intake
+ * never fills it in for anyone.
+ */
+export function withOldLinkDefaults(draft: IntakeDraft): IntakeDraft {
+  return draft.challenge === null ? { ...draft, challenge: NOT_SURE } : draft;
 }
 
 /** Lets server pages, which receive a plain object, use the same reader. */

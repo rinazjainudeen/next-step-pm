@@ -4,6 +4,7 @@
   "phase": "coaching-design",
   "kind": "core",
   "summary": "Clear roles and levels help PMs know what is expected and how to grow. Base them on skills and scope, not just titles.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

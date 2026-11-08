@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "AI is now part of most products. PMs need to understand what AI does well, where it fails, how it is evaluated and what risks it brings, whether or not they build AI features.",
+  "skills": ["technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Refinement is a regular session where the team makes upcoming backlog items clear, small and ready to build. It makes sprint planning quick and calm.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

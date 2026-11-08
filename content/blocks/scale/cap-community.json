@@ -4,6 +4,7 @@
   "phase": "scale",
   "kind": "core",
   "summary": "A community of practice is a group of people who share a craft and learn from each other regularly. It spreads good practice without needing a central team for everything.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

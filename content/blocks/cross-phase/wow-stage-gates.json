@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "A stage gate is a formal review before moving to the next phase or funding. Prepare evidence, not paperwork, and treat it as a chance to get help.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],
