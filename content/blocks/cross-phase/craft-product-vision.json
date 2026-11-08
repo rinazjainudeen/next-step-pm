@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "A product vision describes the future you want to create for users, typically three to five years out. It helps teams make good decisions without being told what to do.",
+  "skills": ["strategy", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

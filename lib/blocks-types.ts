@@ -11,6 +11,7 @@ import {
   type PmTypeId,
   type ProductTypeId,
   type RoleId,
+  type SkillId,
   type StageId,
   type TaskFallbackId,
   type ToolId,
@@ -53,6 +54,8 @@ export type Block = {
   phase: BlockPhase;
   kind: KindId;
   summary: string;
+  /** One to three of the ten PM skills this block builds. */
+  skills: SkillId[];
   /** An empty list means "applies to all". */
   appliesTo: {
     pmTypes: PmTypeId[];
@@ -106,7 +109,7 @@ export type Block = {
 /** The small part of a block the Library list needs. */
 export type BlockSummary = Pick<
   Block,
-  "id" | "title" | "phase" | "kind" | "summary" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder" | "alsoIn"
+  "id" | "title" | "phase" | "kind" | "summary" | "skills" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder" | "alsoIn"
 >;
 
 export function toSummary(block: Block): BlockSummary {
@@ -116,6 +119,7 @@ export function toSummary(block: Block): BlockSummary {
     phase: block.phase,
     kind: block.kind,
     summary: block.summary,
+    skills: block.skills,
     appliesTo: block.appliesTo,
     estimatedEffort: block.estimatedEffort,
     ...(block.optional ? { optional: true } : {}),

@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "Staff may stick to old ways unless the new tool clearly helps them. Plan adoption as carefully as the build.",
+  "skills": ["communication", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

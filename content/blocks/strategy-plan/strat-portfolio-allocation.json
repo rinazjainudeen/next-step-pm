@@ -4,6 +4,7 @@
   "phase": "strategy-plan",
   "kind": "core",
   "summary": "Leaders decide how much to invest in today's products, the next growth areas and future options. Make the split on purpose and review it regularly.",
+  "skills": ["strategy", "prioritisation", "commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

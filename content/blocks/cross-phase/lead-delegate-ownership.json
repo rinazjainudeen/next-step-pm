@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "add-on",
   "summary": "Your PMs grow when they own real problems and decisions. Agree who decides what, and resist taking decisions back.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

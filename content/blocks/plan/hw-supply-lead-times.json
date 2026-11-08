@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Some parts take months to arrive, and a single supplier can stop production. Find the risky parts early and plan around them.",
+  "skills": ["delivery", "commercial"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "In business software, sales teams need to understand why a customer would buy, not just what the product does. Give them the story, the proof and the answers before launch.",
+  "skills": ["commercial", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

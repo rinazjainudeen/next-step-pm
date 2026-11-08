@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "add-on",
   "summary": "Before changing how an organisation works, understand how it works today, including the workarounds people rely on.",
+  "skills": ["discovery"],
   "appliesTo": {
     "pmTypes": [
       "transformation"

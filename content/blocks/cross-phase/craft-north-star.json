@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "A north star metric captures the core value users get from the product. Paired with a few input metrics the team can influence, it keeps everyone pulling in the same direction.",
+  "skills": ["data", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

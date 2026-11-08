@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Short, regular updates keep stakeholders informed and save meetings. Tell them what changed, what is next and what you need.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

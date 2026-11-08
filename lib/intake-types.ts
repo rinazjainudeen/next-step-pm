@@ -1,5 +1,6 @@
 import type {
   CareerLevelId,
+  ChallengeId,
   CompanySizeId,
   PhaseId,
   PmTypeId,
@@ -39,7 +40,7 @@ export const KIND_OF_WORK_ENABLED = true;
 /** The team question lists everyone except the visitor. */
 export type TeamRoleId = Exclude<RoleId, "pm">;
 
-export type SingleQuestionId = "work" | "level" | "product" | "size" | "stage" | "time" | "way";
+export type SingleQuestionId = "work" | "level" | "product" | "size" | "stage" | "challenge" | "time" | "way";
 export type MultiQuestionId = "pm" | "team" | "tools";
 export type QuestionId = SingleQuestionId | MultiQuestionId;
 
@@ -55,6 +56,8 @@ export type IntakeAnswers = {
   stage: Answer<StageId>;
   /** Follow-up to `stage`: where the plan starts. Null only when it wasn't asked. */
   phase: Answer<PhaseId> | null;
+  /** The visitor's biggest challenge. It favours some skills. */
+  challenge: Answer<ChallengeId>;
   team: Answer<TeamRoleId>[];
   /** How many of a role, for roles with more than one. Others count as 1. */
   teamCounts: Partial<Record<TeamRoleId, number>>;
@@ -78,6 +81,7 @@ export const EMPTY_DRAFT: IntakeDraft = {
   size: null,
   stage: null,
   phase: null,
+  challenge: null,
   team: [],
   teamCounts: {},
   tools: [],

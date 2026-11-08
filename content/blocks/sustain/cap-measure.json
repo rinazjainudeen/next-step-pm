@@ -4,6 +4,7 @@
   "phase": "sustain",
   "kind": "core",
   "summary": "Track whether people are working differently and whether it makes a difference, not just whether they attended training.",
+  "skills": ["leadership", "data"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

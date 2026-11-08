@@ -4,6 +4,7 @@
   "phase": "build",
   "kind": "add-on",
   "summary": "Hardware is built several times before mass production. Each build has a purpose and exit criteria: first the design works, then it is right, then the factory can make it.",
+  "skills": ["delivery", "technical"],
   "appliesTo": {
     "pmTypes": [
       "hardware"

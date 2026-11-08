@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Kanban helps a team finish work rather than start more of it. By limiting work in progress and watching a few simple flow measures, you spot bottlenecks early and deliver more predictably.",
+  "skills": ["delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

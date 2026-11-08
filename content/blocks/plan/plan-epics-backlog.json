@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "core",
   "summary": "Turn the first release into a backlog the team can work from: a few large epics, each broken into smaller items, in priority order. A good backlog makes progress visible and planning easy.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

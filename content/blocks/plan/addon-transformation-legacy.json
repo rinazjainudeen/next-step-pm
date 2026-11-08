@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Replacing an old system all at once is risky. Move piece by piece, delivering value along the way.",
+  "skills": ["technical", "delivery"],
   "appliesTo": {
     "pmTypes": [
       "transformation"

@@ -4,6 +4,7 @@
   "phase": "sustain",
   "kind": "core",
   "summary": "Capability work succeeds when it no longer depends on one person. Hand over ownership, build it into routines and step back.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

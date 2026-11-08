@@ -4,6 +4,7 @@
   "phase": "assess",
   "kind": "core",
   "summary": "Before changing anything, find out how product work really happens. Talk to PMs, their managers and the teams they work with.",
+  "skills": ["discovery", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

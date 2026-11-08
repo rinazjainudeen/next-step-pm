@@ -4,6 +4,7 @@
   "phase": "measure",
   "kind": "add-on",
   "summary": "Retention shows whether people keep getting value. Without it, growth leaks away.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [
       "growth"

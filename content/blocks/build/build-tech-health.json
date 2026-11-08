@@ -4,6 +4,7 @@
   "phase": "build",
   "kind": "core",
   "summary": "Shortcuts in code, known as technical debt, slow the team down over time. A good PM makes room for fixing them, so the team can keep delivering at speed.",
+  "skills": ["technical", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

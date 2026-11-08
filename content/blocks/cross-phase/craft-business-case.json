@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "A business case shows why an investment is worth making: the problem, the options, the costs, the benefits and the risks. It helps leaders decide and gives you a baseline to measure against.",
+  "skills": ["commercial", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

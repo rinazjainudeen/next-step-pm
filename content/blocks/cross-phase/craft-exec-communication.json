@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Senior people have little time. Lead with the point and the decision you need, then give only the detail that supports it.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

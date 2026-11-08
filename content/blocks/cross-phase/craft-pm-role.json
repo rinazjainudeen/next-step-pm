@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "A product manager makes sure the team builds the right thing: something users need, that works for the organisation and that can be built. Knowing what the role is, and is not, helps you focus your time.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

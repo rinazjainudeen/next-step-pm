@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Many public services are assessed against a service standard before moving phase. Prepare by doing the work well and showing it honestly.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

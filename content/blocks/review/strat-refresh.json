@@ -4,6 +4,7 @@
   "phase": "review",
   "kind": "core",
   "summary": "Strategies need changing when the facts change, but not every quarter. Agree in advance what would make you change course, and test plans for weak points.",
+  "skills": ["strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

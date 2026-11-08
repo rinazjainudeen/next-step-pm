@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "A RAID log keeps track of risks, assumptions, issues and dependencies in one place, with owners and actions. It stops important problems slipping through.",
+  "skills": ["delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

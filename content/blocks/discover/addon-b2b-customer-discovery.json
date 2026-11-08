@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "add-on",
   "summary": "Business products have buyers, users and sales teams with different views. Involve them in discovery without letting the loudest customer set the roadmap.",
+  "skills": ["discovery", "commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

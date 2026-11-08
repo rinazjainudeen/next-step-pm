@@ -4,6 +4,7 @@
   "phase": "align",
   "kind": "core",
   "summary": "Teams need to see how their work links to the strategy. Help them set their own goals and plans from it, rather than handing down a list of tasks.",
+  "skills": ["strategy", "communication", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

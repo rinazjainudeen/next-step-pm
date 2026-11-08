@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "core",
   "summary": "Things will go wrong in live service. Agree in advance how the team will spot, fix and communicate problems, and how you will learn from them without blame.",
+  "skills": ["delivery", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "assess",
   "kind": "core",
   "summary": "Use a simple framework to see where product practice is strong and where it is weak. It gives you a baseline to measure progress against.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "If people do not trust the data, they will not use it. Agree what good quality means and how you will show it.",
+  "skills": ["data"],
   "appliesTo": {
     "pmTypes": [
       "data"

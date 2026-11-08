@@ -4,6 +4,7 @@
   "phase": "align",
   "kind": "add-on",
   "summary": "Using AI safely needs clear rules: who approves AI uses, how risks are assessed and how people stay in control. Set them up before AI spreads across the organisation.",
+  "skills": ["strategy", "technical", "leadership"],
   "appliesTo": {
     "pmTypes": [
       "ai"

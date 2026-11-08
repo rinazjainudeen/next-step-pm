@@ -4,6 +4,7 @@
   "phase": "build",
   "kind": "core",
   "summary": "Every build hits surprises. When time runs short, cut or simplify work in a way that still meets the user need and the success metric, and make the decision openly.",
+  "skills": ["prioritisation", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

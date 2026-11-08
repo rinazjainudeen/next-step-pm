@@ -4,6 +4,7 @@
   "phase": "assess",
   "kind": "core",
   "summary": "Building product capability changes how people work, so it needs a clear mandate and a senior sponsor. Agree what success looks like before you start.",
+  "skills": ["leadership", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

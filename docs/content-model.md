@@ -42,7 +42,7 @@ These are the usual phases. A live product can also say it's in any phase, becau
 
 The allowed values live in `content/taxonomy.ts`, so blocks and questions can't drift apart.
 
-There are ten questions. The first sets the track, and `KIND_OF_WORK_ENABLED` can switch it off.
+There are eleven questions. The first sets the track, and `KIND_OF_WORK_ENABLED` can switch it off.
 
 0. **What kind of product work are you doing right now?** Building or improving a product · Setting product strategy · Building a team's skills or coaching · Not sure, which means product.
 1. **What kind of product manager are you?** Pick up to two: General · Growth · AI · Data · Technical · Platform · Transformation · Hardware or IoT · Not sure.
@@ -50,6 +50,7 @@ There are ten questions. The first sets the track, and `KIND_OF_WORK_ENABLED` ca
 3. **What kind of product is it?** Consumer digital product · Business software (B2B / SaaS) · Public sector service · Internal tool or platform · Data or AI product · Not sure.
 4. **How big is your organisation?** Early start-up · Scaling · Established · Large enterprise · Not sure.
 5. **Where is the product now?** Starting something new · Partway through a build · Live. Then a follow-up for the exact phase. The strategy track asks "Is there a strategy today?" (No strategy yet · Strategy out of date · Strategy needs turning into plans). The coaching track asks "How mature is product practice where you work?" (Just starting · Some teams do it well · Well established, needs scaling).
+5b. **What's your biggest challenge right now?** Seven answers, each favouring one or two skills, and Not sure. Blocks that build a favoured skill move as early as their order allows. Old links without it open as Not sure.
 6. **Who is in your team?** Multi-select, with how many of each role (1 to 20+). Options: Delivery Manager, Scrum Master, BA, User Researcher, UX Designer, Content Designer, Tech Lead, Frontend Engineer, Backend Engineer, Full-stack Engineer, Architect, DevOps / SRE, QA / Tester, Data Analyst, Data Scientist / ML Engineer, Performance Analyst, Policy / Legal / Compliance, Product Owner, Hardware / manufacturing engineer, Senior leader / sponsor, People / HR partner.
 7. **Which tools do you use?** Grouped as: tracking (Jira, Azure DevOps, Linear, Trello), docs (Confluence, Notion, SharePoint/Word, Google Docs), design (Figma, Miro, Mural), code and hosting (GitHub, GitLab, AWS, Azure, GCP, Vercel), analytics (GA4, Amplitude, Mixpanel, Power BI, Looker), and AI assistants (Claude, ChatGPT, Copilot, Gemini). There is also "A tool that isn't listed", with no text box, which leads to tool-agnostic tips.
 8. **Your timeline to the next milestone:** under 1 month · 1 to 3 months · 3 to 6 months · 6+ months. A milestone is the next point that matters to the visitor, such as a small feature release, the end of discovery, going live or the end of a client contract. The answer sets how long the plan runs: blocks are spread across that time week by week, with a warning if it looks tight. A follow-up, "Which phase do you want to finish by then?", sets where the plan ends. It's shown when there's a real date, must be answered when shown, and offers the phases from where the visitor is to the end of the stage's journey.
@@ -70,6 +71,7 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
   "phase": "define",                    // one phase | a list, e.g. ["design", "plan"] | "any"
   "kind": "core",                       // core | add-on | onboarding | ways-of-working
   "summary": "One or two sentences on why this matters.",
+  "skills": ["discovery", "data"],      // one to three of the ten PM skills
   "appliesTo": {                        // empty list = applies to all
     "pmTypes": [],
     "productTypes": [],
@@ -163,6 +165,7 @@ Each block on its own:
 - `pm` is never given a task or asked to review, because the PM is the visitor.
 - `optional` is `true` or left out, and only appears on core and add-on blocks.
 - `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
+- `skills` has one to three of the ten skills in `content/taxonomy.ts`, with no repeats.
 - Every delegable task has a valid `ifMissing`, and any `orRoles` are real roles other than the main one.
 - `definitionOfDone` has at least one item. `pitfalls` must be present but may be empty.
 - `estimatedEffort` is a number or range and a unit: `30 minutes`, `2-4 hours`, `1 day`, `2-3 days`.

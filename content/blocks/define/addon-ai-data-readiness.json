@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "AI is only as good as the data behind it. Check you have the right data, of good enough quality, and that you are allowed to use it.",
+  "skills": ["data", "technical"],
   "appliesTo": {
     "pmTypes": [
       "ai"

@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "core",
   "summary": "Make sure the people and processes behind the product are ready on day one: who answers questions, who fixes problems and how issues reach the team.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

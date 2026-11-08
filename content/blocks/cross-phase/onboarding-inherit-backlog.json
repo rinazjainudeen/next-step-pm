@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "onboarding",
   "summary": "An inherited backlog contains past decisions, promises and clutter. Understand it before changing it.",
+  "skills": ["prioritisation", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

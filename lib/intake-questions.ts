@@ -1,5 +1,6 @@
 import {
   CAREER_LEVELS,
+  CHALLENGES,
   COMPANY_SIZES,
   PHASES,
   PM_TYPES,
@@ -117,6 +118,15 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
     ...STARTING_QUESTIONS.product,
     notSure: "Pick this if you can't tell yet. Your plan will start from the beginning.",
     options: stagesFor("product"),
+  },
+  {
+    id: "challenge",
+    kind: "single",
+    shortLabel: "Biggest challenge",
+    title: "What's your biggest challenge right now?",
+    why: "This moves the blocks that help most to the front of each phase.",
+    notSure: "We'll keep your plan balanced.",
+    options: CHALLENGES,
   },
   {
     id: "team",

@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "core",
   "summary": "Users leave slow or unreliable products. Agree how fast and available the product must be, test that it is, and make sure the team will know quickly when it is not.",
+  "skills": ["technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

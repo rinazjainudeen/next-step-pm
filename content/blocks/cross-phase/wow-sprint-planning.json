@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Sprint planning sets up each sprint: why it matters, what the team will deliver and how. A clear sprint goal helps the team make good trade-offs when things change mid-sprint.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

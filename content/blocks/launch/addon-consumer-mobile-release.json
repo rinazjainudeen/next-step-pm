@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "add-on",
   "summary": "Mobile releases go through app store review and users update slowly. Plan for both.",
+  "skills": ["delivery", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

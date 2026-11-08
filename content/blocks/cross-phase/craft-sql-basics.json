@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Being able to run a simple query means you can check a hunch in minutes instead of waiting for an analyst. You don't need to be an expert.",
+  "skills": ["data", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

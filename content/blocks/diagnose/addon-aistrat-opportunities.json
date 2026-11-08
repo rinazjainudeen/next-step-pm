@@ -4,6 +4,7 @@
   "phase": "diagnose",
   "kind": "add-on",
   "summary": "AI is useful for some problems and wasteful for others. Find where it could help with your core challenge, and rank the opportunities by value, feasibility and risk.",
+  "skills": ["strategy", "technical", "prioritisation"],
   "appliesTo": {
     "pmTypes": [
       "ai"

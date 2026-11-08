@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Most product decisions can be reversed, so they should be made quickly. A few cannot, and deserve care. Knowing the difference speeds teams up.",
+  "skills": ["prioritisation", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

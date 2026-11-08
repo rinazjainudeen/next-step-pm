@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "core",
   "summary": "The first idea is rarely the best. Generate several different ways to solve the problem, compare them, and only then pick one to develop.",
+  "skills": ["design"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

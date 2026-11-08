@@ -5,6 +5,7 @@
   "kind": "core",
   "optional": true,
   "summary": "Before building, write a one-page press release announcing the finished product, plus a list of tough questions and answers. If you cannot write a convincing release, the idea is not ready yet.",
+  "skills": ["communication", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

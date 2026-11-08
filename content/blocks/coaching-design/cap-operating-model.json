@@ -4,6 +4,7 @@
   "phase": "coaching-design",
   "kind": "core",
   "summary": "Describe how product teams should be set up and work together: who owns what, how decisions are made and how teams relate to each other.",
+  "skills": ["leadership", "strategy"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "add-on",
   "summary": "AI features can give different answers to the same question and can be confidently wrong. Before launch, define what 'good enough' means and test the AI against a set of realistic examples, then keep testing after release.",
+  "skills": ["technical", "data"],
   "appliesTo": {
     "pmTypes": ["ai"],
     "productTypes": ["data-ai"],

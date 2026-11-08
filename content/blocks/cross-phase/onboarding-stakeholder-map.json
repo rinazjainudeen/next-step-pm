@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "onboarding",
   "summary": "When you join an existing product, quickly learn who matters, what they care about and how decisions are made.",
+  "skills": ["communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

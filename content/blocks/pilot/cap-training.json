@@ -4,6 +4,7 @@
   "phase": "pilot",
   "kind": "core",
   "summary": "People learn product skills by doing them. Keep training short and practical, using real work, and follow it up so it sticks.",
+  "skills": ["leadership", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

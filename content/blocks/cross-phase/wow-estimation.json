@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "Estimating together helps a team understand the work and plan realistically. The conversation matters more than the number.",
+  "skills": ["delivery", "technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

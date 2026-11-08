@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "Other teams build on your platform, so a change you make can break their work. Know who uses what, and give them time and help when something must change.",
+  "skills": ["technical", "communication"],
   "appliesTo": {
     "pmTypes": [
       "platform"

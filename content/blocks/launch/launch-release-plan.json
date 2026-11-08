@@ -4,6 +4,7 @@
   "phase": "launch",
   "kind": "core",
   "summary": "A release plan makes sure everyone knows what is going out, when, who is affected and what happens if it goes wrong. Releasing small changes gradually keeps the risk low.",
+  "skills": ["delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

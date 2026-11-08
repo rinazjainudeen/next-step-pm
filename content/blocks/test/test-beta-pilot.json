@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "core",
   "summary": "Before opening to everyone, let a small group use the real product for real tasks. A beta finds the problems testing cannot and builds confidence for the full launch.",
+  "skills": ["discovery", "delivery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

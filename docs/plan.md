@@ -4,7 +4,7 @@
 
 - **Goal:** a working, public product that shows hiring managers that Rinaz can ship an AI-assisted product to production, and that real PMs find useful.
 - **Audience:** hiring managers for AI PM and AI Builder roles first, then product managers of every level, then colleagues.
-- **Main action:** "Build my plan": answer about 10 questions and get a tailored, step-by-step curriculum.
+- **Main action:** "Build my plan": answer about 11 questions and get a tailored, step-by-step curriculum.
 - **Pages:** Home · Build my plan (intake) · Your plan · Library (all blocks) · How I built this · Decision log · Privacy.
 - **Tier:** Standard, with no visitor accounts.
   - Content lives in the code.
@@ -103,23 +103,36 @@ Two new team roles: Senior leader or sponsor, and People or HR partner. Existing
 
 **Check:** build a strategy plan and a coaching plan from each starting point, and read the new blocks in the library.
 
+### Phase 7c: Usefulness check (done in chat, 6 November 2026)
+The live engine was run on 30 realistic profiles across all three tracks, six levels, eight PM types, four sizes and every stage. Every plan was valid, but some weren't useful: plans were long (median about 45 items), everyone on a live or part-built product got onboarding, strategy and coaching plans listed Scrum rituals, solo PMs got team rituals, leaders lost "Lead your team" off the product track, and personalisation was thin. It produced the Phase 7d fixes and no code. Long plans and thin personalisation went to Phase 8a, and single-product steps for Directors and VPs to 8b.
+
 ### Phase 7d: Plan fixes
 Five small fixes from the usefulness check of 6 November 2026: a collapsed "If you're new to this product" section, a rhythm section that only shows when it applies, "Lead your team" on every track, a nudge for people leaders, and two wording fixes.
 
 **Check:** the acceptance list in the usefulness check.
 
-### Phase 8a: Skills and growth
-- Nine PM skills, tagged on every block.
-- The plan opening line.
-- "Next level" notes.
-- A skills filter on the plan page ("Want to focus? Pick two skills") rather than an eleventh question, so the intake stays at ten.
+### Phase 8a-1: Skills, your challenge and a shorter-feeling plan
+Approved by Rinaz on 7 November 2026. The full spec is in `docs/phase-8a-spec.md`.
+- Ten PM skills, with one to three tagged on every block, shown on block cards and filterable in the Library.
+- A new intake question: "What's your biggest challenge right now?" Blocks that build the skills it favours move as early as their order allows, marked "Helps with your challenge", and the next 3 actions start there. "I'm new…" opens the new-to-product section and puts it first. "Grow into a bigger role" moves "Grow your skills" above the timeline.
+- Only the current phase is open, with an "Open all phases" button. Print shows everything.
+- A two-sentence opening line for the level, then the PM type or track.
 
-**Check:** filter a plan by two skills, and read the opening line for different levels and PM types.
+**Check:** the 8a-1 acceptance list in the spec.
+
+### Phase 8a-2: Your own adjustments (saved in your browser)
+- An optional skill self-check, "How confident are you?", saved in the browser only. Skills rated "Getting started" move their blocks up.
+- "Already done" and "Not relevant" on each block, with a "Set aside" section and undo.
+- Nothing from 8a-2 goes in the shared link.
+
+**Check:** the 8a-2 acceptance list in the spec.
 
 ### Phase 8b: Content pass
 - "In your context" lines on core blocks: one line per PM type with the right example metric, such as activation rate for growth or hallucination rate for AI.
 - Practice scenarios on craft blocks, written per level.
 - Rewrite the experienced steps so they read as portfolio, cross-team and leadership work, not "the same task, done harder".
+- "Next level" notes: one sentence per block on what the next level does differently.
+- More design and user experience blocks. Only 12 blocks build that skill, the fewest of the ten.
 
 **Check:** Rinaz reads each batch in the library and approves it.
 

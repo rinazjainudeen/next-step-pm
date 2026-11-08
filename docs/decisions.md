@@ -8,6 +8,23 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-08 (Phase 8a-1)
+
+Rinaz approved the Phase 8a spec on 7 November 2026. It's in `docs/phase-8a-spec.md`.
+
+- **The intake grows to 11 questions, with "What's your biggest challenge right now?"** Rinaz's call. It comes after the starting point, is required and has "Not sure". Each answer favours one or two skills. Why: the usefulness check found about 85% of timeline blocks were the same across profiles at the same stage.
+- **"Next level" notes moved to Phase 8b.** Rinaz's call. Why: they're content, at one sentence per block.
+- **The plan-page skills filter is dropped, in favour of the 8a-2 self-check.** Rinaz's call. Why: the self-check does the same job better, and keeps the intake at 11 questions.
+- **Every block builds one to three of ten skills.** `skills` is required, and the tags were applied by script from `PHASE-8A-SKILL-TAGS.json`. Design and user experience has only 12 blocks, so it's thin and goes to the 8b content pass.
+- **Blocks that help with the challenge move as early as both their dependencies and order links allow.** This differs from the spec, which said "the same rule as `movesUpFor`". That rule ignores `comesAfter`, and with "delivery" alone tagging 40 blocks, it would break the agreed order: the discovery decision could come before the add-ons, and the pilot before security. The acceptance check, "come first where dependencies allow", still holds. An add-on still sits straight after what it extends, and "Go further" blocks are never marked.
+- **Only timeline blocks are marked "Helps with your challenge".** Rhythm and skills sections keep their order.
+- **The next 3 actions start at the first marked block, then carry on in plan order.**
+- **"I'm new and need to get up to speed" only changes plans that have a new-to-product section,** which means a live or part-built product. On other plans it changes nothing.
+- **Old links with no challenge open with it as Not sure, on the plan page only.** Why: the intake must never pre-select an answer, so someone halfway through the questions still has to choose. Answers in progress only live on `/start`, so a plan link without one is always an old or hand-edited link, and an old link missing another answer goes to that question, not the challenge.
+- **The current phase is worked out in the browser, from ticks.** The first view opens the first phase, and the visitor's choice wins once they open or close one. The phase view sits on top of the block cards, which don't change.
+- **The opening line lives in `lib/plan-wording.ts`**, so the wording can be edited in one place. It uses the first PM type in taxonomy order, because two picks are stored in a fixed order.
+- **Skills show on Library block cards and block pages, not on plan cards.** Plan cards show "Helps with your challenge" instead, to keep them short.
+
 ## 2026-11-06 (Phase 7d)
 
 A usefulness check of 30 realistic profiles found plans that were valid but not always useful. Rinaz approved five small fixes. Longer plans and thin personalisation wait for Phase 8a, and single-product steps for Directors and VPs wait for 8b.

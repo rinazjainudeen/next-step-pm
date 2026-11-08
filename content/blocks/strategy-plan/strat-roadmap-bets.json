@@ -4,6 +4,7 @@
   "phase": "strategy-plan",
   "kind": "core",
   "summary": "A strategy roadmap shows the bets, the outcomes they aim for and roughly when, without promising every feature and date.",
+  "skills": ["strategy", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

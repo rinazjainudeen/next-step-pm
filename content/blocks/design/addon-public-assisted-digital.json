@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "Public services must work for everyone, including people without internet, skills or confidence. Design support routes alongside the digital service.",
+  "skills": ["design", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [

@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "add-on",
   "summary": "In a larger organisation, your plan often depends on other teams' work. Find those dependencies early, agree them in writing and review them often.",
+  "skills": ["delivery", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

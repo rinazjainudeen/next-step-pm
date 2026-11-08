@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "How fast, reliable and secure a technical product must be is part of the requirement. Agree measurable targets before building, not after testing.",
+  "skills": ["technical", "delivery"],
   "appliesTo": {
     "pmTypes": [
       "technical",

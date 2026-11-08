@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "core",
   "summary": "A roadmap only helps if people understand it. Share it in a way each audience can use, be clear about what is certain and what is not, and keep it up to date.",
+  "skills": ["communication", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

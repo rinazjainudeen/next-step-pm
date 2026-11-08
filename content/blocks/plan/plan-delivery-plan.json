@@ -4,6 +4,7 @@
   "phase": "plan",
   "kind": "core",
   "summary": "A delivery plan shows how the first release will actually get built: the order of work, the milestones, who is needed and what could get in the way. It turns intentions into commitments the team believes in.",
+  "skills": ["delivery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

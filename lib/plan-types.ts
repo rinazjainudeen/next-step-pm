@@ -30,6 +30,8 @@ export type PlanBlock = {
   optional?: boolean;
   /** This matters more at the visitor's size of organisation, so it comes early. */
   movedUp?: boolean;
+  /** Builds a skill the visitor's challenge favours, so it comes as early as its order allows. */
+  helpsChallenge?: boolean;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;
@@ -80,6 +82,12 @@ export type Plan = {
   leadYourTeam: PlanBlock[];
   /** Suggests a strategy or coaching plan to people leaders on the product track. */
   leaderNudge: boolean;
+  /** Two sentences for the top of the plan: the level, then the PM type or track. */
+  openingLine: string;
+  /** "I'm new" puts the new-to-product section first, and open. */
+  newToProductFirst: boolean;
+  /** "Grow into a bigger role" puts Grow your skills above the timeline. */
+  skillsFirst: boolean;
   /** Basics for levels below the visitor's. A level never removes a block, so they're kept here. */
   refreshBasics: PlanBlock[];
   /** Craft blocks limited to the visitor's level, most specific first. Outside the timeline. */

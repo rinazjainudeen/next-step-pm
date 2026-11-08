@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "ways-of-working",
   "summary": "A regular session where the team looks at how it is working and agrees one or two improvements. It is how teams get better over time.",
+  "skills": ["delivery", "leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "Every AI call costs money and takes time. Estimate both early, pick the cheapest model that meets the quality bar, and use simple savings before anything complex.",
+  "skills": ["technical", "commercial"],
   "appliesTo": {
     "pmTypes": [
       "ai"

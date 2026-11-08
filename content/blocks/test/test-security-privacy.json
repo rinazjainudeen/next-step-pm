@@ -4,6 +4,7 @@
   "phase": "test",
   "kind": "core",
   "summary": "Before real users and real data arrive, check that the product protects both. Security and privacy problems found after launch are expensive and damage trust.",
+  "skills": ["technical"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "AI features can give different answers to the same question, and sometimes wrong ones. Design so people know what to expect, can check results and can recover easily.",
+  "skills": ["design", "technical"],
   "appliesTo": {
     "pmTypes": [
       "ai"

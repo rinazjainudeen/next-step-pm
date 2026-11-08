@@ -4,6 +4,7 @@
   "phase": "pilot",
   "kind": "core",
   "summary": "Coaching helps PMs apply new skills on their real work. Ask good questions, agree goals and follow up, rather than giving all the answers.",
+  "skills": ["leadership"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

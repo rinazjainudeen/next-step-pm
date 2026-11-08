@@ -1,6 +1,6 @@
 import { ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
-import { KINDS, labelOf } from "@/content/taxonomy";
+import { KINDS, SKILLS, labelOf } from "@/content/taxonomy";
 import { phaseLabel, type BlockSummary } from "@/lib/blocks-types";
 
 /** One block in the Library list. The whole card is a link to the block. */
@@ -32,6 +32,13 @@ export function BlockCard({ block }: { block: BlockSummary }) {
       </div>
       <h3 className="mt-4 text-xl font-bold tracking-tight">{block.title}</h3>
       <p className="mt-3 flex-1 leading-relaxed text-muted-foreground">{block.summary}</p>
+      <ul aria-label="Skills" className="mt-4 flex flex-wrap gap-1.5">
+        {block.skills.map((skill) => (
+          <li key={skill} className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+            {labelOf(SKILLS, skill)}
+          </li>
+        ))}
+      </ul>
       <div className="mt-5 flex items-center justify-between text-sm">
         <span className="inline-flex items-center gap-1.5 text-muted-foreground">
           <Clock className="size-4" aria-hidden="true" />

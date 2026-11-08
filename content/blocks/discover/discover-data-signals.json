@@ -4,6 +4,7 @@
   "phase": "discover",
   "kind": "core",
   "summary": "Data shows you what users do and where they give up. Use it alongside research: data tells you where the problem is, and talking to users tells you why.",
+  "skills": ["data", "discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

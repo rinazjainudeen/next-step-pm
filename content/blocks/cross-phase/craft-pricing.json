@@ -4,6 +4,7 @@
   "phase": "any",
   "kind": "craft",
   "summary": "Pricing and packaging decide what customers pay for and what they get. They shape who buys, how they use the product and how the business grows.",
+  "skills": ["commercial"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

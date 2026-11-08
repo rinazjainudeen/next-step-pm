@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "add-on",
   "summary": "AI is powerful but costly, unpredictable and sometimes unnecessary. Check that AI is the best way to solve the user's problem before committing to it.",
+  "skills": ["technical", "discovery"],
   "appliesTo": {
     "pmTypes": [
       "ai"

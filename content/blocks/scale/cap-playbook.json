@@ -4,6 +4,7 @@
   "phase": "scale",
   "kind": "core",
   "summary": "A playbook brings together how product work is done: principles, standards, templates and examples. Keep it short, living and easy to find.",
+  "skills": ["leadership", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

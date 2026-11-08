@@ -5,6 +5,7 @@
   "kind": "core",
   "optional": true,
   "summary": "An opportunity solution tree links one outcome to the user needs that could drive it, the ideas that could meet each need and the tests that check each idea. It keeps the team focused on outcomes rather than a list of features.",
+  "skills": ["discovery", "prioritisation"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

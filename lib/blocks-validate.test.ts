@@ -297,6 +297,15 @@ test("order within a track uses that track's phases", () => {
   assert.ok(mentions(validateBlockSet(files(wrong, after)), "later phase"));
 });
 
+test("every block needs one to three real skills", () => {
+  assert.deepEqual(errorsFor({ skills: ["data", "strategy", "delivery"] }), []);
+  assert.ok(mentions(errorsFor({ skills: [] }), "skills:"));
+  assert.ok(mentions(errorsFor({ skills: ["data", "strategy", "delivery", "design"] }), "skills:"));
+  assert.ok(mentions(errorsFor({ skills: ["juggling"] }), "skills:"));
+  assert.ok(mentions(errorsFor({ skills: ["data", "data"] }), "listed twice"));
+  assert.ok(mentions(errorsFor({ skills: undefined }), "skills:"));
+});
+
 test("titleWhenLive must be some text", () => {
   assert.deepEqual(errorsFor({ titleWhenLive: "Review your latest release" }), []);
   assert.ok(mentions(errorsFor({ titleWhenLive: "" }), "titleWhenLive"));

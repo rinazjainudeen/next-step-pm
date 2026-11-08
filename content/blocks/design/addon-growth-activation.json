@@ -4,6 +4,7 @@
   "phase": "design",
   "kind": "add-on",
   "summary": "New users decide quickly whether a product is worth it. Find the first moment they get real value, and remove every step that stands between sign-up and that moment.",
+  "skills": ["design", "data"],
   "appliesTo": {
     "pmTypes": [
       "growth"

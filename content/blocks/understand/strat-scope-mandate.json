@@ -4,6 +4,7 @@
   "phase": "understand",
   "kind": "core",
   "summary": "A strategy needs a clear question, an owner and someone senior who will act on it. Agree these first, so the work leads to a decision rather than a document.",
+  "skills": ["strategy", "communication"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],

@@ -4,6 +4,7 @@
   "phase": "define",
   "kind": "core",
   "summary": "Every idea rests on assumptions. Find the ones that would sink the idea if they were wrong and that you have least evidence for, then test those first with the cheapest test that will give you an answer.",
+  "skills": ["discovery"],
   "appliesTo": {
     "pmTypes": [],
     "productTypes": [],
