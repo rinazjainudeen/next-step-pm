@@ -36,7 +36,15 @@ function toggle(id: string) {
   listeners.forEach((listener) => listener());
 }
 
+/** Replaces all ticks at once, for "Already done" and its undo. */
+function replace(next: readonly string[]) {
+  ticks = next;
+  const storage = browserStorage();
+  if (storage) writeTicks(storage, ticks);
+  listeners.forEach((listener) => listener());
+}
+
 /** Every checkbox and the progress line share this, so they stay in step. */
 export function useTicks() {
-  return { ticks: useSyncExternalStore(subscribe, currentTicks, () => NONE), toggle };
+  return { ticks: useSyncExternalStore(subscribe, currentTicks, () => NONE), toggle, replace };
 }

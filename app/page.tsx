@@ -17,7 +17,7 @@ const STEPS = [
   {
     icon: ClipboardList,
     title: "Answer a few questions",
-    text: "The kind of work you're doing, your kind of PM, what you own, your product, your organisation, where you're starting from, your biggest challenge, your team, your tools, your timeline and how you work. You can say “Not sure” to any of them.",
+    text: "The kind of work you're doing, your kind of PM, what you own, your product, your organisation, where you're starting from, your biggest challenge, your timeline and how you work. You can say “Not sure” to any of them, and add your team and tools later.",
   },
   {
     icon: Shapes,

@@ -2,7 +2,21 @@ import { ChevronDown, Clock } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { StepList } from "@/components/plan/step-list";
-import type { PlanBlock } from "@/lib/plan-types";
+import type { PlanBlock, PlanLabel } from "@/lib/plan-types";
+
+const LABEL_TEXT: Record<PlanLabel, string> = {
+  challenge: "Helps with your challenge",
+  skill: "Builds a skill you want to grow",
+};
+
+/** The small pill that says why a block comes early. Used on block cards and next actions. */
+export function LabelPill({ label }: { label: PlanLabel }) {
+  return (
+    <span className="inline-block rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 align-middle text-xs font-semibold text-primary">
+      {LABEL_TEXT[label]}
+    </span>
+  );
+}
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -27,16 +41,32 @@ function Bullets({ items }: { items: string[] }) {
  * One block in a plan. A native expandable section, so the keyboard, screen
  * readers and a link to #block-id all work with no extra code.
  */
-export function PlanBlockCard({ block, heading: Heading, open = false }: { block: PlanBlock; heading: "h3" | "h4"; open?: boolean }) {
+export function PlanBlockCard({
+  block,
+  heading: Heading,
+  open = false,
+  teamAnswered = true,
+  controls,
+}: {
+  block: PlanBlock;
+  heading: "h3" | "h4";
+  open?: boolean;
+  /** Without a team answer, roles read as who usually helps. */
+  teamAnswered?: boolean;
+  /** Buttons such as "Already done", shown at the end of the open block. */
+  controls?: ReactNode;
+}) {
   return (
     <details id={block.id} data-plan-block open={open} className="group scroll-mt-24 rounded-2xl border border-border bg-card shadow-sm">
       <summary className="flex cursor-pointer list-none items-start gap-3 rounded-2xl p-5 sm:p-6 [&::-webkit-details-marker]:hidden">
         <ChevronDown className="no-print mt-1 size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
         <div className="min-w-0">
           <Heading className="text-lg font-bold tracking-tight sm:text-xl">{block.title}</Heading>
-          {block.helpsChallenge && (
-            <p className="mt-2">
-              <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">Helps with your challenge</span>
+          {(block.helpsChallenge || block.growsSkill || block.done) && (
+            <p className="mt-2 flex flex-wrap gap-2">
+              {block.helpsChallenge && <LabelPill label="challenge" />}
+              {block.growsSkill && <LabelPill label="skill" />}
+              {block.done && <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">Done</span>}
             </p>
           )}
           {block.movedUp && (
@@ -84,7 +114,7 @@ export function PlanBlockCard({ block, heading: Heading, open = false }: { block
           </Part>
 
           <div className="space-y-6">
-            <Part title="Who can do this">
+            <Part title={teamAnswered ? "Who can do this" : "Who usually helps"}>
               <ul className="space-y-3">
                 {block.tasks.map((task) => (
                   <li key={`${task.roleLabel}-${task.task}`} className="text-pretty">
@@ -123,6 +153,8 @@ export function PlanBlockCard({ block, heading: Heading, open = false }: { block
             </Part>
           )}
         </div>
+
+        {controls && <div className="no-print mt-6 flex flex-wrap gap-3 border-t border-border pt-6">{controls}</div>}
 
         <p className="no-print mt-6">
           <Link href={`/library/${block.id}`} className="font-medium text-primary underline underline-offset-4">

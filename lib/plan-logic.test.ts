@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { CAREER_LEVELS, CHALLENGES, CHALLENGE_IDS, COMPANY_SIZE_IDS, SKILLS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
 import { loadBlocks } from "./blocks-load";
 import { blockPhases, type Block } from "./blocks-types";
-import { buildPlan, effortInDays } from "./curriculum-engine";
+import { blocksForPlan, buildPlan, effortInDays } from "./curriculum-engine";
+import { NO_ADJUSTMENTS } from "./plan-adjustments";
 import { tidyDraft } from "./intake-draft";
 import { finishOptions, phasesForStage, stagesFor, trackFor } from "./intake-phases";
 import { TEAM_ROLE_IDS } from "./intake-questions";
@@ -61,6 +62,7 @@ function allRoutes(): Route[] {
 }
 
 const TEAMS: Pick<IntakeAnswers, "team" | "teamCounts">[] = [
+  { team: [], teamCounts: {} },
   { team: [NOT_SURE], teamCounts: {} },
   ...TEAM_ROLE_IDS.map((role) => ({ team: [role], teamCounts: {} })),
   { team: ["qa"], teamCounts: { qa: 3 } },
@@ -70,7 +72,7 @@ const TEAMS: Pick<IntakeAnswers, "team" | "teamCounts">[] = [
   { team: [...TEAM_ROLE_IDS], teamCounts: Object.fromEntries(TEAM_ROLE_IDS.map((role) => [role, 20])) },
 ];
 
-const TOOL_SETS: IntakeAnswers["tools"][] = [[NOT_SURE], [OTHER_TOOL], ...TOOL_IDS.map((tool) => [tool]), ["jira", OTHER_TOOL], [...TOOL_IDS]];
+const TOOL_SETS: IntakeAnswers["tools"][] = [[], [NOT_SURE], [OTHER_TOOL], ...TOOL_IDS.map((tool) => [tool]), ["jira", OTHER_TOOL], [...TOOL_IDS]];
 
 const PM_ANSWERS: IntakeAnswers["pm"][] = [...PM_TYPE_IDS.map((id) => [id]), ["ai", "hardware"], ["growth", "platform"], ["data", "transformation"]];
 const PEOPLE = PM_ANSWERS.flatMap((pm) => PRODUCT_TYPE_IDS.map((product) => ({ pm, product })));
@@ -210,7 +212,8 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const byId = new Map(BLOCKS.map((block) => [block.id, block]));
   const timeline = plan.phases.flatMap((phase) => phase.blocks);
   const required = timeline.filter((block) => !block.optional);
-  const skills = [...plan.skillsForLevel, ...plan.skillsAnyLevel];
+  const skills = [...plan.skillsStart, ...plan.skillsForLevel, ...plan.skillsAnyLevel];
+  if (plan.skillsStart.length !== Math.min(3, skills.length)) problems.push(`Grow your skills starts with ${plan.skillsStart.length}, not 3.`);
   const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills, ...plan.refreshBasics, ...plan.leadYourTeam];
   const covered = expectedPhases(answers);
   const level = levelOf(answers);
@@ -219,11 +222,15 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   if (plan.phases.length === 0) problems.push("The plan has no phases.");
   if (plan.nextActions.length !== Math.min(3, required.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
   if (plan.nextActions.some((action) => !required.some((block) => block.id === action.blockId))) problems.push("A next action comes from a Go further block.");
-  // The challenge: marked blocks build a favoured skill, and the next actions start at the first one.
+  // The challenge: at most 3 labels, on the first favoured blocks, and the next actions start at the first.
   const favoured = FAVOURS[answers.challenge] ?? [];
-  for (const block of timeline) {
-    const shouldMark = !block.optional && (byId.get(block.id) as Block).skills.some((skill) => favoured.includes(skill));
-    if ((block.helpsChallenge ?? false) !== shouldMark) problems.push(`${block.id} is wrongly${shouldMark ? " not" : ""} marked as helping with the challenge.`);
+  const expectedLabels = timeline.filter((block) => !block.optional && (byId.get(block.id) as Block).skills.some((skill) => favoured.includes(skill))).slice(0, 3).map((block) => block.id);
+  const labelled = timeline.filter((block) => block.helpsChallenge || block.growsSkill);
+  if (labelled.length > 3) problems.push(`${labelled.length} blocks are labelled.`);
+  if (timeline.filter((block) => block.helpsChallenge).map((block) => block.id).join() !== expectedLabels.join()) problems.push("The wrong blocks are labelled as helping with the challenge.");
+  const challengeLabel = CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
+  for (const block of labelled) {
+    if (block.helpsChallenge && block.why !== `Helps with: ${challengeLabel}.`) problems.push(`${block.id}'s reason doesn't name the challenge: ${block.why}`);
   }
   const fromMarked = required.slice(Math.max(required.findIndex((block) => block.helpsChallenge), 0));
   if (plan.nextActions.some((action, index) => action.text !== fromMarked.flatMap((block) => block.steps)[index]?.text)) problems.push("The next actions don't start at the right block.");
@@ -320,12 +327,17 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
     }
   }
   const laterTask = plan.checkBeforeActions.find((check) => timeline.some((block) => block.id === check.id));
-  if (laterTask && !plan.checkBeforeLabel.startsWith("From your last release")) problems.push(`${laterTask.id} is called done first, but it's also a task later.`);
+  if (laterTask && !plan.checkBeforeSentence.includes("your last release")) problems.push(`${laterTask.id} is called done first, but it's also a task later.`);
+  if ((plan.checkBeforeSentence === "") !== (plan.checkBeforeActions.length === 0)) problems.push("The lead-in doesn't match the earlier work.");
+  if (/: “|; /.test(plan.checkBeforeSentence)) problems.push(`The lead-in reads like a template: ${plan.checkBeforeSentence}`);
+  if (plan.isLoop !== (answers.stage === "live")) problems.push("Only a live product's timeline is a loop.");
+  if (plan.rhythm.length > 0 && !plan.rhythmSummary.startsWith(`Your team's rhythm: ${plan.rhythm.length} repeating`)) problems.push(`The rhythm summary is wrong: ${plan.rhythmSummary}`);
 
   // Tasks
   for (const block of everyBlock) {
     const source = byId.get(block.id) as Block;
     const teamKnown = !answers.team.includes(NOT_SURE);
+    const teamAnswered = answers.team.length > 0;
     const texts = block.tasks.map((task) => task.task);
     if (new Set(texts).size !== texts.length) problems.push(`${block.id} lists the same task twice.`);
     block.tasks.forEach((task, index) => {
@@ -339,6 +351,11 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
       if (chosen && count && !task.who.includes(String(count))) problems.push(`${block.id}: "${task.who}" has lost its number.`);
       if (task.inTeam !== available) problems.push(`${block.id}: "${task.task}" should ${available ? "" : "not "}go to the team.`);
       if (available && (task.note !== undefined || !task.who.startsWith("Ask your "))) problems.push(`${block.id}: a task for someone in the team reads "${task.who}".`);
+      if (!teamAnswered) {
+        // The team is optional. Without it, roles read as who usually helps, with no warnings.
+        if (task.note !== undefined || /^No |sits with you|Ask your/.test(task.who)) problems.push(`${block.id}: with no team, a task reads "${task.who}".`);
+        return;
+      }
       if (!available && task.note === undefined) problems.push(`${block.id}: a task with nobody to do it has no note.`);
       const onThePm = /sits with you/.test(`${task.who} ${task.note ?? ""}`);
       if (onThePm !== (!available && item.ifMissing === "pm")) problems.push(`${block.id}: "${task.task}" is wrongly${onThePm ? "" : " not"} left with the PM.`);
@@ -590,7 +607,7 @@ test("every level gets a sound plan on each track, and beginners keep the core s
 
 test("a block on a track's timeline isn't repeated in Grow your skills", () => {
   const plan = trackPlan("strategy", "strategy-none");
-  const skills = [...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id);
+  const skills = [...plan.skillsStart, ...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id);
   for (const id of ["craft-product-vision", "craft-okrs", "craft-exec-communication"]) assert.ok(!skills.includes(id), id);
   assert.ok(skills.includes("craft-influence"));
 });
@@ -690,6 +707,43 @@ test("coaching-track leaders get coaching on their timeline, shown once", () => 
   const plan = trackPlan("coaching", "coaching-new", { level: "director" });
   assert.deepEqual(plan.leadYourTeam.map((block) => block.id).toSorted(), ["lead-delegate-ownership", "lead-one-to-ones"]);
   assert.equal(order(plan).flat().filter((id) => id === "cap-coaching").length, 1);
+});
+
+test("the browser rebuilds the same plan from only the blocks it's sent", () => {
+  allRoutes()
+    .filter((_, index) => index % 9 === 0)
+    .forEach((route, index) => {
+      const answers = answersFor(route, { ...PEOPLE[index % PEOPLE.length], ...TEAMS[index % TEAMS.length], level: LEVELS[index % LEVELS.length], challenge: CHALLENGE_ANSWERS[index % CHALLENGE_ANSWERS.length] });
+      const full = buildPlan(answers, BLOCKS);
+      const subset = blocksForPlan(answers, full, BLOCKS);
+      assert.deepEqual(buildPlan(answers, subset), full, planHref(answers));
+      const first = full.phases[0]?.blocks[0];
+      const adjusted = { ...NO_ADJUSTMENTS, selfCheck: { design: "getting-started" as const }, setAside: first ? [first.id] : [], ticked: first ? first.steps.map((step) => step.id) : [] };
+      assert.deepEqual(buildPlan(answers, subset, adjusted), buildPlan(answers, BLOCKS, adjusted), planHref(answers));
+    });
+});
+
+test("every plan stays sound with a self-check and blocks set aside", () => {
+  allRoutes()
+    .filter((_, index) => index % 13 === 0)
+    .forEach((route, index) => {
+      const answers = answersFor(route, { level: LEVELS[index % LEVELS.length], challenge: CHALLENGE_ANSWERS[index % CHALLENGE_ANSWERS.length], team: ["ba"] });
+      const full = buildPlan(answers, BLOCKS);
+      const aside = full.phases.flatMap((phase) => phase.blocks).filter((_, at) => at % 4 === 1).map((block) => block.id);
+      const plan = buildPlan(answers, BLOCKS, { ...NO_ADJUSTMENTS, selfCheck: { design: "getting-started", commercial: "getting-started" }, setAside: aside });
+      const labels = plan.phases.flatMap((phase) => phase.blocks).filter((block) => block.helpsChallenge || block.growsSkill);
+      assert.ok(labels.length <= 3, planHref(answers));
+      assert.deepEqual(plan.setAside.map((block) => block.id).toSorted(), aside.toSorted(), planHref(answers));
+      assert.ok(plan.phases.flatMap((phase) => phase.blocks).every((block) => !aside.includes(block.id)), planHref(answers));
+    });
+});
+
+test("old links with team and tools give the same plan as answering them in Tailor your plan", () => {
+  const old = validateDraft(withOldLinkDefaults(parseDraft(readerFromRecord({ pm: "ai", product: "b2b", stage: "mid-build", phase: "build", exp: "intermediate", team: "ba,qa:3", tools: "jira,figma", time: "1-3m", until: "launch", way: "scrum" }))));
+  assert.ok(old.ok);
+  const tailored = answersFor({ stage: "mid-build", phase: "build", time: "1-3m", until: "launch" }, { pm: ["ai"], size: NOT_SURE, team: ["ba", "qa"], teamCounts: { qa: 3 }, tools: ["jira", "figma"] });
+  assert.deepEqual(buildPlan(old.answers, BLOCKS), buildPlan(tailored, BLOCKS));
+  assert.ok(buildPlan(old.answers, BLOCKS).phases.flatMap((phase) => phase.blocks).some((block) => block.tasks.some((task) => task.who === "Ask your 3 QA / Testers")));
 });
 
 test("old links build a sound plan at every old experience answer", () => {

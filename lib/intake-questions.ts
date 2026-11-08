@@ -129,6 +129,31 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
     options: CHALLENGES,
   },
   {
+    id: "time",
+    kind: "single",
+    shortLabel: "Timeline",
+    title: "How long until your next milestone?",
+    why: "A milestone is the next point that matters to you, such as a small feature release, the end of discovery, going live or the end of a client contract. We'll fit your plan to this time, week by week, and warn you if it looks tight.",
+    notSure: "Pick this if you have no date yet. Your plan will use a steady pace, with no deadline warning.",
+    options: TIMELINES,
+  },
+  {
+    id: "way",
+    kind: "single",
+    shortLabel: "Way of working",
+    title: "How does your team work?",
+    why: "This decides which ways-of-working blocks you get.",
+    notSure: "Pick this if it varies. You'll only get blocks that suit any team.",
+    options: WAYS_OF_WORKING,
+  },
+];
+
+/**
+ * The optional questions in "Tailor your plan" on the plan page. They were
+ * part of the intake until Phase 8a-2. The answers still go in the link.
+ */
+export const TAILOR_QUESTIONS: readonly IntakeQuestion[] = [
+  {
     id: "team",
     kind: "multi",
     shortLabel: "Team",
@@ -147,24 +172,6 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
     options: [...TOOLS, OTHER_TOOL_OPTION],
     groups: TOOLS_BY_GROUP,
     extraOption: OTHER_TOOL_OPTION,
-  },
-  {
-    id: "time",
-    kind: "single",
-    shortLabel: "Timeline",
-    title: "How long until your next milestone?",
-    why: "A milestone is the next point that matters to you, such as a small feature release, the end of discovery, going live or the end of a client contract. We'll fit your plan to this time, week by week, and warn you if it looks tight.",
-    notSure: "Pick this if you have no date yet. Your plan will use a steady pace, with no deadline warning.",
-    options: TIMELINES,
-  },
-  {
-    id: "way",
-    kind: "single",
-    shortLabel: "Way of working",
-    title: "How does your team work?",
-    why: "This decides which ways-of-working blocks you get.",
-    notSure: "Pick this if it varies. You'll only get blocks that suit any team.",
-    options: WAYS_OF_WORKING,
   },
 ];
 

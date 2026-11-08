@@ -8,6 +8,29 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-08 (Phase 8a-2)
+
+From the site review of 8 November 2026, approved by Rinaz. The review is in `docs/site-review-nov-2026.md`, and the spec in `docs/phase-8a-2-spec.md`.
+
+- **People exploring the role are in scope.** They get a new "Learn the role" path in Phase 8c. Why: answering "Not sure" everywhere gave an 87-step plan pitched at product manager level.
+- **Plans for Group PM, Director and VP are about leading the work, not doing it.** They get a "leader view" of each timeline block in Phase 8b. Why: a Director got the same hands-on timeline as a PM.
+- **Team and tools move out of the intake into an optional "Tailor your plan" panel, so the intake has 9 questions.** Why: they were the heaviest questions to answer, with 22 roles and 26 tools, and changed the plan the least. The answers still go in the link, so shared links keep them.
+- **UK-specific blocks will be labelled "UK guidance" in Phase 8a-3.** A country question comes later, and only if feedback asks for it.
+- **Feedback comes before the content pass.** The roadmap is now 8a-2, 8a-3, 8b, 8c, 9a (feedback and privacy), 8d (content pass), 9b (case study), 10 and 11.
+
+Decisions made while building 8a-2:
+
+- **The visitor's own adjustments are an input to the pure engine.** `buildPlan` takes the self-check, the set-aside blocks and the ticks, so every rule stays in one place and is tested. The browser rebuilds the plan with them, using only the blocks that plan needs, and a test proves those give an identical plan. Nothing from them goes in the link.
+- **"Already done" ticks every step.** A block is done when all its steps are ticked, so there's one source of truth, and undo unticks them. The current phase is the first with a required block that isn't done.
+- **Labels follow progress.** The 3 labels start from the current phase and skip finished blocks, so they move on as the visitor works through the plan. The next 3 actions start at the first label, or else the first unfinished block in the current phase.
+- **The label also shows in "Your next 3 actions".** In testing, Rinaz couldn't find "Helps with your challenge": the first labelled block was about three screens down, below a long open card. The same pill now sits on the first action from a labelled block (once per block, not on every step), so the reason is visible on the first screen.
+- **Self-check blocks rank just after challenge blocks when ordering,** so "the challenge takes priority" holds for order as well as labels.
+- **With no team answer, each task shows its roles as "Who usually helps"** and reviewers aren't suggested. "Not sure / no team" keeps the old wording, where tasks sit with you.
+- **"See N more skills", not "See all N skills".** Why: the folded section shows the skills not already in "Start with these", so "all" would mislead.
+- **"Already done" and "Not relevant" are on timeline blocks only.** The other sections are already optional or folded.
+- **The lead-in is one sentence,** such as "Before you start, check that “Agree the scope” has been done." On a live product: "Before you start, look back at what your last release did for …".
+- **The tests now rebuild real plans from the smaller block set and with adjustments,** to prove both give the right plan.
+
 ## 2026-11-08 (Phase 8a-1)
 
 Rinaz approved the Phase 8a spec on 7 November 2026. It's in `docs/phase-8a-spec.md`.
