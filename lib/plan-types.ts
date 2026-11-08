@@ -30,8 +30,12 @@ export type PlanBlock = {
   optional?: boolean;
   /** This matters more at the visitor's size of organisation, so it comes early. */
   movedUp?: boolean;
-  /** Builds a skill the visitor's challenge favours, so it comes as early as its order allows. */
+  /** One of the first three blocks that help with the visitor's challenge. */
   helpsChallenge?: boolean;
+  /** Labelled because it builds a skill rated "Getting started" in the self-check. */
+  growsSkill?: boolean;
+  /** Every step is ticked, or it's been marked "Already done". */
+  done?: boolean;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;
@@ -55,6 +59,8 @@ export type PlanPhase = {
   weeks: string;
   /** Something to know about how this phase's length was worked out. */
   note?: string;
+  /** Every required block in it is done. */
+  done?: boolean;
   blocks: PlanBlock[];
 };
 
@@ -62,7 +68,10 @@ export type PaceStatus = "tight" | "fits" | "spare" | "open";
 
 export type PlanPace = { status: PaceStatus; message: string };
 
-export type PlanAction = { blockId: string; blockTitle: string; text: string };
+/** Why a block is marked: it helps with the challenge, or builds a skill the visitor wants to grow. */
+export type PlanLabel = "challenge" | "skill";
+
+export type PlanAction = { blockId: string; blockTitle: string; text: string; label?: PlanLabel };
 
 export type Plan = {
   who: string;
@@ -70,14 +79,24 @@ export type Plan = {
   nextActions: PlanAction[];
   /** Earlier work the next actions rely on, done before this plan's timeline reaches them. */
   checkBeforeActions: PlanBlock["checkFirst"];
-  /** The words that introduce `checkBeforeActions`. */
-  checkBeforeLabel: string;
+  /** A plain sentence about `checkBeforeActions`. Empty when there's none. */
+  checkBeforeSentence: string;
+  /** The phase the visitor is in: the first with a required block not done. Null when all are done. */
+  currentPhase: PhaseId | null;
+  /** A live product's timeline is a loop, not a line. */
+  isLoop: boolean;
+  /** False when the optional team question hasn't been answered. */
+  teamAnswered: boolean;
   pace: PlanPace;
   /** Onboarding blocks, shown collapsed. They run alongside the timeline. */
   getUpToSpeed: PlanBlock[];
   phases: PlanPhase[];
+  /** Timeline blocks the visitor marked "Not relevant". */
+  setAside: PlanBlock[];
   /** Ways-of-working blocks. Product track only, and only team-free ones with no team roles. */
   rhythm: PlanBlock[];
+  /** One line that stands for the rhythm section while it's collapsed. */
+  rhythmSummary: string;
   /** Blocks for people leaders, outside the timeline. Never repeats a block on the timeline. */
   leadYourTeam: PlanBlock[];
   /** Suggests a strategy or coaching plan to people leaders on the product track. */
@@ -90,6 +109,8 @@ export type Plan = {
   skillsFirst: boolean;
   /** Basics for levels below the visitor's. A level never removes a block, so they're kept here. */
   refreshBasics: PlanBlock[];
+  /** The three skills to start with. The rest are folded away. */
+  skillsStart: PlanBlock[];
   /** Craft blocks limited to the visitor's level, most specific first. Outside the timeline. */
   skillsForLevel: PlanBlock[];
   /** Craft blocks for every level. Their steps are still shaped to the visitor. */

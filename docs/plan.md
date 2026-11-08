@@ -4,7 +4,7 @@
 
 - **Goal:** a working, public product that shows hiring managers that Rinaz can ship an AI-assisted product to production, and that real PMs find useful.
 - **Audience:** hiring managers for AI PM and AI Builder roles first, then product managers of every level, then colleagues.
-- **Main action:** "Build my plan": answer about 11 questions and get a tailored, step-by-step curriculum.
+- **Main action:** "Build my plan": answer 9 questions and get a tailored, step-by-step curriculum.
 - **Pages:** Home · Build my plan (intake) · Your plan · Library (all blocks) · How I built this · Decision log · Privacy.
 - **Tier:** Standard, with no visitor accounts.
   - Content lives in the code.
@@ -120,35 +120,58 @@ Approved by Rinaz on 7 November 2026. The full spec is in `docs/phase-8a-spec.md
 
 **Check:** the 8a-1 acceptance list in the spec.
 
-### Phase 8a-2: Your own adjustments (saved in your browser)
-- An optional skill self-check, "How confident are you?", saved in the browser only. Skills rated "Getting started" move their blocks up.
-- "Already done" and "Not relevant" on each block, with a "Set aside" section and undo.
-- Nothing from 8a-2 goes in the shared link.
+### Phase 8a-2: Focus the plan
+Approved by Rinaz on 8 November 2026, after the site review in `docs/site-review-nov-2026.md`. The full spec is in `docs/phase-8a-2-spec.md`.
+- At most 3 "Helps with your challenge" or self-check labels, each naming its reason.
+- "Grow your skills" starts with 3, and the rest are folded away.
+- Onboarding opens and comes first only for "I'm new". Otherwise it's one collapsed line.
+- "Your team's rhythm" is collapsed to one line.
+- An optional "How confident are you?" self-check, saved in the browser only.
+- "Already done" and "Not relevant" on each timeline block, with "Set aside" and undo.
+- Team and tools move out of the intake into "Tailor your plan", so the intake has 9 questions. Answers still go in the link.
+- Plain-sentence lead-ins, and a live product's timeline reads as a loop.
 
-**Check:** the 8a-2 acceptance list in the spec.
+**Check:** the acceptance list in the spec.
 
-### Phase 8b: Content pass
-- "In your context" lines on core blocks: one line per PM type with the right example metric, such as activation rate for growth or hallucination rate for AI.
-- Practice scenarios on craft blocks, written per level.
-- Rewrite the experienced steps so they read as portfolio, cross-team and leadership work, not "the same task, done harder".
-- "Next level" notes: one sentence per block on what the next level does differently.
-- More design and user experience blocks. Only 12 blocks build that skill, the fewest of the ten.
+### Phase 8a-3: First impressions
+A "See an example plan" link and a "Built for" strip on the home page. Library filters folded away on phones. "UK guidance" labels on UK-specific blocks.
 
-**Check:** Rinaz reads each batch in the library and approves it.
+**Check:** open the home page and the Library on a phone, and find the UK labels.
 
-### Phase 9: Feedback, privacy and the case study
-- **Feedback and storage:** a "Was this useful?" rating and an optional comment, stored in Supabase with RLS and rate limits, plus an anonymous count of plans generated (category answers only). Resend emails Rinaz when feedback arrives.
-- **Pages:** a privacy page; a **How I built this** case study covering the problem, discovery, the block model, decisions, AI use, results so far and what's next; and a **Decision log** page.
-- **Guides:** `docs/supabase-setup.md` and `docs/resend-setup.md`.
+### Phase 8b: Plans for leaders
+A leader view of each timeline block for Group PM and above: what good looks like, questions to ask your PM, and warning signs. Timeline blocks become "make sure this is done well".
+
+**Check:** build a plan at Group PM, Director and VP level, and compare it with a PM's.
+
+### Phase 8c: Learn the role
+"I'm exploring the role" as an answer to question 1. About 4 questions, then a short path: what PMs do, the core skills, a practice project, and how to get a first PM role.
+
+**Check:** follow the path as someone who isn't a PM yet.
+
+### Phase 9a: Feedback and privacy
+"Was this plan useful? Yes / No", plus an optional comment with a warning not to include personal details. Saved to Supabase with RLS and rate limits, emailed via Resend, with a privacy page. Needs Rinaz to set up her Supabase and Resend accounts. Guides go in `docs/supabase-setup.md` and `docs/resend-setup.md`.
 
 **Check:** submit feedback, see the email arrive, and see the row in Supabase.
 
+### Phase 8d: Content pass
+- Rewrite the "Experienced" steps so they're harder, not shorter.
+- More Design-skill blocks (only 12 today).
+- "Next level" notes: one sentence per block on what the next level does differently.
+- "In your context" lines on core blocks, and practice scenarios on craft blocks, per level.
+
+**Check:** Rinaz reads each batch in the library and approves it.
+
+### Phase 9b: Case study
+The "How I built this" case study, the public decision log, and SEO polish.
+
+**Check:** a hiring manager can understand the product and how it was built in under 2 minutes.
+
 ### Phase 10: AI personal summary
-A "Summarise my plan" button. Claude gets only the visitor's category answers and the selected blocks, and returns a short tailored briefing ("Your first two weeks", "What to delegate", "Risks for your situation"). It streams onto the page.
+A "Summarise my plan" button. Claude gets only the visitor's category answers and the selected blocks, and returns a short tailored briefing. It streams onto the page.
 - Switched off by `AI_SUMMARY_ENABLED` until it's ready.
 - The page works without it.
 - The monthly spending cap is set in the Anthropic console.
-- The framing notes' "name who they are" and "adapt to level" ideas help shape the prompt.
+- The AI only explains blocks the engine has already chosen. It never picks them.
 
 **Check:** generate a summary for two profiles and confirm it only mentions steps that are in the plan.
 

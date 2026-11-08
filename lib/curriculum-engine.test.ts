@@ -4,7 +4,8 @@ import { CAREER_LEVELS, PHASE_IDS, PM_TYPE_IDS, PRODUCT_TYPE_IDS, STAGES, TIMELI
 import { makeBlock } from "./blocks-fixture";
 import { loadBlocks } from "./blocks-load";
 import type { Block } from "./blocks-types";
-import { MIN_PHASE_DAYS, TIMELINE_WEEKS, buildPlan, effortInDays } from "./curriculum-engine";
+import { MIN_PHASE_DAYS, TIMELINE_WEEKS, blocksForPlan, buildPlan, effortInDays } from "./curriculum-engine";
+import { NO_ADJUSTMENTS } from "./plan-adjustments";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers } from "./intake-types";
 import type { Plan } from "./plan-types";
 
@@ -21,6 +22,8 @@ function fixture(id: string, phase: Block["phase"], estimatedEffort: string, dep
 
 const stages = (list: Block["appliesTo"]["stages"]) => ({ appliesTo: { pmTypes: [], productTypes: [], stages: list, waysOfWorking: [], experience: [] } });
 const way = (list: Block["appliesTo"]["waysOfWorking"]) => ({ appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: list, experience: [] } });
+
+const REAL_BLOCKS_FOR_SUBSET = loadBlocks();
 
 const PLAN_BLOCKS: Block[] = [
   fixture("discover-research", "discover", "10-20 days", []),
@@ -219,7 +222,8 @@ test("a plan of only Go further blocks has no next actions, and no crash", () =>
 const craft = (id: string, experience: Block["appliesTo"]["experience"] = []) =>
   fixture(id, "any", "1-2 days", [], { kind: "craft", appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience } });
 
-const skillIds = (plan: Plan) => [...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id);
+const skillIds = (plan: Plan) => [...plan.skillsStart, ...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id);
+const allSkills = (plan: Plan) => [...plan.skillsStart, ...plan.skillsForLevel, ...plan.skillsAnyLevel];
 
 test("craft blocks go in Grow your skills, outside the timeline", () => {
   const plan = buildPlan(ANSWERS, [...PLAN_BLOCKS, craft("craft-a")]);
@@ -233,18 +237,19 @@ test("skills split into those picked for your level and those for any level", ()
   const blocks = [craft("craft-all"), craft("craft-beginner", ["beginner"]), craft("craft-senior", ["experienced"])];
   const split = (level: IntakeAnswers["level"]) => {
     const plan = buildPlan({ ...ANSWERS, level }, blocks);
-    return [plan.skillsForLevel.map((block) => block.id), plan.skillsAnyLevel.map((block) => block.id)];
+    return skillIds(plan);
   };
-  assert.deepEqual(split("associate"), [["craft-beginner"], ["craft-all"]]);
-  assert.deepEqual(split("senior"), [["craft-senior"], ["craft-all"]]);
-  assert.deepEqual(split("product-manager"), [[], ["craft-all"]]);
-  assert.deepEqual(split(NOT_SURE), [[], ["craft-all"]]);
+  // Picks for your level come before skills for any level.
+  assert.deepEqual(split("associate"), ["craft-beginner", "craft-all"]);
+  assert.deepEqual(split("senior"), ["craft-senior", "craft-all"]);
+  assert.deepEqual(split("product-manager"), ["craft-all"]);
+  assert.deepEqual(split(NOT_SURE), ["craft-all"]);
 });
 
 test("the most level-specific skills come first, whatever their names", () => {
   const blocks = [craft("craft-a-two-levels", ["intermediate", "experienced"]), craft("craft-z-one-level", ["experienced"])];
   const plan = buildPlan({ ...ANSWERS, level: "senior" }, blocks);
-  assert.deepEqual(plan.skillsForLevel.map((block) => block.id), ["craft-z-one-level", "craft-a-two-levels"]);
+  assert.deepEqual(skillIds(plan), ["craft-z-one-level", "craft-a-two-levels"]);
 });
 
 test("craft blocks don't add to the plan's length", () => {
@@ -255,8 +260,9 @@ test("craft blocks don't add to the plan's length", () => {
 
 test("craft blocks say why they're there", () => {
   const plan = buildPlan({ ...ANSWERS, level: "associate" }, [craft("craft-all"), craft("craft-beginner", ["beginner"])]);
-  assert.equal(plan.skillsAnyLevel[0].why, "Because it's a useful skill at any level.");
-  assert.equal(plan.skillsForLevel[0].why, "Because it suits your experience.");
+  const why = (id: string) => allSkills(plan).find((block) => block.id === id)?.why;
+  assert.equal(why("craft-all"), "Because it's a useful skill at any level.");
+  assert.equal(why("craft-beginner"), "Because it suits your experience.");
 });
 
 // --- Two PM types ---
@@ -317,11 +323,11 @@ test("moving up never breaks a dependency", () => {
 test("a level never removes a basic: it moves to Refresh the basics", () => {
   const basic = craft("craft-basics", ["beginner"]);
   const plan = (level: IntakeAnswers["level"]) => buildPlan({ ...ANSWERS, level }, [basic]);
-  assert.deepEqual(plan("associate").skillsForLevel.map((block) => block.id), ["craft-basics"]);
+  assert.deepEqual(skillIds(plan("associate")), ["craft-basics"]);
   assert.deepEqual(plan("associate").refreshBasics, []);
   for (const level of ["product-manager", "senior", "group", "director", "vp", NOT_SURE] as const) {
     assert.deepEqual(plan(level).refreshBasics.map((block) => block.id), ["craft-basics"], level);
-    assert.deepEqual(plan(level).skillsForLevel, [], level);
+    assert.deepEqual(skillIds(plan(level)), [], level);
   }
 });
 
@@ -384,7 +390,7 @@ test("a reused block joins the track's timeline, and leaves Grow your skills", (
 test("a reused block keeps its usual place on the product track", () => {
   const plan = buildPlan({ ...ANSWERS, level: "senior" }, [reused({ phase: "understand", after: [] })]);
   assert.deepEqual(blockIds(plan), []);
-  assert.deepEqual(plan.skillsForLevel.map((block) => block.id), ["craft-reused"]);
+  assert.deepEqual(skillIds(plan), ["craft-reused"]);
 });
 
 test("a reused block swaps its dependencies for the track's", () => {
@@ -536,12 +542,16 @@ test("the next three actions start at the first marked block", () => {
   assert.ok(plan.nextActions.every((action) => action.blockId === "define-data"));
   const none = buildPlan({ ...ANSWERS, phase: "discover", until: "define", challenge: "grow" }, [fixture("discover-plain", "discover", "1 day", [], { skills: ["delivery"] }), tagged("define-data", ["data"])]);
   assert.equal(none.nextActions[0].blockId, "discover-plain");
+  assert.ok(plan.nextActions.every((action) => action.label === "challenge"));
+  assert.ok(none.nextActions.every((action) => action.label === undefined));
 });
 
 test("the next actions carry on past the marked block if it runs out of steps", () => {
   const short = tagged("a-data", ["data"], { steps: { beginner: ["x"], intermediate: ["only step"], experienced: ["x"] } });
   const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [tagged("z-plain", ["delivery"]), short]);
   assert.deepEqual(plan.nextActions.map((action) => action.blockId), ["a-data", "z-plain", "z-plain"]);
+  // Only actions from the marked block carry its label, so the top of the page shows why it comes first.
+  assert.deepEqual(plan.nextActions.map((action) => action.label), ["challenge", undefined, undefined]);
 });
 
 test("only timeline blocks are marked, not skills or rhythm", () => {
@@ -555,7 +565,8 @@ test("a challenge doesn't reorder the rhythm or skills sections", () => {
   const skills = [{ ...craft("craft-a-plain"), skills: ["delivery"] }, { ...craft("craft-b-data"), skills: ["data"] }] as Block[];
   const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [...rhythm, ...skills]);
   assert.deepEqual(plan.rhythm.map((block) => block.id), ["wow-a-plain", "wow-b-data"]);
-  assert.deepEqual(plan.skillsAnyLevel.map((block) => block.id), ["craft-a-plain", "craft-b-data"]);
+  assert.deepEqual(skillIds(plan).toSorted(), ["craft-a-plain", "craft-b-data"]);
+  assert.deepEqual(plan.skillsStart.map((block) => block.id), ["craft-b-data", "craft-a-plain"]);
 });
 
 test("I'm new puts the new-to-product section first, when there is one", () => {
@@ -598,6 +609,181 @@ test("the opening line uses general for Not sure, and the track on strategy and 
 test("every level, PM type and track has an opening sentence", () => {
   for (const { id } of CAREER_LEVELS) assert.ok(buildPlan({ ...ANSWERS, level: id }, []).openingLine.length > 40, id);
   for (const id of PM_TYPE_IDS) assert.ok(buildPlan({ ...ANSWERS, pm: [id] }, []).openingLine.split(". ").length >= 2, id);
+});
+
+// --- Focus the plan (Phase 8a-2) ---
+
+const manyData = ["a", "b", "c", "d", "e"].map((letter) => tagged(`${letter}-data`, ["data"]));
+
+test("no more than three blocks are labelled, across the whole timeline", () => {
+  const phases = [fixture("discover-one", "discover", "1 day", [], { skills: ["data"] }), fixture("discover-two", "discover", "1 day", [], { skills: ["data"] }), ...manyData];
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, phases);
+  const labelled = allBlocks(plan).filter((block) => block.helpsChallenge || block.growsSkill);
+  assert.equal(labelled.length, 3);
+  assert.deepEqual(labelled.map((block) => block.id), ["discover-one", "discover-two", "a-data"]);
+});
+
+test("a labelled block's reason names the challenge", () => {
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, manyData);
+  const labelled = allBlocks(plan).filter((block) => block.helpsChallenge);
+  for (const block of labelled) assert.equal(block.why, "Helps with: We ship, but can't tell if it's working.");
+  const unlabelled = allBlocks(plan).filter((block) => !block.helpsChallenge);
+  for (const block of unlabelled) assert.match(block.why, /^Because your plan covers/);
+});
+
+test("labels start from the phase you're in, and skip finished blocks", () => {
+  const blocks = [fixture("discover-data", "discover", "1 day", [], { skills: ["data"] }), ...manyData];
+  const ticked = (id: string, count = 4) => Array.from({ length: count }, (_, index) => `${id}/intermediate/${index}`);
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, blocks, { ...NO_ADJUSTMENTS, ticked: [...ticked("discover-data"), ...ticked("a-data")] });
+  assert.equal(plan.currentPhase, "define");
+  assert.deepEqual(allBlocks(plan).filter((block) => block.helpsChallenge).map((block) => block.id), ["b-data", "c-data", "d-data"]);
+  assert.equal(plan.nextActions[0].blockId, "b-data");
+});
+
+test("the self-check moves blocks up, after the challenge, and shares the three labels", () => {
+  const blocks = [tagged("a-plain", ["delivery"]), tagged("b-design", ["design"]), tagged("c-data", ["data"]), tagged("d-data", ["data"]), tagged("e-design", ["design"])];
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, blocks, { ...NO_ADJUSTMENTS, selfCheck: { design: "getting-started" } });
+  assert.deepEqual(blockIds(plan), ["c-data", "d-data", "b-design", "e-design", "a-plain"]);
+  assert.deepEqual(allBlocks(plan).filter((block) => block.helpsChallenge).map((block) => block.id), ["c-data", "d-data"]);
+  assert.deepEqual(allBlocks(plan).filter((block) => block.growsSkill).map((block) => block.id), ["b-design"]);
+  assert.equal(allBlocks(plan).find((block) => block.id === "b-design")?.why, "Builds a skill you want to grow: Design and user experience.");
+});
+
+test("next actions from a self-check block carry the skill label", () => {
+  const blocks = [tagged("a-plain", ["delivery"]), tagged("b-design", ["design"])];
+  const plan = buildPlan({ ...ANSWERS, challenge: "grow" }, blocks, { ...NO_ADJUSTMENTS, selfCheck: { design: "getting-started" } });
+  assert.equal(plan.nextActions[0].blockId, "b-design");
+  assert.equal(plan.nextActions[0].label, "skill");
+});
+
+test("only Getting started moves blocks; Comfortable and Strong don't", () => {
+  const blocks = [tagged("a-plain", ["delivery"]), tagged("b-design", ["design"])];
+  for (const value of ["comfortable", "strong"] as const) {
+    assert.deepEqual(blockIds(buildPlan(ANSWERS, blocks, { ...NO_ADJUSTMENTS, selfCheck: { design: value } })), ["a-plain", "b-design"], value);
+  }
+});
+
+test("with no self-check and nothing set aside, the order is unchanged", () => {
+  for (const challenge of [NOT_SURE, "measurement", "grow"] as const) {
+    const plain = buildPlan({ ...ANSWERS, challenge }, PLAN_BLOCKS);
+    const withNothing = buildPlan({ ...ANSWERS, challenge }, PLAN_BLOCKS, NO_ADJUSTMENTS);
+    assert.deepEqual(withNothing, plain, challenge);
+  }
+});
+
+test("Grow your skills starts with three: the challenge, then the self-check, then your level", () => {
+  const blocks = [craft("craft-level-one", ["experienced"]), craft("craft-level-two", ["experienced"]), { ...craft("craft-strategy"), skills: ["strategy"] }, { ...craft("craft-design"), skills: ["design"] }, craft("craft-any")] as Block[];
+  const plan = buildPlan({ ...ANSWERS, level: "senior", challenge: "grow" }, blocks, { ...NO_ADJUSTMENTS, selfCheck: { design: "getting-started" } });
+  assert.deepEqual(plan.skillsStart.map((block) => block.id), ["craft-strategy", "craft-design", "craft-level-one"]);
+  assert.deepEqual([...plan.skillsForLevel, ...plan.skillsAnyLevel].map((block) => block.id), ["craft-level-two", "craft-any"]);
+  const plain = buildPlan({ ...ANSWERS, level: "senior" }, blocks);
+  assert.deepEqual(plain.skillsStart.map((block) => block.id), ["craft-level-one", "craft-level-two", "craft-any"]);
+});
+
+test("onboarding is folded unless the challenge is I'm new", () => {
+  const onboarding = fixture("onboard", "any", "1 day", [], { kind: "onboarding", appliesTo: { pmTypes: [], productTypes: [], stages: ["mid-build"], waysOfWorking: [], experience: [] } });
+  for (const challenge of [NOT_SURE, "measurement", "grow", "slow-delivery"] as const) {
+    const plan = buildPlan({ ...ANSWERS, stage: "mid-build", challenge }, [onboarding]);
+    assert.equal(plan.getUpToSpeed.length, 1);
+    assert.equal(plan.newToProductFirst, false, challenge);
+  }
+  assert.equal(buildPlan({ ...ANSWERS, stage: "mid-build", challenge: "new-to-role" }, [onboarding]).newToProductFirst, true);
+});
+
+test("with no team answer, roles read as who usually helps, with no warnings", () => {
+  const block = makeBlock({ roles: { owner: "pm", canDelegateTo: [{ role: "ba", orRoles: ["product-owner"], task: "Draft it", ifMissing: "find-someone" }], reviewers: ["tech-lead"] } });
+  const plan = buildPlan({ ...ANSWERS, team: [], teamCounts: {} }, [block]);
+  const [task] = allBlocks(plan)[0].tasks;
+  assert.deepEqual(task, { roleLabel: "Business Analyst", task: "Draft it", inTeam: false, who: "Business Analyst or Product Owner" });
+  assert.deepEqual(allBlocks(plan)[0].reviewers, []);
+  assert.equal(plan.teamAnswered, false);
+});
+
+test("Not sure on the team keeps today's wording", () => {
+  const block = makeBlock({ roles: { owner: "pm", canDelegateTo: [{ role: "ba", task: "Draft it", ifMissing: "pm" }], reviewers: [] } });
+  assert.equal(allBlocks(buildPlan({ ...ANSWERS, team: [NOT_SURE] }, [block]))[0].tasks[0].who, "This sits with you for now");
+  assert.equal(buildPlan({ ...ANSWERS, team: [NOT_SURE] }, [block]).teamAnswered, true);
+});
+
+test("with no tools answer, blocks show the tip that works with any tool", () => {
+  const block = makeBlock({ toolExamples: { jira: "A Jira tip." } });
+  const plan = buildPlan({ ...ANSWERS, tools: [] }, [block]);
+  assert.deepEqual(allBlocks(plan)[0].tools, []);
+  assert.ok(allBlocks(plan)[0].toolTip);
+});
+
+test("Already done counts a block as done, and the phase moves on", () => {
+  const blocks = [fixture("discover-one", "discover", "1 day", []), fixture("define-two", "define", "1 day", ["discover-one"])];
+  const ticked = Array.from({ length: 4 }, (_, index) => `discover-one/intermediate/${index}`);
+  const plan = buildPlan({ ...ANSWERS, phase: "discover", until: "define" }, blocks, { ...NO_ADJUSTMENTS, ticked });
+  assert.equal(allBlocks(plan)[0].done, true);
+  assert.equal(plan.phases[0].done, true);
+  assert.equal(plan.currentPhase, "define");
+  assert.deepEqual(allBlocks(plan)[1].checkFirst, []);
+  assert.equal(plan.nextActions[0].blockId, "define-two");
+});
+
+test("the next actions skip a finished block in the current phase", () => {
+  const blocks = [inDefine("a-first"), inDefine("b-second")];
+  const ticked = Array.from({ length: 4 }, (_, index) => `a-first/intermediate/${index}`);
+  const plan = buildPlan(ANSWERS, blocks, { ...NO_ADJUSTMENTS, ticked });
+  assert.equal(plan.currentPhase, "define");
+  assert.ok(plan.nextActions.every((action) => action.blockId === "b-second"));
+});
+
+test("Not relevant moves a block to Set aside, and blocks that need it show a check", () => {
+  const blocks = [fixture("define-one", "define", "1 day", []), fixture("define-two", "define", "1 day", ["define-one"])];
+  const plan = buildPlan(ANSWERS, blocks, { ...NO_ADJUSTMENTS, setAside: ["define-one"] });
+  assert.deepEqual(blockIds(plan), ["define-two"]);
+  assert.deepEqual(plan.setAside.map((block) => block.id), ["define-one"]);
+  assert.deepEqual(allBlocks(plan)[0].checkFirst.map((check) => check.id), ["define-one"]);
+  assert.deepEqual(blockIds(buildPlan(ANSWERS, blocks, NO_ADJUSTMENTS)), ["define-one", "define-two"]);
+});
+
+test("the current phase moves on when everything left is set aside", () => {
+  const blocks = [fixture("discover-one", "discover", "1 day", []), fixture("define-two", "define", "1 day", [])];
+  const plan = buildPlan({ ...ANSWERS, phase: "discover", until: "define" }, blocks, { ...NO_ADJUSTMENTS, setAside: ["discover-one"] });
+  assert.equal(plan.currentPhase, "define");
+});
+
+test("when everything is done there are no next actions", () => {
+  const blocks = [fixture("define-one", "define", "1 day", [])];
+  const ticked = Array.from({ length: 4 }, (_, index) => `define-one/intermediate/${index}`);
+  const plan = buildPlan({ ...ANSWERS, phase: "define", until: "define" }, blocks, { ...NO_ADJUSTMENTS, ticked });
+  assert.equal(plan.currentPhase, null);
+  assert.deepEqual(plan.nextActions, []);
+});
+
+test("the rhythm has a one-line summary", () => {
+  const blocks = [wow(["scrum"]), wow([])];
+  assert.equal(buildPlan(ANSWERS, blocks).rhythmSummary, "Your team's rhythm: 2 repeating activities for Scrum");
+  assert.equal(buildPlan({ ...ANSWERS, way: NOT_SURE }, blocks).rhythmSummary, "Your team's rhythm: 1 repeating activity that suit any team");
+});
+
+test("a live product's timeline is a loop", () => {
+  assert.equal(buildPlan({ ...ANSWERS, stage: "live" }, PLAN_BLOCKS).isLoop, true);
+  assert.equal(buildPlan(ANSWERS, PLAN_BLOCKS).isLoop, false);
+});
+
+test("the lead-in before the next actions is a plain sentence", () => {
+  const roadmap = fixture("plan-one", "plan", "1 day", [], { title: "Make a roadmap" });
+  const scope = fixture("plan-four", "plan", "1 day", [], { title: "Agree the scope" });
+  const both = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build" }, [roadmap, scope, fixture("build-two", "build", "1 day", ["plan-one", "plan-four"])]);
+  assert.equal(both.checkBeforeSentence, "Before you start, check that “Make a roadmap” and “Agree the scope” have been done.");
+  const one = buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build", until: "build" }, [scope, fixture("build-two", "build", "1 day", ["plan-four"])]);
+  assert.equal(one.checkBeforeSentence, "Before you start, check that “Agree the scope” has been done.");
+  assert.equal(buildPlan(ANSWERS, PLAN_BLOCKS).checkBeforeSentence, "");
+});
+
+test("the browser gets only the blocks a plan needs, and builds the same plan from them", () => {
+  for (const answers of [ANSWERS, { ...ANSWERS, stage: "mid-build" as const, phase: "build" as const }]) {
+    const full = buildPlan(answers, REAL_BLOCKS_FOR_SUBSET);
+    const subset = blocksForPlan(answers, full, REAL_BLOCKS_FOR_SUBSET);
+    assert.ok(subset.length < REAL_BLOCKS_FOR_SUBSET.length);
+    assert.deepEqual(buildPlan(answers, subset), full);
+    const adjusted = { ...NO_ADJUSTMENTS, setAside: [full.phases[0].blocks[0].id], selfCheck: { data: "getting-started" as const } };
+    assert.deepEqual(buildPlan(answers, subset, adjusted), buildPlan(answers, REAL_BLOCKS_FOR_SUBSET, adjusted));
+  }
 });
 
 test("placeholder blocks never reach a plan", () => {
@@ -1072,8 +1258,8 @@ test("earlier work the next actions rely on is called out", () => {
 
 test("on a live product's loop, the work to look for comes from the last release", () => {
   const plan = buildPlan({ ...ANSWERS, stage: "live" }, PLAN_BLOCKS);
-  assert.equal(plan.checkBeforeLabel, "From your last release, find");
-  assert.equal(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, PLAN_BLOCKS).checkBeforeLabel, "Make sure these are done first");
+  assert.match(plan.checkBeforeSentence, /^Before you start, look back at what your last release did for “/);
+  assert.match(buildPlan({ ...ANSWERS, stage: "mid-build", phase: "build" }, PLAN_BLOCKS).checkBeforeSentence, /^Before you start, check that “Do the .*” has been done\.$|^Before you start, check that “.+” has been done\.$/);
 });
 
 test("the next actions carry on into the next block if one runs out", () => {

@@ -2,7 +2,6 @@
 
 import { Check, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
-import { useTicks } from "@/components/plan/use-ticks";
 import { Button } from "@/components/ui/button";
 
 export type PhaseSummary = {
@@ -10,20 +9,16 @@ export type PhaseSummary = {
   label: string;
   weeks: string;
   blockCount: number;
-  /** The required steps in this phase. A phase is done when all are ticked. */
-  stepIds: string[];
+  /** Every required block in the phase is done. */
+  done: boolean;
 };
 
 /**
- * The timeline, one phase at a time. The phase you're in opens, which is the
- * first with steps not yet ticked. Others stay collapsed, with done phases
- * marked. Ticks are saved in this browser, so this is worked out here, and the
- * server's first view opens the first phase. Printing opens everything.
+ * The timeline, one phase at a time. The phase you're in opens, as worked out by
+ * the engine from ticks and "Already done". Others stay collapsed, with done
+ * phases marked. Printing opens everything.
  */
-export function PlanPhases({ phases, contents }: { phases: PhaseSummary[]; contents: ReactNode[] }) {
-  const { ticks } = useTicks();
-  const done = phases.map((phase) => phase.stepIds.length > 0 && phase.stepIds.every((id) => ticks.includes(id)));
-  const current = phases[done.indexOf(false)]?.id;
+export function PlanPhases({ phases, current, contents }: { phases: PhaseSummary[]; current: string | null; contents: ReactNode[] }) {
   // Once a visitor opens or closes a phase, their choice wins.
   const [chosen, setChosen] = useState<Record<string, boolean>>({});
   const isOpen = (id: string) => chosen[id] ?? id === current;
@@ -68,7 +63,7 @@ export function PlanPhases({ phases, contents }: { phases: PhaseSummary[]; conte
                   <span>
                     {phase.blockCount} {phase.blockCount === 1 ? "block" : "blocks"}
                   </span>
-                  {done[index] && (
+                  {phase.done && (
                     <span className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">
                       <Check className="size-3.5" aria-hidden="true" />
                       Done
