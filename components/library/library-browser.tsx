@@ -1,13 +1,17 @@
 "use client";
 
+import { SlidersHorizontal } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { BlockGrid } from "@/components/library/block-card";
 import { Button } from "@/components/ui/button";
 import { KINDS, PHASES, PM_TYPES, SKILLS, WAYS_OF_WORKING } from "@/content/taxonomy";
 import { phaseName } from "@/lib/blocks-types";
+import { cn } from "@/lib/utils";
 import type { BlockSummary } from "@/lib/blocks-types";
 import {
   NO_FILTERS,
+  activeFilterCount,
   filterBlocks,
   filtersToQuery,
   hasFilters,
@@ -41,6 +45,9 @@ export function LibraryBrowser({ blocks }: { blocks: BlockSummary[] }) {
 
   const filters = parseLibraryFilters(searchParams);
   const shown = filterBlocks(blocks, filters);
+  const active = activeFilterCount(filters);
+  // Phones only: the five filters fold behind a button so the blocks show on the first screen.
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   function change(next: LibraryFilters) {
     const query = filtersToQuery(next);
@@ -49,10 +56,34 @@ export function LibraryBrowser({ blocks }: { blocks: BlockSummary[] }) {
 
   return (
     <div>
+      <div className="flex flex-wrap items-center gap-4 md:hidden">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 rounded-full px-5"
+          aria-expanded={filtersOpen}
+          aria-controls="library-filters"
+          onClick={() => setFiltersOpen((open) => !open)}
+        >
+          <SlidersHorizontal aria-hidden="true" />
+          {active > 0 ? `Filters (${active})` : "Filters"}
+        </Button>
+        {active > 0 && (
+          <button type="button" onClick={() => change(NO_FILTERS)} className="h-11 font-medium text-primary underline underline-offset-4">
+            Clear all
+          </button>
+        )}
+      </div>
+
       <form
+        id="library-filters"
         aria-label="Filter the library"
         onSubmit={(event) => event.preventDefault()}
-        className="grid gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,1fr)_auto] lg:items-end"
+        className={cn(
+          "gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,1fr)_auto] lg:items-end",
+          filtersOpen ? "mt-4 grid" : "hidden",
+          "md:mt-0 md:grid",
+        )}
       >
         {FILTERS.map((filter) => (
           <div key={filter.key} className="flex flex-col gap-1.5">

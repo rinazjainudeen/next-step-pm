@@ -8,6 +8,16 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-09 (Phase 8a-3)
+
+- **The example plan is a product manager in a growing B2B software company,** partway through a build in the Build phase, whose challenge is "We ship, but can't tell if it's working", with 1 to 3 months, Scrum, and no team or tools. It's the most common kind of visitor we expect, and leaving team and tools blank shows the plan most people will see. The answers live in one constant, `lib/example-plan.ts`.
+- **The example finishes at "Measure and improve", not Launch.** The brief didn't set the finish. Finishing at Launch showed only one "Helps with your challenge" label, because measurement work sits after launch. Finishing at Measure still fits 1 to 3 months (about 13 weeks) and shows all three labels, which is the point of a measurement challenge.
+- **The example banner shows only when the link matches the example exactly.** Once a visitor tailors team or tools, or changes an answer, it's their own plan and the banner goes.
+- **"Built for" names four kinds of organisation:** start-ups, big tech and large enterprises, established companies, and the public sector. They match how plans really change (organisation size and public-sector add-ons). "New to product" waits for the "Learn the role" path in Phase 8c, so the card doesn't promise something the site can't do yet.
+- **Library filters fold away on phones only.** Below the `md` breakpoint they sit behind a "Filters (N)" button, a real button with `aria-expanded`, so blocks show on the first screen. Desktop is unchanged.
+- **The rule for the "UK guidance" label:** a block gets `region: "uk"` only when its steps depend on UK-only law, processes or bodies. Citing a UK source is not enough. Blocks used by everyone that mention UK law in passing are reworded to be global rather than labelled. The label reads "Written for the UK. Check the equivalent rules where you work."
+- **After the audit, only one block is labelled: "Plan secure firmware updates after launch".** Its steps depend on the UK PSTI rules. The three public-sector add-ons (service assessment, spend controls, assisted digital) are based on UK government guidance but worded so they work anywhere, so they stay unlabelled. Safety certification covers every market, so it stays unlabelled too, with its Northern Ireland pitfall reworded to be global. No core block mentioned UK law in its text, so none needed rewording. Rinaz approved the list on 9 November 2026.
+
 ## 2026-11-08 (Phase 8a-2)
 
 From the site review of 8 November 2026, approved by Rinaz. The review is in `docs/site-review-nov-2026.md`, and the spec in `docs/phase-8a-2-spec.md`.

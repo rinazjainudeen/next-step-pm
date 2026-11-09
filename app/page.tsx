@@ -1,9 +1,10 @@
-import { ArrowRight, BookOpenCheck, ClipboardList, ListChecks, Route, ShieldCheck, Shapes, UserX } from "lucide-react";
+import { ArrowRight, BookOpenCheck, Building2, ClipboardList, Landmark, ListChecks, Network, Rocket, Route, ShieldCheck, Shapes, UserX } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/site/reveal";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
+import { EXAMPLE_PLAN_HREF } from "@/lib/example-plan";
 import { HOME_SECTION_LINKS, PRIMARY_ACTION } from "@/lib/navigation";
 import { HOME_STATS } from "@/lib/site-stats";
 
@@ -29,6 +30,14 @@ const STEPS = [
     title: "Follow your plan",
     text: "Work through it phase by phase. Each block says who in your team can help, which of your tools to use and what “done” looks like. Tick tasks off as you go.",
   },
+];
+
+/** Where product managers work. A "New to product" card comes with the "Learn the role" path (Phase 8c). */
+const BUILT_FOR = [
+  { icon: Rocket, title: "Start-ups", text: "Wear many hats without dropping the product work." },
+  { icon: Building2, title: "Big tech and large enterprises", text: "Handle governance, dependencies and senior stakeholders." },
+  { icon: Network, title: "Established companies", text: "Bring order to many teams and a busy roadmap." },
+  { icon: Landmark, title: "Public sector", text: "Work within service standards, procurement and accessibility duties." },
 ];
 
 const PRINCIPLES = [
@@ -123,6 +132,13 @@ export default function HomePage() {
                   </Link>
                 ))}
               </nav>
+              <Link
+                href={EXAMPLE_PLAN_HREF}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur hover:bg-white/20"
+              >
+                See an example plan
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
         </section>
@@ -168,10 +184,46 @@ export default function HomePage() {
               </li>
             ))}
           </ol>
+          <Reveal>
+            <p className="mt-10 text-lg leading-relaxed text-pretty">
+              Want to see what you get first?{" "}
+              <Link href={EXAMPLE_PLAN_HREF} className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4">
+                See an example plan
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section id="principles" className="scroll-mt-20 border-t bg-secondary/40">
+      <section id="built-for" className="scroll-mt-20 border-t bg-secondary/40">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Built for"
+              title="Wherever you do product"
+              lead="Plans change with the size and kind of organisation you work in, so the advice fits the way your work really happens."
+            />
+          </Reveal>
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {BUILT_FOR.map((item, i) => (
+              <li key={item.title}>
+                <Reveal index={i} className="h-full">
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                      <item.icon className="size-5" aria-hidden="true" />
+                    </span>
+                    <h3 className="mt-5 text-lg font-bold tracking-tight text-balance">{item.title}</h3>
+                    <p className="mt-3 leading-relaxed text-pretty text-muted-foreground">{item.text}</p>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="principles" className="scroll-mt-20">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
           <Reveal>
             <SectionHeading

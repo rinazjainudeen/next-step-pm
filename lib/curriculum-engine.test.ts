@@ -1344,3 +1344,9 @@ test("every mix of the main answers builds a sensible plan from the real blocks"
   }
   assert.equal(checked, 9 * 6 * 4 * 5 * 4);
 });
+
+test("a UK-only block carries its region into the plan, and others don't", () => {
+  const plan = buildPlan(ANSWERS, [tagged("a-uk", ["delivery"], { region: "uk" }), tagged("b-anywhere", ["delivery"])]);
+  assert.equal(allBlocks(plan).find((block) => block.id === "a-uk")?.region, "uk");
+  assert.equal("region" in (allBlocks(plan).find((block) => block.id === "b-anywhere") ?? {}), false);
+});

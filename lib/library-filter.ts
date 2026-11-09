@@ -58,7 +58,12 @@ export function filtersToQuery(filters: LibraryFilters): string {
 }
 
 export function hasFilters(filters: LibraryFilters): boolean {
-  return Object.values(filters).some((value) => value !== null);
+  return activeFilterCount(filters) > 0;
+}
+
+/** How many filters are chosen, for the "Filters (2)" button on phones. */
+export function activeFilterCount(filters: LibraryFilters): number {
+  return Object.values(filters).filter((value) => value !== null).length;
 }
 
 /**

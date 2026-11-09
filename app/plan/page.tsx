@@ -1,4 +1,4 @@
-import { RotateCcw } from "lucide-react";
+import { ArrowRight, RotateCcw } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -7,8 +7,10 @@ import { PageHero } from "@/components/site/page-hero";
 import { Button } from "@/components/ui/button";
 import { loadBlocks } from "@/lib/blocks-load";
 import { blocksForPlan, buildPlan } from "@/lib/curriculum-engine";
+import { isExamplePlan } from "@/lib/example-plan";
 import { summariseAnswers } from "@/lib/intake-questions";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
+import { PRIMARY_ACTION } from "@/lib/navigation";
 import { parseDraft, readerFromRecord, startHref, withOldLinkDefaults } from "@/lib/intake-url";
 import { firstUnansweredStep, validateDraft } from "@/lib/intake-validate";
 
@@ -51,6 +53,24 @@ function YourAnswers({ answers, draft }: { answers: IntakeAnswers; draft: Intake
   );
 }
 
+/** Shown only on the example plan from the home page, so nobody mistakes it for their own. */
+function ExampleBanner() {
+  return (
+    <aside
+      aria-label="Example plan"
+      className="no-print flex flex-col gap-4 rounded-2xl border border-primary/30 bg-primary/10 p-5 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p className="max-w-3xl text-pretty leading-relaxed">
+        This is an example plan for a product manager in a growing B2B software company. Build your own in about two minutes.
+      </p>
+      <Button render={<Link href={PRIMARY_ACTION.href} />} nativeButton={false} size="lg" className="h-11 shrink-0 self-start rounded-full px-6 sm:self-auto">
+        {PRIMARY_ACTION.label}
+        <ArrowRight aria-hidden="true" />
+      </Button>
+    </aside>
+  );
+}
+
 export default async function PlanPage({
   searchParams,
 }: {
@@ -64,12 +84,19 @@ export default async function PlanPage({
   if (!result.ok) redirect(startHref(draft, firstUnansweredStep(draft) ?? 1));
 
   const plan = buildPlan(result.answers, BLOCKS);
+  const example = isExamplePlan(draft);
   // The browser rebuilds the plan with the visitor's own adjustments, so it gets only the blocks this plan needs.
   const blocks = blocksForPlan(result.answers, plan, BLOCKS);
 
   return (
     <>
-      <PageHero size="tool" eyebrow="Your plan" title="Your step-by-step plan" lead={`${plan.who}. ${plan.where}`} />
+      <PageHero
+        size="tool"
+        eyebrow={example ? "Example plan" : "Your plan"}
+        title={example ? "An example step-by-step plan" : "Your step-by-step plan"}
+        lead={`${plan.who}. ${plan.where}`}
+        notice={example && <ExampleBanner />}
+      />
       <PlanView answers={result.answers} blocks={blocks} draft={draft} answersPanel={<YourAnswers answers={result.answers} draft={draft} />} />
     </>
   );

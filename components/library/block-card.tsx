@@ -1,6 +1,7 @@
 import { ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
 import { KINDS, SKILLS, labelOf } from "@/content/taxonomy";
+import { RegionPill } from "@/components/library/region-label";
 import { phaseLabel, type BlockSummary } from "@/lib/blocks-types";
 
 /** One block in the Library list. The whole card is a link to the block. */
@@ -24,6 +25,7 @@ export function BlockCard({ block }: { block: BlockSummary }) {
         {block.optional && (
           <span className="rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">Go further</span>
         )}
+        {block.region && <RegionPill region={block.region} />}
         {block.placeholder && (
           <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-destructive">
             Placeholder

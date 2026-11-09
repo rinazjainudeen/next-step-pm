@@ -111,3 +111,10 @@ test("the real blocks in content/blocks all pass", () => {
   const { errors } = checkContent();
   assert.deepEqual(errors, []);
 });
+
+test("only the agreed UK-only block carries the UK guidance label", async () => {
+  const { loadBlocks } = await import("./blocks-load");
+  const uk = loadBlocks().filter((block) => block.region === "uk").map((block) => block.id);
+  // Add a block here only when its steps depend on UK-only law, processes or bodies.
+  assert.deepEqual(uk, ["hw-firmware-updates"]);
+});

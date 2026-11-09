@@ -1,4 +1,5 @@
 import type { KindId, PhaseId } from "../content/taxonomy";
+import type { RegionId } from "./blocks-types";
 
 /** The shapes of a finished plan. Plain data, so a page can pass it to the browser. */
 
@@ -36,6 +37,8 @@ export type PlanBlock = {
   growsSkill?: boolean;
   /** Every step is ticked, or it's been marked "Already done". */
   done?: boolean;
+  /** Written for one country, so it shows a "UK guidance" label. */
+  region?: RegionId;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;

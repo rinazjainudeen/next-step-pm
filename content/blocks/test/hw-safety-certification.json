@@ -67,7 +67,7 @@
   "pitfalls": [
     "Finding out about radio rules after the design is fixed",
     "Skipping pre-compliance testing",
-    "Forgetting Northern Ireland has different marking rules"
+    "Assuming one marking covers every market, when some places follow different rules (Northern Ireland, for example)"
   ],
   "estimatedEffort": "10-40 days",
   "dependsOn": [

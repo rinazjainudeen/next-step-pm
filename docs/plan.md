@@ -133,10 +133,14 @@ Approved by Rinaz on 8 November 2026, after the site review in `docs/site-review
 
 **Check:** the acceptance list in the spec.
 
-### Phase 8a-3: First impressions
-A "See an example plan" link and a "Built for" strip on the home page. Library filters folded away on phones. "UK guidance" labels on UK-specific blocks.
+### Phase 8a-3: First impressions (done, 9 November 2026)
+- [x] A fixed example plan (answers in `lib/example-plan.ts`), with a banner saying it's an example. Linked from a "See an example plan" pill in the home hero and from the end of "How it works".
+- [x] A "Built for" section on the home page: start-ups, big tech and large enterprises, established companies, and the public sector.
+- [x] Library filters fold behind a "Filters (N)" button on phones, with "Clear all". Desktop is unchanged.
+- [x] An optional `region: "uk"` field on blocks, shown as a "UK guidance" label on Library cards, block pages and plan blocks.
+- [x] Audited every block. One block is labelled UK guidance (secure firmware updates, which depends on PSTI), and one hardware pitfall is reworded to be global.
 
-**Check:** open the home page and the Library on a phone, and find the UK labels.
+**Check:** open the home page and the Library on a phone, open the example plan, and find the UK labels.
 
 ### Phase 8b: Plans for leaders
 A leader view of each timeline block for Group PM and above: what good looks like, questions to ask your PM, and warning signs. Timeline blocks become "make sure this is done well".
@@ -145,6 +149,8 @@ A leader view of each timeline block for Group PM and above: what good looks lik
 
 ### Phase 8c: Learn the role
 "I'm exploring the role" as an answer to question 1. About 4 questions, then a short path: what PMs do, the core skills, a practice project, and how to get a first PM role.
+
+- Add a "New to product" card to the home page's "Built for" section, linking to this path. It was left out in Phase 8a-3 because the path didn't exist yet.
 
 **Check:** follow the path as someone who isn't a PM yet.
 

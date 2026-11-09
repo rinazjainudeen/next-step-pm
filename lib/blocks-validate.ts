@@ -17,7 +17,7 @@ import {
   isOneOf,
   type PhaseId,
 } from "../content/taxonomy";
-import { blockPhases, expectedFolder, type Block } from "./blocks-types";
+import { REGION_IDS, blockPhases, expectedFolder, type Block } from "./blocks-types";
 
 /**
  * Checks learning blocks against the rules in docs/content-model.md.
@@ -62,6 +62,7 @@ const TOP_LEVEL_KEYS = [
   "lastReviewed",
   "optional",
   "placeholder",
+  "region",
 ];
 
 const ID_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -424,6 +425,10 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
 
   if ("placeholder" in b && b.placeholder !== true) {
     errors.push(`placeholder: leave it out, or set it to true. Real blocks don't use it.`);
+  }
+
+  if ("region" in b && !(REGION_IDS as readonly unknown[]).includes(b.region)) {
+    errors.push(`region: leave it out for guidance that works anywhere, or use one of: ${REGION_IDS.join(", ")}.`);
   }
 
   if (errors.length > 0) return { ok: false, errors };
