@@ -64,6 +64,17 @@
     "launch-go-to-market"
   ],
   "comesAfter": ["launch-go-to-market"],
+  "leaderView": {
+    "good": "Sales teams understand why a customer would buy, not just what the product does.",
+    "ask": [
+      "Can sales explain the value in a customer's words?",
+      "What objections are they hearing?"
+    ],
+    "signs": [
+      "Sales promise features that don't exist.",
+      "Product never hears what loses deals."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

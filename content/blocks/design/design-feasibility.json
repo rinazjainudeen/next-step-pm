@@ -87,6 +87,17 @@
   "dependsOn": [
     "design-test-prototype"
   ],
+  "leaderView": {
+    "good": "Engineers shape the solution early, so cost and risk are known before commitment.",
+    "ask": [
+      "What did engineering flag as risky or expensive?",
+      "How confident are we in the estimate?"
+    ],
+    "signs": [
+      "Engineers first see the design at hand-off.",
+      "Surprises in build are common."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -70,6 +70,17 @@
     "launch-release-plan"
   ],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Adoption of internal tools is planned as carefully as the build.",
+    "ask": [
+      "How many staff use the new tool, and why do others not?",
+      "What support do teams get when switching?"
+    ],
+    "signs": [
+      "Success is declared at go-live.",
+      "Staff keep using the old way."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

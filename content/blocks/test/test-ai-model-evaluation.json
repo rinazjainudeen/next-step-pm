@@ -64,6 +64,17 @@
   "estimatedEffort": "3-5 days",
   "dependsOn": ["define-problem-statement"],
   "comesAfter": ["test-acceptance-accessibility"],
+  "leaderView": {
+    "good": "AI quality is measured against agreed tests before launch.",
+    "ask": [
+      "What does good enough look like, and how did we measure it?",
+      "How does the model do on difficult or sensitive cases?"
+    ],
+    "signs": [
+      "Quality is judged by a few demos.",
+      "There's no agreed bar for launch."
+    ]
+  },
   "freshness": "fast-moving",
   "sources": [
     { "title": "Define success criteria and build evaluations (Claude Platform docs)", "url": "https://platform.claude.com/docs/en/build-with-claude/define-success" },

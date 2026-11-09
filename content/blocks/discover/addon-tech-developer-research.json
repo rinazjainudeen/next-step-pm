@@ -71,6 +71,17 @@
     "discover-frame-opportunity"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Teams research how developers actually work and remove what slows them down.",
+    "ask": [
+      "Which developers did we watch or interview, and what slowed them down?",
+      "What's our time to first success for a new developer?"
+    ],
+    "signs": [
+      "The team designs from its own preferences.",
+      "Developer feedback only arrives as support tickets."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

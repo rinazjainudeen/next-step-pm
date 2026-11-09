@@ -66,6 +66,17 @@
   ],
   "estimatedEffort": "10-20 days",
   "dependsOn": ["discover-frame-opportunity"],
+  "leaderView": {
+    "good": "Teams talk to real users regularly, and their research changes decisions.",
+    "ask": [
+      "Who did we speak to, and what surprised us?",
+      "What will we do differently because of this research?"
+    ],
+    "signs": [
+      "Research only confirms what the team already planned.",
+      "Users are only heard through sales or senior opinions."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     { "title": "How the discovery phase works (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works" },

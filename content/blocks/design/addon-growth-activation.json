@@ -71,6 +71,17 @@
     "addon-growth-funnel"
   ],
   "comesAfter": ["design-user-journey"],
+  "leaderView": {
+    "good": "Teams know the first moment users get real value and keep shortening the path to it.",
+    "ask": [
+      "What's our activation moment, and how many new users reach it?",
+      "What's the biggest blocker on the way?"
+    ],
+    "signs": [
+      "Onboarding is judged by completion, not value.",
+      "Activation isn't measured."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -56,6 +56,17 @@
   "estimatedEffort": "1-2 days",
   "dependsOn": [],
   "comesAfter": ["launch-go-to-market"],
+  "leaderView": {
+    "good": "In a start-up, PMs take on support, testing and marketing on purpose, without dropping product work.",
+    "ask": [
+      "Which non-product tasks take most of your time, and what are you learning from them?",
+      "What product work is being squeezed out?"
+    ],
+    "signs": [
+      "The PM has no time for discovery.",
+      "Learning from support never reaches the roadmap."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -78,6 +78,17 @@
     "define-problem-statement"
   ],
   "comesAfter": ["define-problem-statement"],
+  "leaderView": {
+    "good": "AI is used where it's clearly the best way to solve the problem, not because it's fashionable.",
+    "ask": [
+      "Why is AI better here than a simpler approach?",
+      "What's the cost of it being wrong?"
+    ],
+    "signs": [
+      "The starting point is 'we need an AI feature'.",
+      "No simpler alternative was considered."
+    ]
+  },
   "freshness": "fast-moving",
   "sources": [
     {

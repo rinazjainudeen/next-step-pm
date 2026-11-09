@@ -14,7 +14,7 @@ import {
 } from "../content/taxonomy";
 import { tidyDraft } from "./intake-draft";
 import { TEAM_ROLE_IDS, TOOL_ANSWER_IDS, TOTAL_STEPS } from "./intake-questions";
-import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "./intake-types";
+import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, VIEW_IDS, type IntakeDraft, type NotSure, type TeamRoleId } from "./intake-types";
 
 /**
  * Answers live in the web address, so Back, refresh and sharing all work with
@@ -84,6 +84,12 @@ function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"
   return { team, teamCounts };
 }
 
+/** `view=leader` or `view=hands-on`. Anything else, or nothing, leaves the choice to the visitor's level. */
+function parseView(params: ParamReader): Pick<IntakeDraft, "view"> {
+  const value = params.get("view");
+  return isOneOf(VIEW_IDS, value) ? { view: value } : {};
+}
+
 export function parseDraft(params: ParamReader): IntakeDraft {
   return tidyDraft({
     work: parseWork(params),
@@ -99,6 +105,8 @@ export function parseDraft(params: ParamReader): IntakeDraft {
     time: pickOne(params, "time", TIMELINE_IDS),
     until: pickOne(params, "until", PHASE_IDS),
     way: pickOne(params, "way", WAY_OF_WORKING_IDS),
+    // Links from before the leader view have none, so the level decides.
+    ...parseView(params),
   });
 }
 
@@ -118,7 +126,7 @@ export function parseEditing(params: ParamReader): boolean {
  * ids, which are safe in a web address, so commas stay readable.
  */
 export function draftToQuery(draft: IntakeDraft): string {
-  const { work, pm, level, product, size, stage, phase, challenge, team, teamCounts, tools, time, until, way } = draft;
+  const { work, pm, level, product, size, stage, phase, challenge, team, teamCounts, tools, time, until, way, view } = draft;
   const teamEntries = team.map((id) => {
     const count = teamCounts[id as TeamRoleId];
     return count ? `${id}:${count}` : id;
@@ -137,6 +145,7 @@ export function draftToQuery(draft: IntakeDraft): string {
     ["time", time],
     ["until", until],
     ["way", way],
+    ["view", view ?? null],
   ];
   return pairs
     .filter(([, value]) => value)

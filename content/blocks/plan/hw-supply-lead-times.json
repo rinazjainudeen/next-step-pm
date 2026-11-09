@@ -75,6 +75,17 @@
     "plan-prioritise-roadmap"
   ],
   "comesAfter": ["plan-prioritise-roadmap"],
+  "leaderView": {
+    "good": "Long lead-time and single-source parts are known early and have a plan.",
+    "ask": [
+      "Which parts have the longest lead times or a single supplier?",
+      "What's our backup if a supplier fails?"
+    ],
+    "signs": [
+      "Lead times are discovered when ordering.",
+      "One supplier can stop production."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

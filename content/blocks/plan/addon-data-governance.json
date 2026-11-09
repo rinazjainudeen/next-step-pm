@@ -72,6 +72,17 @@
     "addon-data-quality"
   ],
   "comesAfter": ["plan-define-mvp"],
+  "leaderView": {
+    "good": "Every data source has an owner, known lineage and controlled access.",
+    "ask": [
+      "Who owns each data source, and who can see it?",
+      "How would we answer a data subject's request?"
+    ],
+    "signs": [
+      "No one can say where a number came from.",
+      "Access is granted by default and never reviewed."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

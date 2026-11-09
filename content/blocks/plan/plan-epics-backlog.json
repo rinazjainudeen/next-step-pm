@@ -79,6 +79,17 @@
   "dependsOn": [
     "plan-define-mvp"
   ],
+  "leaderView": {
+    "good": "Backlogs are organised around a few epics tied to outcomes, with the top items ready to build.",
+    "ask": [
+      "How does the backlog link to our outcomes?",
+      "Is the next sprint's work ready?"
+    ],
+    "signs": [
+      "The backlog is a long, unsorted list of requests.",
+      "The team often waits for work to be ready."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

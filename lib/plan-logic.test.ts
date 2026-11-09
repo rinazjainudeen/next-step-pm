@@ -217,10 +217,14 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const everyBlock = [...plan.getUpToSpeed, ...timeline, ...plan.rhythm, ...skills, ...plan.refreshBasics, ...plan.leadYourTeam];
   const covered = expectedPhases(answers);
   const level = levelOf(answers);
+  // Worked out here from the rules, not from the engine: leaders are Director and VP unless the link says otherwise.
+  const leaderView = track === "product" && (answers.view ?? (answers.level === "director" || answers.level === "vp" ? "leader" : "hands-on")) === "leader";
+  if (plan.view !== (leaderView ? "leader" : "hands-on")) problems.push(`The plan is in the ${plan.view} view.`);
+  if (timeline.some((block) => (block.leaderView !== undefined) !== leaderView)) problems.push("Leader views show in the wrong view.");
 
   // Shape
   if (plan.phases.length === 0) problems.push("The plan has no phases.");
-  if (plan.nextActions.length !== Math.min(3, required.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
+  if (plan.nextActions.length !== Math.min(3, leaderView ? required.length : required.flatMap((block) => block.steps).length)) problems.push("The plan doesn't have 3 next actions.");
   if (plan.nextActions.some((action) => !required.some((block) => block.id === action.blockId))) problems.push("A next action comes from a Go further block.");
   // The challenge: at most 3 labels, on the first favoured blocks, and the next actions start at the first.
   const favoured = FAVOURS[answers.challenge] ?? [];
@@ -233,7 +237,12 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
     if (block.helpsChallenge && block.why !== `Helps with: ${challengeLabel}.`) problems.push(`${block.id}'s reason doesn't name the challenge: ${block.why}`);
   }
   const fromMarked = required.slice(Math.max(required.findIndex((block) => block.helpsChallenge), 0));
-  if (plan.nextActions.some((action, index) => action.text !== fromMarked.flatMap((block) => block.steps)[index]?.text)) problems.push("The next actions don't start at the right block.");
+  // A leader's actions are the first question of each block, labelled blocks first.
+  const expectedActions = leaderView
+    ? [...required.filter((block) => block.helpsChallenge || block.growsSkill), ...required.filter((block) => !block.helpsChallenge && !block.growsSkill)].map((block) => `Ask your PM: ${(byId.get(block.id) as Block).leaderView?.ask[0]}`)
+    : fromMarked.flatMap((block) => block.steps.map((step) => step.text));
+  if (plan.nextActions.some((action, index) => action.text !== expectedActions[index])) problems.push("The next actions don't start at the right block.");
+  if (leaderView && new Set(plan.nextActions.map((action) => action.blockId)).size !== plan.nextActions.length) problems.push("A leader's actions repeat a block.");
   if (plan.skillsFirst !== (answers.challenge === "grow")) problems.push("Grow your skills is in the wrong place.");
   if (plan.newToProductFirst !== (answers.challenge === "new-to-role" && plan.getUpToSpeed.length > 0)) problems.push("The new-to-product section is in the wrong place.");
   if (timeline.some((block) => (byId.get(block.id) as Block).optional !== block.optional)) problems.push("A Go further block isn't marked.");
@@ -354,6 +363,11 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
       if (!teamAnswered) {
         // The team is optional. Without it, roles read as who usually helps, with no warnings.
         if (task.note !== undefined || /^No |sits with you|Ask your/.test(task.who)) problems.push(`${block.id}: with no team, a task reads "${task.who}".`);
+        return;
+      }
+      if (leaderView && teamKnown && !available) {
+        // The leader view leaves out the PM's missing-role warnings.
+        if (task.note !== undefined || /^No |sits with you/.test(task.who)) problems.push(`${block.id}: the leader view warns about a missing role: "${task.who}".`);
         return;
       }
       if (!available && task.note === undefined) problems.push(`${block.id}: a task with nobody to do it has no note.`);

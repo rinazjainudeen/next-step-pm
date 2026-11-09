@@ -142,8 +142,13 @@ Approved by Rinaz on 8 November 2026, after the site review in `docs/site-review
 
 **Check:** open the home page and the Library on a phone, open the example plan, and find the UK labels.
 
-### Phase 8b: Plans for leaders
-A leader view of each timeline block for Group PM and above: what good looks like, questions to ask your PM, and warning signs. Timeline blocks become "make sure this is done well".
+### Phase 8b: Plans for leaders (done, 9 November 2026)
+Approved by Rinaz on 9 November 2026. The full spec is in `docs/phase-8b-spec.md`.
+- [x] A `leaderView` on all 86 product-track timeline blocks (what good looks like, two questions to ask your PM, two warning signs). `pnpm validate:content` requires it.
+- [x] A "Show steps as: Hands-on | Leader" switch. Director and VP start in Leader view, and everyone else starts Hands-on. The choice is kept in the link (`view=`).
+- [x] Leader view: block cards with "See the hands-on steps", questions to tick as asked (saved in the browser), "Ask your PM" next actions, no missing-role warnings, new headings, and Lead your team above the timeline.
+- [x] A "Setting direction as well?" card that opens the strategy intake with level, size and product type filled in.
+- [x] "If you lead the team" on each block's Library page.
 
 **Check:** build a plan at Group PM, Director and VP level, and compare it with a PM's.
 

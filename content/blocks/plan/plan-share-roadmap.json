@@ -77,6 +77,17 @@
   "dependsOn": [
     "plan-delivery-plan"
   ],
+  "leaderView": {
+    "good": "Each audience gets a roadmap they can use, with clear confidence levels.",
+    "ask": [
+      "Who has seen the roadmap, and what did they push back on?",
+      "How do we show what's firm and what's uncertain?"
+    ],
+    "signs": [
+      "Stakeholders treat 'Later' items as promises.",
+      "Different audiences hear different plans."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

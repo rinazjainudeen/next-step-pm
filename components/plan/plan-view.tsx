@@ -10,13 +10,14 @@ import { PlanProgress } from "@/components/plan/plan-progress";
 import { SelfCheckPanel } from "@/components/plan/self-check-panel";
 import { TailorPanel } from "@/components/plan/tailor-panel";
 import { useAdjustments } from "@/components/plan/use-adjustments";
+import { ViewSwitch } from "@/components/plan/view-switch";
 import { useTicks } from "@/components/plan/use-ticks";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import type { Block } from "@/lib/blocks-types";
 import { buildPlan } from "@/lib/curriculum-engine";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
-import { startHref } from "@/lib/intake-url";
+import { hasViewSwitch, strategyPlanHref, switchAboveTimeline, viewWords } from "@/lib/leader-view";
 import { markDone, putBack, setAside, undoDone } from "@/lib/plan-adjustments";
 import type { PlanBlock } from "@/lib/plan-types";
 import { cn } from "@/lib/utils";
@@ -36,15 +37,19 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const [message, setMessage] = useState("");
   const announce = (text: string) => setMessage(text);
 
+  const leader = plan.view === "leader";
+  const words = viewWords(plan.view, plan.isLoop);
+  // A leader asks questions rather than doing steps, so progress counts the questions asked.
   const stepIds = plan.phases
     .flatMap((phase) => phase.blocks)
     .filter((block) => !block.optional)
-    .flatMap((block) => block.steps.map((step) => step.id));
+    .flatMap((block) => (block.leaderView ? block.leaderView.ask : block.steps).map((item) => item.id));
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
   const timelineControls = (block: PlanBlock) => {
-    const ids = block.steps.map((step) => step.id);
+    // In the leader view, "Already done" also counts the questions as asked.
+    const ids = [...block.steps, ...(block.leaderView?.ask ?? [])].map((item) => item.id);
     return (
       <>
         {block.done ? (
@@ -153,6 +158,37 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
     </section>
   );
 
+  // Lead your team is the leader's own work, so in the leader view it comes before the timeline.
+  const NudgeHeading = plan.leadYourTeam.length > 0 ? "h3" : "h2";
+  const leadSection = (plan.leadYourTeam.length > 0 || plan.leaderNudge) && (
+    <section id="lead-your-team" aria-label={plan.leadYourTeam.length > 0 ? "Lead your team" : "Setting direction"} className="border-t">
+      <div className={CONTAINER}>
+        {plan.leadYourTeam.length > 0 && (
+          <>
+            <SectionHeading eyebrow="Alongside your plan" title="Lead your team" lead="You lead other product people, so these sit alongside your own work." />
+            <div className="mt-8 space-y-4">
+              {plan.leadYourTeam.map((block) => (
+                <PlanBlockCard key={block.id} block={block} heading="h3" teamAnswered={plan.teamAnswered} />
+              ))}
+            </div>
+          </>
+        )}
+        {plan.leaderNudge && (
+          <div className={cn("no-print flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between", plan.leadYourTeam.length > 0 && "mt-10")}>
+            <div className="max-w-3xl">
+              <NudgeHeading className="text-xl font-bold tracking-tight">Setting direction as well?</NudgeHeading>
+              <p className="mt-2 text-pretty leading-relaxed text-muted-foreground">Build a strategy plan to diagnose the challenge, choose your bets and align leaders.</p>
+            </div>
+            <Button render={<Link href={strategyPlanHref(answers)} />} nativeButton={false} size="lg" className="h-11 shrink-0 self-start rounded-full px-6 sm:self-auto">
+              Build a strategy plan
+              <ArrowRight aria-hidden="true" />
+            </Button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+
   return (
     <>
       <p aria-live="polite" className="sr-only">
@@ -166,7 +202,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
           <p className="max-w-4xl text-lg text-pretty leading-relaxed">{plan.openingLine}</p>
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm lg:col-span-2">
-              <h2 className="text-2xl font-bold tracking-tight">Your next 3 actions</h2>
+              <h2 className="text-2xl font-bold tracking-tight">{words.nextActions}</h2>
               {plan.checkBeforeSentence && <p className="mt-3 rounded-xl bg-secondary/60 p-4 text-pretty leading-relaxed">{plan.checkBeforeSentence}</p>}
               {plan.nextActions.length === 0 ? (
                 <p className="mt-4 leading-relaxed">Everything on your timeline is done. Look through “Grow your skills” for what to learn next.</p>
@@ -186,7 +222,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
                         )}
                         {action.text}{" "}
                         <a href={`#${action.blockId}`} className="no-print inline-flex items-center gap-1 text-sm font-medium text-primary underline underline-offset-4">
-                          Go to this step
+                          {words.goTo}
                           <ArrowRight className="size-3.5" aria-hidden="true" />
                         </a>
                       </span>
@@ -200,12 +236,12 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
               <div className={cn("rounded-2xl border bg-card p-6 shadow-sm", tight ? "border-destructive/50" : "border-border")}>
                 <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
                   <PaceIcon className={cn("size-5", tight ? "text-destructive" : "text-primary")} aria-hidden="true" />
-                  Your timing
+                  {words.timing}
                 </h2>
                 <p className="mt-2 text-pretty leading-relaxed">{plan.pace.message}</p>
               </div>
               <div className="no-print rounded-2xl border border-border bg-card p-6 shadow-sm">
-                <PlanProgress stepIds={stepIds} />
+                <PlanProgress stepIds={stepIds} noun={leader ? "questions asked" : undefined} />
               </div>
             </div>
           </div>
@@ -221,21 +257,12 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
 
       {plan.skillsFirst && growSkills}
 
-      <section id="timeline" aria-label={plan.isLoop ? "Your improvement loop" : "Your timeline"} className={cn(plan.getUpToSpeed.length > 0 && "border-t bg-secondary/40")}>
+      {leader && leadSection}
+
+      <section id="timeline" aria-label={leader ? words.timelineTitle : plan.isLoop ? "Your improvement loop" : "Your timeline"} className={cn((plan.getUpToSpeed.length > 0 || (leader && leadSection)) && "border-t bg-secondary/40")}>
         <div className={CONTAINER}>
-          {plan.leaderNudge && (
-            <p className="no-print mb-10 rounded-2xl border border-border bg-card p-5 text-pretty leading-relaxed shadow-sm sm:p-6">
-              Leading strategy or building your team&apos;s skills?{" "}
-              <Link href={startHref(draft, 1, true)} className="font-medium text-primary underline underline-offset-4">
-                Build a plan for that instead.
-              </Link>
-            </p>
-          )}
-          <SectionHeading
-            eyebrow="Your timeline"
-            title={plan.isLoop ? "Your improvement loop" : "Phase by phase"}
-            lead="Open a block to see its steps, who can help and what done looks like."
-          />
+          <SectionHeading eyebrow="Your timeline" title={words.timelineTitle} lead={words.timelineLead} />
+          {hasViewSwitch(answers) && switchAboveTimeline(answers) && <ViewSwitch draft={draft} current={plan.view} className="mt-8" />}
           <PlanPhases
             current={plan.currentPhase}
             phases={plan.phases.map((phase) => ({ id: phase.id, label: phase.label, weeks: phase.weeks, blockCount: phase.blocks.length, done: phase.done ?? false }))}
@@ -282,18 +309,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
         </section>
       )}
 
-      {plan.leadYourTeam.length > 0 && (
-        <section id="lead-your-team" aria-label="Lead your team" className="border-t">
-          <div className={CONTAINER}>
-            <SectionHeading eyebrow="Alongside your plan" title="Lead your team" lead="You lead other product people, so these sit alongside your own work." />
-            <div className="mt-8 space-y-4">
-              {plan.leadYourTeam.map((block) => (
-                <PlanBlockCard key={block.id} block={block} heading="h3" teamAnswered={plan.teamAnswered} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {!leader && leadSection}
 
       {!plan.skillsFirst && growSkills}
 

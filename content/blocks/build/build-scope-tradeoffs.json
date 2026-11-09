@@ -83,6 +83,17 @@
   "dependsOn": [
     "build-user-stories"
   ],
+  "leaderView": {
+    "good": "When time runs short, teams cut or simplify scope while still meeting the user need.",
+    "ask": [
+      "What did we cut or simplify, and does the release still meet the need?",
+      "Who agreed the trade-off?"
+    ],
+    "signs": [
+      "Quality or accessibility is quietly cut to hit a date.",
+      "Scope never changes, so dates always slip."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

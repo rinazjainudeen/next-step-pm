@@ -70,6 +70,17 @@
     "define-problem-statement"
   ],
   "comesAfter": ["define-problem-statement"],
+  "leaderView": {
+    "good": "Products meet the needs of both the people who buy them and the people who use them.",
+    "ask": [
+      "What does the buyer need to see, and what does the user need to do?",
+      "Where do those needs conflict?"
+    ],
+    "signs": [
+      "Features win deals but users avoid them.",
+      "Only one of the two groups was researched."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

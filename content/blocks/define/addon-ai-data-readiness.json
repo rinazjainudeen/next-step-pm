@@ -77,6 +77,17 @@
   ],
   "alsoIn": [{"phase": "diagnose", "after": ["addon-aistrat-opportunities"]}],
   "comesAfter": ["addon-ai-is-ai-right"],
+  "leaderView": {
+    "good": "Teams check data quality, coverage and permissions before committing to an AI feature.",
+    "ask": [
+      "Do we have the right data, of good enough quality, and permission to use it?",
+      "What happens if the data isn't ready?"
+    ],
+    "signs": [
+      "Data problems are discovered after the build starts.",
+      "No one has checked the legal basis for using the data."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

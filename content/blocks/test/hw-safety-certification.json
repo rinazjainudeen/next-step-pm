@@ -74,6 +74,17 @@
     "hw-prototype-builds"
   ],
   "comesAfter": ["test-security-privacy"],
+  "leaderView": {
+    "good": "Safety and certification needs are known early and built into the plan.",
+    "ask": [
+      "Which rules apply in each market we sell in?",
+      "When is testing booked, and what if we fail?"
+    ],
+    "signs": [
+      "Certification is planned after the design is fixed.",
+      "Launch dates ignore test-lab lead times."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

@@ -87,6 +87,17 @@
   "dependsOn": [
     "design-explore-solutions"
   ],
+  "leaderView": {
+    "good": "Accessibility and inclusion are designed in from the start and checked throughout.",
+    "ask": [
+      "How have we included disabled users in design and testing?",
+      "Which accessibility standard are we meeting?"
+    ],
+    "signs": [
+      "Accessibility is a test at the end.",
+      "No disabled users have been involved."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

@@ -1350,3 +1350,122 @@ test("a UK-only block carries its region into the plan, and others don't", () =>
   assert.equal(allBlocks(plan).find((block) => block.id === "a-uk")?.region, "uk");
   assert.equal("region" in (allBlocks(plan).find((block) => block.id === "b-anywhere") ?? {}), false);
 });
+
+// ---- Phase 8b: the leader view ----
+
+const DIRECTOR: IntakeAnswers = { ...ANSWERS, level: "director" };
+const stripLeaderViews = (blocks: Block[]) =>
+  blocks.map((block) => {
+    const copy: Partial<Block> = { ...block };
+    delete copy.leaderView;
+    return copy as Block;
+  });
+const LEADER_BLOCKS = [tagged("a-plain", ["delivery"]), tagged("b-plain", ["delivery"]), tagged("c-plain", ["delivery"]), tagged("d-plain", ["delivery"])].map((block, index) =>
+  ({ ...block, leaderView: { good: `Good ${index}.`, ask: [`Question ${index}a?`, `Question ${index}b?`], signs: ["Sign one.", "Sign two."] } }) as Block,
+);
+
+test("the view follows the level unless the link chooses one", () => {
+  const viewOf = (level: IntakeAnswers["level"], view?: IntakeAnswers["view"]) => buildPlan({ ...ANSWERS, level, view }, LEADER_BLOCKS).view;
+  for (const level of ["associate", "product-manager", "senior", "group", NOT_SURE] as const) assert.equal(viewOf(level), "hands-on", level);
+  for (const level of ["director", "vp"] as const) assert.equal(viewOf(level), "leader", level);
+  assert.equal(viewOf("director", "hands-on"), "hands-on");
+  assert.equal(viewOf("group", "leader"), "leader");
+  assert.equal(viewOf("product-manager", "leader"), "leader");
+});
+
+test("strategy and coaching plans never use the leader view, because their blocks are written for leaders already", () => {
+  for (const work of ["strategy", "coaching"] as const) {
+    assert.equal(buildPlan({ ...DIRECTOR, work, stage: work === "strategy" ? "strategy-none" : "coaching-new", phase: null, until: null, view: "leader" }, PLAN_BLOCKS).view, "hands-on");
+  }
+});
+
+test("a leader's blocks carry what good looks like, two questions and two warning signs", () => {
+  const plan = buildPlan(DIRECTOR, LEADER_BLOCKS);
+  const first = allBlocks(plan)[0];
+  assert.equal(first.leaderView?.good, "Good 0.");
+  assert.deepEqual(first.leaderView?.ask.map((question) => question.text), ["Question 0a?", "Question 0b?"]);
+  assert.deepEqual(first.leaderView?.signs, ["Sign one.", "Sign two."]);
+  assert.ok(allBlocks(plan).every((block) => block.leaderView !== undefined));
+  // Each question has its own tick id, which can't be mistaken for a step.
+  const ids = allBlocks(plan).flatMap((block) => block.leaderView?.ask.map((question) => question.id) ?? []);
+  assert.equal(new Set(ids).size, ids.length);
+  assert.ok(ids.every((id) => /\/ask\/[01]$/.test(id)));
+});
+
+test("a leader's next actions ask the PM, one question from each of the first three blocks", () => {
+  const plan = buildPlan(DIRECTOR, LEADER_BLOCKS);
+  assert.deepEqual(plan.nextActions.map((action) => action.text), ["Ask your PM: Question 0a?", "Ask your PM: Question 1a?", "Ask your PM: Question 2a?"]);
+  assert.deepEqual(plan.nextActions.map((action) => action.blockId), ["a-plain", "b-plain", "c-plain"]);
+});
+
+test("a leader's next actions put the blocks that help with the challenge first", () => {
+  const blocks = [...LEADER_BLOCKS.slice(0, 3), { ...tagged("e-data", ["data"]), leaderView: LEADER_BLOCKS[0].leaderView } as Block];
+  const plan = buildPlan({ ...DIRECTOR, challenge: "measurement" }, blocks);
+  assert.equal(plan.nextActions[0].blockId, "e-data");
+  assert.equal(plan.nextActions[0].label, "challenge");
+  assert.equal(plan.nextActions.length, 3);
+});
+
+test("asking a question moves the next action on, and asking both finishes the block", () => {
+  const asked = (...ids: string[]) => ({ ...NO_ADJUSTMENTS, ticked: ids });
+  const afterOne = buildPlan(DIRECTOR, LEADER_BLOCKS, asked("a-plain/ask/0"));
+  assert.equal(afterOne.nextActions[0].text, "Ask your PM: Question 0b?");
+  assert.equal(allBlocks(afterOne)[0].done, undefined);
+  const afterBoth = buildPlan(DIRECTOR, LEADER_BLOCKS, asked("a-plain/ask/0", "a-plain/ask/1"));
+  assert.equal(allBlocks(afterBoth)[0].done, true);
+  assert.deepEqual(afterBoth.nextActions.map((action) => action.blockId), ["b-plain", "c-plain", "d-plain"]);
+});
+
+test("asking questions does nothing in the hands-on view", () => {
+  const ticked = { ...NO_ADJUSTMENTS, ticked: ["a-plain/ask/0", "a-plain/ask/1"] };
+  const plan = buildPlan({ ...DIRECTOR, view: "hands-on" }, LEADER_BLOCKS, ticked);
+  assert.equal(allBlocks(plan)[0].done, undefined);
+  assert.deepEqual(plan, buildPlan({ ...DIRECTOR, view: "hands-on" }, LEADER_BLOCKS));
+});
+
+test("the hands-on view is exactly today's plan, whatever the level", () => {
+  const withoutViews = stripLeaderViews(PLAN_BLOCKS);
+  for (const level of ["associate", "product-manager", "senior", "group", "director", "vp", NOT_SURE] as const) {
+    const answers = { ...ANSWERS, level };
+    const handsOn = { ...answers, view: "hands-on" as const };
+    // Leader views in the content must not change anything the hands-on view shows.
+    assert.deepEqual(buildPlan(handsOn, PLAN_BLOCKS), buildPlan(handsOn, withoutViews), level);
+  }
+});
+
+test("a product manager with no view in the link gets the same plan as before the leader view", () => {
+  assert.deepEqual(buildPlan(ANSWERS, PLAN_BLOCKS), buildPlan(ANSWERS, stripLeaderViews(PLAN_BLOCKS)));
+  assert.equal(buildPlan(ANSWERS, PLAN_BLOCKS).view, "hands-on");
+});
+
+test("the leader view leaves out warnings about roles missing from the PM's team", () => {
+  const answers = { ...DIRECTOR, team: ["qa"] as IntakeAnswers["team"] };
+  const tasksOf = (plan: Plan) => allBlocks(plan).flatMap((block) => block.tasks);
+  assert.ok(tasksOf(buildPlan({ ...answers, view: "hands-on" }, PLAN_BLOCKS)).some((task) => task.who.startsWith("No ")));
+  const leader = tasksOf(buildPlan({ ...answers, view: "leader" }, PLAN_BLOCKS));
+  assert.ok(leader.length > 0);
+  assert.ok(leader.every((task) => !task.who.startsWith("No ") && task.note === undefined));
+  // The task is still shown, as who usually helps.
+  assert.ok(leader.some((task) => task.who === "Business Analyst"));
+});
+
+test("a plan rebuilt from only the blocks it needs is the same in the leader view", () => {
+  const answers = { ...DIRECTOR, stage: "mid-build" as const, phase: "build" as const, until: "launch" as const, challenge: "measurement" as const };
+  const plan = buildPlan(answers, REAL_BLOCKS_FOR_SUBSET);
+  assert.ok(plan.view === "leader" && allBlocks(plan).every((block) => block.leaderView !== undefined));
+  assert.deepEqual(buildPlan(answers, blocksForPlan(answers, plan, REAL_BLOCKS_FOR_SUBSET)), plan);
+});
+
+test("every real product-track timeline block has a leader view in the leader view", () => {
+  for (const level of ["group", "director", "vp"] as const) {
+    const plan = buildPlan({ ...ANSWERS, level, view: "leader", stage: "new", phase: NOT_SURE, until: "measure" }, REAL_BLOCKS_FOR_SUBSET);
+    assert.ok(allBlocks(plan).length > 10);
+    for (const block of allBlocks(plan)) assert.ok(block.leaderView, `${block.id} has none`);
+  }
+});
+
+test("the strategy nudge shows for Group PM, Director and VP on the product track only", () => {
+  const nudge = (level: IntakeAnswers["level"], work: IntakeAnswers["work"] = null) => buildPlan({ ...ANSWERS, level, work }, PLAN_BLOCKS).leaderNudge;
+  for (const level of ["group", "director", "vp"] as const) assert.equal(nudge(level), true, level);
+  for (const level of ["associate", "product-manager", "senior", NOT_SURE] as const) assert.equal(nudge(level), false, level);
+});

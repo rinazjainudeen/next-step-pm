@@ -77,6 +77,17 @@
     "hw-manufacturing-partner"
   ],
   "comesAfter": ["build-user-stories"],
+  "leaderView": {
+    "good": "Each prototype build has a clear purpose and exit criteria before the next one starts.",
+    "ask": [
+      "What must this build prove, and did it?",
+      "What's blocking the move to the next build?"
+    ],
+    "signs": [
+      "Builds move on with known problems unresolved.",
+      "Exit criteria are vague."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -70,6 +70,17 @@
     "design-inclusive"
   ],
   "comesAfter": ["design-inclusive"],
+  "leaderView": {
+    "good": "Public services work for everyone, with support for people who can't or won't go online.",
+    "ask": [
+      "How do people without internet, skills or confidence use this service?",
+      "How do we know assisted routes work?"
+    ],
+    "signs": [
+      "The offline route is an afterthought.",
+      "Assisted users aren't included in research."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

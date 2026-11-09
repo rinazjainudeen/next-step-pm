@@ -74,6 +74,17 @@
     "test-security-privacy"
   ],
   "comesAfter": ["test-security-privacy"],
+  "leaderView": {
+    "good": "Security, compliance, admin controls and support are ready before chasing large customers.",
+    "ask": [
+      "What do large customers ask for that we can't yet provide?",
+      "How long do security reviews take us?"
+    ],
+    "signs": [
+      "Deals stall on security questionnaires.",
+      "Enterprise features are built deal by deal."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

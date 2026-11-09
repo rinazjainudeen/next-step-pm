@@ -70,6 +70,17 @@
     "discover-frame-opportunity"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Staff who use internal tools are researched and designed for with the same care as customers.",
+    "ask": [
+      "When did we last watch staff use this tool?",
+      "What workarounds do people rely on today?"
+    ],
+    "signs": [
+      "Requirements come only from managers, not users.",
+      "Adoption is assumed because staff have no choice."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

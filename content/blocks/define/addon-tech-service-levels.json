@@ -78,6 +78,17 @@
     "define-success-metrics"
   ],
   "comesAfter": ["define-success-metrics"],
+  "leaderView": {
+    "good": "Speed, reliability and security targets are agreed, measurable and part of the requirement.",
+    "ask": [
+      "What are our targets for speed and availability, and are we meeting them?",
+      "Who is told when we miss them?"
+    ],
+    "signs": [
+      "Non-functional requirements are added at the end.",
+      "Targets exist but no one measures them."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

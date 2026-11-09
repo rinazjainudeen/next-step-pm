@@ -80,6 +80,17 @@
     "design-explore-solutions"
   ],
   "comesAfter": ["design-explore-solutions"],
+  "leaderView": {
+    "good": "Users know when AI is involved, can correct it, and people stay in control of important decisions.",
+    "ask": [
+      "How do users know AI is involved, and how do they correct it?",
+      "Who checks for unfair or harmful outcomes?"
+    ],
+    "signs": [
+      "AI makes important decisions with no human check.",
+      "No one owns fairness or harm."
+    ]
+  },
   "freshness": "fast-moving",
   "sources": [
     {

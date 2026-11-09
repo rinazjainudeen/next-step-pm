@@ -79,6 +79,17 @@
   "dependsOn": [
     "define-problem-statement"
   ],
+  "leaderView": {
+    "good": "Each piece of work has a few clear success metrics and guardrails, set before building starts.",
+    "ask": [
+      "What number should move, by how much, and by when?",
+      "What must not get worse while we do this?"
+    ],
+    "signs": [
+      "Success is measured as 'shipped on time'.",
+      "Metrics are chosen after launch to fit the results."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -75,6 +75,17 @@
     "design-explore-solutions"
   ],
   "comesAfter": ["design-explore-solutions"],
+  "leaderView": {
+    "good": "AI features are designed so people know when to trust the output and what to do when it's wrong.",
+    "ask": [
+      "What happens when the AI is wrong?",
+      "How do we show users how confident to be?"
+    ],
+    "signs": [
+      "The design assumes the AI is always right.",
+      "Users can't easily report or fix bad answers."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

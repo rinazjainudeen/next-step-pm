@@ -69,6 +69,17 @@
     "define-success-metrics"
   ],
   "comesAfter": ["measure-results-hypothesis"],
+  "leaderView": {
+    "good": "Start-ups measure product-market fit directly and focus on the users who love the product most.",
+    "ask": [
+      "How would users feel if they could no longer use the product?",
+      "Who are our most engaged users, and what do they have in common?"
+    ],
+    "signs": [
+      "Growth is pushed before fit is proven.",
+      "The target user changes every month."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

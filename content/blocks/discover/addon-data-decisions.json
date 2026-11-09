@@ -70,6 +70,17 @@
     "discover-frame-opportunity"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Data products start from the decisions people need to make, not from the data that happens to be available.",
+    "ask": [
+      "Which decisions will this help, and who makes them?",
+      "How will we know decisions got better?"
+    ],
+    "signs": [
+      "The plan is a list of datasets and dashboards.",
+      "No named person is waiting for this to make a decision."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

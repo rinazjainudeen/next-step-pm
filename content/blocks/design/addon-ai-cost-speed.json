@@ -78,6 +78,17 @@
     "design-feasibility"
   ],
   "comesAfter": ["design-feasibility"],
+  "leaderView": {
+    "good": "AI features have known cost and response times, with the cheapest model that meets the quality bar.",
+    "ask": [
+      "What does each AI call cost us, and how will that grow?",
+      "Is this the cheapest model that meets our quality bar?"
+    ],
+    "signs": [
+      "AI costs are discovered on the first big bill.",
+      "The largest model is used by default."
+    ]
+  },
   "freshness": "fast-moving",
   "sources": [
     {

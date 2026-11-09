@@ -75,6 +75,17 @@
     "addon-internal-users"
   ],
   "comesAfter": ["plan-prioritise-roadmap"],
+  "leaderView": {
+    "good": "Platform teams know who depends on what and give notice before breaking changes.",
+    "ask": [
+      "Who depends on this, and how did we tell them about the change?",
+      "What's our notice period for breaking changes?"
+    ],
+    "signs": [
+      "Changes break other teams' work without warning.",
+      "No one knows who uses which service."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

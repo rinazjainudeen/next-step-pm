@@ -83,6 +83,17 @@
   "dependsOn": [
     "build-user-stories"
   ],
+  "leaderView": {
+    "good": "Speed and availability targets are tested before launch and watched afterwards.",
+    "ask": [
+      "Have we tested at the load we expect on launch day?",
+      "What happens if this goes down?"
+    ],
+    "signs": [
+      "Performance is tested only on a developer's laptop.",
+      "There's no plan for peak demand."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

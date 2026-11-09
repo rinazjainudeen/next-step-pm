@@ -67,6 +67,17 @@
   "estimatedEffort": "2-5 days",
   "dependsOn": [],
   "comesAfter": ["plan-delivery-plan"],
+  "leaderView": {
+    "good": "Process is added only where it solves a real problem, and dropped when it stops helping.",
+    "ask": [
+      "Which process did we add recently, and what problem does it solve?",
+      "What process could we drop?"
+    ],
+    "signs": [
+      "Process is copied from big companies wholesale.",
+      "Teams spend more time reporting than building."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

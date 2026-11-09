@@ -79,6 +79,17 @@
     "launch-release-plan"
   ],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Governance routes are known early, with lead times built into the plan.",
+    "ask": [
+      "Which reviews and approvals do we need, and how long do they take?",
+      "Who can help us through them?"
+    ],
+    "signs": [
+      "Reviews block launch at the last minute.",
+      "Teams avoid governance and get caught later."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

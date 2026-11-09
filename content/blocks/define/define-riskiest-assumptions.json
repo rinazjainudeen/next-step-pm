@@ -82,6 +82,17 @@
   "dependsOn": [
     "define-problem-statement"
   ],
+  "leaderView": {
+    "good": "Teams test the assumptions that could sink the idea before investing heavily.",
+    "ask": [
+      "Which assumption, if wrong, would kill this?",
+      "How and when are we testing it?"
+    ],
+    "signs": [
+      "Big investment starts with key assumptions untested.",
+      "Tests are designed so they can only pass."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

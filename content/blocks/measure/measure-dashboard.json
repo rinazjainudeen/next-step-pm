@@ -75,6 +75,17 @@
   "dependsOn": [
     "build-tracking-plan"
   ],
+  "leaderView": {
+    "good": "Teams look at a small set of meaningful numbers every week and act on them.",
+    "ask": [
+      "What does the dashboard tell us this week, and what are we doing about it?",
+      "How does it link to our north star metric?"
+    ],
+    "signs": [
+      "Dashboards exist but no one looks at them.",
+      "Lots of numbers, no decisions."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

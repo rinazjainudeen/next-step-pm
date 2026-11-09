@@ -70,6 +70,17 @@
     "discover-frame-opportunity"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Change starts from a clear picture of how work happens today, including workarounds.",
+    "ask": [
+      "Have we mapped how the work really happens, not just the official process?",
+      "Which pain points matter most to the people doing the work?"
+    ],
+    "signs": [
+      "The new design is based on the documented process alone.",
+      "Frontline staff weren't involved."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

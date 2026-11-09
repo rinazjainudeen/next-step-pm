@@ -194,6 +194,47 @@ test("region is optional, and only a known region is allowed", () => {
   assert.ok(mentions(errorsFor({ region: "us" }), "region"));
 });
 
+// ---- Leader views ----
+
+/** The fixture block with its leader view taken away, plus any other change. */
+function withoutLeaderView(change: Record<string, unknown> = {}): string[] {
+  const rest: Record<string, unknown> = { ...makeBlock() };
+  delete rest.leaderView;
+  const result = validateBlock({ ...rest, ...change }, TODAY);
+  return result.ok ? [] : result.errors;
+}
+
+test("a product-track timeline block must have a leader view", () => {
+  assert.ok(mentions(withoutLeaderView(), "leaderView"));
+  assert.ok(mentions(withoutLeaderView({ kind: "add-on" }), "leaderView"));
+  assert.ok(mentions(withoutLeaderView({ phase: ["design", "plan"] }), "leaderView"));
+});
+
+test("blocks that are already written for the person doing them don't need one", () => {
+  assert.deepEqual(withoutLeaderView({ kind: "craft", phase: "any" }), []);
+  assert.deepEqual(withoutLeaderView({ kind: "onboarding", phase: "any" }), []);
+  assert.deepEqual(withoutLeaderView({ kind: "ways-of-working", phase: "any" }), []);
+  assert.deepEqual(withoutLeaderView({ phase: "any" }), []);
+  assert.deepEqual(withoutLeaderView({ inLeadYourTeam: true }), []);
+  // Strategy and coaching phases are written for leaders already.
+  assert.deepEqual(withoutLeaderView({ phase: "diagnose" }), []);
+  assert.deepEqual(withoutLeaderView({ phase: "pilot" }), []);
+});
+
+test("a leader view has one sentence, exactly two questions and exactly two warning signs", () => {
+  const good = "One sentence.";
+  const view = (change: Record<string, unknown>) => ({ leaderView: { good, ask: ["A?", "B?"], signs: ["C.", "D."], ...change } });
+  assert.deepEqual(errorsFor(view({})), []);
+  assert.ok(mentions(errorsFor(view({ ask: ["A?"] })), "leaderView.ask"));
+  assert.ok(mentions(errorsFor(view({ ask: ["A?", "B?", "C?"] })), "leaderView.ask"));
+  assert.ok(mentions(errorsFor(view({ signs: ["C."] })), "leaderView.signs"));
+  assert.ok(mentions(errorsFor(view({ signs: ["C.", "D.", "E."] })), "leaderView.signs"));
+  assert.ok(mentions(errorsFor(view({ good: "  " })), "leaderView.good"));
+  assert.ok(mentions(errorsFor(view({ ask: ["A?", ""] })), "leaderView.ask[2]"));
+  assert.ok(mentions(errorsFor(view({ extra: "x" })), `"extra"`));
+  assert.ok(mentions(errorsFor({ leaderView: "text" }), "leaderView"));
+});
+
 test("all the problems are reported together, not just the first", () => {
   const errors = errorsFor({ title: "", kind: "x", estimatedEffort: "soon" });
   assert.ok(errors.length >= 3);

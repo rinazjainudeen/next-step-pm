@@ -70,6 +70,17 @@
     "discover-frame-opportunity"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Discovery includes buyers, users and the sales team, without letting the loudest customer set the roadmap.",
+    "ask": [
+      "Which customers did we learn from, and how representative are they?",
+      "How are we separating one customer's request from a pattern?"
+    ],
+    "signs": [
+      "The roadmap is a list of deals sales is chasing.",
+      "Product hasn't spoken to end users, only buyers."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

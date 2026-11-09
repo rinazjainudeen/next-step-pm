@@ -28,6 +28,11 @@ export function makeBlock(overrides: Partial<Block> = {}): Block {
     pitfalls: ["Dummy pitfall."],
     estimatedEffort: "2-4 hours",
     dependsOn: [],
+    leaderView: {
+      good: "Dummy sentence about what good looks like.",
+      ask: ["Dummy question one?", "Dummy question two?"],
+      signs: ["Dummy warning sign one.", "Dummy warning sign two."],
+    },
     freshness: "evergreen",
     sources: [{ title: "Dummy source", url: "https://example.com/source" }],
     lastReviewed: "2026-11-04",

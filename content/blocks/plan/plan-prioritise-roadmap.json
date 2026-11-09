@@ -65,6 +65,17 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": ["define-problem-statement"],
+  "leaderView": {
+    "good": "Teams prioritise with a shared, visible method, record why they override it, and publish a Now / Next / Later roadmap.",
+    "ask": [
+      "How did we decide this order, and what did we say no to?",
+      "When do we next review priorities?"
+    ],
+    "signs": [
+      "Priorities change with whoever spoke last.",
+      "The roadmap is a list of dates no one believes."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     { "title": "RICE: simple prioritization for product managers (Intercom)", "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/" },

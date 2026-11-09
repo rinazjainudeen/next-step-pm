@@ -80,6 +80,17 @@
   ],
   "comesAfter": ["measure-experiments"],
   "titleWhenLive": "Review your latest release",
+  "leaderView": {
+    "good": "Teams review results a few weeks after launch and share what they learned.",
+    "ask": [
+      "Did we achieve what we hoped, and what did we learn?",
+      "What are we changing because of it?"
+    ],
+    "signs": [
+      "Reviews never happen once the next project starts.",
+      "Lessons are written down but not used."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PlanView } from "@/components/plan/plan-view";
+import { ViewSwitch } from "@/components/plan/view-switch";
 import { PageHero } from "@/components/site/page-hero";
 import { Button } from "@/components/ui/button";
 import { loadBlocks } from "@/lib/blocks-load";
@@ -10,6 +11,7 @@ import { blocksForPlan, buildPlan } from "@/lib/curriculum-engine";
 import { isExamplePlan } from "@/lib/example-plan";
 import { summariseAnswers } from "@/lib/intake-questions";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
+import { hasViewSwitch, switchAboveTimeline, viewFor } from "@/lib/leader-view";
 import { PRIMARY_ACTION } from "@/lib/navigation";
 import { parseDraft, readerFromRecord, startHref, withOldLinkDefaults } from "@/lib/intake-url";
 import { firstUnansweredStep, validateDraft } from "@/lib/intake-validate";
@@ -44,6 +46,12 @@ function YourAnswers({ answers, draft }: { answers: IntakeAnswers; draft: Intake
             </div>
           ))}
         </dl>
+        {/* Group PM and above have the switch above the timeline. For everyone else it sits here, out of the way. */}
+        {hasViewSwitch(answers) && !switchAboveTimeline(answers) && (
+          <div className="mt-6 border-t border-border pt-6">
+            <ViewSwitch draft={draft} current={viewFor(answers)} />
+          </div>
+        )}
         <Button render={<Link href="/start" />} nativeButton={false} variant="outline" size="lg" className="mt-6 h-11 rounded-full px-6">
           <RotateCcw aria-hidden="true" />
           Start again

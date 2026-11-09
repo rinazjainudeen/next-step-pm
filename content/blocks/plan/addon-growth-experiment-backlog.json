@@ -76,6 +76,17 @@
     "addon-growth-funnel"
   ],
   "comesAfter": ["plan-epics-backlog"],
+  "leaderView": {
+    "good": "Growth teams keep a ranked experiment backlog and run tests steadily.",
+    "ask": [
+      "How many experiments did we run last month, and what did we learn?",
+      "How do we rank the backlog?"
+    ],
+    "signs": [
+      "Experiments are run one at a time, slowly.",
+      "Results aren't written up or shared."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

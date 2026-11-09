@@ -87,6 +87,17 @@
   ],
   "movesUpFor": ["enterprise"],
   "comesAfter": ["test-performance-reliability"],
+  "leaderView": {
+    "good": "Security and privacy are checked before real users and real data arrive.",
+    "ask": [
+      "Who has reviewed security and privacy, and what did they find?",
+      "Have we done a data protection impact assessment where needed?"
+    ],
+    "signs": [
+      "Security review happens the week before launch.",
+      "Personal data is collected 'just in case'."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

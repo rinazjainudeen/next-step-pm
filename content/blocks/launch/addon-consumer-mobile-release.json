@@ -74,6 +74,17 @@
     "launch-release-plan"
   ],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Mobile releases allow for app store review and slow user updates.",
+    "ask": [
+      "How long does app review take us, and is it in the plan?",
+      "How do we handle users on old versions?"
+    ],
+    "signs": [
+      "Launch dates ignore app review.",
+      "Old app versions break when the backend changes."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

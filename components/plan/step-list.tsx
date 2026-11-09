@@ -24,3 +24,29 @@ export function StepList({ steps }: { steps: PlanStep[] }) {
     </ul>
   );
 }
+
+/**
+ * The questions a leader asks their PM, each with a tick-box. Saved in this browser only, the same
+ * way as step ticks. The label names the question, so a screen reader hears what is being marked.
+ */
+export function QuestionList({ questions }: { questions: PlanStep[] }) {
+  const { ticks, toggle } = useTicks();
+  return (
+    <ul className="space-y-2">
+      {questions.map((question) => (
+        <li key={question.id}>
+          <label className="flex cursor-pointer items-start gap-3 rounded-lg p-2 leading-relaxed hover:bg-primary/5 has-checked:text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={ticks.includes(question.id)}
+              onChange={() => toggle(question.id)}
+              aria-label={`Mark “${question.text}” as asked`}
+              className="mt-1 size-5 shrink-0 accent-primary"
+            />
+            <span className="min-w-0 text-pretty">{question.text}</span>
+          </label>
+        </li>
+      ))}
+    </ul>
+  );
+}

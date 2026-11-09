@@ -77,6 +77,17 @@
     "hw-safety-certification"
   ],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Connected devices get secure updates for their whole supported life.",
+    "ask": [
+      "How long will we support updates, and is that published?",
+      "How do we push a security fix quickly?"
+    ],
+    "signs": [
+      "There's no plan for updates after launch.",
+      "Security fixes take months to reach devices."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

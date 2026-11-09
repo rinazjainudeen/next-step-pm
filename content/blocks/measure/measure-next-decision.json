@@ -75,6 +75,17 @@
   "dependsOn": [
     "measure-post-launch-review"
   ],
+  "leaderView": {
+    "good": "Teams decide openly whether to keep improving, invest to grow or stop.",
+    "ask": [
+      "Based on results, should we iterate, scale or stop?",
+      "What would we do with the team if we stopped?"
+    ],
+    "signs": [
+      "Nothing is ever stopped.",
+      "Investment follows habit, not evidence."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -76,6 +76,17 @@
   "dependsOn": [
     "launch-release-plan"
   ],
+  "leaderView": {
+    "good": "Support and operations are ready on day one, with clear owners for questions and problems.",
+    "ask": [
+      "Who answers user questions on day one, and are they trained?",
+      "How do support issues reach the team?"
+    ],
+    "signs": [
+      "Support learns about features from users.",
+      "Common issues bounce between teams."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {
