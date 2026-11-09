@@ -1,0 +1,69 @@
+{
+  "id": "xr-what-pms-do",
+  "title": "See what product managers really do",
+  "phase": "explore-role",
+  "kind": "core",
+  "summary": "Product managers make sure a team builds something people need, that works for the organisation and that can be built. Seeing the real work, not the job-advert version, helps you decide whether it suits you.",
+  "skills": [
+    "communication",
+    "delivery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Read what a product manager does in a published job framework, such as the government one in the sources. Note the five or six things it says a PM is responsible for.",
+      "Learn the four risks every PM manages: will people want it (value), can they use it (usability), can we build it (feasibility) and does it work for the business (viability).",
+      "Read three job adverts for associate or junior PM roles in different kinds of company. Underline the verbs, such as decide, prioritise, research and measure, and notice which appear in all three.",
+      "Write down who does what in a typical product team: the PM, designers, engineers and delivery. In most teams a PM does not line-manage the engineers or designers. Note where the PM's job starts and stops.",
+      "Sketch a typical week for a PM: time with users, with the team, with stakeholders and on thinking and writing. Compare it with your own week.",
+      "Write three parts of the job that appeal to you and three that worry you. Keep the list for the next step."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep your notes, the verbs from the job adverts and your questions on one page.",
+    "claude": "Paste a job advert and ask which tasks are about users, the team and the business. Check its answer against the framework."
+  },
+  "definitionOfDone": [
+    "A one-page summary of what a PM does, in your own words",
+    "The four risks listed, with an example of each",
+    "A list of what appeals and what worries you"
+  ],
+  "pitfalls": [
+    "Relying on one job title or one company's version of the role",
+    "Judging the job by the glamour of well-known products",
+    "Treating a 'day in the life' post as the whole picture"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "Product vs feature teams (SVPG)",
+      "url": "https://www.svpg.com/product-vs-feature-teams/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

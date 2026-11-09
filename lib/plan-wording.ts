@@ -1,4 +1,4 @@
-import type { CareerLevelId, PmTypeId } from "../content/taxonomy";
+import type { BackgroundId, CareerLevelId, PmTypeId } from "../content/taxonomy";
 import type { NotSure } from "./intake-types";
 
 /**
@@ -9,7 +9,7 @@ import type { NotSure } from "./intake-types";
 export const OPENING_LINES: {
   levels: Record<CareerLevelId | NotSure, string>;
   pmTypes: Record<PmTypeId, string>;
-  tracks: { strategy: string; coaching: string };
+  tracks: { strategy: string; coaching: string; explore: string };
 } = {
   levels: {
     associate: "You're building your craft, so this plan explains each step and why it matters.",
@@ -33,5 +33,35 @@ export const OPENING_LINES: {
   tracks: {
     strategy: "This plan takes you from understanding the situation to a strategy people act on.",
     coaching: "This plan takes you from assessing practice to making it run without you.",
+    explore: "You're exploring product management, so this plan helps you learn what the job is, build foundations, practise on a real problem and, if you want, apply.",
+  },
+};
+
+/**
+ * Wording for the explore path. The opening line and the engineering line were approved in the
+ * spec. The rest follow the same pattern and the skills each background favours: Rinaz to review.
+ */
+export const EXPLORE_WORDING: {
+  /** "Helps close a common gap for ...", for the blocks the background favours. */
+  gapFor: Record<BackgroundId, string>;
+  /** The extra line on "Map your skills to product management". "Something else" and "Not sure" have none. */
+  mapYourSkills: Partial<Record<BackgroundId, string>>;
+} = {
+  gapFor: {
+    engineering: "people coming from engineering",
+    design: "people coming from design, UX or research",
+    data: "people coming from data or analytics",
+    business: "people coming from business, operations or consulting",
+    marketing: "people coming from marketing, sales or customer success",
+    student: "students and recent graduates",
+    other: "people changing careers",
+  },
+  mapYourSkills: {
+    engineering: "Engineers already know how products get built. Spend your time on users and the business.",
+    design: "Designers already know how people use things. Spend your time on data and the business.",
+    data: "People who work with data already know how to find evidence. Spend your time on users and on bringing people with you.",
+    business: "People from business and operations already know how organisations run. Spend your time on technology and on discovering what users need.",
+    marketing: "People from marketing and sales already know customers and markets. Spend your time on data and on getting work delivered.",
+    student: "You're early in your career, so there's no old habit to unlearn. Spend your time on users, communication and data.",
   },
 };

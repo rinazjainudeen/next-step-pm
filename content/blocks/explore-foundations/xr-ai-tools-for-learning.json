@@ -1,0 +1,68 @@
+{
+  "id": "xr-ai-tools-for-learning",
+  "title": "Use AI tools to learn product management, carefully",
+  "phase": "explore-foundations",
+  "kind": "core",
+  "summary": "AI assistants can explain ideas, critique your writing and act as a practice partner. They can also be confidently wrong. Use them to speed up learning, never to replace your own thinking or your own evidence.",
+  "skills": [
+    "technical"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Choose one assistant you can use freely. Read the guidance on writing clear prompts in the sources, which works for any tool, and note three tips.",
+      "Ask it to explain a concept you are learning, such as a funnel, in plain English with an example. Check the explanation against one of the sources in this plan.",
+      "Ask for a critique. Paste a short piece you wrote, such as a problem statement, and ask what is unclear or missing. Decide yourself which comments to accept.",
+      "Use it as a practice partner. Ask it to play an interviewer and ask follow-up questions about a decision you describe. Answer out loud.",
+      "Test its limits. Ask for a statistic or a quote, then try to find the original. Note what it got wrong.",
+      "Never paste in private or confidential information, such as your employer's documents, customer data or other people's personal details. Use made-up or public examples.",
+      "Write three rules for how you will use AI while learning, for example 'I check facts against a source' and 'I write the first draft myself'."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "claude": "Ask it to explain a concept and to list what it is unsure about. Then check one claim in a source.",
+    "chatgpt": "Ask it to act as an interviewer for a product role and to give you one thing to improve after each answer.",
+    "gemini": "Ask it to critique a short problem statement and to point out missing evidence."
+  },
+  "definitionOfDone": [
+    "Three rules for using AI written down",
+    "One concept checked against a source",
+    "One critique of your own writing reviewed"
+  ],
+  "pitfalls": [
+    "Treating confident answers as correct",
+    "Letting the tool write your practice work, so you learn nothing",
+    "Pasting in confidential or personal information"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "xr-map-your-skills"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Prompt engineering overview (Anthropic docs)",
+      "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    },
+    {
+      "title": "People + AI Guidebook (Google PAIR)",
+      "url": "https://pair.withgoogle.com/guidebook"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

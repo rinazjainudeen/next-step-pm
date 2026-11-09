@@ -39,7 +39,8 @@ test("there are nine questions, with the kind of work first", () => {
   assert.equal(KIND_OF_WORK_ENABLED, true);
   assert.deepEqual(INTAKE_QUESTIONS.map((question) => question.id), ["work", ...CORE_ORDER]);
   assert.equal(TOTAL_STEPS, 9);
-  assert.equal(INTAKE_QUESTIONS[0].options.length, 3);
+  // Exploring product management is the fourth kind of work, after the three that lead to the long path.
+  assert.deepEqual(INTAKE_QUESTIONS[0].options.map((option) => option.id), ["product", "strategy", "coaching", "explore"]);
 });
 
 test("the kind of work question can still be switched off", () => {

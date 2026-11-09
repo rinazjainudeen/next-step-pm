@@ -1,0 +1,66 @@
+{
+  "id": "xr-is-pm-for-me",
+  "title": "Check whether product management is right for you",
+  "phase": "explore-role",
+  "kind": "core",
+  "summary": "Product management suits some people and not others, and neighbouring roles may fit better. Check honestly before you spend months on it, and finish with a decision.",
+  "skills": [
+    "discovery",
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Look at your list of what appeals and what worries you. For each worry, ask whether it is a skill you could learn or something you would dislike every day.",
+      "Read how a product manager differs from a product owner and a project manager. Notice where you would rather spend your time.",
+      "Compare the neighbouring roles: product owner, business analyst, delivery manager, designer, user researcher, data analyst and product marketing. For each, write one sentence on what you would do and one on what you would miss.",
+      "Notice what energises you: deciding with incomplete information, talking to users, working through other people, or going deep on one problem. PMs do a lot of the first three.",
+      "Accept that PMs usually lead without formal authority, by influence and evidence. Ask whether that suits you.",
+      "Decide, and write it down: carry on towards a PM role, aim for a neighbouring role, or stop and keep this as general knowledge. Give the reason in two sentences and set a date to revisit it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Make a table of roles against what you would do, what you would miss and how much it appeals.",
+    "claude": "Describe your strengths and ask which neighbouring roles to consider. Treat the answer as a prompt, not a verdict."
+  },
+  "definitionOfDone": [
+    "A written decision with a reason and a date to revisit it",
+    "The neighbouring roles compared"
+  ],
+  "pitfalls": [
+    "Choosing the role for the title or the pay alone",
+    "Treating the decision as permanent",
+    "Skipping the honest worries"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "xr-what-pms-do"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product Owner vs Project Manager (Scrum.org)",
+      "url": "https://www.scrum.org/resources/blog/product-owner-vs-project-manager"
+    },
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

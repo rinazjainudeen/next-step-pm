@@ -1,0 +1,8 @@
+{
+  "note": "Which new blocks each goal gets. Phase ids: explore-role, explore-foundations, explore-practise, explore-apply.",
+  "understand": ["xr-what-pms-do","xr-is-pm-for-me","xr-pm-types-companies","xr-talk-to-pms","xr-map-your-skills","xr-product-process","xr-numbers-for-pms","xr-ai-tools-for-learning"],
+  "work-with-pms": ["xr-what-pms-do","xr-pm-types-companies","xr-talk-to-pms","xr-product-process","xr-numbers-for-pms"],
+  "internal-move": ["xr-what-pms-do","xr-is-pm-for-me","xr-pm-types-companies","xr-talk-to-pms","xr-map-your-skills","xr-product-process","xr-numbers-for-pms","xr-ai-tools-for-learning","xr-choose-practice-project","xr-run-mini-discovery","xr-brief-and-prioritise","xr-define-success-test","xr-portfolio-case-study","xr-get-feedback","xr-internal-move","xr-find-entry-routes","xr-product-cv","xr-interview-prep"],
+  "first-job": ["xr-what-pms-do","xr-is-pm-for-me","xr-pm-types-companies","xr-talk-to-pms","xr-map-your-skills","xr-product-process","xr-numbers-for-pms","xr-ai-tools-for-learning","xr-choose-practice-project","xr-run-mini-discovery","xr-brief-and-prioritise","xr-define-success-test","xr-portfolio-case-study","xr-get-feedback","xr-find-entry-routes","xr-product-cv","xr-interview-prep"],
+  "not-sure": ["xr-what-pms-do","xr-is-pm-for-me","xr-pm-types-companies","xr-talk-to-pms","xr-map-your-skills","xr-product-process","xr-numbers-for-pms","xr-ai-tools-for-learning","xr-choose-practice-project","xr-run-mini-discovery","xr-brief-and-prioritise","xr-define-success-test","xr-portfolio-case-study","xr-get-feedback"]
+}

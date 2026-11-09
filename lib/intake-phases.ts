@@ -1,4 +1,5 @@
 import { PHASES, STAGES, type PhaseId, type StageId, type TimelineId, type TrackId } from "../content/taxonomy";
+import { explorePhaseIds } from "./explore";
 import { NOT_SURE, type IntakeDraft } from "./intake-types";
 
 /**
@@ -17,7 +18,7 @@ type WorkAnswer = IntakeDraft["work"] | undefined;
 
 /** The route a plan follows. No answer, or "Not sure", means building a product. */
 export function trackFor(work: WorkAnswer): TrackId {
-  return work === "strategy" || work === "coaching" ? work : "product";
+  return work === "strategy" || work === "coaching" || work === "explore" ? work : "product";
 }
 
 /** The starting points for a track, which are the options on its starting-point question. */
@@ -78,7 +79,9 @@ export function finishOptions(draft: Pick<IntakeDraft, "stage" | "phase" | "time
  * chosen finish, or otherwise to the end of the stage's usual phases. Not knowing the
  * stage means starting from the beginning, the same as "Starting something new".
  */
-export function phasesCovered(answers: Pick<IntakeDraft, "stage" | "phase" | "until"> & { work?: WorkAnswer }): Phase[] {
+export function phasesCovered(answers: Pick<IntakeDraft, "stage" | "phase" | "until" | "goal"> & { work?: WorkAnswer }): Phase[] {
+  // The explore path's phases come from the goal, not from a starting point or milestone.
+  if (answers.work === "explore") return toPhases(explorePhaseIds(answers.goal));
   const stage = stageOrFirst(answers.stage, answers.work);
   const journey: readonly PhaseId[] = stage.journey;
   const start = startIndex(journey, answers.phase);

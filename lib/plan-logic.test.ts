@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { CAREER_LEVELS, CHALLENGES, CHALLENGE_IDS, COMPANY_SIZE_IDS, SKILLS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
 import { loadBlocks } from "./blocks-load";
-import { blockPhases, type Block } from "./blocks-types";
+import { blockPhases, stepsFor, type Block } from "./blocks-types";
 import { blocksForPlan, buildPlan, effortInDays } from "./curriculum-engine";
 import { NO_ADJUSTMENTS } from "./plan-adjustments";
 import { tidyDraft } from "./intake-draft";
@@ -388,7 +388,7 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
     const tools = answers.tools.filter((tool) => tool !== NOT_SURE && tool !== OTHER_TOOL && source.toolExamples[tool]).map((tool) => labelOf(TOOLS, tool));
     if (block.tools.map((tool) => tool.toolLabel).join() !== tools.join()) problems.push(`${block.id} shows the wrong tools.`);
     if ((block.tools.length === 0) !== (block.toolTip !== undefined)) problems.push(`${block.id} has a blank or doubled tools area.`);
-    if (block.steps.map((step) => step.text).join() !== source.steps[level].join()) problems.push(`${block.id} has the wrong level of steps.`);
+    if (block.steps.map((step) => step.text).join() !== stepsFor(source, level).join()) problems.push(`${block.id} has the wrong level of steps.`);
   }
 
   // Timing
@@ -866,6 +866,6 @@ test("no block gives two roles the same task", () => {
 test("experienced steps are instructions, not descriptions of finished work", () => {
   const finished = /\b(done|complete|completed|agreed|booked|published|verified|defined|combined|shared|updated)[.;]/;
   for (const block of BLOCKS) {
-    for (const step of block.steps.experienced) assert.doesNotMatch(step, finished, block.id);
+    for (const step of block.steps.experienced ?? []) assert.doesNotMatch(step, finished, block.id);
   }
 });

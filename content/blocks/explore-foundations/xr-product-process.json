@@ -1,0 +1,75 @@
+{
+  "id": "xr-product-process",
+  "title": "Learn how a product goes from idea to results",
+  "phase": "explore-foundations",
+  "kind": "core",
+  "summary": "Every product team moves through the same broad loop: understand the problem, choose a solution, build it, release it and learn from the results. Seeing the loop makes everything else make sense.",
+  "skills": [
+    "discovery",
+    "delivery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Learn the loop: discover the problem, define it, design a solution, plan the work, build, test, launch, then measure and learn. The phases in this site's plans follow it. Write one sentence on each.",
+      "Read about the Double Diamond and sketch it. Note that the first diamond is about the problem and the second about the solution.",
+      "Read how the discovery phase works in the GOV.UK Service Manual. Write down three things a team does and what it decides at the end.",
+      "Match each phase to the risk it reduces: value, usability, feasibility or viability.",
+      "Pick a product you use and write what each phase might have looked like, and where you can see evidence of it.",
+      "Skim the Scrum Guide. Note the events and who does what. Remember that teams adapt the loop, and that it is not a straight line.",
+      "Explain the whole loop out loud to someone in under three minutes, using your chosen product."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Draw the loop as a board with the questions each phase answers.",
+    "notion": "Write one page per phase with an example from a product you use."
+  },
+  "definitionOfDone": [
+    "A one-page diagram of the loop in your own words",
+    "You can explain the loop in three minutes"
+  ],
+  "pitfalls": [
+    "Memorising frameworks without using them",
+    "Believing the loop is a straight line, when teams often go back",
+    "Treating one framework as the only way"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "xr-map-your-skills"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Framework for innovation: the Double Diamond (Design Council)",
+      "url": "https://www.designcouncil.org.uk/our-resources/framework-for-innovation/"
+    },
+    {
+      "title": "How the discovery phase works (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works"
+    },
+    {
+      "title": "The four big risks (SVPG)",
+      "url": "https://www.svpg.com/four-big-risks/"
+    },
+    {
+      "title": "The Scrum Guide (Schwaber and Sutherland)",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

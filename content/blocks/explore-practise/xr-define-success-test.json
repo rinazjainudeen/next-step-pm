@@ -1,0 +1,79 @@
+{
+  "id": "xr-define-success-test",
+  "title": "Decide how you would measure success and test your idea",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "A good PM says in advance how they will know an idea worked, and runs the cheapest test that could prove them wrong.",
+  "skills": [
+    "data",
+    "discovery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write your hypothesis in this shape: 'We believe that doing X for Y will lead to Z. We will know when we see...'",
+      "Choose one main measure and one or two guardrails, which are things that must not get worse. For a club sign-up form, the main measure might be the share of people who finish signing up, and a guardrail might be how long it takes.",
+      "Name the riskiest assumption in your idea, then design the cheapest test of it: a paper prototype, a fake front door, a conversation or a mock-up.",
+      "Decide before you run it which result would make you carry on, change direction or stop.",
+      "Run the test with up to five people and write down what happened.",
+      "Record the result against your decision rule and say what you would do next."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "miro": "Map your assumptions by importance and how much evidence you have, then pick the riskiest one to test."
+  },
+  "definitionOfDone": [
+    "A hypothesis written down",
+    "A main measure and guardrails chosen",
+    "A decision rule written before the test",
+    "A test run and its result recorded"
+  ],
+  "pitfalls": [
+    "Choosing the measure after seeing the results",
+    "Testing the idea you like instead of the assumption that worries you",
+    "Treating a small test as proof"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "xr-brief-and-prioritise"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "How to implement hypothesis-driven development (Thoughtworks)",
+      "url": "https://www.thoughtworks.com/insights/articles/how-implement-hypothesis-driven-development"
+    },
+    {
+      "title": "Guardrail metrics: a guide to balanced product growth (Mixpanel)",
+      "url": "https://mixpanel.com/blog/guardrail-metrics/"
+    },
+    {
+      "title": "How to set performance metrics for your service (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service"
+    },
+    {
+      "title": "How assumptions mapping focuses teams on experiments that matter (Strategyzer)",
+      "url": "https://www.strategyzer.com/library/how-assumptions-mapping-can-focus-your-teams-on-running-experiments-that-matter"
+    },
+    {
+      "title": "Why you only need to test with 5 users (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

@@ -1,7 +1,10 @@
 import {
+  BACKGROUND_IDS,
   CAREER_LEVEL_IDS,
   CHALLENGE_IDS,
   COMPANY_SIZE_IDS,
+  EXPLORE_GOAL_IDS,
+  HOURS_IDS,
   PHASE_IDS,
   PM_TYPE_IDS,
   PRODUCT_TYPE_IDS,
@@ -84,6 +87,14 @@ function parseTeam(params: ParamReader): Pick<IntakeDraft, "team" | "teamCounts"
   return { team, teamCounts };
 }
 
+/** The explore path's three answers. Each is left out of the draft unless the link has a good value. */
+function parseExplore(params: ParamReader): Pick<IntakeDraft, "background" | "goal" | "hours"> {
+  const background = pickOne(params, "background", BACKGROUND_IDS);
+  const goal = pickOne(params, "goal", EXPLORE_GOAL_IDS);
+  const hours = pickOne(params, "hours", HOURS_IDS);
+  return { ...(background && { background }), ...(goal && { goal }), ...(hours && { hours }) };
+}
+
 /** `view=leader` or `view=hands-on`. Anything else, or nothing, leaves the choice to the visitor's level. */
 function parseView(params: ParamReader): Pick<IntakeDraft, "view"> {
   const value = params.get("view");
@@ -107,6 +118,7 @@ export function parseDraft(params: ParamReader): IntakeDraft {
     way: pickOne(params, "way", WAY_OF_WORKING_IDS),
     // Links from before the leader view have none, so the level decides.
     ...parseView(params),
+    ...parseExplore(params),
   });
 }
 
@@ -126,7 +138,7 @@ export function parseEditing(params: ParamReader): boolean {
  * ids, which are safe in a web address, so commas stay readable.
  */
 export function draftToQuery(draft: IntakeDraft): string {
-  const { work, pm, level, product, size, stage, phase, challenge, team, teamCounts, tools, time, until, way, view } = draft;
+  const { work, pm, level, product, size, stage, phase, challenge, team, teamCounts, tools, time, until, way, view, background, goal, hours } = draft;
   const teamEntries = team.map((id) => {
     const count = teamCounts[id as TeamRoleId];
     return count ? `${id}:${count}` : id;
@@ -146,6 +158,9 @@ export function draftToQuery(draft: IntakeDraft): string {
     ["until", until],
     ["way", way],
     ["view", view ?? null],
+    ["background", background ?? null],
+    ["goal", goal ?? null],
+    ["hours", hours ?? null],
   ];
   return pairs
     .filter(([, value]) => value)
@@ -177,7 +192,8 @@ export function planHref(draft: IntakeDraft): string {
  * never fills it in for anyone.
  */
 export function withOldLinkDefaults(draft: IntakeDraft): IntakeDraft {
-  return draft.challenge === null ? { ...draft, challenge: NOT_SURE } : draft;
+  // The explore path has no challenge question, so it has no old links to fill in.
+  return draft.challenge === null && draft.work !== "explore" ? { ...draft, challenge: NOT_SURE } : draft;
 }
 
 /** Lets server pages, which receive a plain object, use the same reader. */

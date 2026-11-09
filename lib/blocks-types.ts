@@ -41,9 +41,22 @@ export type TrackPlacement = {
   phase: PhaseId;
   /** Blocks this follows on the track. Works like dependsOn, and may be empty. */
   after: string[];
-  /** On this track, drop the block's PM type, product type and experience limits. */
+  /** On this track, drop the block's PM type, product type, starting-point and experience limits. */
   forEveryone?: boolean;
+  /** On this track, the block is "Go further": shown in its phase, but left out of the timing and next actions. */
+  optional?: boolean;
 };
+
+/** The steps for a level. Explore blocks only have beginner steps, which every level then uses. */
+export function stepsFor(block: Pick<Block, "steps">, level: ExperienceId): string[] {
+  return block.steps[level] ?? block.steps.beginner;
+}
+
+/** True for a block whose phases are all on the explore track, which is written for beginners only. */
+export function isExploreBlock(block: Pick<Block, "phase">): boolean {
+  const phases: unknown[] = Array.isArray(block.phase) ? block.phase : [block.phase];
+  return phases.length > 0 && phases.every((id) => PHASES.some((phase) => phase.id === id && phase.track === "explore"));
+}
 
 /** One phase, a list of phases, or "any" (every phase). */
 export type BlockPhase = PhaseId | PhaseId[] | typeof ANY_PHASE;
@@ -69,7 +82,8 @@ export type Block = {
     /** Optional. Only people leaders get it, in "Lead your team". */
     leadsPeople?: boolean;
   };
-  steps: Record<ExperienceId, string[]>;
+  /** All three levels, except on the explore track, which is written for beginners and has `beginner` only. */
+  steps: { beginner: string[]; intermediate?: string[]; experienced?: string[] };
   roles: {
     owner: RoleId;
     canDelegateTo: DelegatedTask[];
@@ -185,7 +199,8 @@ export function expectedFolder(phase: BlockPhase): string {
 export function phaseName(id: PhaseId): string {
   const phase = PHASES.find((p) => p.id === id);
   if (!phase) return id;
-  return phase.track === "product" ? phase.label : `${phase.track === "strategy" ? "Strategy" : "Coaching"}: ${phase.label}`;
+  if (phase.track === "product") return phase.label;
+  return `${{ strategy: "Strategy", coaching: "Coaching", explore: "New to product" }[phase.track]}: ${phase.label}`;
 }
 
 /** A readable phase label, such as "Define", "Design, Plan and prioritise" or "Any phase". */

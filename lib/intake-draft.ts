@@ -5,6 +5,7 @@ import {
   MAX_PM_TYPES,
   MAX_TEAM_COUNT,
   NOT_SURE,
+  type ExploreQuestionId,
   type IntakeDraft,
   type MultiQuestionId,
   type NotSure,
@@ -37,7 +38,7 @@ function keepIfOffered(answer: IntakeDraft["phase"], offered: readonly { id: Pha
 }
 
 /** Sets a one-answer question, then re-checks anything that depended on it. */
-export function chooseSingle(draft: IntakeDraft, question: SingleQuestionId, value: string): IntakeDraft {
+export function chooseSingle(draft: IntakeDraft, question: SingleQuestionId | ExploreQuestionId, value: string): IntakeDraft {
   return tidyDraft({ ...draft, [question]: value } as IntakeDraft);
 }
 

@@ -20,7 +20,7 @@ import {
   labelOf,
 } from "@/content/taxonomy";
 import { loadBlocks } from "@/lib/blocks-load";
-import { phaseLabel } from "@/lib/blocks-types";
+import { isExploreBlock, phaseLabel } from "@/lib/blocks-types";
 
 export const dynamicParams = false;
 
@@ -138,45 +138,53 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
         </dl>
       </Section>
 
-      <Section title="Steps, by experience">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {EXPERIENCE_LEVELS.map((level) => (
-            <div key={level.id} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <h3 className="text-lg font-bold tracking-tight">{level.label}</h3>
-              <ol className="mt-3 list-decimal space-y-2 pl-5 leading-relaxed marker:font-semibold marker:text-primary">
-                {block.steps[level.id].map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-            </div>
-          ))}
+      <Section title={isExploreBlock(block) ? "Steps" : "Steps, by experience"}>
+        {/* Explore blocks are written for beginners, so they have one set of steps. */}
+        <div className={isExploreBlock(block) ? "max-w-3xl" : "grid gap-6 lg:grid-cols-3"}>
+          {EXPERIENCE_LEVELS.map((level) => {
+            const steps = block.steps[level.id];
+            if (!steps) return null;
+            return (
+              <div key={level.id} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                {!isExploreBlock(block) && <h3 className="text-lg font-bold tracking-tight">{level.label}</h3>}
+                <ol className="list-decimal space-y-2 pl-5 leading-relaxed marker:font-semibold marker:text-primary">
+                  {steps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+            );
+          })}
         </div>
       </Section>
 
-      <Section title="Who can do this">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <p>
-            <span className="font-semibold">Owner:</span> {roleLabel(block.roles.owner)}
-          </p>
-          {block.roles.canDelegateTo.length > 0 && (
-            <div className="mt-4">
-              <h3 className="font-semibold">Can be delegated to</h3>
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed marker:text-primary">
-                {block.roles.canDelegateTo.map((item) => (
-                  <li key={`${item.role}-${item.task}`}>
-                    <span className="font-medium">{[item.role, ...(item.orRoles ?? [])].map(roleLabel).join(" or ")}:</span> {item.task}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {block.roles.reviewers.length > 0 && (
-            <p className="mt-4">
-              <span className="font-semibold">Reviewed by:</span> {block.roles.reviewers.map(roleLabel).join(", ")}
+      {/* Explore blocks are done by the visitor themselves, so there is nobody to delegate to. */}
+      {!isExploreBlock(block) && (
+        <Section title="Who can do this">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <p>
+              <span className="font-semibold">Owner:</span> {roleLabel(block.roles.owner)}
             </p>
-          )}
-        </div>
-      </Section>
+            {block.roles.canDelegateTo.length > 0 && (
+              <div className="mt-4">
+                <h3 className="font-semibold">Can be delegated to</h3>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed marker:text-primary">
+                  {block.roles.canDelegateTo.map((item) => (
+                    <li key={`${item.role}-${item.task}`}>
+                      <span className="font-medium">{[item.role, ...(item.orRoles ?? [])].map(roleLabel).join(" or ")}:</span> {item.task}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {block.roles.reviewers.length > 0 && (
+              <p className="mt-4">
+                <span className="font-semibold">Reviewed by:</span> {block.roles.reviewers.map(roleLabel).join(", ")}
+              </p>
+            )}
+          </div>
+        </Section>
+      )}
 
       {toolEntries.length > 0 && (
         <Section title="Tool examples">

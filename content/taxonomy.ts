@@ -45,6 +45,10 @@ export const PHASES = [
   { id: "pilot", label: "Pilot", description: "Trying the new way of working with one or two teams.", order: 17, track: "coaching", lead: "PM", readyWhen: "A pilot has run, and you know what to keep and change." },
   { id: "scale", label: "Scale", description: "Spreading what works to more teams.", order: 18, track: "coaching", lead: "PM, Senior leader", readyWhen: "More teams use the new way of working, with leaders behind it." },
   { id: "sustain", label: "Sustain", description: "Measuring progress and making it last without you.", order: 19, track: "coaching", lead: "PM, People partner", readyWhen: "Capability is measured, and the practice runs without you." },
+  { id: "explore-role", label: "Explore the role", description: "Learning what product managers do, and whether the job suits you.", order: 20, track: "explore", lead: "You", readyWhen: "You know what PMs do, which kind suits you, and whether you want to carry on." },
+  { id: "explore-foundations", label: "Build foundations", description: "Learning the product process, basic numbers and how to use AI tools well.", order: 21, track: "explore", lead: "You", readyWhen: "You can explain the product process, read basic numbers and use AI tools sensibly." },
+  { id: "explore-practise", label: "Practise", description: "Doing a small real project and turning it into a case study.", order: 22, track: "explore", lead: "You", readyWhen: "You've done a small real project and have a case study to show." },
+  { id: "explore-apply", label: "Apply", description: "Taking the step: an internal move or a first PM job.", order: 23, track: "explore", lead: "You", readyWhen: "You've applied, or taken on PM work, with a clear story." },
 ] as const;
 
 export type PhaseId = (typeof PHASES)[number]["id"];
@@ -83,6 +87,7 @@ export const STAGES = [
   { id: "coaching-new", track: "coaching", label: "Just starting", description: "Product practice is new here, or it varies a lot.", phases: ["assess", "coaching-design", "pilot", "scale", "sustain"], startPhases: [], journey: ["assess", "coaching-design", "pilot", "scale", "sustain"] },
   { id: "coaching-some", track: "coaching", label: "Some teams do it well", description: "Good practice exists, but not everywhere.", phases: ["pilot", "scale", "sustain"], startPhases: [], journey: ["pilot", "scale", "sustain"] },
   { id: "coaching-established", track: "coaching", label: "Well established, needs scaling", description: "It works well, and now it needs to reach further.", phases: ["scale", "sustain"], startPhases: [], journey: ["scale", "sustain"] },
+  { id: "explore-new", track: "explore", label: "Exploring product management", description: "You're learning the role, and building towards doing the work.", phases: ["explore-role", "explore-foundations", "explore-practise", "explore-apply"], startPhases: [], journey: ["explore-role", "explore-foundations", "explore-practise", "explore-apply"] },
 ] as const;
 
 export type StageId = (typeof STAGES)[number]["id"];
@@ -228,6 +233,7 @@ export const WORK_KINDS = [
   { id: "product", label: "Building or improving a product", description: "Discovery, delivery, launch and measuring results." },
   { id: "strategy", label: "Setting product strategy", description: "Deciding where to play, what to bet on and how to align people." },
   { id: "coaching", label: "Building a team's skills or coaching", description: "Growing a product team, a practice or the way people work." },
+  { id: "explore", label: "I'm exploring product management", description: "You're curious about the role, learning it, or aiming for your first PM job." },
 ] as const;
 
 export type WorkKindId = (typeof WORK_KINDS)[number]["id"];
@@ -237,8 +243,49 @@ export const STARTING_QUESTIONS: Record<TrackId, { shortLabel: string; title: st
   product: { shortLabel: "Where the product is", title: "Where is the product now?", why: "This sets where your plan starts and which phases it usually covers." },
   strategy: { shortLabel: "Where the strategy is", title: "Is there a strategy today?", why: "This sets where your plan starts." },
   coaching: { shortLabel: "Where the practice is", title: "How mature is product practice where you work?", why: "This sets where your plan starts." },
+  // Never asked: the explore path has no starting-point question. The entry only keeps the record complete.
+  explore: { shortLabel: "Where you are", title: "Where are you starting from?", why: "This sets where your plan starts." },
 };
 export const WORK_KIND_IDS: readonly WorkKindId[] = WORK_KINDS.map((kind) => kind.id);
+
+// ---------------------------------------------------------------------------
+// 6b. The explore track's three questions (after "I'm exploring product management")
+// ---------------------------------------------------------------------------
+
+/** Question 2: where are you coming from? `favours` are the skills people from that background usually need most. */
+export const BACKGROUNDS = [
+  { id: "engineering", label: "Software engineering", description: "You build or test software.", favours: ["commercial", "discovery", "communication"] },
+  { id: "design", label: "Design, UX or research", description: "You design or research how people use things.", favours: ["data", "commercial", "technical"] },
+  { id: "data", label: "Data or analytics", description: "You work with data, reports or models.", favours: ["discovery", "communication", "commercial"] },
+  { id: "business", label: "Business, operations or consulting", description: "You run processes, projects or client work.", favours: ["technical", "discovery", "design"] },
+  { id: "marketing", label: "Marketing, sales or customer success", description: "You work closely with customers or markets.", favours: ["data", "technical", "delivery"] },
+  { id: "student", label: "Student or recent graduate", description: "You're early in your career.", favours: ["discovery", "communication", "data"] },
+  { id: "other", label: "Something else", description: "Another background.", favours: [] },
+] as const satisfies readonly { id: string; label: string; description: string; favours: readonly SkillId[] }[];
+
+export type BackgroundId = (typeof BACKGROUNDS)[number]["id"];
+export const BACKGROUND_IDS: readonly BackgroundId[] = BACKGROUNDS.map((item) => item.id);
+
+/** Question 3: what do you want from this? Which phases each goal gets is in `lib/explore.ts`. */
+export const EXPLORE_GOALS = [
+  { id: "understand", label: "Understand what the role involves", description: "You want to know what PMs do before deciding." },
+  { id: "internal-move", label: "Move into a PM role where I work now", description: "You want an internal move." },
+  { id: "first-job", label: "Get my first PM job somewhere new", description: "You're aiming to apply elsewhere." },
+  { id: "work-with-pms", label: "Work better with product managers", description: "You work alongside PMs and want to understand them." },
+] as const;
+
+export type ExploreGoalId = (typeof EXPLORE_GOALS)[number]["id"];
+export const EXPLORE_GOAL_IDS: readonly ExploreGoalId[] = EXPLORE_GOALS.map((item) => item.id);
+
+/** Question 4: how much time can you give each week? `perWeek` is the hours the plan assumes for the answer. */
+export const HOURS = [
+  { id: "under-3", label: "Under 3 hours", perWeek: 2 },
+  { id: "3-6", label: "3 to 6 hours", perWeek: 4.5 },
+  { id: "7-plus", label: "7 hours or more", perWeek: 8 },
+] as const;
+
+export type HoursId = (typeof HOURS)[number]["id"];
+export const HOURS_IDS: readonly HoursId[] = HOURS.map((item) => item.id);
 
 // ---------------------------------------------------------------------------
 // 7. Intake question 5: who is in your team? (also used for block roles)

@@ -4,7 +4,7 @@
 
 - **Goal:** a working, public product that shows hiring managers that Rinaz can ship an AI-assisted product to production, and that real PMs find useful.
 - **Audience:** hiring managers for AI PM and AI Builder roles first, then product managers of every level, then colleagues.
-- **Main action:** "Build my plan": answer 9 questions and get a tailored, step-by-step curriculum.
+- **Main action:** "Build my plan": answer 9 questions (4 for someone exploring product management) and get a tailored, step-by-step curriculum.
 - **Pages:** Home · Build my plan (intake) · Your plan · Library (all blocks) · How I built this · Decision log · Privacy.
 - **Tier:** Standard, with no visitor accounts.
   - Content lives in the code.
@@ -152,10 +152,14 @@ Approved by Rinaz on 9 November 2026. The full spec is in `docs/phase-8b-spec.md
 
 **Check:** build a plan at Group PM, Director and VP level, and compare it with a PM's.
 
-### Phase 8c: Learn the role
-"I'm exploring the role" as an answer to question 1. About 4 questions, then a short path: what PMs do, the core skills, a practice project, and how to get a first PM role.
-
-- Add a "New to product" card to the home page's "Built for" section, linking to this path. It was left out in Phase 8a-3 because the path didn't exist yet.
+### Phase 8c: Learn the role (done, 9 November 2026)
+Approved by Rinaz on 9 November 2026. The spec is in `docs/phase-8c-spec.md`, and the goal map in `docs/phase-8c-goal-map.json`.
+- [x] A fourth kind of work, "I'm exploring product management", with a short intake of four questions: kind of work, background, goal and time each week.
+- [x] Four phases (Explore the role, Build foundations, Practise, Apply) and 18 new beginner-only blocks, taking the library to 171.
+- [x] Four existing blocks reused as "Go further" through `alsoIn`: Build technical fluency, Write clearly, Answer your own questions with data, and Get up to speed on an existing product.
+- [x] The goal decides which blocks you get, and the background favours skills and labels up to three blocks "Helps close a common gap".
+- [x] The plan says "about N weeks at your pace", from the hours each week. There is no team, tools, challenge or leader view on this path.
+- [x] A "New to product" card in "Built for" and a "New to product?" pill in the home hero. This replaces the reminder left by Phase 8a-3.
 
 **Check:** follow the path as someone who isn't a PM yet.
 

@@ -1,7 +1,10 @@
 import {
+  BACKGROUNDS,
   CAREER_LEVELS,
   CHALLENGES,
   COMPANY_SIZES,
+  EXPLORE_GOALS,
+  HOURS,
   PHASES,
   PM_TYPES,
   PRODUCT_TYPES,
@@ -16,7 +19,7 @@ import {
   labelOf,
 } from "../content/taxonomy";
 import { phasesCovered, stagesFor, trackFor } from "./intake-phases";
-import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
+import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type ExploreQuestionId, type IntakeAnswers, type IntakeDraft, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
 
 export type IntakeOption = { readonly id: string; readonly label: string; readonly description?: string };
 type OptionGroup = { id: string; label: string; options: readonly IntakeOption[] };
@@ -33,7 +36,7 @@ type QuestionText = {
 
 export type IntakeQuestion = QuestionText &
   (
-    | { id: SingleQuestionId; kind: "single"; options: readonly IntakeOption[] }
+    | { id: SingleQuestionId | ExploreQuestionId; kind: "single"; options: readonly IntakeOption[] }
     | {
         id: MultiQuestionId;
         kind: "multi";
@@ -175,6 +178,37 @@ export const TAILOR_QUESTIONS: readonly IntakeQuestion[] = [
   },
 ];
 
+/** The three questions that follow "I'm exploring product management". Together with the first, that's four. */
+const EXPLORE_ONLY_QUESTIONS: readonly IntakeQuestion[] = [
+  {
+    id: "background",
+    kind: "single",
+    shortLabel: "Background",
+    title: "Where are you coming from?",
+    why: "This favours the skills where people from your background usually have gaps.",
+    notSure: "We'll cover the foundations evenly.",
+    options: BACKGROUNDS,
+  },
+  {
+    id: "goal",
+    kind: "single",
+    shortLabel: "Goal",
+    title: "What do you want from this?",
+    why: "This decides which phases you get, from understanding the role to applying for jobs.",
+    notSure: "We'll start with understanding the role, then practising.",
+    options: EXPLORE_GOALS,
+  },
+  {
+    id: "hours",
+    kind: "single",
+    shortLabel: "Time each week",
+    title: "How much time can you give each week?",
+    why: "This sets how many weeks your plan takes.",
+    notSure: "We'll assume 3 to 6 hours.",
+    options: HOURS,
+  },
+];
+
 /** The questions, in the order visitors see them. The first has a switch. */
 export function questionsFor(kindOfWorkEnabled: boolean): readonly IntakeQuestion[] {
   return kindOfWorkEnabled ? [KIND_OF_WORK_QUESTION, ...CORE_QUESTIONS] : CORE_QUESTIONS;
@@ -182,12 +216,26 @@ export function questionsFor(kindOfWorkEnabled: boolean): readonly IntakeQuestio
 
 export const INTAKE_QUESTIONS = questionsFor(KIND_OF_WORK_ENABLED);
 
+/** The explore path's four questions: the first, then background, goal and time each week. */
+export const EXPLORE_QUESTIONS: readonly IntakeQuestion[] = [KIND_OF_WORK_QUESTION, ...EXPLORE_ONLY_QUESTIONS];
+
+/** The questions a visitor is asked. Exploring product management has its own short path of four. */
+export function questionsForWork(work: IntakeDraft["work"] | undefined): readonly IntakeQuestion[] {
+  return work === "explore" ? EXPLORE_QUESTIONS : INTAKE_QUESTIONS;
+}
+
+/** How many questions a visitor's path has. */
+export function totalStepsFor(work: IntakeDraft["work"] | undefined): number {
+  return questionsForWork(work).length;
+}
+
 /** The starting-point question depends on the kind of work. Every other question stays the same. */
 export function questionFor(question: IntakeQuestion, draft: Pick<IntakeDraft, "work">): IntakeQuestion {
   if (question.id !== "stage") return question;
   return { ...question, ...STARTING_QUESTIONS[trackFor(draft.work)], options: stagesFor(draft.work) };
 }
 
+/** The longest path. A step in the address can't go past it. */
 export const TOTAL_STEPS = INTAKE_QUESTIONS.length;
 
 function answerLabel(options: readonly IntakeOption[], id: string): string {
@@ -204,7 +252,7 @@ function withCount(label: string, count: number | undefined): string {
  * the question to change it; the last row is worked out, so it has none.
  */
 export function summariseAnswers(answers: IntakeAnswers): { label: string; value: string; step?: number }[] {
-  const rows = INTAKE_QUESTIONS.map((baseQuestion, index) => {
+  const rows = questionsForWork(answers.work).map((baseQuestion, index) => {
     const question = questionFor(baseQuestion, answers);
     const answer = answers[question.id];
     const counts: Record<string, number | undefined> = question.id === "team" ? answers.teamCounts : {};

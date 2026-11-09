@@ -1,0 +1,68 @@
+{
+  "id": "xr-talk-to-pms",
+  "title": "Talk to three product managers",
+  "phase": "explore-role",
+  "kind": "core",
+  "summary": "Short conversations with working PMs show you what the job is really like. They often lead to advice, introductions and feedback on your practice work. Make a small, easy ask.",
+  "skills": [
+    "communication",
+    "discovery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write down what you want to learn, for example what the first year is like, what they would do differently and which skills matter most.",
+      "List ten people to approach: PMs you know, colleagues of colleagues, speakers at product meetups and authors of posts you have read. Start with people one or two steps ahead of you.",
+      "Write a short message: who you are, why you chose them, a specific request for 20 minutes and an easy way to say no. Do not ask for a job.",
+      "Prepare five questions about their real experience, such as 'Tell me about a decision you made last month and how you made it.' Questions about specific past events give better answers than questions about opinions.",
+      "Take notes during the call. Ask what you should read, whom else you should talk to and what you should try.",
+      "Thank them within a day, say what you did with their advice and keep a simple list of who you spoke to.",
+      "After three conversations, write down the three most surprising things you heard."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep a log of who you spoke to, the date, what you learned and what you promised to do.",
+    "claude": "Paste your draft message and ask for a shorter, warmer version. Keep every fact true."
+  },
+  "definitionOfDone": [
+    "Three conversations held",
+    "A 'what surprised me' list written",
+    "A thank-you sent after each conversation"
+  ],
+  "pitfalls": [
+    "Asking for a job in the first message",
+    "Asking for an hour of someone's time",
+    "Never following up"
+  ],
+  "estimatedEffort": "3-5 hours",
+  "dependsOn": [
+    "xr-what-pms-do"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Story-based customer interviews uncover much-needed context (Product Talk)",
+      "url": "https://www.producttalk.org/story-based-customer-interviews/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

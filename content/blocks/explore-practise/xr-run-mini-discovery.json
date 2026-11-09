@@ -1,0 +1,75 @@
+{
+  "id": "xr-run-mini-discovery",
+  "title": "Run a mini discovery with five real people",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "Talking to a handful of real users is the heart of the job. A small, well-run set of interviews will teach you more than any amount of reading.",
+  "skills": [
+    "discovery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write two or three research questions: what you need to learn, such as 'What do people do now, and where does it go wrong?'",
+      "Turn them into one story-based question, such as 'Tell me about the last time you tried to do this.' Do not mention your idea.",
+      "Recruit five people who have the problem. Explain what you will do with their answers, ask permission to take notes, collect no more personal information than you need and keep your notes private.",
+      "Run each interview for 20 to 30 minutes. Let them tell the story, ask what happened next and avoid leading questions or pitching.",
+      "After each interview, write a one-page summary: who they are in general terms, what they were trying to do, what happened and what surprised you.",
+      "Compare the summaries. Group what you heard into needs, problems and workarounds, and count how many people mentioned each.",
+      "Write three findings and, for each, the evidence. Note one thing you assumed that turned out to be wrong."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Use one page per interview with the same headings, so you can compare them.",
+    "claude": "Paste anonymised notes (no names or details) and ask for themes. Check each theme against the notes yourself."
+  },
+  "definitionOfDone": [
+    "Five interviews held and summarised",
+    "Three findings, each backed by evidence",
+    "One wrong assumption named"
+  ],
+  "pitfalls": [
+    "Asking people what they would like in future instead of what happened",
+    "Pitching your idea in the interview",
+    "Interviewing only friends who want to please you"
+  ],
+  "estimatedEffort": "5-10 days",
+  "dependsOn": [
+    "xr-choose-practice-project"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Story-based customer interviews uncover much-needed context (Product Talk)",
+      "url": "https://www.producttalk.org/story-based-customer-interviews/"
+    },
+    {
+      "title": "How many participants for a UX interview? (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/interview-sample-size/"
+    },
+    {
+      "title": "Plan user research for your service (GOV.UK Service Manual)",
+      "url": "https://www.gov.uk/service-manual/user-research/plan-user-research-for-your-service"
+    },
+    {
+      "title": "Journey mapping 101 (Nielsen Norman Group)",
+      "url": "https://www.nngroup.com/articles/journey-mapping-101/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

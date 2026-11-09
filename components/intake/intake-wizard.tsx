@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import type { PHASES, PhaseId } from "@/content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "@/lib/intake-draft";
 import { finishOptions, phasesForStage } from "@/lib/intake-phases";
-import { INTAKE_QUESTIONS, TOTAL_STEPS, questionFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
+import { questionFor, questionsForWork, totalStepsFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
 import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
 import { firstUnansweredStep, followUpError, questionError } from "@/lib/intake-validate";
@@ -40,9 +40,11 @@ export function IntakeWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const draft = parseDraft(searchParams);
-  const step = parseStep(searchParams);
+  // Exploring product management has a shorter path, so a step past its end counts as the last.
+  const totalSteps = totalStepsFor(draft.work);
+  const step = Math.min(parseStep(searchParams), totalSteps);
   const editing = parseEditing(searchParams);
-  const question = questionFor(INTAKE_QUESTIONS[step - 1], draft);
+  const question = questionFor(questionsForWork(draft.work)[step - 1], draft);
   // The hero is only for arriving. After that, the question comes straight away.
   const compact = step > 1 || editing;
 
@@ -103,7 +105,7 @@ export function IntakeWizard() {
       const missing = firstUnansweredStep(current);
       if (missing) goTo(missing, "Your change means we need this answer again.", true);
       else router.push(planHref(current));
-    } else if (step < TOTAL_STEPS) {
+    } else if (step < totalSteps) {
       goTo(step + 1);
     } else {
       // A shared or hand-edited link could reach here with gaps.
@@ -139,7 +141,7 @@ export function IntakeWizard() {
               )}
               {!editing && (
                 <p className="text-muted-foreground">
-                  Question {step} of {TOTAL_STEPS}
+                  Question {step} of {totalSteps}
                 </p>
               )}
             </div>
@@ -193,7 +195,7 @@ export function IntakeWizard() {
                   </Button>
                 )}
                 <Button type="submit" size="lg" className="ml-auto h-11 rounded-full px-6">
-                  {editing ? "Save and return to my answers" : step < TOTAL_STEPS ? "Next" : "Build my plan"}
+                  {editing ? "Save and return to my answers" : step < totalSteps ? "Next" : "Build my plan"}
                   <ArrowRight aria-hidden="true" />
                 </Button>
               </div>

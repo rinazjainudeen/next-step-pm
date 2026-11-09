@@ -1,0 +1,68 @@
+{
+  "id": "xr-pm-types-companies",
+  "title": "Find the kind of PM role that suits you",
+  "phase": "explore-role",
+  "kind": "core",
+  "summary": "The job changes a lot with the kind of product and the kind of organisation. Knowing the main variations helps you choose where to aim and what to learn first.",
+  "skills": [
+    "strategy",
+    "commercial"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the main kinds of PM role: general, growth, AI, data, technical, platform, transformation and hardware. Write one sentence on each. The add-on blocks in the Library show what each kind adds.",
+      "Compare kinds of organisation: a small start-up (wide scope, fast, few specialists), a scaling company (building its first processes), a large enterprise (specialist roles, governance and dependencies) and a public service (standards, accessibility and user needs).",
+      "Read how a PM describes the job at a start-up and how another describes it at a large company. Note the differences in scope, pace and process.",
+      "Match what you have found against your background and interests. Ask which kind of product you would still be curious about at five on a Friday.",
+      "Pick one or two kinds of role and one kind of organisation as a working hypothesis. Write why.",
+      "For your chosen kind, list what a PM there needs that a general PM does not, such as data and evaluation for AI products or internal customers for platforms. Keep the list for later."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep a comparison table of roles and organisations with a column for what would be hardest for you."
+  },
+  "definitionOfDone": [
+    "One or two kinds of PM role chosen, with reasons",
+    "One kind of organisation chosen as a hypothesis"
+  ],
+  "pitfalls": [
+    "Choosing on hype, such as whatever is trending",
+    "Ruling out whole kinds of organisation without talking to anyone who works there"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "xr-what-pms-do"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Joining as the first product manager (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/joining-as-the-first-product-manager"
+    },
+    {
+      "title": "Product management at Amazon (AWS Executive Insights)",
+      "url": "https://aws.amazon.com/executive-insights/content/product-management-at-amazon/"
+    },
+    {
+      "title": "Service Manual (GOV.UK)",
+      "url": "https://www.gov.uk/service-manual"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

@@ -2,19 +2,17 @@ import { ChevronDown, Clock } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { RegionNote } from "@/components/library/region-label";
+import { usePlanStyle } from "@/components/plan/plan-style";
 import { QuestionList, StepList } from "@/components/plan/step-list";
 import type { PlanBlock, PlanLabel } from "@/lib/plan-types";
 
-const LABEL_TEXT: Record<PlanLabel, string> = {
-  challenge: "Helps with your challenge",
-  skill: "Builds a skill you want to grow",
-};
-
 /** The small pill that says why a block comes early. Used on block cards and next actions. */
 export function LabelPill({ label }: { label: PlanLabel }) {
+  const { challengePill } = usePlanStyle();
+  const text = label === "challenge" ? challengePill : "Builds a skill you want to grow";
   return (
     <span className="inline-block rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 align-middle text-xs font-semibold text-primary">
-      {LABEL_TEXT[label]}
+      {text}
     </span>
   );
 }
@@ -76,8 +74,17 @@ export function PlanBlockCard({
   /** Buttons such as "Already done", shown at the end of the open block. */
   controls?: ReactNode;
 }) {
+  const { explorer } = usePlanStyle();
   const handsOn = (
     <>
+        {explorer ? (
+          // Someone exploring does the work themselves, so there's no team to ask and no tools to name.
+          <div className="mt-6 max-w-3xl">
+            <Part title="Steps">
+              <StepList steps={block.steps} />
+            </Part>
+          </div>
+        ) : (
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
           <Part title="Steps">
             <StepList steps={block.steps} />
@@ -112,6 +119,7 @@ export function PlanBlockCard({
             </Part>
           </div>
         </div>
+        )}
 
         <div className="mt-6 grid gap-8 border-t border-border pt-6 lg:grid-cols-2">
           <Part title="Definition of done">
@@ -162,6 +170,7 @@ export function PlanBlockCard({
 
       <div className="border-t border-border p-5 sm:p-6">
         <p className="max-w-3xl leading-relaxed text-muted-foreground">{block.summary}</p>
+        {block.backgroundLine && <p className="mt-4 max-w-3xl rounded-xl bg-primary/10 p-4 font-medium leading-relaxed text-pretty">{block.backgroundLine}</p>}
 
         {block.checkFirst.length > 0 && (
           <div className="mt-5 rounded-xl bg-secondary/60 p-4">
