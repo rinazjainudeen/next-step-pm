@@ -1,6 +1,7 @@
 import { ChevronDown, Clock } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { RegionNote } from "@/components/library/region-label";
 import { StepList } from "@/components/plan/step-list";
 import type { PlanBlock, PlanLabel } from "@/lib/plan-types";
 
@@ -83,6 +84,7 @@ export function PlanBlockCard({
             </p>
           )}
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{block.why}</p>
+          {block.region && <RegionNote region={block.region} className="mt-2" />}
           <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground">
             <Clock className="size-4" aria-hidden="true" />
             About {block.effort}

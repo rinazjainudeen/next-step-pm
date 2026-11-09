@@ -104,12 +104,22 @@ export type Block = {
   optional?: boolean;
   /** True for dummy blocks used only to test the site. Never real guidance. */
   placeholder?: boolean;
+  /**
+   * Set only when the steps depend on one country's law, processes or bodies. Citing a UK
+   * source is not enough. Blocks for everyone are worded globally instead.
+   */
+  region?: RegionId;
 };
+
+/** Countries a block can be written for. Only the UK so far. */
+export const REGIONS = [{ id: "uk", label: "UK guidance", note: "Written for the UK. Check the equivalent rules where you work." }] as const;
+export type RegionId = (typeof REGIONS)[number]["id"];
+export const REGION_IDS: readonly RegionId[] = REGIONS.map((region) => region.id);
 
 /** The small part of a block the Library list needs. */
 export type BlockSummary = Pick<
   Block,
-  "id" | "title" | "phase" | "kind" | "summary" | "skills" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder" | "alsoIn"
+  "id" | "title" | "phase" | "kind" | "summary" | "skills" | "appliesTo" | "estimatedEffort" | "optional" | "placeholder" | "alsoIn" | "region"
 >;
 
 export function toSummary(block: Block): BlockSummary {
@@ -125,6 +135,7 @@ export function toSummary(block: Block): BlockSummary {
     ...(block.optional ? { optional: true } : {}),
     ...(block.alsoIn ? { alsoIn: block.alsoIn } : {}),
     ...(block.placeholder ? { placeholder: true } : {}),
+    ...(block.region ? { region: block.region } : {}),
   };
 }
 

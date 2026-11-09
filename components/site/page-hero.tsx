@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -6,6 +7,8 @@ import { cn } from "@/lib/utils";
  *
  * `size="tool"` is the short version for tool pages (Library, Build my plan,
  * Your plan): about 35% of the screen, so the tool itself shows straight away.
+ *
+ * `notice` is an optional banner above the heading, such as "This is an example plan".
  */
 export function PageHero({
   eyebrow,
@@ -13,12 +16,14 @@ export function PageHero({
   lead,
   variant = "plain",
   size = "default",
+  notice,
 }: {
   eyebrow: string;
   title: string;
   lead?: string;
   variant?: "plain" | "card";
   size?: "default" | "tool";
+  notice?: ReactNode;
 }) {
   const isTool = size === "tool";
 
@@ -52,6 +57,7 @@ export function PageHero({
   return (
     <section className={cn("flex items-center pt-16", isTool ? "min-h-[35vh]" : "min-h-[60vh]")}>
       <div className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", isTool ? "py-6" : "py-16")}>
+        {notice && <div className="mb-6">{notice}</div>}
         {variant === "card" ? (
           <div className="rounded-3xl bg-gradient-to-br from-navy to-primary p-8 text-white sm:p-12">{heading}</div>
         ) : (

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { RegionNote } from "@/components/library/region-label";
 import { Button } from "@/components/ui/button";
 import {
   COMPANY_SIZES,
@@ -114,6 +115,7 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
       </p>
       <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{block.title}</h1>
       <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{block.summary}</p>
+      {block.region && <RegionNote region={block.region} className="mt-5" />}
 
       <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
         <span className="inline-flex items-center gap-1.5">

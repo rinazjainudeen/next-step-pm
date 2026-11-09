@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { NO_FILTERS, filterBlocks, filtersToQuery, hasFilters, parseLibraryFilters, type LibraryFilters } from "./library-filter";
+import { NO_FILTERS, activeFilterCount, filterBlocks, filtersToQuery, hasFilters, parseLibraryFilters, type LibraryFilters } from "./library-filter";
 import { makeBlock } from "./blocks-fixture";
 import { toSummary } from "./blocks-types";
 
@@ -83,6 +83,11 @@ test("filters turn back into a web address and round-trip", () => {
 test("hasFilters tells whether anything is chosen", () => {
   assert.equal(hasFilters(NO_FILTERS), false);
   assert.equal(hasFilters({ ...NO_FILTERS, kind: "core" }), true);
+});
+
+test("activeFilterCount counts the chosen filters", () => {
+  assert.equal(activeFilterCount(NO_FILTERS), 0);
+  assert.equal(activeFilterCount({ ...NO_FILTERS, kind: "core", phase: "define" }), 2);
 });
 
 test("a reused block shows under its track phase as well as its own", () => {

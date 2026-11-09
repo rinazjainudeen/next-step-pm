@@ -187,6 +187,13 @@ test("placeholder may only be true", () => {
   assert.ok(mentions(errorsFor({ placeholder: false }), "placeholder"));
 });
 
+test("region is optional, and only a known region is allowed", () => {
+  assert.deepEqual(errorsFor({}), []);
+  assert.deepEqual(errorsFor({ region: "uk" }), []);
+  assert.ok(mentions(errorsFor({ region: "UK" }), "region"));
+  assert.ok(mentions(errorsFor({ region: "us" }), "region"));
+});
+
 test("all the problems are reported together, not just the first", () => {
   const errors = errorsFor({ title: "", kind: "x", estimatedEffort: "soon" });
   assert.ok(errors.length >= 3);

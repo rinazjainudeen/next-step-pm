@@ -394,6 +394,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     summary: block.summary,
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
+    ...(block.region ? { region: block.region } : {}),
     ...(movesUp(block, answers) ? { movedUp: true } : {}),
     ...(label === "challenge" ? { helpsChallenge: true } : {}),
     ...(label === "skill" ? { growsSkill: true } : {}),
