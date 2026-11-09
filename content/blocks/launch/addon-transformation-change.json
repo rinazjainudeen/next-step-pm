@@ -72,6 +72,17 @@
   ],
   "alsoIn": [{"phase": "scale", "after": ["cap-leaders"], "forEveryone": true}],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Change plans cover how people will hear about, want, learn and keep using the new way.",
+    "ask": [
+      "How are we helping people change how they work, not just switch systems?",
+      "How will we know the change has stuck?"
+    ],
+    "signs": [
+      "Training is a single session at go-live.",
+      "People drift back to old ways."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

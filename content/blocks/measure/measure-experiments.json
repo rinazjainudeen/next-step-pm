@@ -83,6 +83,17 @@
     "measure-dashboard"
   ],
   "comesAfter": ["measure-results-hypothesis"],
+  "leaderView": {
+    "good": "Experiments are well designed, run long enough and change decisions.",
+    "ask": [
+      "What did our last experiment show, and what did we do as a result?",
+      "How do we make sure results are trustworthy?"
+    ],
+    "signs": [
+      "Tests are stopped early when they look good.",
+      "Results are ignored when they disagree with opinions."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

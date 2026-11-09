@@ -75,6 +75,17 @@
     "plan-prioritise-roadmap"
   ],
   "comesAfter": ["plan-define-mvp"],
+  "leaderView": {
+    "good": "Legacy systems are replaced piece by piece, delivering value along the way.",
+    "ask": [
+      "What's the next piece we can move, and what value does it bring?",
+      "How do we keep old and new systems in step?"
+    ],
+    "signs": [
+      "The plan is one big switch-over date.",
+      "Value only arrives at the very end."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

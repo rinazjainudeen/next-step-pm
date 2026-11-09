@@ -75,6 +75,17 @@
   "dependsOn": [
     "discover-user-research"
   ],
+  "leaderView": {
+    "good": "Every idea links back to a user need and an outcome, so teams can explain why they're working on it.",
+    "ask": [
+      "Which outcome does this idea serve, and which user need?",
+      "What other ideas did we consider for the same need?"
+    ],
+    "signs": [
+      "Ideas go straight to the backlog without a link to an outcome.",
+      "Only one solution is ever considered per problem."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

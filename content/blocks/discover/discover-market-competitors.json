@@ -79,6 +79,17 @@
     "discover-frame-opportunity"
   ],
   "alsoIn": [{"phase": "understand", "after": ["strat-scope-mandate"]}],
+  "leaderView": {
+    "good": "Teams know how users solve the problem today, including workarounds and doing nothing, and where we can be clearly better.",
+    "ask": [
+      "What do users do today instead of using us?",
+      "Where are we genuinely different, and where are we just catching up?"
+    ],
+    "signs": [
+      "Competitor analysis is a feature checklist.",
+      "No one can name the main alternative users choose."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -64,6 +64,17 @@
   ],
   "estimatedEffort": "1-3 days",
   "dependsOn": ["build-user-stories"],
+  "leaderView": {
+    "good": "Work is checked against its acceptance criteria and accessibility standards before users see it.",
+    "ask": [
+      "Who checks acceptance criteria, and when?",
+      "How do we test with assistive technology?"
+    ],
+    "signs": [
+      "Accessibility issues are found by users.",
+      "'Done' means different things to different people."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     { "title": "Testing for accessibility (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/technology/testing-for-accessibility" },

@@ -104,11 +104,23 @@ export type Block = {
   optional?: boolean;
   /** True for dummy blocks used only to test the site. Never real guidance. */
   placeholder?: boolean;
+  /** For leaders: what good looks like, what to ask the PM, and what to watch for. Every product-track timeline block has one. */
+  leaderView?: LeaderView;
   /**
    * Set only when the steps depend on one country's law, processes or bodies. Citing a UK
    * source is not enough. Blocks for everyone are worded globally instead.
    */
   region?: RegionId;
+};
+
+/** A block seen by someone who leads the team: check the work is done well, without doing the steps. */
+export type LeaderView = {
+  /** One sentence. */
+  good: string;
+  /** Exactly two questions to ask the PM. */
+  ask: [string, string];
+  /** Exactly two warning signs. */
+  signs: [string, string];
 };
 
 /** Countries a block can be written for. Only the UK so far. */
@@ -149,6 +161,19 @@ export function blockPhases(phase: BlockPhase): PhaseId[] {
   if (phase === ANY_PHASE) return [...PHASE_IDS];
   const list = Array.isArray(phase) ? phase : [phase];
   return PHASE_IDS.filter((id) => list.includes(id));
+}
+
+/**
+ * A core or add-on block that sits on the product timeline, so it needs a leader view. A block
+ * for every phase ("any"), a strategy or coaching block, and the Lead your team blocks
+ * are written for the person doing them already, so they don't.
+ * Defensive about its input, because the validator calls it before the block is known to be valid.
+ */
+export function isProductTimelineBlock(block: Pick<Block, "kind" | "phase" | "inLeadYourTeam">): boolean {
+  if (block.kind !== "core" && block.kind !== "add-on") return false;
+  if (block.inLeadYourTeam === true) return false;
+  const phases: unknown[] = Array.isArray(block.phase) ? block.phase : [block.phase];
+  return phases.length > 0 && phases.every((id) => PHASES.some((phase) => phase.id === id && phase.track === "product"));
 }
 
 /** The folder inside content/blocks/ that a block must live in. */

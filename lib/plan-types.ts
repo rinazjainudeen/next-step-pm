@@ -1,5 +1,6 @@
 import type { KindId, PhaseId } from "../content/taxonomy";
 import type { RegionId } from "./blocks-types";
+import type { ViewId } from "./intake-types";
 
 /** The shapes of a finished plan. Plain data, so a page can pass it to the browser. */
 
@@ -18,6 +19,13 @@ export type PlanTask = {
   who: string;
   /** What to do about a missing role. Absent when the role is in the team. */
   note?: string;
+};
+
+/** A block for a leader. Each question has a stable id, so a tick stays with it. */
+export type PlanLeaderView = {
+  good: string;
+  ask: PlanStep[];
+  signs: [string, string];
 };
 
 export type PlanToolExample = { toolLabel: string; tip: string };
@@ -39,6 +47,8 @@ export type PlanBlock = {
   done?: boolean;
   /** Written for one country, so it shows a "UK guidance" label. */
   region?: RegionId;
+  /** Only in the leader view: what good looks like, two questions to ask the PM, and two warning signs. */
+  leaderView?: PlanLeaderView;
   effort: string;
   /** The short "why you're seeing this". */
   why: string;
@@ -77,6 +87,8 @@ export type PlanLabel = "challenge" | "skill";
 export type PlanAction = { blockId: string; blockTitle: string; text: string; label?: PlanLabel };
 
 export type Plan = {
+  /** How blocks are shown. Leader only on the product track. */
+  view: ViewId;
   who: string;
   where: string;
   nextActions: PlanAction[];

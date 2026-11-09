@@ -77,6 +77,17 @@
   "dependsOn": [
     "build-user-stories"
   ],
+  "leaderView": {
+    "good": "Teams make steady room for fixing technical debt, and can explain the trade-off.",
+    "ask": [
+      "How much time do we spend on technical health, and is it enough?",
+      "What's slowing the team down most?"
+    ],
+    "signs": [
+      "Technical debt is only discussed in a crisis.",
+      "Delivery is getting slower each quarter."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

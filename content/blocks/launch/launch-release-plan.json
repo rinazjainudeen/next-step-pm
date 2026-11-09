@@ -65,6 +65,17 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": ["test-acceptance-accessibility"],
+  "leaderView": {
+    "good": "Everyone knows what's going out, when, who's affected and how to roll back.",
+    "ask": [
+      "Who's affected by this release, and do they know?",
+      "How do we roll back if it goes wrong?"
+    ],
+    "signs": [
+      "Releases surprise support or customers.",
+      "There's no rollback plan."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     { "title": "A product manager's guide to release planning (Atlassian)", "url": "https://www.atlassian.com/blog/agile/product-managers-guide-release-planning" },

@@ -69,6 +69,17 @@
     "discover-data-signals"
   ],
   "comesAfter": ["discover-user-research"],
+  "leaderView": {
+    "good": "Teams know each step from discovery to recommendation and where most people are lost.",
+    "ask": [
+      "Where in the funnel do we lose the most people?",
+      "Which step are we focusing on this quarter, and why?"
+    ],
+    "signs": [
+      "Growth work is spread thinly across every step.",
+      "Teams optimise top-of-funnel numbers while retention falls."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -74,6 +74,17 @@
     "define-success-metrics"
   ],
   "comesAfter": ["define-success-metrics"],
+  "leaderView": {
+    "good": "Data quality has agreed measures, owners and visible scores, so people trust it.",
+    "ask": [
+      "How do we measure data quality, and who owns fixing it?",
+      "How do users know whether to trust a figure?"
+    ],
+    "signs": [
+      "People keep their own spreadsheets because they don't trust the data.",
+      "Quality issues are fixed one complaint at a time."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

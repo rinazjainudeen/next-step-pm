@@ -73,6 +73,17 @@
     "measure-dashboard"
   ],
   "comesAfter": ["measure-results-hypothesis"],
+  "leaderView": {
+    "good": "Teams understand who keeps using the product, who leaves and why.",
+    "ask": [
+      "How does retention look for recent groups of new users, and why?",
+      "Which actions predict that someone will stay?"
+    ],
+    "signs": [
+      "Growth reports show sign-ups but not retention.",
+      "New users are acquired faster than they leave, hiding the problem."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

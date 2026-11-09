@@ -74,6 +74,17 @@
     "launch-release-plan"
   ],
   "comesAfter": ["launch-release-plan"],
+  "leaderView": {
+    "good": "Platform adoption is made easy, with clear benefits and support for migrating teams.",
+    "ask": [
+      "How many teams have moved, and what's stopping the rest?",
+      "What does migrating cost a team?"
+    ],
+    "signs": [
+      "Adoption is mandated without support.",
+      "The old platform never gets switched off."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

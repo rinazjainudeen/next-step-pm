@@ -79,6 +79,17 @@
   "dependsOn": [
     "plan-prioritise-roadmap"
   ],
+  "leaderView": {
+    "good": "First releases are the smallest version that real users can get value from, so learning starts early.",
+    "ask": [
+      "Who will use the first release, and what value will they get?",
+      "What did we leave out, and why?"
+    ],
+    "signs": [
+      "The 'MVP' takes most of the year.",
+      "The first release can't teach us anything about value."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

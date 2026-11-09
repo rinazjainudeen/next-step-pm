@@ -77,6 +77,17 @@
     "define-product-brief"
   ],
   "movesUpFor": ["established", "enterprise"],
+  "leaderView": {
+    "good": "The people who can help or block the work agree on the problem, the goal and who decides what.",
+    "ask": [
+      "Who decides, who's consulted and who's informed?",
+      "Who hasn't agreed yet, and what would it take?"
+    ],
+    "signs": [
+      "Late objections from senior people reset the work.",
+      "Decisions are reopened after they're made."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -79,6 +79,17 @@
   "dependsOn": [
     "plan-share-roadmap"
   ],
+  "leaderView": {
+    "good": "Launches are planned around who needs to hear about the product and why they'd care.",
+    "ask": [
+      "Who is this launch for, and what should they do next?",
+      "How will we know the launch worked?"
+    ],
+    "signs": [
+      "Launch is a single announcement on release day.",
+      "Sales and support hear about it last."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

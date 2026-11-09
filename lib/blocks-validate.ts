@@ -17,7 +17,7 @@ import {
   isOneOf,
   type PhaseId,
 } from "../content/taxonomy";
-import { REGION_IDS, blockPhases, expectedFolder, type Block } from "./blocks-types";
+import { REGION_IDS, blockPhases, expectedFolder, isProductTimelineBlock, type Block } from "./blocks-types";
 
 /**
  * Checks learning blocks against the rules in docs/content-model.md.
@@ -63,6 +63,7 @@ const TOP_LEVEL_KEYS = [
   "optional",
   "placeholder",
   "region",
+  "leaderView",
 ];
 
 const ID_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -129,6 +130,26 @@ function isRealDate(text: string): boolean {
 
 function todayAsText(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+/** The leader view is one sentence, exactly two questions and exactly two warning signs. */
+function checkLeaderView(value: unknown, errors: string[]): void {
+  if (!isRecord(value)) {
+    errors.push(`leaderView: must be an object with "good", "ask" and "signs".`);
+    return;
+  }
+  checkUnknownKeys(value, ["good", "ask", "signs"], "leaderView.", errors);
+  if (!isNonEmptyString(value.good)) errors.push(`leaderView.good: must be one sentence of text, not empty.`);
+  for (const key of ["ask", "signs"] as const) {
+    const list = value[key];
+    if (!Array.isArray(list) || list.length !== 2) {
+      errors.push(`leaderView.${key}: must be a list of exactly 2 items.`);
+    } else {
+      list.forEach((item, i) => {
+        if (!isNonEmptyString(item)) errors.push(`leaderView.${key}[${i + 1}]: must be some text, not empty.`);
+      });
+    }
+  }
 }
 
 function checkPhase(value: unknown, errors: string[]): void {
@@ -429,6 +450,12 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
 
   if ("region" in b && !(REGION_IDS as readonly unknown[]).includes(b.region)) {
     errors.push(`region: leave it out for guidance that works anywhere, or use one of: ${REGION_IDS.join(", ")}.`);
+  }
+
+  if ("leaderView" in b) {
+    checkLeaderView(b.leaderView, errors);
+  } else if (isProductTimelineBlock(b as unknown as Block)) {
+    errors.push(`leaderView: product-track timeline blocks need one, with "good", two "ask" questions and two "signs".`);
   }
 
   if (errors.length > 0) return { ok: false, errors };

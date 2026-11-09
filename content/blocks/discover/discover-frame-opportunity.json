@@ -80,6 +80,17 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": [],
+  "leaderView": {
+    "good": "Every piece of discovery starts with a written outcome, clear unknowns, a time box and the decision it will inform.",
+    "ask": [
+      "What outcome are we aiming for, and how will we know we've reached it?",
+      "What decision will we make at the end of discovery, and when?"
+    ],
+    "signs": [
+      "Discovery is framed around a feature someone has already asked for.",
+      "There's no end date, so discovery drifts."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -81,6 +81,17 @@
     "launch-release-plan"
   ],
   "comesAfter": ["launch-support-readiness"],
+  "leaderView": {
+    "good": "Teams know in advance how to spot, fix and communicate problems, and learn from each incident.",
+    "ask": [
+      "Who's on call, and how do users hear about problems?",
+      "What did we change after the last incident?"
+    ],
+    "signs": [
+      "Incidents are handled differently every time.",
+      "Reviews look for someone to blame."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

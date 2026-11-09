@@ -80,6 +80,17 @@
     "discover-user-research",
     "discover-market-competitors"
   ],
+  "leaderView": {
+    "good": "Each opportunity has a rough, honest estimate of size and value, with the assumptions written down.",
+    "ask": [
+      "How big is this, and what's the estimate based on?",
+      "What would have to be true for this to be worth the investment?"
+    ],
+    "signs": [
+      "Numbers are precise but the assumptions are hidden.",
+      "Opportunities are compared by who shouts loudest, not by size."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -71,6 +71,17 @@
     "plan-delivery-plan"
   ],
   "comesAfter": ["plan-delivery-plan"],
+  "leaderView": {
+    "good": "Teams prepare for service assessments by doing the work well all along, not by cramming.",
+    "ask": [
+      "Which parts of the service standard are we weakest on?",
+      "When is our next assessment, and are we ready?"
+    ],
+    "signs": [
+      "Preparation starts a few weeks before the assessment.",
+      "Evidence is created for the panel rather than for the work."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

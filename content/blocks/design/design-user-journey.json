@@ -81,6 +81,17 @@
   "dependsOn": [
     "design-explore-solutions"
   ],
+  "leaderView": {
+    "good": "Teams understand the user's whole journey, including steps outside the product.",
+    "ask": [
+      "Where in the journey do users struggle most?",
+      "Which steps sit with other teams or organisations?"
+    ],
+    "signs": [
+      "Teams only know their own screens.",
+      "Hand-offs between teams cause repeated complaints."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

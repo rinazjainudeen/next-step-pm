@@ -65,6 +65,17 @@
   "estimatedEffort": "2-3 days",
   "dependsOn": ["launch-release-plan", "measure-dashboard"],
   "comesAfter": ["measure-user-feedback"],
+  "leaderView": {
+    "good": "Teams check whether each change did what they predicted, and learn why.",
+    "ask": [
+      "Did this change move the metric we expected?",
+      "What's our next step based on what we learned?"
+    ],
+    "signs": [
+      "Shipping is treated as success.",
+      "Results are explained away."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     { "title": "Measuring the success of your service (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/measuring-success/measuring-the-success-of-your-service" },

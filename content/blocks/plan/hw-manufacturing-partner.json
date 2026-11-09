@@ -76,6 +76,17 @@
     "hw-cost-targets"
   ],
   "comesAfter": ["plan-prioritise-roadmap"],
+  "leaderView": {
+    "good": "Manufacturing partners fit the volume and product, and are treated as part of the team.",
+    "ask": [
+      "Why this partner, and what are the risks?",
+      "How often do we review quality and capacity with them?"
+    ],
+    "signs": [
+      "The partner is chosen on unit price alone.",
+      "Problems with the partner surface late."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -72,6 +72,17 @@
   "estimatedEffort": "2-4 days",
   "dependsOn": [],
   "comesAfter": ["plan-delivery-plan"],
+  "leaderView": {
+    "good": "Decisions and product knowledge are written down, so new joiners can follow without asking.",
+    "ask": [
+      "Where are decisions recorded, and how quickly can a new joiner find them?",
+      "What knowledge lives in only one person's head?"
+    ],
+    "signs": [
+      "The same questions are answered again and again.",
+      "A key person leaving would stall the team."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

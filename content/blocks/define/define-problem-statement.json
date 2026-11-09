@@ -63,6 +63,17 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": ["discover-user-research"],
+  "leaderView": {
+    "good": "Every piece of work has a short problem statement and a testable hypothesis that the team agrees with.",
+    "ask": [
+      "What problem are we solving, for whom, and how will we know it worked?",
+      "What evidence supports the problem?"
+    ],
+    "signs": [
+      "The problem statement describes a solution.",
+      "Different people describe the problem differently."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     { "title": "How to implement hypothesis-driven development (Thoughtworks)", "url": "https://www.thoughtworks.com/insights/articles/how-implement-hypothesis-driven-development" },

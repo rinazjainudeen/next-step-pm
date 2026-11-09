@@ -201,6 +201,26 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
         </Section>
       )}
 
+      {block.leaderView && (
+        <Section title="If you lead the team">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <p className="text-pretty leading-relaxed">
+              <span className="font-semibold">What good looks like:</span> {block.leaderView.good}
+            </p>
+            <div className="mt-6 grid gap-8 md:grid-cols-2">
+              <div>
+                <h3 className="font-semibold">Ask your PM</h3>
+                <Bullets items={block.leaderView.ask} />
+              </div>
+              <div>
+                <h3 className="font-semibold">Warning signs</h3>
+                <Bullets items={block.leaderView.signs} />
+              </div>
+            </div>
+          </div>
+        </Section>
+      )}
+
       {dependencies.length > 0 && (
         <Section title="Do these first">
           <ul className="list-disc space-y-2 pl-5 marker:text-primary">

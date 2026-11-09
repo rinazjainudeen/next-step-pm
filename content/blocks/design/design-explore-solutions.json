@@ -81,6 +81,17 @@
   "dependsOn": [
     "define-problem-statement"
   ],
+  "leaderView": {
+    "good": "Teams compare several genuinely different solutions before choosing one.",
+    "ask": [
+      "What other options did we consider, and why did we pick this one?",
+      "What would make us change our mind?"
+    ],
+    "signs": [
+      "Only one design is ever shown.",
+      "The first idea goes straight to build."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -78,6 +78,17 @@
     "plan-delivery-plan"
   ],
   "comesAfter": ["plan-delivery-plan"],
+  "leaderView": {
+    "good": "Dependencies on other teams are found early, agreed and tracked.",
+    "ask": [
+      "Which other teams do we depend on, and have they committed?",
+      "What happens if a dependency slips?"
+    ],
+    "signs": [
+      "Dependencies are found mid-build.",
+      "Agreements are verbal and forgotten."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -77,6 +77,17 @@
     "test-ai-model-evaluation"
   ],
   "comesAfter": ["measure-results-hypothesis"],
+  "leaderView": {
+    "good": "AI quality, cost and safety are monitored continuously after launch.",
+    "ask": [
+      "How do we know if AI quality drops, and who is alerted?",
+      "What's our cost per user, and how is it changing?"
+    ],
+    "signs": [
+      "AI quality is only checked when users complain.",
+      "Costs grow unnoticed."
+    ]
+  },
   "freshness": "fast-moving",
   "sources": [
     {

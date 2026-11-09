@@ -80,6 +80,17 @@
   "dependsOn": [
     "define-success-metrics"
   ],
+  "leaderView": {
+    "good": "Briefs are short, current and used: they hold the problem, goals, scope and open questions in one place.",
+    "ask": [
+      "What's in and out of scope, and who agreed it?",
+      "Which open questions could still change the plan?"
+    ],
+    "signs": [
+      "The brief is long, out of date or unread.",
+      "Scope grows with no record of why."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

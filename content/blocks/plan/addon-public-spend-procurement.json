@@ -70,6 +70,17 @@
     "plan-delivery-plan"
   ],
   "comesAfter": ["plan-delivery-plan"],
+  "leaderView": {
+    "good": "Spend approvals and procurement routes are planned early, with realistic lead times.",
+    "ask": [
+      "Which approvals and buying routes do we need, and how long will they take?",
+      "What happens to the plan if approval is late?"
+    ],
+    "signs": [
+      "Delivery dates ignore approval lead times.",
+      "Procurement is treated as someone else's problem."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

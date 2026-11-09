@@ -80,6 +80,17 @@
   "dependsOn": [
     "plan-epics-backlog"
   ],
+  "leaderView": {
+    "good": "Delivery plans show the order of work, milestones, owners and risks, and are kept up to date.",
+    "ask": [
+      "What's the next milestone, and how confident are we?",
+      "What's the biggest risk to the date?"
+    ],
+    "signs": [
+      "Plans are only revisited when a date slips.",
+      "Risks are known in the team but not shared upwards."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

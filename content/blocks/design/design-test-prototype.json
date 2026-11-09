@@ -63,6 +63,17 @@
   ],
   "estimatedEffort": "5-10 days",
   "dependsOn": ["design-user-journey"],
+  "leaderView": {
+    "good": "Teams test prototypes with real users in small, repeated rounds before building.",
+    "ask": [
+      "What did users struggle with, and what did we change?",
+      "How many rounds have we run?"
+    ],
+    "signs": [
+      "Testing happens once, too late to change much.",
+      "Only colleagues have tried the prototype."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     { "title": "Using moderated usability testing (GOV.UK Service Manual)", "url": "https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing" },

@@ -84,6 +84,17 @@
     "discover-data-signals"
   ],
   "comesAfter": ["discover-opportunity-sizing", "addon-b2b-customer-discovery", "addon-data-decisions", "addon-growth-funnel", "addon-internal-users", "addon-tech-developer-research", "addon-transformation-current-state"],
+  "leaderView": {
+    "good": "Discovery ends with an open decision to carry on, change direction or stop, backed by evidence.",
+    "ask": [
+      "What did we learn, and what are we recommending?",
+      "What would make us stop this work?"
+    ],
+    "signs": [
+      "Nothing is ever stopped after discovery.",
+      "The decision is made before the evidence is in."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

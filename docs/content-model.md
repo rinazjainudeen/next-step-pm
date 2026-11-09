@@ -144,6 +144,10 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 
 **`inLeadYourTeam`** also shows a block in "Lead your team" to people leaders on any track, unless it's already on their timeline. Use it rather than `leadsPeople` when the block must stay available to others elsewhere.
 
+**`leaderView`** is what a leader sees instead of the steps: `{ "good": "one sentence", "ask": ["question", "question"], "signs": ["warning sign", "warning sign"] }`. Every product-track timeline block must have one, meaning a core or add-on block in a product phase that isn't `inLeadYourTeam`. Strategy, coaching, craft, onboarding, ways-of-working and Lead your team blocks don't need it. `pnpm validate:content` checks that it has exactly 2 questions and 2 warning signs. It shows on the plan page in the leader view, and on the block's Library page under "If you lead the team".
+
+**`region`** is `"uk"` only when a block's steps depend on UK-only law, processes or bodies. Citing a UK source is not enough. It shows a "UK guidance" label. Leave it out for guidance that works anywhere.
+
 **`titleWhenLive`** gives a block a different name on a live product, where the usual title would mislead.
 
 **`worksWithoutTeam`** marks a ways-of-working block that still applies with no team roles picked. Other ways-of-working blocks are left out of that plan.

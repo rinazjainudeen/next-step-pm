@@ -70,6 +70,17 @@
     "design-explore-solutions"
   ],
   "comesAfter": ["design-explore-solutions"],
+  "leaderView": {
+    "good": "Protection against fraud, abuse and harmful content is designed in from the start.",
+    "ask": [
+      "How could this be misused, and what stops it?",
+      "Who handles reports, and how quickly?"
+    ],
+    "signs": [
+      "Safety work starts after the first incident.",
+      "There's no way for users to report a problem."
+    ]
+  },
   "freshness": "changes-yearly",
   "sources": [
     {

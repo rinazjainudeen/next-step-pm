@@ -77,6 +77,17 @@
   "dependsOn": [
     "define-problem-statement"
   ],
+  "leaderView": {
+    "good": "Big bets start with a one-page press release and hard questions, so the value is clear before building.",
+    "ask": [
+      "Would a customer care about this announcement?",
+      "Which tough question did we struggle to answer?"
+    ],
+    "signs": [
+      "The press release lists features, not customer value.",
+      "Hard questions are skipped."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

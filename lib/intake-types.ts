@@ -28,6 +28,13 @@ type Answer<T extends string> = T | NotSure;
 export const OTHER_TOOL = "other";
 export type OtherTool = typeof OTHER_TOOL;
 
+/**
+ * How the plan's blocks are shown: with the PM's hands-on steps, or as a leader checking the work.
+ * Not a question. It's kept in the link only when someone chooses it, and otherwise follows their level.
+ */
+export const VIEW_IDS = ["hands-on", "leader"] as const;
+export type ViewId = (typeof VIEW_IDS)[number];
+
 /** The biggest number the team question offers for one role. */
 export const MAX_TEAM_COUNT = 20;
 
@@ -66,6 +73,8 @@ export type IntakeAnswers = {
   /** Follow-up to `time`: the phase to finish by the milestone. Null only when it wasn't asked. */
   until: Answer<PhaseId> | null;
   way: Answer<WayOfWorkingId>;
+  /** A chosen view. Left out means the default for the visitor's level. */
+  view?: ViewId;
 };
 
 /** Answers part-way through: single questions may be blank, lists may be empty. */

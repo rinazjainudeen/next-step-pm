@@ -86,6 +86,17 @@
     "test-acceptance-accessibility"
   ],
   "comesAfter": ["test-performance-reliability", "test-security-privacy", "addon-b2b-enterprise-readiness", "test-ai-model-evaluation", "hw-safety-certification"],
+  "leaderView": {
+    "good": "A small group uses the real product for real tasks before it opens to everyone.",
+    "ask": [
+      "What did the beta teach us, and what did we change?",
+      "What would stop us launching?"
+    ],
+    "signs": [
+      "The beta is a marketing exercise.",
+      "There are no criteria for moving from beta to full launch."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

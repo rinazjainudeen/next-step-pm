@@ -74,6 +74,17 @@
   "estimatedEffort": "2-4 hours",
   "dependsOn": [],
   "comesAfter": ["measure-dashboard"],
+  "leaderView": {
+    "good": "Teams hear from users regularly, and feedback visibly shapes the roadmap.",
+    "ask": [
+      "What are users telling us most often?",
+      "What did we change because of feedback last quarter?"
+    ],
+    "signs": [
+      "Feedback piles up unread.",
+      "Users never hear back about what changed."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

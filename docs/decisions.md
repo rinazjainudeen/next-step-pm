@@ -8,6 +8,18 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-09 (Phase 8b)
+
+From the site review (finding 1), approved by Rinaz on 9 November 2026. The spec is in `docs/phase-8b-spec.md`.
+
+- **The view follows the level.** Director and VP open in Leader view, because they lead the work rather than do it. Group PM opens Hands-on, because they still own product, but the switch is above the timeline for them. Associate, Product manager, Senior and "Not sure" open Hands-on, with the switch inside "Your answers". A `view=` in the link always wins, so shared links open the way they were shared. Old links have no `view`, so they open as before.
+- **The rule for a leader view:** one sentence on what good looks like, exactly two questions to ask the PM and exactly two warning signs. Every product-track timeline block has one (a core or add-on block in a product phase that isn't in "Lead your team"). Strategy, coaching, craft, onboarding, ways-of-working and Lead your team blocks don't, because they're already written for the person doing them. The check is in `pnpm validate:content`, so a new block can't be added without one.
+- **Leader view is for the product track only.** A Director on the strategy or coaching track always sees Hands-on, because those blocks have no leader view, and the switch is hidden.
+- **The strategy nudge** appears for Group PM, Director and VP on the product track, after Lead your team, as a card with a "Build a strategy plan" button. It opens the intake on the strategy track at the first question left, with level, size and product type filled in. It replaces the old one-line note above the timeline.
+- **Asked questions count as done.** A leader's block is done when both questions are ticked as asked, or when it's marked "Already done". In Leader view, "Already done" ticks the questions as well as the steps. This keeps the current phase and the next actions moving as a leader works through the questions.
+- **Next actions in Leader view** are one question from each block, taking the blocks that help with the challenge first and then the rest in plan order. The question is the first one not yet asked. Hands-on next actions are unchanged.
+- **Question ticks are stored with step ticks,** under ids like `block-id/ask/0`, so they can't clash with step ids. They stay in the browser and never go in the link.
+
 ## 2026-11-09 (Phase 8a-3)
 
 - **The example plan is a product manager in a growing B2B software company,** partway through a build in the Build phase, whose challenge is "We ship, but can't tell if it's working", with 1 to 3 months, Scrum, and no team or tools. It's the most common kind of visitor we expect, and leaving team and tools blank shows the plan most people will see. The answers live in one constant, `lib/example-plan.ts`.

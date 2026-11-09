@@ -2,7 +2,7 @@ import { ChevronDown, Clock } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { RegionNote } from "@/components/library/region-label";
-import { StepList } from "@/components/plan/step-list";
+import { QuestionList, StepList } from "@/components/plan/step-list";
 import type { PlanBlock, PlanLabel } from "@/lib/plan-types";
 
 const LABEL_TEXT: Record<PlanLabel, string> = {
@@ -38,6 +38,25 @@ function Bullets({ items }: { items: string[] }) {
   );
 }
 
+/** What a leader needs from a block: what good looks like, what to ask the PM, and what to watch for. */
+function LeaderPart({ view }: { view: NonNullable<PlanBlock["leaderView"]> }) {
+  return (
+    <div className="mt-6 grid gap-8 lg:grid-cols-2">
+      <div className="space-y-6">
+        <Part title="What good looks like">
+          <p className="text-pretty">{view.good}</p>
+        </Part>
+        <Part title="Warning signs">
+          <Bullets items={view.signs} />
+        </Part>
+      </div>
+      <Part title="Ask your PM">
+        <QuestionList questions={view.ask} />
+      </Part>
+    </div>
+  );
+}
+
 /**
  * One block in a plan. A native expandable section, so the keyboard, screen
  * readers and a link to #block-id all work with no extra code.
@@ -57,6 +76,55 @@ export function PlanBlockCard({
   /** Buttons such as "Already done", shown at the end of the open block. */
   controls?: ReactNode;
 }) {
+  const handsOn = (
+    <>
+        <div className="mt-6 grid gap-8 lg:grid-cols-2">
+          <Part title="Steps">
+            <StepList steps={block.steps} />
+          </Part>
+
+          <div className="space-y-6">
+            <Part title={teamAnswered ? "Who can do this" : "Who usually helps"}>
+              <ul className="space-y-3">
+                {block.tasks.map((task) => (
+                  <li key={`${task.roleLabel}-${task.task}`} className="text-pretty">
+                    <span className="font-medium">{task.who}:</span> {task.task}
+                    {task.note && <span className="block text-sm text-muted-foreground">{task.note}</span>}
+                  </li>
+                ))}
+              </ul>
+              {block.reviewers.length > 0 && <p className="mt-3">Ask for a review from: {block.reviewers.join(", ")}.</p>}
+            </Part>
+
+            <Part title="With your tools">
+              {block.tools.length > 0 ? (
+                <dl className="space-y-3">
+                  {block.tools.map((tool) => (
+                    <div key={tool.toolLabel}>
+                      <dt className="font-medium">{tool.toolLabel}</dt>
+                      <dd className="text-pretty text-muted-foreground">{tool.tip}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : (
+                <p className="text-muted-foreground">{block.toolTip}</p>
+              )}
+            </Part>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-8 border-t border-border pt-6 lg:grid-cols-2">
+          <Part title="Definition of done">
+            <Bullets items={block.definitionOfDone} />
+          </Part>
+          {block.pitfalls.length > 0 && (
+            <Part title="Common pitfalls">
+              <Bullets items={block.pitfalls} />
+            </Part>
+          )}
+        </div>
+    </>
+  );
   return (
     <details id={block.id} data-plan-block open={open} className="group scroll-mt-24 rounded-2xl border border-border bg-card shadow-sm">
       <summary className="flex cursor-pointer list-none items-start gap-3 rounded-2xl p-5 sm:p-6 [&::-webkit-details-marker]:hidden">
@@ -110,51 +178,22 @@ export function PlanBlockCard({
           </div>
         )}
 
-        <div className="mt-6 grid gap-8 lg:grid-cols-2">
-          <Part title="Steps">
-            <StepList steps={block.steps} />
-          </Part>
-
-          <div className="space-y-6">
-            <Part title={teamAnswered ? "Who can do this" : "Who usually helps"}>
-              <ul className="space-y-3">
-                {block.tasks.map((task) => (
-                  <li key={`${task.roleLabel}-${task.task}`} className="text-pretty">
-                    <span className="font-medium">{task.who}:</span> {task.task}
-                    {task.note && <span className="block text-sm text-muted-foreground">{task.note}</span>}
-                  </li>
-                ))}
-              </ul>
-              {block.reviewers.length > 0 && <p className="mt-3">Ask for a review from: {block.reviewers.join(", ")}.</p>}
-            </Part>
-
-            <Part title="With your tools">
-              {block.tools.length > 0 ? (
-                <dl className="space-y-3">
-                  {block.tools.map((tool) => (
-                    <div key={tool.toolLabel}>
-                      <dt className="font-medium">{tool.toolLabel}</dt>
-                      <dd className="text-pretty text-muted-foreground">{tool.tip}</dd>
-                    </div>
-                  ))}
-                </dl>
-              ) : (
-                <p className="text-muted-foreground">{block.toolTip}</p>
-              )}
-            </Part>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-8 border-t border-border pt-6 lg:grid-cols-2">
-          <Part title="Definition of done">
-            <Bullets items={block.definitionOfDone} />
-          </Part>
-          {block.pitfalls.length > 0 && (
-            <Part title="Common pitfalls">
-              <Bullets items={block.pitfalls} />
-            </Part>
-          )}
-        </div>
+        {block.leaderView ? (
+          <>
+            <LeaderPart view={block.leaderView} />
+            <details data-plan-block className="group/steps mt-6 rounded-xl border border-border">
+              <summary className="flex cursor-pointer list-none items-center gap-2 rounded-xl p-4 font-semibold [&::-webkit-details-marker]:hidden">
+                <ChevronDown className="no-print size-4 shrink-0 text-primary transition-transform group-open/steps:rotate-180" aria-hidden="true" />
+                See the hands-on steps
+              </summary>
+              <div className="border-t border-border px-4 pb-4 sm:px-5 sm:pb-5">
+                {handsOn}
+              </div>
+            </details>
+          </>
+        ) : (
+          handsOn
+        )}
 
         {controls && <div className="no-print mt-6 flex flex-wrap gap-3 border-t border-border pt-6">{controls}</div>}
 

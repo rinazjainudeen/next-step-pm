@@ -78,6 +78,17 @@
     "define-problem-statement"
   ],
   "comesAfter": ["define-problem-statement"],
+  "leaderView": {
+    "good": "Each product has a target cost per unit, agreed early and protected through design changes.",
+    "ask": [
+      "What's our target cost per unit, and where are we against it?",
+      "Which design changes have added cost?"
+    ],
+    "signs": [
+      "Cost is only checked when quotes arrive.",
+      "Features are added without a cost check."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

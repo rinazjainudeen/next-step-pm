@@ -84,6 +84,17 @@
   "dependsOn": [
     "define-success-metrics"
   ],
+  "leaderView": {
+    "good": "Tracking is planned before building, so success can be measured from day one.",
+    "ask": [
+      "Will we be able to measure our success metrics on launch day?",
+      "Who checked the tracking for privacy?"
+    ],
+    "signs": [
+      "Tracking is added after launch.",
+      "Events are inconsistent across teams."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

@@ -87,6 +87,17 @@
   "dependsOn": [
     "discover-frame-opportunity"
   ],
+  "leaderView": {
+    "good": "Teams use data to find where users struggle, then use research to find out why.",
+    "ask": [
+      "What does the data show about where users drop off?",
+      "Which of these signals have we checked with real users?"
+    ],
+    "signs": [
+      "Decisions rest on a single chart with no context.",
+      "Data and research tell different stories, and no one has noticed."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {

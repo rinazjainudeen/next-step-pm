@@ -26,9 +26,10 @@ import {
 import { blockPhases, type Block, type DelegatedTask } from "./blocks-types";
 import { finishOptions, phasesCovered, trackFor } from "./intake-phases";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type TeamRoleId } from "./intake-types";
+import { viewFor } from "./leader-view";
 import { NO_ADJUSTMENTS, growingSkills, type Adjustments } from "./plan-adjustments";
 import { OPENING_LINES } from "./plan-wording";
-import type { Plan, PlanAction, PlanBlock, PlanPace, PlanPhase, PlanTask, PlanToolExample } from "./plan-types";
+import type { Plan, PlanAction, PlanBlock, PlanLeaderView, PlanPace, PlanPhase, PlanTask, PlanToolExample } from "./plan-types";
 
 /**
  * The curriculum engine: answers + blocks -> plan.
@@ -288,7 +289,8 @@ const TEAM_UNKNOWN_WHO: Record<TaskFallbackId, string> = {
   "ask-around": "Ask whoever knows this best",
 };
 
-function assignTask(item: DelegatedTask, answers: IntakeAnswers): PlanTask {
+/** In the leader view, a role missing from the PM's team isn't the leader's concern, so it's shown as who usually helps. */
+function assignTask(item: DelegatedTask, answers: IntakeAnswers, hideMissing = false): PlanTask {
   const { task, ifMissing } = item;
   const roleLabel = labelOf(ROLES, item.role);
   const teamRole = teamRoleFor(item, answers);
@@ -306,6 +308,7 @@ function assignTask(item: DelegatedTask, answers: IntakeAnswers): PlanTask {
     const note = ifMissing === "pm" ? `${someone} could help, if you have one.` : `${someone} would usually do this.`;
     return { roleLabel, task, inTeam: false, who: TEAM_UNKNOWN_WHO[ifMissing], note };
   }
+  if (hideMissing) return { roleLabel, task, inTeam: false, who: [item.role, ...(item.orRoles ?? [])].map(personIn).join(" or ") };
   return { roleLabel, task, inTeam: false, who: `No ${person} in your team`, note: missingRoleNote(ifMissing, answers) };
 }
 
@@ -385,9 +388,17 @@ function titleFor(block: Block, answers: IntakeAnswers): string {
 
 type BlockLabel = "challenge" | "skill" | null;
 
+/** The id of a question a leader can tick as asked. It never clashes with a step id, which has the level in it. */
+const askId = (blockId: string, index: number) => `${blockId}/ask/${index}`;
+
+function leaderViewOf(blockId: string, view: NonNullable<Block["leaderView"]>): PlanLeaderView {
+  return { good: view.good, ask: view.ask.map((text, index) => ({ id: askId(blockId, index), text })), signs: view.signs };
+}
+
 function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirst: PlanBlock["checkFirst"], label: BlockLabel = null, done = false): PlanBlock {
   const level = experienceFor(answers);
   const tools = toolExamples(block, answers);
+  const leader = viewFor(answers) === "leader";
   return {
     id: block.id,
     title: titleFor(block, answers),
@@ -395,6 +406,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
     ...(block.region ? { region: block.region } : {}),
+    ...(leader && block.leaderView ? { leaderView: leaderViewOf(block.id, block.leaderView) } : {}),
     ...(movesUp(block, answers) ? { movedUp: true } : {}),
     ...(label === "challenge" ? { helpsChallenge: true } : {}),
     ...(label === "skill" ? { growsSkill: true } : {}),
@@ -402,7 +414,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     effort: block.estimatedEffort,
     why,
     steps: block.steps[level].map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
-    tasks: block.roles.canDelegateTo.map((item) => assignTask(item, answers)),
+    tasks: block.roles.canDelegateTo.map((item) => assignTask(item, answers, leader)),
     reviewers: reviewersFor(block, answers),
     tools,
     ...(tools.length === 0 ? { toolTip: NO_TOOL_MATCH } : {}),
@@ -547,17 +559,25 @@ function whereText(answers: IntakeAnswers, covered: readonly PhaseId[]): string 
  * first required block not yet done, from the phase the visitor is in.
  * Finished blocks are skipped.
  */
-function firstActions(phases: readonly PlanPhase[], currentPhase: PhaseId | null, count: number): PlanAction[] {
+function firstActions(phases: readonly PlanPhase[], currentPhase: PhaseId | null, count: number, ticked: readonly string[], leader: boolean): PlanAction[] {
   if (currentPhase === null) return [];
   const fromCurrent = phases.slice(phases.findIndex((phase) => phase.id === currentPhase));
   const blocks = fromCurrent.flatMap((phase) => phase.blocks).filter((block) => !block.optional && !block.done);
   const firstLabelled = blocks.findIndex((block) => block.helpsChallenge || block.growsSkill);
-  return blocks
-    .slice(Math.max(firstLabelled, 0))
-    .flatMap((block) => {
+  const isLabelled = (block: PlanBlock) => block.helpsChallenge || block.growsSkill;
+  // A leader gets one question per block, so the labelled blocks come first and the rest follow in order.
+  const sequence = leader ? [...blocks.filter(isLabelled), ...blocks.filter((block) => !isLabelled(block))] : blocks.slice(Math.max(firstLabelled, 0));
+  return sequence
+    .flatMap((block): PlanAction[] => {
       // The same label as the block card, so the top of the page shows why these come first.
       const label: PlanAction["label"] = block.helpsChallenge ? "challenge" : block.growsSkill ? "skill" : undefined;
-      return block.steps.map((step) => ({ blockId: block.id, blockTitle: block.title, text: step.text, ...(label && { label }) }));
+      const action = (text: string): PlanAction => ({ blockId: block.id, blockTitle: block.title, text, ...(label && { label }) });
+      // A leader asks rather than does: the first question not yet asked, one block at a time.
+      if (block.leaderView) {
+        const question = block.leaderView.ask.find((item) => !ticked.includes(item.id));
+        return question ? [action(`Ask your PM: ${question.text}`)] : [];
+      }
+      return block.steps.map((step) => action(step.text));
     })
     .slice(0, count);
 }
@@ -660,7 +680,11 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   };
 
   // A block is done when every step is ticked. "Already done" ticks them all.
-  const isDone = (block: Block) => block.steps[level].every((_, index) => adjustments.ticked.includes(`${block.id}/${level}/${index}`));
+  // A leader's block is also done when both questions have been asked.
+  const leader = viewFor(answers) === "leader";
+  const isDone = (block: Block) =>
+    block.steps[level].every((_, index) => adjustments.ticked.includes(`${block.id}/${level}/${index}`)) ||
+    (leader && block.leaderView !== undefined && block.leaderView.ask.every((_, index) => adjustments.ticked.includes(askId(block.id, index))));
   const phaseDone = byPhase.map((group) => group.blocks.filter((block) => !block.optional).every(isDone));
   const currentIndex = phaseDone.indexOf(false);
   const currentPhase = currentIndex === -1 ? null : byPhase[currentIndex].phaseId;
@@ -710,7 +734,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const alongside = (kind: Block["kind"]) =>
     orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
 
-  const nextActions = firstActions(phases, currentPhase, 3);
+  const nextActions = firstActions(phases, currentPhase, 3, adjustments.ticked, leader);
   const onTimeline = new Set(byPhase.flatMap((group) => group.blocks.map((block) => block.id)));
   // Team rituals suit a product team. A strategy or coaching plan, or a PM with no team, doesn't run them.
   const noTeam = answers.team.includes(NOT_SURE);
@@ -723,6 +747,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const isLoop = answers.stage === "live";
 
   return {
+    view: viewFor(answers),
     who: whoText(answers),
     where: whereText(answers, covered),
     nextActions,

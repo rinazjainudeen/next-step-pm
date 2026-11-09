@@ -76,6 +76,17 @@
     "design-explore-solutions"
   ],
   "comesAfter": ["design-explore-solutions"],
+  "leaderView": {
+    "good": "APIs are treated as products: easy to understand, consistent, documented and stable.",
+    "ask": [
+      "How long does it take a new developer to make a first successful call?",
+      "How do we handle breaking changes?"
+    ],
+    "signs": [
+      "Documentation lags behind the API.",
+      "Breaking changes surprise users."
+    ]
+  },
   "freshness": "evergreen",
   "sources": [
     {
