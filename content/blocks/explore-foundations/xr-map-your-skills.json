@@ -1,0 +1,64 @@
+{
+  "id": "xr-map-your-skills",
+  "title": "Map your skills to product management",
+  "phase": "explore-foundations",
+  "kind": "core",
+  "summary": "Most people arrive in product with strong skills from another job and a few gaps. Listing both shows you what to emphasise and what to learn first.",
+  "skills": [
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write down the skills a PM needs, using the list in the sources: for example user research, data analysis, communication, technical understanding, strategy and leadership. Rate yourself honestly on each from 1 (new to it) to 3 (strong).",
+      "For each skill you rated 2 or 3, write one real example of using it, in work or study, with the result.",
+      "Circle the two or three skills you rated 1. These are your gaps. Add them to the 'How confident are you?' panel on your plan, so related blocks move earlier.",
+      "Check your list against common patterns. People from engineering often need more on users and the business. People from design often need more on data and the business. People from data roles often need more on users and influence. People from business and operations often need more on technology and discovery. People from marketing and sales often need more on data and delivery.",
+      "Choose one gap to start closing this month and set a concrete task for it.",
+      "Rewrite two of your examples in product language. For example, 'I ran a project' becomes 'I owned an outcome and decided what to include and what to leave out.'"
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Make a table with a row for each skill, your rating, an example and your next step."
+  },
+  "definitionOfDone": [
+    "Skills rated, with an example for each strength",
+    "Your top gaps named, and one chosen to start with"
+  ],
+  "pitfalls": [
+    "Rating yourself on job titles instead of skills",
+    "Hiding gaps instead of planning for them",
+    "Assuming a PM must be an engineer or a designer"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "xr-is-pm-for-me"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

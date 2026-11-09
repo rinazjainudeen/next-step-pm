@@ -1,7 +1,10 @@
 import type {
+  BackgroundId,
   CareerLevelId,
   ChallengeId,
   CompanySizeId,
+  ExploreGoalId,
+  HoursId,
   PhaseId,
   PmTypeId,
   ProductTypeId,
@@ -49,7 +52,9 @@ export type TeamRoleId = Exclude<RoleId, "pm">;
 
 export type SingleQuestionId = "work" | "level" | "product" | "size" | "stage" | "challenge" | "time" | "way";
 export type MultiQuestionId = "pm" | "team" | "tools";
-export type QuestionId = SingleQuestionId | MultiQuestionId;
+/** The three questions only the explore path asks. They're left out of the answers on every other path. */
+export type ExploreQuestionId = "background" | "goal" | "hours";
+export type QuestionId = SingleQuestionId | MultiQuestionId | ExploreQuestionId;
 
 /** A finished set of answers: every question has one. */
 export type IntakeAnswers = {
@@ -75,6 +80,12 @@ export type IntakeAnswers = {
   way: Answer<WayOfWorkingId>;
   /** A chosen view. Left out means the default for the visitor's level. */
   view?: ViewId;
+  /** Explore path only: where the visitor is coming from. */
+  background?: Answer<BackgroundId>;
+  /** Explore path only: what they want from the plan. */
+  goal?: Answer<ExploreGoalId>;
+  /** Explore path only: how many hours each week they can give. */
+  hours?: Answer<HoursId>;
 };
 
 /** Answers part-way through: single questions may be blank, lists may be empty. */

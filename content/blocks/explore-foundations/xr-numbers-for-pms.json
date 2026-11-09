@@ -1,0 +1,79 @@
+{
+  "id": "xr-numbers-for-pms",
+  "title": "Learn the numbers product managers use",
+  "phase": "explore-foundations",
+  "kind": "core",
+  "summary": "PMs use a small set of numbers to see whether a product works: how many people try it, how many stay and whether a change made a difference. You do not need to be a data scientist, but you do need to read numbers well.",
+  "skills": [
+    "data"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Learn four ideas: a funnel (how many people complete each step), retention (how many come back), a north star metric (the one number that shows value) and an experiment (comparing two versions). Write one example of each from a product you know.",
+      "Read the funnel analysis guide. Sketch a funnel for signing up to a service you use, mark where you think people drop off and say why.",
+      "Read how a retention analysis is built. Describe how you would check whether people were still using a new feature a month later.",
+      "Read about north star metrics. Write one for a product you know, then list two other measures that would warn you if chasing it caused harm.",
+      "Read an introduction to controlled experiments. Note what makes a result trustworthy: a clear hypothesis, enough users, a long enough run and one change at a time.",
+      "If you want to go further, spend an hour on the interactive SQL lessons in the sources. Understanding how to ask a database a question helps with every conversation with analysts.",
+      "Take one chart or statistic from a news story and list the questions you would ask before trusting it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Keep a one-page glossary of the terms with an example for each.",
+    "claude": "Ask it to explain one measure with a made-up example, then check the explanation against a source."
+  },
+  "definitionOfDone": [
+    "One example of each of the four ideas",
+    "A sketched funnel with guessed drop-offs",
+    "A list of questions for one chart"
+  ],
+  "pitfalls": [
+    "Chasing a single number without checking side effects",
+    "Reading small changes in small samples as proof",
+    "Skipping the basics to jump straight to dashboards"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "xr-map-your-skills"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Funnel analysis: find drop-offs (Amplitude)",
+      "url": "https://amplitude.com/guides/funnel-analysis"
+    },
+    {
+      "title": "Build a retention analysis (Amplitude docs)",
+      "url": "https://amplitude.com/docs/analytics/charts/retention-analysis/retention-analysis-build"
+    },
+    {
+      "title": "The North Star Playbook (Amplitude)",
+      "url": "https://amplitude.com/en-us/resources/north-star-playbook"
+    },
+    {
+      "title": "Trustworthy online controlled experiments (Kohavi, Tang and Xu, Cambridge University Press)",
+      "url": "https://doi.org/10.1017/9781108653985"
+    },
+    {
+      "title": "SQLBolt: interactive SQL lessons",
+      "url": "https://sqlbolt.com/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

@@ -1,4 +1,4 @@
-import { INTAKE_QUESTIONS } from "@/lib/intake-questions";
+import { questionsForWork } from "@/lib/intake-questions";
 import type { IntakeDraft } from "@/lib/intake-types";
 import { canJumpTo, isAnswered } from "@/lib/intake-validate";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ export function StepNav({ step, draft, onJump }: { step: number; draft: IntakeDr
   return (
     <nav aria-label="Questions" className="mt-2">
       <ol className="flex gap-1">
-        {INTAKE_QUESTIONS.map((question, index) => {
+        {questionsForWork(draft.work).map((question, index) => {
           const number = index + 1;
           const isCurrent = number === step;
           return (

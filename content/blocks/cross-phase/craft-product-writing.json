@@ -61,6 +61,13 @@
   ],
   "estimatedEffort": "1-2 days",
   "dependsOn": [],
+  "alsoIn": [
+    {
+      "phase": "explore-foundations",
+      "after": [],
+      "optional": true
+    }
+  ],
   "freshness": "evergreen",
   "sources": [
     {

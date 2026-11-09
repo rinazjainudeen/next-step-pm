@@ -1,0 +1,71 @@
+{
+  "id": "xr-internal-move",
+  "title": "Move into product inside your company",
+  "phase": "explore-apply",
+  "kind": "core",
+  "summary": "For many people the easiest route into product is inside the organisation they already know. Build a case for a real problem, take on product work and ask for the role.",
+  "skills": [
+    "communication",
+    "commercial"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Find product managers in your organisation and learn how people there moved into the role. Ask your manager and HR which routes exist, such as secondments, associate roles or shadowing.",
+      "Choose a real problem in your own area and write a one-page business case: the problem, the evidence, a proposed change and its value.",
+      "Tell your manager you are aiming for product, share the business case and ask what would make them support the move.",
+      "Ask to shadow a PM for a few days, to join a team's discovery session or to take on PM-like work in your current job, such as owning a measure, running user interviews or writing a brief.",
+      "Keep a log of outcomes you owned, decisions you made and what happened, using the language of the PM skills framework.",
+      "Look at internal vacancies and talk to the hiring manager before you apply.",
+      "If the answer is 'not yet', ask what to work on and agree a date to review it."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep a log with the date, what you owned, what you decided and what happened."
+  },
+  "definitionOfDone": [
+    "A one-page business case shared",
+    "Conversations held with your manager and with a PM",
+    "A log of PM-like work with outcomes"
+  ],
+  "pitfalls": [
+    "Waiting to be noticed",
+    "Dropping your current responsibilities before the move is agreed",
+    "Asking for the title before showing the work"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "xr-portfolio-case-study"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    },
+    {
+      "title": "How we're developing the product leaders of the future (GOV.UK Digital People blog)",
+      "url": "https://digitalpeople.blog.gov.uk/2019/04/15/how-were-developing-the-product-leaders-of-the-future"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

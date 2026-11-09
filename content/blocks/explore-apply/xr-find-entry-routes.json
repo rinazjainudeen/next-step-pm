@@ -1,0 +1,72 @@
+{
+  "id": "xr-find-entry-routes",
+  "title": "Find the routes into a first PM role",
+  "phase": "explore-apply",
+  "kind": "core",
+  "summary": "There is no single door into product. Graduate programmes, adjacent roles, internal moves and smaller companies all work, and some fit you better than others.",
+  "skills": [
+    "commercial",
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List the routes: associate or rotational programmes (mostly for graduates and early-career people at larger companies), associate PM roles, adjacent roles that lead into product (product owner, business analyst, delivery manager, designer, data analyst), internal moves and small companies that need generalists.",
+      "Read an overview of associate programmes. Note their entry rules and timing, because many open only once a year.",
+      "For each route, write who it suits, how competitive it looks and what evidence it wants. Choose your first and second routes.",
+      "Build a target list of about fifteen organisations: some where your background is an advantage, some where you already know the product and some that are small.",
+      "Set up job alerts and read adverts to learn the language. Save ones you would apply to even if you do not feel ready.",
+      "Tell people. Message the product managers you spoke to with your target and ask whether they know of openings or people to talk to.",
+      "Set a weekly target for applications and conversations, and review it monthly."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Track organisations, routes, contacts and the date of your last follow-up."
+  },
+  "definitionOfDone": [
+    "Two routes chosen, with reasons",
+    "A list of about fifteen organisations",
+    "Job alerts set up",
+    "A weekly target set"
+  ],
+  "pitfalls": [
+    "Applying only to the best-known graduate programmes",
+    "Ignoring adjacent roles that lead to product",
+    "Sending the same application everywhere"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "xr-portfolio-case-study"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Everything you need to know about APM programs (Product School)",
+      "url": "https://productschool.substack.com/p/apm-programs"
+    },
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

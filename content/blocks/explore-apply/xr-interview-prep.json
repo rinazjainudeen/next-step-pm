@@ -1,0 +1,69 @@
+{
+  "id": "xr-interview-prep",
+  "title": "Prepare for product manager interviews",
+  "phase": "explore-apply",
+  "kind": "core",
+  "summary": "Interviews usually test how you think about users, how you make and measure decisions and how you work with others. Practise out loud with real examples.",
+  "skills": [
+    "communication",
+    "discovery"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Learn the usual kinds of question: motivation ('why product, why us'), product sense (how you would approach a user problem), execution and metrics (how you would measure or respond to a change), prioritisation and behavioural stories.",
+      "Prepare six stories from your work and your practice project: a decision made with little data, a disagreement, a failure, a time you influenced without authority, a time you used data and a time you learned from users. Write each as situation, action and result.",
+      "For product sense questions, use a simple structure: clarify the goal, identify users and their pain points, generate options, choose one with reasons, say how you would measure success and name the risks.",
+      "Practise metrics questions with your notes on numbers: define the metric, name a guardrail and explain how you would check a drop.",
+      "Research the company. Use the product, read its public material and prepare three questions about how the team decides and measures.",
+      "Practise out loud with a friend, a PM from your conversations or an AI tool, and ask for one thing to improve each time.",
+      "After each interview, write what went well, what you would change and what you learned, and send a short thank-you."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "claude": "Ask it to act as an interviewer, ask follow-up questions and tell you one thing to improve. Do not paste in anything confidential.",
+    "notion": "Keep your stories on cards: situation, action, result and what you learned."
+  },
+  "definitionOfDone": [
+    "Six stories written down",
+    "One product sense answer and one metrics answer practised out loud",
+    "Three questions prepared for each company",
+    "A short review written after each interview"
+  ],
+  "pitfalls": [
+    "Reciting frameworks without thinking about the user",
+    "Stories with no result and no numbers",
+    "Not asking any questions"
+  ],
+  "estimatedEffort": "3-5 days",
+  "dependsOn": [
+    "xr-product-cv"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Use structured interviewing (Google re:Work)",
+      "url": "https://rework.withgoogle.com/en/guides/hiring-use-structured-interviewing"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

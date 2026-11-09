@@ -1,5 +1,6 @@
 import { finishOptions, phasesForStage } from "./intake-phases";
-import { INTAKE_QUESTIONS, TOTAL_STEPS, type IntakeQuestion } from "./intake-questions";
+import { completeExploreAnswers } from "./explore";
+import { questionsForWork, type IntakeQuestion } from "./intake-questions";
 import type { IntakeAnswers, IntakeDraft, QuestionId } from "./intake-types";
 
 export type IntakeError = { question: QuestionId; message: string };
@@ -19,7 +20,8 @@ export function followUpError(draft: IntakeDraft, id: QuestionId): string | null
 
 function hasMainAnswer(draft: IntakeDraft, id: QuestionId): boolean {
   const answer = draft[id];
-  return Array.isArray(answer) ? answer.length > 0 : answer !== null;
+  // The explore questions are left out of the draft until answered, so "undefined" counts as blank too.
+  return Array.isArray(answer) ? answer.length > 0 : answer !== null && answer !== undefined;
 }
 
 /** True when a question and any follow-up it shows are both answered. */
@@ -37,16 +39,18 @@ export function questionError(draft: IntakeDraft, question: IntakeQuestion): str
 
 /** Checks a whole draft. On success, the result is a complete set of answers. */
 export function validateDraft(draft: IntakeDraft): IntakeValidation {
-  const errors = INTAKE_QUESTIONS.flatMap((question) => {
+  const errors = questionsForWork(draft.work).flatMap((question) => {
     const message = questionError(draft, question);
     return message ? [{ question: question.id, message }] : [];
   });
-  return errors.length > 0 ? { ok: false, errors } : { ok: true, answers: draft as IntakeAnswers };
+  if (errors.length > 0) return { ok: false, errors };
+  // Exploring product management asks four questions, and the answers to the rest are filled in.
+  return { ok: true, answers: draft.work === "explore" ? completeExploreAnswers(draft) : (draft as IntakeAnswers) };
 }
 
 /** The step number of the first unanswered question, or null if all are answered. */
 export function firstUnansweredStep(draft: IntakeDraft): number | null {
-  const index = INTAKE_QUESTIONS.findIndex((question) => !isAnswered(draft, question.id));
+  const index = questionsForWork(draft.work).findIndex((question) => !isAnswered(draft, question.id));
   return index === -1 ? null : index + 1;
 }
 
@@ -56,6 +60,8 @@ export function firstUnansweredStep(draft: IntakeDraft): number | null {
  * The last button still catches any gap before building the plan.
  */
 export function canJumpTo(draft: IntakeDraft, step: number): boolean {
-  if (isAnswered(draft, INTAKE_QUESTIONS[step - 1].id)) return true;
-  return step <= (firstUnansweredStep(draft) ?? TOTAL_STEPS);
+  const questions = questionsForWork(draft.work);
+  if (step < 1 || step > questions.length) return false;
+  if (isAnswered(draft, questions[step - 1].id)) return true;
+  return step <= (firstUnansweredStep(draft) ?? questions.length);
 }

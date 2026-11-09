@@ -140,7 +140,9 @@ One JSON file per block. A block with a single phase lives in `content/blocks/<p
 
 **`appliesTo.companySizes`** limits a block to certain sizes. "Not sure" counts as established. **`appliesTo.leadsPeople`** limits a block to Group PMs, Directors and VPs, and puts it in "Lead your team".
 
-**`alsoIn`** places an existing block on another track, such as `[{ "phase": "choose", "after": ["strat-diagnose-challenge"] }]`. On that track the block joins the timeline, leaves "Grow your skills", and `after` replaces its usual `dependsOn` and `comesAfter`. `"forEveryone": true` drops its PM type, product type and experience limits on that track only.
+**`alsoIn`** places an existing block on another track, such as `[{ "phase": "choose", "after": ["strat-diagnose-challenge"] }]`. On that track the block joins the timeline, leaves "Grow your skills", and `after` replaces its usual `dependsOn` and `comesAfter`. `"forEveryone": true` drops its PM type, product type, starting-point and experience limits on that track only. `"optional": true` makes the block "Go further" on that track only, which is how the reused blocks join the explore track. The phase can be a strategy, coaching or explore phase.
+
+**The explore track** is for people who aren't PMs yet ("I'm exploring product management"). Its four phases are `explore-role`, `explore-foundations`, `explore-practise` and `explore-apply`, and its one starting point is `explore-new`. Its blocks live in the folder named after their phase, have beginner steps only, no delegated tasks or reviewers, and use `"stages": ["explore-new"]`. Which blocks each goal gets is in `content/explore-goal-map.ts`, which matches `docs/phase-8c-goal-map.json`. A block with an explore phase that isn't on a goal's list is left out of that goal's plan.
 
 **`inLeadYourTeam`** also shows a block in "Lead your team" to people leaders on any track, unless it's already on their timeline. Use it rather than `leadsPeople` when the block must stay available to others elsewhere.
 
@@ -168,7 +170,7 @@ Each block on its own:
 - `companySizes` and `movesUpFor` use real sizes, and `leadsPeople` is `true` or left out.
 - `pm` is never given a task or asked to review, because the PM is the visitor.
 - `optional` is `true` or left out, and only appears on core and add-on blocks.
-- `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`.
+- `steps` has at least one step for each of `beginner`, `intermediate` and `experienced`. The exception is a block whose phases are all on the explore track: it has `beginner` steps only, and the validator refuses the other two.
 - `skills` has one to three of the ten skills in `content/taxonomy.ts`, with no repeats.
 - Every delegable task has a valid `ifMissing`, and any `orRoles` are real roles other than the main one.
 - `definitionOfDone` has at least one item. `pitfalls` must be present but may be empty.
@@ -182,7 +184,7 @@ Across all blocks:
 - There are no circular dependencies.
 - Required work doesn't depend on a "Go further" block, and no block depends on a block some of its experience levels never see.
 - A block can only depend on blocks from its own track, and phase order is compared within a track.
-- Every `alsoIn` phase is a strategy or coaching phase, and its `after` ids exist on that track.
+- Every `alsoIn` phase is a strategy, coaching or explore phase, and its `after` ids exist on that track.
 - Every `comesAfter` id exists, shares a phase with the block and isn't the block itself, and loops are caught across `dependsOn` and `comesAfter`.
 
 Role ids: `pm`, `delivery-manager`, `scrum-master`, `ba`, `user-researcher`, `ux-designer`, `content-designer`, `tech-lead`, `frontend-engineer`, `backend-engineer`, `fullstack-engineer`, `architect`, `devops`, `qa`, `data-analyst`, `data-scientist`, `performance-analyst`, `policy-legal`, `product-owner`, `hardware-engineer`, `senior-leader`, `people-partner`. Tool ids are listed in `content/taxonomy.ts`.

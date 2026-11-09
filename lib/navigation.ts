@@ -25,6 +25,12 @@ export const PRIMARY_ACTION: NavLink = {
   available: true,
 };
 
+/**
+ * The intake with "I'm exploring product management" already chosen, at question 2. Written out
+ * here so the header doesn't load the intake code. A test checks it matches the real address.
+ */
+export const NEW_TO_PRODUCT_HREF = "/start?step=2&work=explore";
+
 /** Pages shown in the header menu and footer. */
 export const PAGE_LINKS: NavLink[] = [
   { label: "Home", href: "/", description: "What Next Step PM is.", available: true },

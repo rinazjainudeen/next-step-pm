@@ -1,6 +1,8 @@
 import {
+  BACKGROUNDS,
   CAREER_LEVELS,
   CHALLENGES,
+  EXPLORE_GOALS,
   SKILLS,
   COMPANY_SIZES,
   EXPERIENCE_IDS,
@@ -23,12 +25,13 @@ import {
   type TimelineId,
   type TrackId,
 } from "../content/taxonomy";
-import { blockPhases, type Block, type DelegatedTask } from "./blocks-types";
+import { blockPhases, stepsFor, type Block, type DelegatedTask } from "./blocks-types";
+import { ALL_EXPLORE_BLOCK_IDS, exploreBlockIds, hoursPerWeek } from "./explore";
 import { finishOptions, phasesCovered, trackFor } from "./intake-phases";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type TeamRoleId } from "./intake-types";
 import { viewFor } from "./leader-view";
 import { NO_ADJUSTMENTS, growingSkills, type Adjustments } from "./plan-adjustments";
-import { OPENING_LINES } from "./plan-wording";
+import { EXPLORE_WORDING, OPENING_LINES } from "./plan-wording";
 import type { Plan, PlanAction, PlanBlock, PlanLeaderView, PlanPace, PlanPhase, PlanTask, PlanToolExample } from "./plan-types";
 
 /**
@@ -118,10 +121,12 @@ function placeOnTrack(blocks: readonly Block[], track: TrackId): Block[] {
     return {
       ...block,
       phase: place.phase,
-      kind: everyone || block.kind === "craft" ? "core" : block.kind,
+      // Craft and onboarding blocks are on the timeline of the track they're placed on.
+      kind: everyone || block.kind === "craft" || block.kind === "onboarding" ? "core" : block.kind,
       dependsOn: place.after,
       comesAfter: place.after.length > 0 ? place.after : undefined,
-      appliesTo: everyone ? { ...block.appliesTo, pmTypes: [], productTypes: [], experience: [] } : block.appliesTo,
+      ...(place.optional ? { optional: true } : {}),
+      appliesTo: everyone ? { ...block.appliesTo, pmTypes: [], productTypes: [], stages: [], experience: [] } : block.appliesTo,
     };
   });
 }
@@ -182,6 +187,8 @@ function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
 
 /** The skills the visitor's challenge favours. "Not sure" favours none. */
 function favouredSkills(answers: IntakeAnswers): readonly SkillId[] {
+  // Someone exploring product management has no challenge to name, so their background favours skills instead.
+  if (trackFor(answers.work) === "explore") return BACKGROUNDS.find((item) => item.id === answers.background)?.favours ?? [];
   return CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.favours ?? [];
 }
 
@@ -388,6 +395,13 @@ function titleFor(block: Block, answers: IntakeAnswers): string {
 
 type BlockLabel = "challenge" | "skill" | null;
 
+/** The explore block that gets an extra line about the visitor's background. */
+const MAP_YOUR_SKILLS = "xr-map-your-skills";
+
+function backgroundLine(answers: IntakeAnswers): string | undefined {
+  return answers.background && answers.background !== NOT_SURE ? EXPLORE_WORDING.mapYourSkills[answers.background] : undefined;
+}
+
 /** The id of a question a leader can tick as asked. It never clashes with a step id, which has the level in it. */
 const askId = (blockId: string, index: number) => `${blockId}/ask/${index}`;
 
@@ -406,6 +420,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     kind: block.kind,
     ...(block.optional ? { optional: true } : {}),
     ...(block.region ? { region: block.region } : {}),
+    ...(block.id === MAP_YOUR_SKILLS && backgroundLine(answers) ? { backgroundLine: backgroundLine(answers) } : {}),
     ...(leader && block.leaderView ? { leaderView: leaderViewOf(block.id, block.leaderView) } : {}),
     ...(movesUp(block, answers) ? { movedUp: true } : {}),
     ...(label === "challenge" ? { helpsChallenge: true } : {}),
@@ -413,7 +428,7 @@ function shapeBlock(block: Block, answers: IntakeAnswers, why: string, checkFirs
     ...(done ? { done: true } : {}),
     effort: block.estimatedEffort,
     why,
-    steps: block.steps[level].map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
+    steps: stepsFor(block, level).map((text, index) => ({ id: `${block.id}/${level}/${index}`, text })),
     tasks: block.roles.canDelegateTo.map((item) => assignTask(item, answers, leader)),
     reviewers: reviewersFor(block, answers),
     tools,
@@ -495,6 +510,26 @@ function schedulePhases(groups: readonly PhaseGroup[], time: IntakeAnswers["time
   return { lengths, neededDays, plannedDays };
 }
 
+/**
+ * The explore path has no milestone, so there's nothing to fit to. Each phase takes the hours of
+ * its required blocks, spread over the hours the visitor can give each week. Blocks run one after
+ * another, because one person does them. "Go further" blocks are extra, so they add nothing.
+ */
+function exploreSchedule(groups: readonly PhaseGroup[], answers: IntakeAnswers): Schedule {
+  const perWeek = hoursPerWeek(answers.hours);
+  const lengths = groups.map(({ blocks }) => {
+    const hours = blocks.filter((block) => !block.optional).reduce((sum, block) => sum + effortInDays(block.estimatedEffort) * HOURS_PER_DAY, 0);
+    return (hours / perWeek) * DAYS_PER_WEEK;
+  });
+  const total = lengths.reduce((sum, days) => sum + days, 0);
+  return { lengths, neededDays: total, plannedDays: total };
+}
+
+function explorePace({ plannedDays }: Schedule): PlanPace {
+  const weeks = Math.max(1, Math.ceil(toWeeks(plannedDays)));
+  return { status: "open", message: `This plan takes about ${weeks} ${weeks === 1 ? "week" : "weeks"} at your pace.` };
+}
+
 /** What a visitor can do about a plan that won't fit in under a month. */
 function tightAdvice(covered: readonly PhaseId[], canFinishEarlier: boolean, track: TrackId): string {
   const canNarrow = covered.some((id) => RELEASE_PHASES.includes(id));
@@ -535,8 +570,15 @@ function paceFor({ lengths, neededDays, plannedDays }: Schedule, answers: Intake
 
 // --- The summary ---
 
+function exploreWhoText(answers: IntakeAnswers): string {
+  const background = BACKGROUNDS.find((item) => item.id === answers.background);
+  const goal = EXPLORE_GOALS.find((item) => item.id === answers.goal);
+  return [`Work: ${labelOf(WORK_KINDS, "explore")}`, background ? `Background: ${background.label}` : "", goal ? `Goal: ${goal.label}` : ""].filter(Boolean).join(" · ");
+}
+
 function whoText(answers: IntakeAnswers): string {
   const track = trackFor(answers.work);
+  if (track === "explore") return exploreWhoText(answers);
   const parts = [
     track === "product" ? "" : `Work: ${labelOf(WORK_KINDS, track)}`,
     answers.pm.includes(NOT_SURE) ? "" : `PM type: ${answers.pm.map((id) => labelOf(PM_TYPES, id)).join(" and ")}`,
@@ -559,14 +601,15 @@ function whereText(answers: IntakeAnswers, covered: readonly PhaseId[]): string 
  * first required block not yet done, from the phase the visitor is in.
  * Finished blocks are skipped.
  */
-function firstActions(phases: readonly PlanPhase[], currentPhase: PhaseId | null, count: number, ticked: readonly string[], leader: boolean): PlanAction[] {
+function firstActions(phases: readonly PlanPhase[], currentPhase: PhaseId | null, count: number, ticked: readonly string[], leader: boolean, fromFirst: boolean): PlanAction[] {
   if (currentPhase === null) return [];
   const fromCurrent = phases.slice(phases.findIndex((phase) => phase.id === currentPhase));
   const blocks = fromCurrent.flatMap((phase) => phase.blocks).filter((block) => !block.optional && !block.done);
   const firstLabelled = blocks.findIndex((block) => block.helpsChallenge || block.growsSkill);
   const isLabelled = (block: PlanBlock) => block.helpsChallenge || block.growsSkill;
   // A leader gets one question per block, so the labelled blocks come first and the rest follow in order.
-  const sequence = leader ? [...blocks.filter(isLabelled), ...blocks.filter((block) => !isLabelled(block))] : blocks.slice(Math.max(firstLabelled, 0));
+  // On the explore path the blocks build on each other, so the first block comes first, label or not.
+  const sequence = leader ? [...blocks.filter(isLabelled), ...blocks.filter((block) => !isLabelled(block))] : blocks.slice(fromFirst ? 0 : Math.max(firstLabelled, 0));
   return sequence
     .flatMap((block): PlanAction[] => {
       // The same label as the block card, so the top of the page shows why these come first.
@@ -622,6 +665,8 @@ function startingSkills(byLevel: readonly Block[], anyLevel: readonly Block[], a
 
 /** One sentence for the level, then one for the first PM type or the track. */
 function openingLine(answers: IntakeAnswers, track: TrackId): string {
+  // The explore path has no level or PM type, so its line stands alone.
+  if (track === "explore") return OPENING_LINES.tracks.explore;
   const level = OPENING_LINES.levels[answers.level];
   if (track !== "product") return `${level} ${OPENING_LINES.tracks[track]}`;
   const first = answers.pm[0];
@@ -646,7 +691,10 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const covered = phasesCovered(answers).map((phase) => phase.id);
   const growing = growingSkills(adjustments.selfCheck);
   const level = experienceFor(answers);
-  const kept = blocks.filter((block) => fitsApartFromLevel(block, answers));
+  const exploring = track === "explore";
+  // On the explore path, a goal gets some of the explore blocks. A reused block isn't on any list, so it stays.
+  const inGoal = (block: Block) => !exploring || !ALL_EXPLORE_BLOCK_IDS.has(block.id) || exploreBlockIds(answers.goal).includes(block.id);
+  const kept = blocks.filter((block) => fitsApartFromLevel(block, answers) && inGoal(block));
   const others = kept.filter((block) => !block.appliesTo.leadsPeople);
   const leads = careerLevelFor(answers).leadsPeople;
   const leadBlocks = leads ? kept.filter((block) => block.appliesTo.leadsPeople || block.inLeadYourTeam) : [];
@@ -663,17 +711,19 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
     }))
     .filter((group) => group.blocks.length > 0);
 
-  const schedule = schedulePhases(byPhase, answers.time);
+  const schedule = exploring ? exploreSchedule(byPhase, answers) : schedulePhases(byPhase, answers.time);
 
   const titles = new Map(blocks.map((block) => [block.id, titleFor(block, answers)]));
+  // A goal that leaves an explore block out doesn't need it first, so it's never a "check this exists" note.
+  const notNeeded = (id: string) => exploring && ALL_EXPLORE_BLOCK_IDS.has(id) && !exploreBlockIds(answers.goal).includes(id);
   const checksFor = (block: Block, done: ReadonlySet<string>) =>
-    block.dependsOn.filter((id) => !done.has(id)).map((id) => ({ id, title: titles.get(id) ?? id }));
+    block.dependsOn.filter((id) => !done.has(id) && !notNeeded(id)).map((id) => ({ id, title: titles.get(id) ?? id }));
 
   const furthestFinish = finishOptions(answers).at(-1)?.id;
   const canFinishLater = furthestFinish !== undefined && furthestFinish !== covered[covered.length - 1];
   const canFinishEarlier = furthestFinish !== undefined && covered.length > 1;
   const advice = tightAdvice(covered, canFinishEarlier, track);
-  const pace = paceFor(schedule, answers, byPhase.some((group) => group.phaseId === BUILD_PHASE), canFinishLater, advice);
+  const pace = exploring ? explorePace(schedule) : paceFor(schedule, answers, byPhase.some((group) => group.phaseId === BUILD_PHASE), canFinishLater, advice);
   const phaseNote = (phaseId: PhaseId) => {
     if (phaseId === BUILD_PHASE) return BUILD_NOTE;
     return phaseId === "measure" && pace.status === "tight" ? MEASURE_NOTE : undefined;
@@ -683,7 +733,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   // A leader's block is also done when both questions have been asked.
   const leader = viewFor(answers) === "leader";
   const isDone = (block: Block) =>
-    block.steps[level].every((_, index) => adjustments.ticked.includes(`${block.id}/${level}/${index}`)) ||
+    stepsFor(block, level).every((_, index) => adjustments.ticked.includes(`${block.id}/${level}/${index}`)) ||
     (leader && block.leaderView !== undefined && block.leaderView.ask.every((_, index) => adjustments.ticked.includes(askId(block.id, index))));
   const phaseDone = byPhase.map((group) => group.blocks.filter((block) => !block.optional).every(isDone));
   const currentIndex = phaseDone.indexOf(false);
@@ -697,8 +747,11 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
     if (labelled.size < MAX_LABELS) labelled.set(block.id, "skill");
   }
   const challengeLabel = CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
+  // On the explore path the same label says which gap the visitor's background usually leaves.
+  const gapFor = answers.background && answers.background !== NOT_SURE ? EXPLORE_WORDING.gapFor[answers.background] : undefined;
   const whyFor = (block: Block, phaseId: PhaseId) => {
     const label = labelled.get(block.id);
+    if (label === "challenge" && exploring && gapFor) return `Helps close a common gap for ${gapFor}.`;
     if (label === "challenge" && challengeLabel) return `Helps with: ${challengeLabel}.`;
     if (label === "skill") {
       const skills = SKILLS.filter((skill) => growing.includes(skill.id) && block.skills.includes(skill.id)).map((skill) => skill.label);
@@ -734,7 +787,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const alongside = (kind: Block["kind"]) =>
     orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
 
-  const nextActions = firstActions(phases, currentPhase, 3, adjustments.ticked, leader);
+  const nextActions = firstActions(phases, currentPhase, 3, adjustments.ticked, leader, exploring);
   const onTimeline = new Set(byPhase.flatMap((group) => group.blocks.map((block) => block.id)));
   // Team rituals suit a product team. A strategy or coaching plan, or a PM with no team, doesn't run them.
   const noTeam = answers.team.includes(NOT_SURE);
@@ -747,6 +800,8 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const isLoop = answers.stage === "live";
 
   return {
+    track,
+    challengePill: exploring ? "Helps close a common gap" : "Helps with your challenge",
     view: viewFor(answers),
     who: whoText(answers),
     where: whereText(answers, covered),

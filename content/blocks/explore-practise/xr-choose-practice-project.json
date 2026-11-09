@@ -1,0 +1,66 @@
+{
+  "id": "xr-choose-practice-project",
+  "title": "Choose a small, real practice project",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "The best proof that you can do the job is to do part of it. Pick a small, real problem you can study with real people, and set a clear scope so that you finish.",
+  "skills": [
+    "discovery",
+    "prioritisation"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "List problems you or people around you have: a local club's sign-up process, a charity's website, a tool you use at work (using public information only) or a feature in an app you use.",
+      "Choose one where you can reach at least five real users within a couple of weeks, and where the problem is real, not invented.",
+      "If the project touches your work, check that you will not use anything confidential, and do not name colleagues or clients. If in doubt, choose something outside work.",
+      "Write a one-paragraph brief: who has the problem, what you think it is, what you will produce (for example five interviews, a one-page brief, a ranked list of ideas and a measure of success) and the date you will finish.",
+      "Time-box it to four to six weeks at a few hours a week. A smaller project that you finish beats a big one you drop.",
+      "Tell one person what you are doing and ask them to check in on you."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep the brief, the timeline and a list of participants on one page."
+  },
+  "definitionOfDone": [
+    "A one-paragraph brief with scope and an end date",
+    "Five possible participants identified",
+    "A person who will check in on your progress"
+  ],
+  "pitfalls": [
+    "Choosing a huge product you can't learn anything real about",
+    "Using confidential work material",
+    "Making up users instead of finding them"
+  ],
+  "estimatedEffort": "2-4 hours",
+  "dependsOn": [
+    "xr-product-process"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Framework for innovation: the Double Diamond (Design Council)",
+      "url": "https://www.designcouncil.org.uk/our-resources/framework-for-innovation/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

@@ -235,6 +235,41 @@ test("a leader view has one sentence, exactly two questions and exactly two warn
   assert.ok(mentions(errorsFor({ leaderView: "text" }), "leaderView"));
 });
 
+// ---- The explore track ----
+
+const EXPLORE = { phase: "explore-role", steps: { beginner: ["Dummy beginner step."] } };
+
+test("an explore block needs beginner steps only", () => {
+  assert.deepEqual(errorsFor(EXPLORE), []);
+  assert.ok(mentions(errorsFor({ ...EXPLORE, steps: { beginner: ["x"], intermediate: ["y"] } }), "steps.intermediate: leave it out"));
+  assert.ok(mentions(errorsFor({ ...EXPLORE, steps: { beginner: ["x"], experienced: ["y"] } }), "steps.experienced: leave it out"));
+  assert.ok(mentions(errorsFor({ ...EXPLORE, steps: {} }), "steps.beginner: is missing"));
+  assert.ok(mentions(errorsFor({ ...EXPLORE, steps: { beginner: [] } }), "steps.beginner"));
+});
+
+test("every other block still needs all three levels of steps", () => {
+  assert.ok(mentions(errorsFor({ steps: { beginner: ["x"] } }), "steps.intermediate: is missing"));
+  assert.ok(mentions(errorsFor({ phase: "diagnose", steps: { beginner: ["x"] } }), "steps.experienced: is missing"));
+  assert.ok(mentions(errorsFor({ phase: "any", steps: { beginner: ["x"] } }), "steps.intermediate: is missing"));
+});
+
+test("an explore block needs no leader view", () => {
+  assert.deepEqual(withoutLeaderView(EXPLORE), []);
+});
+
+test("alsoIn can place a block in an explore phase, as Go further", () => {
+  const place = (extra: Record<string, unknown>) => ({ alsoIn: [{ phase: "explore-foundations", after: [], ...extra }] });
+  assert.deepEqual(errorsFor(place({})), []);
+  assert.deepEqual(errorsFor(place({ optional: true })), []);
+  assert.ok(mentions(errorsFor(place({ optional: false })), "optional: leave it out"));
+  assert.ok(mentions(errorsFor({ alsoIn: [{ phase: "build", after: [] }] }), "strategy, coaching or explore phase"));
+});
+
+test("an explore block must be in the folder named after its phase", () => {
+  const block = makeBlock({ ...EXPLORE, id: "xr-test-block" } as Partial<Block>);
+  assert.deepEqual(validateBlockSet(files(block)), []);
+});
+
 test("all the problems are reported together, not just the first", () => {
   const errors = errorsFor({ title: "", kind: "x", estimatedEffort: "soon" });
   assert.ok(errors.length >= 3);

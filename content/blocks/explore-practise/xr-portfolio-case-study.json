@@ -1,0 +1,67 @@
+{
+  "id": "xr-portfolio-case-study",
+  "title": "Turn your project into a case study",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "A short, honest case study shows how you think, which matters more than polished screens. It is also what you will talk through in interviews.",
+  "skills": [
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Outline the story in six parts: the context, the problem, how you learned, what you decided and why, what happened, and what you would do differently.",
+      "Write each part in plain language in a sentence or two, then expand. Keep the whole piece to one or two pages.",
+      "Show your evidence: a quote from an interview, a table of your scores or your one-page brief. Remove names and personal details.",
+      "Be explicit about your own role and what you would do differently. Honest limits make a case study more credible.",
+      "If any part used work material, remove it. Do not name employers, clients or colleagues, or share internal documents or numbers.",
+      "Publish it somewhere you control, such as a simple page or a shared document, and write a three-sentence summary you can say aloud.",
+      "Ask one person to read it and tell you what is unclear."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Write it as a shared document and turn on link sharing only when you are ready.",
+    "notion": "Publish a simple page with the six headings."
+  },
+  "definitionOfDone": [
+    "A one-to-two page case study with the six parts",
+    "Evidence included, with no confidential or personal information",
+    "A three-sentence spoken summary"
+  ],
+  "pitfalls": [
+    "Showing only the result and not the thinking",
+    "Claiming credit for work you did not do",
+    "Including confidential or personal information"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "xr-define-success-test"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Framework for innovation: the Double Diamond (Design Council)",
+      "url": "https://www.designcouncil.org.uk/our-resources/framework-for-innovation/"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "xr-get-feedback",
+  "title": "Get feedback on your practice work",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "Practice only improves with feedback. Ask people who do the job to review your work against what good looks like, then change something.",
+  "skills": [
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Choose the criteria you want feedback on, using a published framework as a guide. The government product manager skills in the sources are a good start: for example user focus, evidence, prioritisation and communication.",
+      "Ask two product managers or colleagues you met earlier to read your case study and answer three questions: what is strongest, what is weakest or unclear, and what would you expect to see next.",
+      "Offer to return the favour, and keep the request small: fifteen minutes of reading and a short reply.",
+      "Listen without defending. Write down what you heard in their words, then decide what to change and what to keep, with a reason for each.",
+      "Make at least one visible change and record it as a 'before and after'.",
+      "Thank them and tell them what you changed."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "notion": "Keep a table of feedback, what you decided and why."
+  },
+  "definitionOfDone": [
+    "Feedback from two people on stated criteria",
+    "At least one visible change made",
+    "Thank-yous sent"
+  ],
+  "pitfalls": [
+    "Asking 'what do you think?' with no focus",
+    "Arguing with the feedback",
+    "Collecting feedback and changing nothing"
+  ],
+  "estimatedEffort": "3-5 hours",
+  "dependsOn": [
+    "xr-portfolio-case-study"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    },
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

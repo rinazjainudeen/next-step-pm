@@ -7,6 +7,7 @@ import { PlanActions } from "@/components/plan/plan-actions";
 import { LabelPill, PlanBlockCard } from "@/components/plan/plan-block-card";
 import { PlanPhases } from "@/components/plan/plan-phases";
 import { PlanProgress } from "@/components/plan/plan-progress";
+import { PlanStyleContext } from "@/components/plan/plan-style";
 import { SelfCheckPanel } from "@/components/plan/self-check-panel";
 import { TailorPanel } from "@/components/plan/tailor-panel";
 import { useAdjustments } from "@/components/plan/use-adjustments";
@@ -38,6 +39,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const announce = (text: string) => setMessage(text);
 
   const leader = plan.view === "leader";
+  const style = useMemo(() => ({ explorer: plan.track === "explore", challengePill: plan.challengePill }), [plan.track, plan.challengePill]);
   const words = viewWords(plan.view, plan.isLoop);
   // A leader asks questions rather than doing steps, so progress counts the questions asked.
   const stepIds = plan.phases
@@ -190,7 +192,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   );
 
   return (
-    <>
+    <PlanStyleContext.Provider value={style}>
       <p aria-live="polite" className="sr-only">
         {message}
       </p>
@@ -248,7 +250,8 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
 
           <PlanActions />
           {answersPanel}
-          <TailorPanel draft={draft} />
+          {/* Team and tools only shape product plans, so someone exploring product management doesn't see them. */}
+          {plan.track !== "explore" && <TailorPanel draft={draft} />}
           <SelfCheckPanel selfCheck={saved.selfCheck} update={update} announce={announce} />
         </div>
       </section>
@@ -362,6 +365,6 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
           </div>
         </section>
       )}
-    </>
+    </PlanStyleContext.Provider>
   );
 }

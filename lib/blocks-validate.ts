@@ -17,7 +17,7 @@ import {
   isOneOf,
   type PhaseId,
 } from "../content/taxonomy";
-import { REGION_IDS, blockPhases, expectedFolder, isProductTimelineBlock, type Block } from "./blocks-types";
+import { REGION_IDS, blockPhases, expectedFolder, isExploreBlock, isProductTimelineBlock, type Block } from "./blocks-types";
 
 /**
  * Checks learning blocks against the rules in docs/content-model.md.
@@ -211,15 +211,22 @@ function checkAppliesTo(value: unknown, errors: string[]): void {
   }
 }
 
-function checkSteps(value: unknown, errors: string[]): void {
+/** Explore blocks are written for people who aren't PMs yet, so they have beginner steps and nothing else. */
+function checkSteps(value: unknown, errors: string[], explorer = false): void {
   if (!isRecord(value)) {
     errors.push(`steps: is missing. It needs a list of steps for each experience level: ${listOf(EXPERIENCE_IDS)}.`);
     return;
   }
   checkUnknownKeys(value, EXPERIENCE_IDS, "steps: ", errors);
   for (const level of EXPERIENCE_IDS) {
-    if (!(level in value)) {
-      errors.push(`steps.${level}: is missing. Every block needs steps for all three experience levels.`);
+    if (explorer && level !== "beginner") {
+      if (level in value) errors.push(`steps.${level}: leave it out. Explore blocks are written for beginners, so they only have beginner steps.`);
+    } else if (!(level in value)) {
+      errors.push(
+        explorer
+          ? `steps.beginner: is missing. Explore blocks need beginner steps.`
+          : `steps.${level}: is missing. Every block needs steps for all three experience levels.`,
+      );
     } else {
       checkTextList(value[level], `steps.${level}`, errors, 1);
     }
@@ -322,13 +329,14 @@ function checkAlsoIn(value: unknown, errors: string[]): void {
       errors.push(`${where}: must have a phase and an after list.`);
       return;
     }
-    checkUnknownKeys(place, ["phase", "after", "forEveryone"], `${where}: `, errors);
+    checkUnknownKeys(place, ["phase", "after", "forEveryone", "optional"], `${where}: `, errors);
     const phase = PHASES.find((item) => item.id === place.phase);
     if (!phase || phase.track === "product") {
-      errors.push(`${where}.phase: ${JSON.stringify(place.phase)} must be a strategy or coaching phase.`);
+      errors.push(`${where}.phase: ${JSON.stringify(place.phase)} must be a strategy, coaching or explore phase.`);
     }
     if (!Array.isArray(place.after)) errors.push(`${where}.after: must be a list of block ids. Use [] if nothing comes first.`);
     if ("forEveryone" in place && place.forEveryone !== true) errors.push(`${where}.forEveryone: leave it out, or set it to true.`);
+    if ("optional" in place && place.optional !== true) errors.push(`${where}.optional: leave it out, or set it to true.`);
   });
 }
 
@@ -364,7 +372,7 @@ export function validateBlock(input: unknown, options: ValidateOptions = {}): Bl
   }
 
   checkAppliesTo(b.appliesTo, errors);
-  checkSteps(b.steps, errors);
+  checkSteps(b.steps, errors, isExploreBlock(b as unknown as Block));
   checkRoles(b.roles, errors);
   checkToolExamples(b.toolExamples, errors);
 

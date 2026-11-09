@@ -1,0 +1,67 @@
+{
+  "id": "xr-product-cv",
+  "title": "Write a product-focused CV and profile",
+  "phase": "explore-apply",
+  "kind": "core",
+  "summary": "Hiring managers read quickly. Show outcomes you owned, decisions you made and evidence of product thinking, whatever your previous job title.",
+  "skills": [
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write a one-line headline that says what you are aiming for and what you bring, for example 'Engineer moving into product, with experience of shipping features used by thousands of people.'",
+      "For each past role, write three bullets in this shape: what you owned, what you did and what changed, with a number where you honestly have one.",
+      "Highlight end-to-end ownership, working with other teams and decisions based on evidence.",
+      "Add a 'Product work' section with your practice project and a link to your case study.",
+      "Tailor it for each application: read the advert, pick its five main needs and make sure your strongest evidence for each is easy to find.",
+      "Remove jargon from your old job and keep the CV to one or two pages.",
+      "Ask someone who has hired PMs to read it, and change one thing."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Keep one master CV and make a copy for each application.",
+    "claude": "Paste a bullet (with no confidential details) and ask which outcome is missing. Only keep numbers that are true."
+  },
+  "definitionOfDone": [
+    "A one-to-two page CV with outcome bullets",
+    "A 'Product work' section with a case study link",
+    "A version tailored to one role"
+  ],
+  "pitfalls": [
+    "Listing duties instead of outcomes",
+    "Inventing or inflating numbers",
+    "Using one CV for every advert"
+  ],
+  "estimatedEffort": "1-2 days",
+  "dependsOn": [
+    "xr-find-entry-routes"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "A guide to breaking into product management (Mind the Product)",
+      "url": "https://www.mindtheproduct.com/a-guide-to-breaking-into-product-management"
+    },
+    {
+      "title": "Product manager role and levels (Government Digital and Data Capability Framework)",
+      "url": "https://ddat-capability-framework.service.gov.uk/role/product-manager"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

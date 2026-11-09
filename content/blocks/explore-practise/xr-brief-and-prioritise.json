@@ -1,0 +1,77 @@
+{
+  "id": "xr-brief-and-prioritise",
+  "title": "Write a one-page brief and prioritise your ideas",
+  "phase": "explore-practise",
+  "kind": "core",
+  "summary": "Turn what you learned into a short brief and a ranked list of ideas, with reasons. Choosing, and explaining why, is the core craft of the job.",
+  "skills": [
+    "prioritisation",
+    "communication"
+  ],
+  "appliesTo": {
+    "pmTypes": [],
+    "productTypes": [],
+    "stages": [
+      "explore-new"
+    ],
+    "waysOfWorking": [],
+    "experience": [
+      "beginner"
+    ]
+  },
+  "steps": {
+    "beginner": [
+      "Write a problem statement from your findings: who has the problem, what it is and the evidence. One short paragraph.",
+      "List five to eight ideas that could address it, including at least one small idea and one that is not software.",
+      "Score each idea with a simple method such as RICE: reach, impact, confidence and effort. Use your interviews for reach and impact, and be honest about confidence.",
+      "Sort by score, then sense-check. Change the order only for a reason you can write down.",
+      "Write a one-page brief: the problem, the users, the idea you would test first, what is out of scope, how you would measure success and your open questions.",
+      "Write three user stories for the first idea, each with a reason ('so that') and acceptance criteria.",
+      "Put the top ideas on a Now / Next / Later roadmap, with no dates beyond the next few weeks."
+    ]
+  },
+  "roles": {
+    "owner": "pm",
+    "canDelegateTo": [],
+    "reviewers": []
+  },
+  "toolExamples": {
+    "google-docs": "Use a shared spreadsheet with one row per idea and RICE columns.",
+    "claude": "Paste your brief and ask what a sceptical reader would question. Decide which points to act on."
+  },
+  "definitionOfDone": [
+    "A problem statement",
+    "A scored and ordered list with reasons for any changes",
+    "A one-page brief",
+    "Three user stories"
+  ],
+  "pitfalls": [
+    "Scoring ideas by gut and then calling it a method",
+    "A brief that describes the solution but not the problem",
+    "Writing a long document that nobody will read"
+  ],
+  "estimatedEffort": "2-4 days",
+  "dependsOn": [
+    "xr-run-mini-discovery"
+  ],
+  "freshness": "evergreen",
+  "sources": [
+    {
+      "title": "RICE: simple prioritization for product managers (Intercom)",
+      "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/"
+    },
+    {
+      "title": "How to create a product requirements document (Atlassian)",
+      "url": "https://www.atlassian.com/agile/product-management/requirements"
+    },
+    {
+      "title": "User stories with examples and a template (Atlassian)",
+      "url": "https://www.atlassian.com/agile/project-management/user-stories"
+    },
+    {
+      "title": "Building better roadmaps with Janna Bastow (Lenny's Newsletter)",
+      "url": "https://www.lennysnewsletter.com/p/building-better-roadmaps-janna-bastow"
+    }
+  ],
+  "lastReviewed": "2026-11-09"
+}

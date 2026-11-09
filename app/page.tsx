@@ -1,11 +1,11 @@
-import { ArrowRight, BookOpenCheck, Building2, ClipboardList, Landmark, ListChecks, Network, Rocket, Route, ShieldCheck, Shapes, UserX } from "lucide-react";
+import { ArrowRight, BookOpenCheck, Building2, ClipboardList, GraduationCap, Landmark, ListChecks, Network, Rocket, Route, ShieldCheck, Shapes, UserX } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/site/reveal";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import { EXAMPLE_PLAN_HREF } from "@/lib/example-plan";
-import { HOME_SECTION_LINKS, PRIMARY_ACTION } from "@/lib/navigation";
+import { HOME_SECTION_LINKS, NEW_TO_PRODUCT_HREF, PRIMARY_ACTION } from "@/lib/navigation";
 import { HOME_STATS } from "@/lib/site-stats";
 
 export const metadata: Metadata = {
@@ -32,12 +32,13 @@ const STEPS = [
   },
 ];
 
-/** Where product managers work. A "New to product" card comes with the "Learn the role" path (Phase 8c). */
-const BUILT_FOR = [
+/** Where product managers work, and the card for people who aren't PMs yet, which opens the "Learn the role" path. */
+const BUILT_FOR: { icon: typeof Rocket; title: string; text: string; href?: string }[] = [
   { icon: Rocket, title: "Start-ups", text: "Wear many hats without dropping the product work." },
   { icon: Building2, title: "Big tech and large enterprises", text: "Handle governance, dependencies and senior stakeholders." },
   { icon: Network, title: "Established companies", text: "Bring order to many teams and a busy roadmap." },
   { icon: Landmark, title: "Public sector", text: "Work within service standards, procurement and accessibility duties." },
+  { icon: GraduationCap, title: "New to product", text: "Learn what the job is, build the basics and practise on a real problem.", href: NEW_TO_PRODUCT_HREF },
 ];
 
 const PRINCIPLES = [
@@ -133,6 +134,12 @@ export default function HomePage() {
                 ))}
               </nav>
               <Link
+                href={NEW_TO_PRODUCT_HREF}
+                className="rounded-full border border-white/30 px-4 py-2 text-sm font-medium backdrop-blur hover:bg-white/10"
+              >
+                New to product?
+              </Link>
+              <Link
                 href={EXAMPLE_PLAN_HREF}
                 className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur hover:bg-white/20"
               >
@@ -205,17 +212,34 @@ export default function HomePage() {
               lead="Plans change with the size and kind of organisation you work in, so the advice fits the way your work really happens."
             />
           </Reveal>
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {BUILT_FOR.map((item, i) => (
               <li key={item.title}>
                 <Reveal index={i} className="h-full">
-                  <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                      <item.icon className="size-5" aria-hidden="true" />
-                    </span>
-                    <h3 className="mt-5 text-lg font-bold tracking-tight text-balance">{item.title}</h3>
-                    <p className="mt-3 leading-relaxed text-pretty text-muted-foreground">{item.text}</p>
-                  </div>
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      className="group block h-full rounded-2xl border border-primary/40 bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    >
+                      <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                        <item.icon className="size-5" aria-hidden="true" />
+                      </span>
+                      <h3 className="mt-5 text-lg font-bold tracking-tight text-balance">{item.title}</h3>
+                      <p className="mt-3 leading-relaxed text-pretty text-muted-foreground">{item.text}</p>
+                      <span className="mt-4 inline-flex items-center gap-1 font-semibold text-primary">
+                        Start here
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                      </span>
+                    </Link>
+                  ) : (
+                    <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm">
+                      <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                        <item.icon className="size-5" aria-hidden="true" />
+                      </span>
+                      <h3 className="mt-5 text-lg font-bold tracking-tight text-balance">{item.title}</h3>
+                      <p className="mt-3 leading-relaxed text-pretty text-muted-foreground">{item.text}</p>
+                    </div>
+                  )}
                 </Reveal>
               </li>
             ))}

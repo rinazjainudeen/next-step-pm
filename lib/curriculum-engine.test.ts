@@ -1247,7 +1247,7 @@ test("the next three actions are the first steps, in order", () => {
 
 test("the next actions start from instructions at every experience level", () => {
   const plan = buildPlan({ ...ANSWERS, level: "senior" }, PLAN_BLOCKS);
-  assert.deepEqual(plan.nextActions.map((action) => action.text), PLAN_BLOCKS.find((block) => block.id === plan.nextActions[0].blockId)?.steps.experienced.slice(0, 3));
+  assert.deepEqual(plan.nextActions.map((action) => action.text), PLAN_BLOCKS.find((block) => block.id === plan.nextActions[0].blockId)?.steps.experienced?.slice(0, 3));
 });
 
 test("earlier work the next actions rely on is called out", () => {

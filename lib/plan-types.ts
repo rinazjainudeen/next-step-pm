@@ -1,4 +1,4 @@
-import type { KindId, PhaseId } from "../content/taxonomy";
+import type { KindId, PhaseId, TrackId } from "../content/taxonomy";
 import type { RegionId } from "./blocks-types";
 import type { ViewId } from "./intake-types";
 
@@ -47,6 +47,8 @@ export type PlanBlock = {
   done?: boolean;
   /** Written for one country, so it shows a "UK guidance" label. */
   region?: RegionId;
+  /** Explore path only: an extra line on "Map your skills to product management", from the visitor's background. */
+  backgroundLine?: string;
   /** Only in the leader view: what good looks like, two questions to ask the PM, and two warning signs. */
   leaderView?: PlanLeaderView;
   effort: string;
@@ -87,6 +89,10 @@ export type PlanLabel = "challenge" | "skill";
 export type PlanAction = { blockId: string; blockTitle: string; text: string; label?: PlanLabel };
 
 export type Plan = {
+  /** Which kind of plan: building a product, strategy, coaching, or exploring product management. */
+  track: TrackId;
+  /** The label on blocks that help with the challenge, or close a common gap for the visitor's background. */
+  challengePill: string;
   /** How blocks are shown. Leader only on the product track. */
   view: ViewId;
   who: string;
