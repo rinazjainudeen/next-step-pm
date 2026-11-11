@@ -163,8 +163,15 @@ Approved by Rinaz on 9 November 2026. The spec is in `docs/phase-8c-spec.md`, an
 
 **Check:** follow the path as someone who isn't a PM yet.
 
-### Phase 9a: Feedback and privacy
-"Was this plan useful? Yes / No", plus an optional comment with a warning not to include personal details. Saved to Supabase with RLS and rate limits, emailed via Resend, with a privacy page. Needs Rinaz to set up her Supabase and Resend accounts. Guides go in `docs/supabase-setup.md` and `docs/resend-setup.md`.
+### Phase 9a: Feedback and privacy (done, 11 November 2026)
+Approved by Rinaz on 11 November 2026. The spec is in `docs/phase-9a-spec.md`, and the set-up guide in `docs/feedback-guide.md`.
+- [x] A "How useful was this plan?" form at the bottom of every plan: 1 to 5 stars, an optional comment ("What was missing?" for 3 or lower), a honeypot, and a prompt after copying the link or printing.
+- [x] `POST /api/feedback`: safe JSON reading, honeypot, a limit of 5 an hour per visitor, validation, saving to Supabase and an alert email through Resend.
+- [x] Anonymous plan counts by day and kind of plan, added when the questions are finished.
+- [x] The `feedback` and `plan_counts` tables, with Row Level Security on and public access revoked (`docs/supabase-tables.sql`).
+- [x] A privacy page at `/privacy`, linked from the footer.
+- [ ] **Not automated:** deleting feedback after 12 months. It's a monthly manual step in `docs/feedback-guide.md` for now.
+- [ ] Rinaz's LinkedIn address for deletion requests (a placeholder in `lib/contact.ts`).
 
 **Check:** submit feedback, see the email arrive, and see the row in Supabase.
 

@@ -37,8 +37,10 @@ export const PAGE_LINKS: NavLink[] = [
   { label: "Library", href: "/library", description: "Browse every learning block.", available: true },
   { label: "How I built this", href: "/how-i-built-this", description: "The case study.", available: false },
   { label: "Decision log", href: "/decisions", description: "What I decided and why.", available: false },
-  { label: "Privacy", href: "/privacy", description: "What is stored, and for how long.", available: false },
 ];
+
+/** Pages linked from the footer only, so the header stays short. */
+export const FOOTER_LINKS: NavLink[] = [{ label: "Privacy", href: "/privacy", description: "What is stored, and for how long.", available: true }];
 
 /** Jump links to sections of the home page ("On this page"). */
 export const HOME_SECTION_LINKS: NavLink[] = [
