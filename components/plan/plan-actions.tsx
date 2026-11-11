@@ -4,8 +4,11 @@ import { Check, Link as LinkIcon, Printer } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-/** Copy link and print. Printing opens every block first, so nothing is left out. */
-export function PlanActions() {
+/**
+ * Copy link and print. Printing opens every block first, so nothing is left out.
+ * `onShared` runs after a copy or a print, so the page can ask for feedback then.
+ */
+export function PlanActions({ onShared }: { onShared?: () => void } = {}) {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -14,19 +17,23 @@ export function PlanActions() {
       wereClosed = [...document.querySelectorAll<HTMLDetailsElement>("details[data-plan-block]:not([open])")];
       wereClosed.forEach((item) => (item.open = true));
     };
-    const restore = () => wereClosed.forEach((item) => (item.open = false));
+    const restore = () => {
+      wereClosed.forEach((item) => (item.open = false));
+      onShared?.();
+    };
     window.addEventListener("beforeprint", openAll);
     window.addEventListener("afterprint", restore);
     return () => {
       window.removeEventListener("beforeprint", openAll);
       window.removeEventListener("afterprint", restore);
     };
-  }, []);
+  }, [onShared]);
 
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setStatus("Link copied.");
+      onShared?.();
     } catch {
       setStatus("We couldn't copy that. Copy the address from your browser's address bar instead.");
     }

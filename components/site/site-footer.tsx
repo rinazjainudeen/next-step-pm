@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/site/logo";
-import { HOME_SECTION_LINKS, PAGE_LINKS, SITE_TAGLINE, availableLinks } from "@/lib/navigation";
+import { FOOTER_LINKS, HOME_SECTION_LINKS, PAGE_LINKS, SITE_TAGLINE, availableLinks } from "@/lib/navigation";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -18,7 +18,7 @@ export function SiteFooter() {
         <nav aria-label="Footer: pages">
           <h2 className="font-heading text-sm font-bold uppercase tracking-[0.18em] text-accent">Pages</h2>
           <ul className="mt-4 space-y-2">
-            {availableLinks(PAGE_LINKS).map((link) => (
+            {availableLinks([...PAGE_LINKS, ...FOOTER_LINKS]).map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="rounded-sm text-muted-foreground hover:text-foreground hover:underline">
                   {link.label}

@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --import tsx --test \"lib/**/*.test.ts\"",
-    "validate:content": "node --import tsx scripts/validate-content.ts"
+    "validate:content": "node --import tsx scripts/validate-content.ts",
+    "check:supabase": "node --env-file=.env.local --import tsx scripts/check-supabase.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
+    "@supabase/supabase-js": "^2.119.0",
     "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -20,6 +22,7 @@
     "next-themes": "^0.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "resend": "^6.37.0",
     "server-only": "^0.0.1",
     "shadcn": "^4.23.0",
     "tailwind-merge": "^3.7.0",

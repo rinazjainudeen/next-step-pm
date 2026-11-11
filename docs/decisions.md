@@ -8,6 +8,22 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-11 (Phase 9a)
+
+Approved by Rinaz on 11 November 2026. The spec is in `docs/phase-9a-spec.md`.
+
+- **Feedback is a 1 to 5 star rating and an optional comment.** At 3 stars or lower the comment asks "What was missing?". The comment is capped at 1,000 characters, counted as people see them, and warns against personal details.
+- **Only category answers are stored with feedback.** The plan's answers are read back through the same rules as the plan page, so only known ids survive. Free text in the address can't reach the database.
+- **The database holds feedback and counts, never content.** Two tables, `feedback` and `plan_counts`, with Row Level Security on, no policies, and public access revoked, because the project exposes new tables automatically. Only the server writes, with the secret key, through our API routes.
+- **Plans are counted when the questions are finished.** Counting every visit to a plan would count refreshes and shared links, so the count is added when someone presses "Build my plan" at the end of the questions. Changing one answer doesn't count again.
+- **Rate limits are in memory, with a scrambled network address.** Five feedback sends an hour per visitor, and 30 plan counts. The address is hashed with a value that changes each time the server starts, and never stored. Each running copy of the site on Vercel has its own memory, so the limit is approximate: enough to stop accidents and casual abuse.
+- **Saving matters more than the email.** If the email fails, the feedback is still saved and the visitor sees thanks. If the database fails, the visitor sees "Couldn't send that just now", and the plan still works.
+- **A bot is thanked and ignored.** A filled-in honeypot gets the same "thank you", so a bot learns nothing, but nothing is saved or emailed.
+- **The alert email is plain text, from Resend's shared sender.** Plain text means nothing a visitor writes can show as a link or picture. The shared sender only delivers to the Resend account's own address until a domain is verified.
+- **Deletion after 12 months is manual for now.** It's a monthly SQL step in `docs/feedback-guide.md`, and it'll be automated later.
+- **Deletion requests go to LinkedIn.** There's no email address on the site. The address is one constant in `lib/contact.ts`.
+- **The privacy link is in the footer only.** The header stays short.
+
 ## 2026-11-09 (Phase 8c)
 
 From the site review (finding 2), approved by Rinaz on 9 November 2026. The spec and its addendum are in `docs/phase-8c-spec.md`, and the goal map in `docs/phase-8c-goal-map.json`.

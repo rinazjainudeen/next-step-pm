@@ -27,6 +27,14 @@ function fillRow(cardsBefore: number): string {
   return `${tablet} ${laptop}`;
 }
 
+/**
+ * Adds one to today's anonymous count of plans built, by kind of plan. Only the kind
+ * is sent. If it fails, nothing changes for the visitor.
+ */
+function countPlanBuilt(work: IntakeDraft["work"]) {
+  fetch("/api/plan-count", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ work }), keepalive: true }).catch(() => {});
+}
+
 /** Reads the very latest answers, so two quick clicks can't overwrite each other. */
 function latestDraft(): IntakeDraft {
   return parseDraft(new URLSearchParams(window.location.search));
@@ -111,7 +119,10 @@ export function IntakeWizard() {
       // A shared or hand-edited link could reach here with gaps.
       const missing = firstUnansweredStep(current);
       if (missing) goTo(missing, "We still need this answer before we can build your plan.");
-      else router.push(planHref(current));
+      else {
+        countPlanBuilt(current.work);
+        router.push(planHref(current));
+      }
     }
   }
 

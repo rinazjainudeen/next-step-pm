@@ -2,7 +2,8 @@
 
 import { ArrowRight, CalendarClock, TriangleAlert } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { FIRST_STAR_ID, FeedbackForm } from "@/components/plan/feedback-form";
 import { PlanActions } from "@/components/plan/plan-actions";
 import { LabelPill, PlanBlockCard } from "@/components/plan/plan-block-card";
 import { PlanPhases } from "@/components/plan/plan-phases";
@@ -17,7 +18,9 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import type { Block } from "@/lib/blocks-types";
 import { buildPlan } from "@/lib/curriculum-engine";
+import { FEEDBACK_ENABLED } from "@/lib/feedback-types";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
+import { draftToQuery } from "@/lib/intake-url";
 import { hasViewSwitch, strategyPlanHref, switchAboveTimeline, viewWords } from "@/lib/leader-view";
 import { markDone, putBack, setAside, undoDone } from "@/lib/plan-adjustments";
 import type { PlanBlock } from "@/lib/plan-types";
@@ -36,6 +39,10 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const { saved, update } = useAdjustments();
   const plan = useMemo(() => buildPlan(answers, blocks, { ...saved, ticked: ticks }), [answers, blocks, saved, ticks]);
   const [message, setMessage] = useState("");
+  // After a copy or a print, a short prompt points to the feedback form, unless it's already been sent.
+  const [shared, setShared] = useState(false);
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const onShared = useCallback(() => setShared(true), []);
   const announce = (text: string) => setMessage(text);
 
   const leader = plan.view === "leader";
@@ -248,7 +255,19 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
             </div>
           </div>
 
-          <PlanActions />
+          <PlanActions onShared={onShared} />
+          {FEEDBACK_ENABLED && shared && !feedbackSent && (
+            <p role="status" className="no-print rounded-2xl border border-primary/30 bg-primary/10 p-4 text-pretty leading-relaxed">
+              Before you go: how useful was this plan?{" "}
+              <a
+                href="#feedback"
+                onClick={() => requestAnimationFrame(() => document.getElementById(FIRST_STAR_ID)?.focus({ preventScroll: true }))}
+                className="font-semibold text-primary underline underline-offset-4"
+              >
+                Rate this plan
+              </a>
+            </p>
+          )}
           {answersPanel}
           {/* Team and tools only shape product plans, so someone exploring product management doesn't see them. */}
           {plan.track !== "explore" && <TailorPanel draft={draft} />}
@@ -362,6 +381,16 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
                 ))}
               </ul>
             </details>
+          </div>
+        </section>
+      )}
+      {FEEDBACK_ENABLED && (
+        <section id="feedback" aria-label="Feedback" className="no-print scroll-mt-20 border-t bg-secondary/40">
+          <div className={CONTAINER}>
+            <SectionHeading eyebrow="Your feedback" title="Tell us how this plan worked for you" lead="It takes a few seconds, and it helps make the plans better." />
+            <div className="mt-8 max-w-3xl">
+              <FeedbackForm planQuery={draftToQuery(draft)} onSent={() => setFeedbackSent(true)} />
+            </div>
           </div>
         </section>
       )}
