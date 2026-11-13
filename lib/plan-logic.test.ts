@@ -1,11 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CAREER_LEVELS, CHALLENGES, CHALLENGE_IDS, COMPANY_SIZE_IDS, SKILLS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf } from "../content/taxonomy";
+import { CAREER_LEVELS, CHALLENGES, CHALLENGE_IDS, COMPANY_SIZE_IDS, SKILLS, EXPERIENCE_IDS, PHASES, PM_TYPE_IDS, PRODUCT_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOL_IDS, TOOLS, WAY_OF_WORKING_IDS, labelOf, type Challenge } from "../content/taxonomy";
 import { loadBlocks } from "./blocks-load";
 import { blockPhases, stepsFor, type Block } from "./blocks-types";
 import { blocksForPlan, buildPlan, effortInDays } from "./curriculum-engine";
 import { NO_ADJUSTMENTS } from "./plan-adjustments";
 import { tidyDraft } from "./intake-draft";
+import { challengeFits } from "./leader-intake";
 import { finishOptions, phasesForStage, stagesFor, trackFor } from "./intake-phases";
 import { TEAM_ROLE_IDS } from "./intake-questions";
 import { NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
@@ -81,13 +82,17 @@ const LEVELS = [...CAREER_LEVELS.map((level) => level.id), NOT_SURE] as const;
 const SIZES = [...COMPANY_SIZE_IDS, NOT_SURE] as const;
 const CHALLENGE_ANSWERS = [...CHALLENGE_IDS, NOT_SURE] as const;
 const FAVOURS: Record<string, readonly string[]> = Object.fromEntries(CHALLENGES.map((challenge) => [challenge.id, challenge.favours]));
+const NAMED: Record<string, readonly string[]> = Object.fromEntries((CHALLENGES as readonly Challenge[]).map((challenge) => [challenge.id, challenge.forLeaders?.blocks ?? []]));
 const STEPS_FOR: Record<string, string> = { associate: "beginner", "product-manager": "intermediate", senior: "experienced", group: "experienced", director: "experienced", vp: "experienced", [NOT_SURE]: "intermediate" };
 const LEADS_PEOPLE = ["group", "director", "vp"];
 const levelOf = (answers: IntakeAnswers) => STEPS_FOR[answers.level] as (typeof EXPERIENCE_IDS)[number];
 const sizeOf = (answers: IntakeAnswers) => (answers.size === NOT_SURE ? "established" : answers.size);
 
 function answersFor(route: Route, pick: Partial<IntakeAnswers>): IntakeAnswers {
-  const result = validateDraft(tidyDraft({ work: "product", pm: ["general"], product: "b2b", level: "product-manager", size: "scaling", challenge: NOT_SURE, team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick }));
+  const merged = { work: "product", pm: ["general"], product: "b2b", level: "product-manager", size: "scaling", challenge: NOT_SURE, team: ["ba"], teamCounts: {}, tools: ["jira"], way: "scrum", ...route, ...pick } as IntakeDraft;
+  // Only people leaders are offered the leaders' challenges, so anyone else answers Not sure instead.
+  if (!challengeFits(merged.challenge, merged.level)) merged.challenge = NOT_SURE;
+  const result = validateDraft(tidyDraft(merged));
   assert.ok(result.ok, `A reachable answer set failed validation: ${JSON.stringify({ route, pick })}`);
   return result.answers;
 }
@@ -228,12 +233,22 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   if (plan.nextActions.some((action) => !required.some((block) => block.id === action.blockId))) problems.push("A next action comes from a Go further block.");
   // The challenge: at most 3 labels, on the first favoured blocks, and the next actions start at the first.
   const favoured = FAVOURS[answers.challenge] ?? [];
-  const expectedLabels = timeline.filter((block) => !block.optional && (byId.get(block.id) as Block).skills.some((skill) => favoured.includes(skill))).slice(0, 3).map((block) => block.id);
+  // A leader's challenge names blocks, which are labelled first wherever they are. The timeline's favoured blocks fill what's left.
+  const leads = LEADS_PEOPLE.includes(answers.level);
+  const named = leads ? (NAMED[answers.challenge] ?? []) : [];
+  const shownElsewhere = [...plan.leadYourTeam, ...skills].map((block) => block.id);
+  const namedShown = named.filter((id) => shownElsewhere.includes(id) || timeline.some((block) => block.id === id));
+  const timelineFavoured = timeline.filter((block) => !block.optional && (named.includes(block.id) || (byId.get(block.id) as Block).skills.some((skill) => favoured.includes(skill)))).map((block) => block.id);
+  const labelPicks = [...namedShown, ...timelineFavoured.filter((id) => !namedShown.includes(id))].slice(0, 3);
+  const expectedLabels = timeline.filter((block) => labelPicks.includes(block.id)).map((block) => block.id);
+  const labelledElsewhere = [...plan.leadYourTeam, ...skills].filter((block) => block.helpsChallenge).map((block) => block.id);
+  if (sorted(labelledElsewhere).join() !== sorted(labelPicks.filter((id) => shownElsewhere.includes(id))).join()) problems.push("The wrong blocks outside the timeline are labelled as helping with the challenge.");
   const labelled = timeline.filter((block) => block.helpsChallenge || block.growsSkill);
-  if (labelled.length > 3) problems.push(`${labelled.length} blocks are labelled.`);
+  if (labelled.length + labelledElsewhere.length > 3) problems.push(`${labelled.length + labelledElsewhere.length} blocks are labelled.`);
   if (timeline.filter((block) => block.helpsChallenge).map((block) => block.id).join() !== expectedLabels.join()) problems.push("The wrong blocks are labelled as helping with the challenge.");
-  const challengeLabel = CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
-  for (const block of labelled) {
+  const challenge = CHALLENGES.find((item) => item.id === answers.challenge) as Challenge | undefined;
+  const challengeLabel = (leads && challenge?.forLeaders?.label) || challenge?.label;
+  for (const block of [...labelled, ...plan.leadYourTeam, ...skills]) {
     if (block.helpsChallenge && block.why !== `Helps with: ${challengeLabel}.`) problems.push(`${block.id}'s reason doesn't name the challenge: ${block.why}`);
   }
   const fromMarked = required.slice(Math.max(required.findIndex((block) => block.helpsChallenge), 0));
@@ -270,12 +285,12 @@ export function problemsWith(answers: IntakeAnswers, plan: Plan): string[] {
   const rhythm = track === "product" ? eligible(["ways-of-working"]).filter((id) => !noTeam || id === "wow-stakeholder-updates") : [];
   if (sorted(plan.rhythm.map((block) => block.id)).join() !== sorted(rhythm).join()) problems.push("The rhythm section has the wrong blocks.");
   if (sorted(skills.map((block) => block.id)).join() !== sorted(eligible(["craft"])).join()) problems.push("Grow your skills has the wrong blocks.");
-  const refresh = BLOCKS.filter((block) => fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
+  // People leaders don't get the basics. Everyone else keeps them, in Refresh the basics.
+  const refresh = leads ? [] : BLOCKS.filter((block) => fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId))).map((block) => block.id);
   if (sorted(plan.refreshBasics.map((block) => block.id)).join() !== sorted(refresh).join()) problems.push("Refresh the basics has the wrong blocks.");
   // The fundamentals rule: a block a lower level would get is never lost, only moved.
   const lowerLevel = BLOCKS.filter((block) => block.appliesTo.experience.length > 0 && !block.appliesTo.experience.includes(level) && fitsApartFromLevel(block, answers) && isBelow(block, answers) && covered.some((phaseId) => isPlaced(block, phaseId)));
-  if (lowerLevel.some((block) => !ids.includes(block.id))) problems.push("A basic was dropped instead of moving to Refresh the basics.");
-  const leads = LEADS_PEOPLE.includes(answers.level);
+  if (!leads && lowerLevel.some((block) => !ids.includes(block.id))) problems.push("A basic was dropped instead of moving to Refresh the basics.");
   const onTimeline = timeline.map((block) => block.id);
   const leadExpected = leads ? BLOCKS.filter((block) => (block.appliesTo.leadsPeople || block.inLeadYourTeam) && !onTimeline.includes(block.id)).map((block) => block.id) : [];
   if (plan.leaderNudge !== (leads && track === "product")) problems.push(`The leader nudge is wrongly ${plan.leaderNudge ? "shown" : "hidden"}.`);
@@ -569,7 +584,7 @@ test("data blocks come first and are marked when you can't tell if it's working"
 test("every challenge keeps the agreed order rules", () => {
   for (const challenge of CHALLENGE_ANSWERS) {
     for (const route of [{ stage: "new", phase: NOT_SURE, time: "6m-plus", until: "measure" }, { work: "strategy", stage: "strategy-none", phase: null, time: NOT_SURE, until: null }] as Route[]) {
-      checkPlan(answersFor(route, { challenge, pm: ["ai", "growth"], product: "b2b", level: "senior" }));
+      for (const level of ["senior", "group", "director"] as const) checkPlan(answersFor(route, { challenge, pm: ["ai", "growth"], product: "b2b", level }));
     }
   }
 });

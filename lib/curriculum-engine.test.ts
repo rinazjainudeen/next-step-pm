@@ -327,14 +327,24 @@ test("moving up never breaks a dependency", () => {
 
 // --- Refresh the basics ---
 
-test("a level never removes a basic: it moves to Refresh the basics", () => {
+test("a level below people leaders never removes a basic: it moves to Refresh the basics", () => {
   const basic = craft("craft-basics", ["beginner"]);
   const plan = (level: IntakeAnswers["level"]) => buildPlan({ ...ANSWERS, level }, [basic]);
   assert.deepEqual(skillIds(plan("associate")), ["craft-basics"]);
   assert.deepEqual(plan("associate").refreshBasics, []);
-  for (const level of ["product-manager", "senior", "group", "director", "vp", NOT_SURE] as const) {
+  for (const level of ["product-manager", "senior", NOT_SURE] as const) {
     assert.deepEqual(plan(level).refreshBasics.map((block) => block.id), ["craft-basics"], level);
     assert.deepEqual(skillIds(plan(level)), [], level);
+  }
+});
+
+test("people leaders get no Refresh the basics", () => {
+  const basics = [craft("craft-basics", ["beginner"]), fixture("define-basic", "define", "1 day", [], { appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["beginner"] } })];
+  for (const level of ["group", "director", "vp"] as const) {
+    const plan = buildPlan({ ...ANSWERS, level }, basics);
+    assert.deepEqual(plan.refreshBasics, [], level);
+    assert.deepEqual(skillIds(plan), [], level);
+    assert.deepEqual(allBlocks(plan), [], level);
   }
 });
 
@@ -1483,5 +1493,5 @@ test("the strategy nudge shows for Group PM, Director and VP on the product trac
 test("reasons name the visitor's level, in words that read well mid-sentence", () => {
   const basics = fixture("define-basics", "define", "1 day", [], { appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["beginner"] } });
   assert.equal(buildPlan({ ...ANSWERS, level: "senior" }, [basics]).refreshBasics[0].why, "Because, as a senior, staff or principal PM, you've moved past this level. It's here if you want to check the basics.");
-  assert.equal(buildPlan({ ...ANSWERS, level: "vp" }, [basics]).refreshBasics[0].why, "Because, as a VP or CPO, you've moved past this level. It's here if you want to check the basics.");
+  assert.equal(buildPlan({ ...ANSWERS, level: "product-manager" }, [basics]).refreshBasics[0].why, "Because, as a product manager, you've moved past this level. It's here if you want to check the basics.");
 });

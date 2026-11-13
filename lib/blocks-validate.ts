@@ -18,6 +18,7 @@ import {
   type PhaseId,
 } from "../content/taxonomy";
 import { REGION_IDS, blockPhases, expectedFolder, isExploreBlock, isProductTimelineBlock, type Block } from "./blocks-types";
+import { namedChallengeBlocks } from "./leader-intake";
 
 /**
  * Checks learning blocks against the rules in docs/content-model.md.
@@ -616,4 +617,20 @@ function findCircularDependencies(byId: Map<string, BlockFile>): string[] {
 
   for (const id of [...byId.keys()].sort()) visit(id, []);
   return errors;
+}
+
+/**
+ * The blocks a leader's challenge names (in `content/taxonomy.ts`) must exist, and each must
+ * build one of the skills the challenge favours, so naming them only changes which come first.
+ */
+export function validateChallengeBlocks(blocks: readonly Block[]): string[] {
+  const byId = new Map(blocks.map((block) => [block.id, block]));
+  return namedChallengeBlocks().flatMap(({ challenge, blockId, favours }) => {
+    const block = byId.get(blockId);
+    if (!block) return [`content/taxonomy.ts: the "${challenge}" challenge names "${blockId}", but no block has that id.`];
+    if (!block.skills.some((skill) => favours.includes(skill))) {
+      return [`content/taxonomy.ts: the "${challenge}" challenge names "${blockId}", which builds none of the skills the challenge favours (${favours.join(", ")}).`];
+    }
+    return [];
+  });
 }

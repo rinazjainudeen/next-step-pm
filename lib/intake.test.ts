@@ -33,7 +33,7 @@ const parse = (query: string) => parseDraft(new URLSearchParams(query));
 
 // --- The questions ---
 
-const CORE_ORDER = ["pm", "level", "product", "size", "stage", "challenge", "time", "way"];
+const CORE_ORDER = ["level", "pm", "product", "size", "stage", "challenge", "time", "way"];
 
 test("there are nine questions, with the kind of work first", () => {
   assert.equal(KIND_OF_WORK_ENABLED, true);
@@ -151,9 +151,9 @@ test("the challenge question comes straight after the starting point, with seven
   assert.equal(question.notSure, "We'll keep your plan balanced.");
 });
 
-test("every challenge survives a round trip through the web address", () => {
+test("every challenge survives a round trip through the web address, at a level that's offered it", () => {
   for (const challenge of [...CHALLENGE_IDS, NOT_SURE] as const) {
-    const draft = { ...FULL, challenge };
+    const draft = { ...FULL, level: "director" as const, challenge };
     assert.deepEqual(parse(draftToQuery(draft)), draft, challenge);
   }
 });
@@ -579,7 +579,7 @@ test("a blank question gets a friendly message and an answered one doesn't", () 
   const product = INTAKE_QUESTIONS[3];
   assert.match(questionError(EMPTY_DRAFT, product) ?? "", /choose an option/);
   assert.equal(questionError({ ...EMPTY_DRAFT, product: NOT_SURE }, product), null);
-  const pm = INTAKE_QUESTIONS[1];
+  const pm = INTAKE_QUESTIONS[2];
   assert.match(questionError(EMPTY_DRAFT, pm) ?? "", /tick at least one/);
   assert.equal(questionError({ ...EMPTY_DRAFT, pm: [NOT_SURE] }, pm), null);
   const team = TAILOR_QUESTIONS[0];
@@ -624,7 +624,8 @@ test("incomplete answers list every missing question", () => {
 
 test("the first unanswered step is found", () => {
   assert.equal(firstUnansweredStep(EMPTY_DRAFT), 1);
-  assert.equal(firstUnansweredStep({ ...FULL, level: null, way: null }), 3);
+  assert.equal(firstUnansweredStep({ ...FULL, level: null, way: null }), 2);
+  assert.equal(firstUnansweredStep({ ...FULL, pm: [], way: null }), 3);
   assert.equal(firstUnansweredStep(FULL), null);
 });
 
@@ -643,7 +644,7 @@ test("a visitor can jump to any answered question or to the first gap", () => {
   assert.equal(canJumpTo(gap, 3), true);
   assert.equal(canJumpTo(gap, 4), true);
   assert.equal(canJumpTo(FULL, 9), true);
-  assert.equal(canJumpTo({ ...EMPTY_DRAFT, pm: ["ai"] }, 3), false);
+  assert.equal(canJumpTo({ ...EMPTY_DRAFT, level: "associate" }, 3), false);
 });
 
 test("changing one answer has its own address, which never reaches the plan link", () => {
@@ -669,8 +670,8 @@ test("each answer links to its own question, and the worked-out row doesn't", ()
 test("answers are summarised in readable words", () => {
   assert.deepEqual(summariseAnswers(FULL).map(({ label, value }) => ({ label, value })), [
     { label: "Kind of work", value: "Building or improving a product" },
-    { label: "Kind of PM", value: "AI" },
     { label: "What you own", value: "Features someone else has shaped" },
+    { label: "Kind of PM", value: "AI" },
     { label: "Kind of product", value: "Public sector service" },
     { label: "Size of organisation", value: "Scaling" },
     { label: "Where the product is", value: "Partway through a build (Build)" },

@@ -194,4 +194,9 @@
   details[data-plan-block] {
     break-inside: avoid;
   }
+  /* Closed phases print in full. */
+  [data-phase-panel][hidden] {
+    display: block !important;
+    content-visibility: visible !important;
+  }
 }

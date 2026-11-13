@@ -1,7 +1,6 @@
 import {
   BACKGROUNDS,
   CAREER_LEVELS,
-  CHALLENGES,
   EXPLORE_GOALS,
   SKILLS,
   COMPANY_SIZES,
@@ -29,6 +28,7 @@ import { blockPhases, stepsFor, type Block, type DelegatedTask } from "./blocks-
 import { ALL_EXPLORE_BLOCK_IDS, exploreBlockIds, hoursPerWeek } from "./explore";
 import { finishOptions, phasesCovered, trackFor } from "./intake-phases";
 import { MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type TeamRoleId } from "./intake-types";
+import { challengeDetails } from "./leader-intake";
 import { viewFor } from "./leader-view";
 import { NO_ADJUSTMENTS, growingSkills, type Adjustments } from "./plan-adjustments";
 import { EXPLORE_WORDING, OPENING_LINES } from "./plan-wording";
@@ -189,12 +189,17 @@ function fitsApartFromLevel(block: Block, answers: IntakeAnswers): boolean {
 function favouredSkills(answers: IntakeAnswers): readonly SkillId[] {
   // Someone exploring product management has no challenge to name, so their background favours skills instead.
   if (trackFor(answers.work) === "explore") return BACKGROUNDS.find((item) => item.id === answers.background)?.favours ?? [];
-  return CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.favours ?? [];
+  return challengeDetails(answers)?.favours ?? [];
+}
+
+/** The blocks a people leader's challenge names, best first. Everyone else has none. */
+function namedBlocks(answers: IntakeAnswers): readonly string[] {
+  return trackFor(answers.work) === "explore" ? [] : (challengeDetails(answers)?.blocks ?? []);
 }
 
 function helpsChallenge(block: Block, answers: IntakeAnswers): boolean {
   const favoured = favouredSkills(answers);
-  return !block.optional && block.skills.some((skill) => favoured.includes(skill));
+  return !block.optional && (namedBlocks(answers).includes(block.id) || block.skills.some((skill) => favoured.includes(skill)));
 }
 
 /** Builds a skill the visitor rated "Getting started" in the self-check. */
@@ -222,6 +227,7 @@ function placeIn(block: Block, covered: readonly PhaseId[]): PhaseId | undefined
  * visitor's organisation goes as early as its dependencies allow. In the
  * timeline, a block that helps with the visitor's challenge goes as early as
  * its dependencies and order links allow, so the agreed order still holds.
+ * The blocks a people leader's challenge names go first in any list, best first.
  */
 function orderByDependency(blocks: readonly Block[], answers: IntakeAnswers, favourChallenge = false, growing: readonly SkillId[] = []): Block[] {
   const present = new Set(blocks.map((block) => block.id));
@@ -231,7 +237,9 @@ function orderByDependency(blocks: readonly Block[], answers: IntakeAnswers, fav
     if (movesUp(block, answers)) return -1;
     if (block.optional) return 4;
     // After an add-on that follows the block just placed, so add-ons still sit straight after what they extend.
-    // The challenge comes before the self-check.
+    // The challenge comes before the self-check, and the blocks a leader's challenge names come first, best first.
+    const named = namedBlocks(answers).indexOf(block.id);
+    if (named !== -1 && !block.optional && !anchoredAddOn(block)) return 0.25 + named / 100;
     if (favourChallenge && helpsChallenge(block, answers) && !anchoredAddOn(block)) return 0.5;
     if (favourChallenge && growsSkill(block, growing) && !anchoredAddOn(block)) return 0.75;
     if (follows(block).length > 0) return block.kind === "add-on" ? 0 : 1;
@@ -374,7 +382,7 @@ function challengeSkills(block: Block, answers: IntakeAnswers): string {
 /** The challenge the visitor chose, or nothing for "Not sure" and the explore path. */
 function challengeLabelFor(answers: IntakeAnswers): string | undefined {
   if (trackFor(answers.work) === "explore") return undefined;
-  return CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
+  return challengeDetails(answers)?.label;
 }
 
 /** The visitor's level, as "a Product manager". "Not sure" has no level to name. */
@@ -644,7 +652,7 @@ function whoText(answers: IntakeAnswers): string {
   if (track === "explore") return exploreWhoText(answers);
   const parts = [
     track === "product" ? "" : `Work: ${labelOf(WORK_KINDS, track)}`,
-    answers.pm.includes(NOT_SURE) ? "" : `PM type: ${answers.pm.map((id) => labelOf(PM_TYPES, id)).join(" and ")}`,
+    answers.pm.includes(NOT_SURE) ? "" : `${careerLevelFor(answers).leadsPeople ? "Product work" : "PM type"}: ${answers.pm.map((id) => labelOf(PM_TYPES, id)).join(" and ")}`,
     answers.product === NOT_SURE ? "" : `Product: ${labelOf(PRODUCT_TYPES, answers.product)}`,
     answers.level === NOT_SURE ? "" : `Level: ${careerLevelFor(answers).short}`,
   ].filter(Boolean);
@@ -709,8 +717,9 @@ function rhythmSummary(count: number, answers: IntakeAnswers): string {
 }
 
 /**
- * The three skills to start with: those that match the challenge, then those
- * rated "Getting started", then the picks for the visitor's level.
+ * The three skills to start with: those a leader's challenge names, then those
+ * that match the challenge, then those rated "Getting started", then the picks
+ * for the visitor's level.
  */
 function startingSkills(byLevel: readonly Block[], anyLevel: readonly Block[], answers: IntakeAnswers, growing: readonly SkillId[]): Block[] {
   const pool = [...byLevel, ...anyLevel];
@@ -719,6 +728,7 @@ function startingSkills(byLevel: readonly Block[], anyLevel: readonly Block[], a
   const add = (blocks: readonly Block[]) => {
     for (const block of blocks) if (picked.length < 3 && !picked.includes(block)) picked.push(block);
   };
+  add(namedBlocks(answers).flatMap((id) => pool.filter((block) => block.id === id)));
   add(pool.filter((block) => block.skills.some((skill) => favoured.includes(skill))));
   add(pool.filter((block) => block.skills.some((skill) => growing.includes(skill))));
   add(byLevel);
@@ -763,6 +773,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const leadBlocks = leads ? kept.filter((block) => block.appliesTo.leadsPeople || block.inLeadYourTeam) : [];
   const eligible = others.filter((block) => fitsExperience(block, answers));
   const timelineBlocks = eligible.filter((block) => block.kind === "core" || block.kind === "add-on");
+  const alongsideOf = (kind: Block["kind"]) => orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
   // "Not relevant" moves a block out of the timeline into "Set aside".
   const setAsideBlocks = timelineBlocks.filter((block) => adjustments.setAside.includes(block.id));
   const inTimeline = timelineBlocks.filter((block) => !adjustments.setAside.includes(block.id));
@@ -803,13 +814,21 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const currentPhase = currentIndex === -1 ? null : byPhase[currentIndex].phaseId;
 
   // At most three labels, from the phase the visitor is in: the challenge first, then the self-check.
+  // A leader's challenge names the blocks that help most, wherever they sit, so they're labelled first.
   const candidates = currentIndex === -1 ? [] : byPhase.slice(currentIndex).flatMap((group) => group.blocks).filter((block) => !isDone(block));
+  const onTimeline = new Set(byPhase.flatMap((group) => group.blocks.map((block) => block.id)));
+  const leadShown = leadBlocks.filter((block) => !onTimeline.has(block.id));
+  const skills = alongsideOf("craft");
+  const inPlan = new Set([...candidates, ...leadShown, ...skills].map((block) => block.id));
   const labelled = new Map<string, BlockLabel>();
-  for (const block of candidates.filter((item) => helpsChallenge(item, answers)).slice(0, MAX_LABELS)) labelled.set(block.id, "challenge");
+  for (const id of namedBlocks(answers).filter((item) => inPlan.has(item)).slice(0, MAX_LABELS)) labelled.set(id, "challenge");
+  for (const block of candidates.filter((item) => helpsChallenge(item, answers) && !labelled.has(item.id))) {
+    if (labelled.size < MAX_LABELS) labelled.set(block.id, "challenge");
+  }
   for (const block of candidates.filter((item) => !labelled.has(item.id) && growsSkill(item, growing))) {
     if (labelled.size < MAX_LABELS) labelled.set(block.id, "skill");
   }
-  const challengeLabel = CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
+  const challengeLabel = challengeLabelFor(answers);
   // On the explore path the same label says which gap the visitor's background usually leaves.
   const gapFor = answers.background && answers.background !== NOT_SURE ? EXPLORE_WORDING.gapFor[answers.background] : undefined;
   const whyFor = (block: Block, phaseId: PhaseId) => {
@@ -847,19 +866,18 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   });
 
   const showOnboarding = hasExistingProduct(answers);
-  const alongside = (kind: Block["kind"]) =>
-    orderByDependency(eligible.filter((block) => block.kind === kind && placeIn(block, covered)), answers);
 
   const nextActions = firstActions(phases, currentPhase, 3, adjustments.ticked, leader, exploring);
-  const onTimeline = new Set(byPhase.flatMap((group) => group.blocks.map((block) => block.id)));
   // Team rituals suit a product team. A strategy or coaching plan, or a PM with no team, doesn't run them.
   const noTeam = answers.team.includes(NOT_SURE);
-  const rhythm = track === "product" ? alongside("ways-of-working").filter((block) => !noTeam || block.worksWithoutTeam) : [];
-  const skills = alongside("craft");
+  const rhythm = track === "product" ? alongsideOf("ways-of-working").filter((block) => !noTeam || block.worksWithoutTeam) : [];
   const skillsByLevel = skills.filter((block) => block.appliesTo.experience.length > 0).sort(byNarrowestLevel);
   const skillsAnyLevel = skills.filter((block) => block.appliesTo.experience.length === 0);
   const starting = startingSkills(skillsByLevel, skillsAnyLevel, answers, growing);
-  const shapeSkill = (block: Block) => shapeBlock(block, answers, whyCraft(block, answers), []);
+  // A block the challenge names keeps its label outside the timeline too.
+  const alongsideLabel = (block: Block) => (labelled.get(block.id) === "challenge" && challengeLabel ? "challenge" : null);
+  const whyAlongside = (block: Block, otherwise: string) => (alongsideLabel(block) ? `Helps with: ${challengeLabel}.` : otherwise);
+  const shapeSkill = (block: Block) => shapeBlock(block, answers, whyAlongside(block, whyCraft(block, answers)), [], alongsideLabel(block));
   const isLoop = answers.stage === "live";
 
   return {
@@ -877,20 +895,21 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
     teamAnswered: answers.team.length > 0,
     pace,
     getUpToSpeed: showOnboarding
-      ? alongside("onboarding").map((block) => shapeBlock(block, answers, whyOnboarding(answers), []))
+      ? alongsideOf("onboarding").map((block) => shapeBlock(block, answers, whyOnboarding(answers), []))
       : [],
     phases,
     setAside: setAsideBlocks.map((block) => shapeBlock(block, answers, whyTimeline(block, answers, placeIn(block, covered) ?? covered[0]), [])),
     rhythm: rhythm.map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
     rhythmSummary: rhythmSummary(rhythm.length, answers),
-    leadYourTeam: orderByDependency(leadBlocks.filter((block) => !onTimeline.has(block.id)), answers).map((block) => shapeBlock(block, answers, whyLead(answers), [])),
+    leadYourTeam: orderByDependency(leadShown, answers).map((block) => shapeBlock(block, answers, whyAlongside(block, whyLead(answers)), [], alongsideLabel(block))),
     leaderNudge: leads && track === "product",
     openingLine: openingLine(answers, track),
     newToProductFirst: answers.challenge === "new-to-role" && showOnboarding,
     skillsFirst: answers.challenge === "grow",
-    refreshBasics: orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) =>
-      shapeBlock(block, answers, whyRefresh(answers), []),
-    ),
+    // People leaders don't get the basics. They're in the Library for anyone who wants them.
+    refreshBasics: leads
+      ? []
+      : orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) => shapeBlock(block, answers, whyRefresh(answers), [])),
     skillsStart: starting.map(shapeSkill),
     skillsForLevel: skillsByLevel.filter((block) => !starting.includes(block)).map(shapeSkill),
     skillsAnyLevel: skillsAnyLevel.filter((block) => !starting.includes(block)).map(shapeSkill),
