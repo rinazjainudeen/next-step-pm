@@ -8,6 +8,22 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-13 (The plan reveals itself in place, and the home hero moves)
+
+Rinaz's call after trying "Building your plan" on the preview. For him to check on the preview before merging.
+
+- **"Building your plan" is gone.** It was a full screen between the visitor and their plan. Because it moved on by itself, "Show my plan now" had little point, and a hold long enough to read made it too slow. "Build my plan" now goes straight to the plan, which opens at the top as before (the single-wrapper fix from the site review is untouched). This replaces the "Building your plan" entries below. The question slide, progress bar, card press and tick, and the guard against a second press all stay.
+- **The motion moves into the plan itself.** Right after the questions, "Your plan at a glance" plays a short reveal: the phases arrive one after another (60 to 90ms apart, closer together when there are more), each phase's step count counts up, the "You're here" phase glows once, and the timeline below settles in after them. It's all over in under 1.2 seconds, whatever the number of phases.
+- **It plays when the overview first comes into view.** The plan opens at the top and the overview sits below the summary and next actions, so playing it on arrival would happen off screen. It waits, then plays the first time any of it is visible.
+- **Nothing is hidden or held back.** Phases start at 30% and the timeline at 50% rather than invisible, only for a moment, and links and buttons work throughout. The page is built without the reveal, so if the script fails everything simply shows. Only position and transparency change.
+- **It plays once, only straight after the questions.** It reuses the one-off note from "Building your plan": "Build my plan" leaves it in this tab's session storage naming the plan, and the plan page removes it the first time it looks. A refresh, Back and Forward, a shared link, the example plan and "Change" from Your answers don't play it. Nothing goes in the link. If storage is blocked, there's no reveal.
+- **Screen readers hear the real numbers.** The counting number is hidden from them, and separate hidden text says "0 of 27 steps done". Nothing is announced while it plays.
+- **Reduce motion turns it off.** The note is still cleared, and the plan just shows.
+- **The home hero has a slow background that means something.** Nine faint rounded blocks drift slowly. Every 10 seconds or so, five of them line up into a short rising path with a thin line through it (blocks becoming a plan), hold for about 2 seconds, then drift apart. A different five each time. On laptops the path climbs beside the words, along the hero's steps; on phones it sits low on the right, beside the buttons, so it never runs behind the text.
+- **It stays out of the way.** It sits under the hero's navy gradient, so it's faintest behind the words, and the white text keeps its contrast. It's hidden from screen readers, can't be clicked, and takes no space, so nothing shifts. The hero is navy in both themes, so it looks the same in light and dark.
+- **It's cheap.** Ten elements, moved with position and transparency only, about 30 times a second. It stops when the hero is scrolled away or the tab is hidden, and picks up where it left off. With the processor slowed four times on a phone-sized screen it kept a smooth frame rate with no long tasks. No library: a little React and the maths in `lib/hero-ambient.ts`, which is tested.
+- **Reduce motion shows a still picture:** the blocks resting where they start, with no path.
+
 ## 2026-11-13 (Motion for the questions and "Building your plan")
 
 For Rinaz to check on the preview before merging.

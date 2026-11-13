@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpenCheck, Building2, ClipboardList, GraduationCap, Landmark, ListChecks, Network, Rocket, Route, ShieldCheck, Shapes, UserX } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HeroAmbient } from "@/components/site/hero-ambient";
 import { Reveal } from "@/components/site/reveal";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
@@ -97,6 +98,8 @@ export default function HomePage() {
       <div className="flex min-h-svh flex-col">
         <section aria-labelledby="hero-title" className="relative flex flex-1 items-center overflow-hidden bg-navy pt-16 text-white">
           <HeroArt />
+          {/* Under the gradient, so it stays faintest behind the words. */}
+          <HeroAmbient />
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/55 to-navy/15"

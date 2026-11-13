@@ -13,7 +13,7 @@ import { finishOptions, phaseChoices, phasesForStage, type PhaseChoice } from "@
 import { questionFor, questionsForWork, totalStepsFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
 import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
-import { markIntro } from "@/lib/plan-intro";
+import { markReveal, sessionStore } from "@/lib/plan-reveal";
 import { firstUnansweredStep, followUpError, questionError } from "@/lib/intake-validate";
 import { cn } from "@/lib/utils";
 
@@ -34,15 +34,6 @@ function fillRow(cardsBefore: number): string {
  */
 function countPlanBuilt(work: IntakeDraft["work"]) {
   fetch("/api/plan-count", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ work }), keepalive: true }).catch(() => {});
-}
-
-/** Session storage can be blocked, and merely asking for it can throw. */
-function sessionStore(): Storage | null {
-  try {
-    return window.sessionStorage;
-  } catch {
-    return null;
-  }
 }
 
 /** Reads the very latest answers, so two quick clicks can't overwrite each other. */
@@ -141,8 +132,8 @@ export function IntakeWizard() {
       if (missing) goTo(missing, "We still need this answer before we can build your plan.");
       else {
         countPlanBuilt(current.work);
-        // Asks the plan page for the short "Building your plan" moment, this once.
-        markIntro(sessionStore(), planHref(current));
+        // Asks the plan page to play its short reveal, this once.
+        markReveal(sessionStore(), planHref(current));
         startBuilding(() => router.push(planHref(current)));
       }
     }
