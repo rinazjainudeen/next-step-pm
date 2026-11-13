@@ -144,11 +144,12 @@ test("a phase with more blocks than bars still shows its exact count", () => {
 
 // --- How long it takes, and how to skip it ---
 
-test("the intro lasts between 1.2 and 2 seconds whatever the number of phases", () => {
+test("the intro lasts about 3 seconds whatever the number of phases", () => {
   for (let lanes = 1; lanes <= 10; lanes += 1) {
     const timings = introTimings(lanes);
-    assert.ok(timings.total >= 1200 && timings.total <= 2000, `${lanes} phases took ${timings.total}ms`);
-    // The last lane has finished counting before the plan shows.
+    assert.ok(timings.total >= 2700 && timings.total <= 3300, `${lanes} phases took ${timings.total}ms`);
+    // The last lane has finished counting, and the finished frame holds for at least a second, before the plan shows.
+    assert.ok(timings.lanesAt + timings.laneStagger * (lanes - 1) + timings.countFor + 1000 <= timings.revealAt);
     assert.ok(timings.lanesAt + timings.laneStagger * (lanes - 1) + timings.countFor <= timings.revealAt);
     assert.equal(timings.total, timings.revealAt + timings.fadeFor);
   }

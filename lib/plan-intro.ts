@@ -104,7 +104,7 @@ export type IntroTimings = {
   total: number;
 };
 
-/** In milliseconds. Between about 1.5 and 1.9 seconds, whatever the number of phases. */
+/** In milliseconds. About 3 seconds whatever the number of phases: the build takes ~1.5s, then the finished frame holds long enough to read. */
 export function introTimings(laneCount: number): IntroTimings {
   const chipStagger = 35;
   const flowAt = 520;
@@ -113,7 +113,9 @@ export function introTimings(laneCount: number): IntroTimings {
   const barStagger = 25;
   const countFor = 420;
   const lastLaneDone = lanesAt + laneStagger * Math.max(laneCount - 1, 0) + Math.max(countFor, 150 + barStagger * MAX_BARS);
-  const revealAt = Math.max(1250, lastLaneDone + 150);
+  // Hold the finished frame so people can read their phases and step counts before the plan shows.
+  const holdFor = 1300;
+  const revealAt = Math.max(2550, lastLaneDone + holdFor);
   const fadeFor = 280;
   return { chipStagger, flowAt, lanesAt, laneStagger, barStagger, countFor, revealAt, fadeFor, total: revealAt + fadeFor };
 }
