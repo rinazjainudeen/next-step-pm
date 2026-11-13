@@ -2,7 +2,7 @@
 
 Next Step PM is a free, single-use web tool. A product manager answers 9 questions (kind of work, PM type, what they own, product type, company size, starting point, biggest challenge, timeline, ways of working). Someone exploring product management answers 4 (kind of work, background, goal, time each week). Team and tools are optional, in "Tailor your plan" on the plan page. The site then builds a step-by-step curriculum from reusable **learning blocks**.
 
-Rinaz built it as a **portfolio piece** for AI Product Manager and AI Builder roles. It needs to show that she can ship a working product to production that real people use. The audiences, in order: hiring managers, then product managers, then colleagues.
+Rinaz built it as a **portfolio piece** for AI Product Manager and AI Builder roles. It needs to show that he can ship a working product to production that real people use. The audiences, in order: hiring managers, then product managers, then colleagues.
 
 At the start of every session, read `docs/decisions.md`, `docs/plan.md` and `docs/content-model.md`. Summarise in a few lines where we are, then ask what we're doing today.
 
@@ -10,18 +10,18 @@ At the start of every session, read `docs/decisions.md`, `docs/plan.md` and `doc
 
 ## 1. How to work with Rinaz
 
-- She's a product manager and **not technical**. Explain every command, file and concept in plain English the first time it comes up. No jargon without a one-line explanation.
+- He's a product manager and **not technical**. Explain every command, file and concept in plain English the first time it comes up. No jargon without a one-line explanation.
 - **Be a partner, not an order-taker.** Challenge ideas, point out gaps, and give one recommendation rather than a list of options.
-- **She owns every account** (GitHub, Vercel, Supabase, Resend, Anthropic). Walk her through each sign-up screen by screen. **Never ask her to paste a password or secret key into the chat.** Tell her where to put it: `.env.local`, Vercel settings or GitHub secrets.
-- **Work in small phases she can test.** For each phase:
+- **He owns every account** (GitHub, Vercel, Supabase, Resend, Anthropic). Walk him through each sign-up screen by screen. **Never ask him to paste a password or secret key into the chat.** Tell him where to put it: `.env.local`, Vercel settings or GitHub secrets.
+- **Work in small phases he can test.** For each phase:
   1. Say what you'll build and why.
   2. Build it.
-  3. Tell her exactly how to check it in the browser: which page, what to click, what she should see.
-  4. Wait for her OK before committing.
-- **Ask before** installing anything on her computer, changing settings, spending money, or doing anything hard to undo.
+  3. Tell him exactly how to check it in the browser: which page, what to click, what he should see.
+  4. Wait for his OK before committing.
+- **Ask before** installing anything on his computer, changing settings, spending money, or doing anything hard to undo.
 - **Never touch the production database** while developing. Use a separate Supabase project for development.
-- **Be honest about status.** Say plainly when something is deferred, switched off or unfinished. If a test fails, show her.
-- **Never put real personal data in code, tests or examples.** Use made-up data. Don't use content from her employer or clients: no internal links, initiative names or documents.
+- **Be honest about status.** Say plainly when something is deferred, switched off or unfinished. If a test fails, show him.
+- **Never put real personal data in code, tests or examples.** Use made-up data. Don't use content from his employer or clients: no internal links, initiative names or documents.
 - Record each decision in `docs/decisions.md` (date, decision, why).
 
 ## 2. Tech stack
@@ -168,7 +168,7 @@ Colour tokens live in `app/globals.css` in `oklch`, mapped with `@theme inline`;
 - One branch per feature: `git switch -c feature/<name> origin/main --no-track`. VS Code then shows "Publish Branch" rather than "Sync Changes".
 - Commit messages in plain English, describing what changes for the site's user.
 - Commit only after Rinaz has checked the change and said OK. Run `pnpm test`, `pnpm validate:content` and `pnpm build` first, and report the results.
-- One pull request per feature. She tests it on the Vercel preview link, then merges. Merging to `main` puts it live.
+- One pull request per feature. He tests it on the Vercel preview link, then merges. Merging to `main` puts it live.
 - If `gh` isn't installed, push with git and explain how to open the pull request on github.com.
 
 ## 7. Definition of done (every phase)
