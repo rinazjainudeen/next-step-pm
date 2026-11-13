@@ -3,11 +3,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { PageHero } from "@/components/site/page-hero";
 import { DELETION_CONTACT_URL } from "@/lib/contact";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/privacy",
   title: "Privacy",
   description: "What Next Step PM stores, why, for how long, who can see it, and how to ask for it to be deleted.",
-};
+});
 
 const UPDATED = "11 November 2026";
 

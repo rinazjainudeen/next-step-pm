@@ -261,8 +261,15 @@ test("craft blocks don't add to the plan's length", () => {
 test("craft blocks say why they're there", () => {
   const plan = buildPlan({ ...ANSWERS, level: "associate" }, [craft("craft-all"), craft("craft-beginner", ["beginner"])]);
   const why = (id: string) => allSkills(plan).find((block) => block.id === id)?.why;
-  assert.equal(why("craft-all"), "Because it's a useful skill at any level.");
-  assert.equal(why("craft-beginner"), "Because it suits your experience.");
+  assert.equal(why("craft-all"), "Because you're starting something new, and it builds delivery and execution, which matters at every stage.");
+  assert.equal(why("craft-beginner"), "Because it's pitched at your level, as an associate or junior PM.");
+  const unsure = buildPlan({ ...ANSWERS, level: NOT_SURE }, [craft("craft-mid", ["intermediate"])]);
+  assert.equal(allSkills(unsure)[0].why, "Because it's pitched at product manager level, which we assume when you're not sure.");
+});
+
+test("a craft block that builds a favoured skill names the challenge", () => {
+  const plan = buildPlan({ ...ANSWERS, challenge: "measurement" }, [fixture("craft-data", "any", "1-2 days", [], { kind: "craft", skills: ["data"] })]);
+  assert.equal(allSkills(plan)[0].why, "Because it builds data and measurement, which helps with “We ship, but can't tell if it's working”.");
 });
 
 // --- Two PM types ---
@@ -628,7 +635,8 @@ test("a labelled block's reason names the challenge", () => {
   const labelled = allBlocks(plan).filter((block) => block.helpsChallenge);
   for (const block of labelled) assert.equal(block.why, "Helps with: We ship, but can't tell if it's working.");
   const unlabelled = allBlocks(plan).filter((block) => !block.helpsChallenge);
-  for (const block of unlabelled) assert.match(block.why, /^Because your plan covers/);
+  // Past the three labels, the reason still names the challenge.
+  for (const block of unlabelled) assert.equal(block.why, "Because you're starting something new, and it builds data and measurement, which helps with “We ship, but can't tell if it's working”.");
 });
 
 test("labels start from the phase you're in, and skip finished blocks", () => {
@@ -1232,9 +1240,11 @@ test("reasons name what the visitor actually chose", () => {
   assert.equal(both.why, "Because you chose AI as your kind of PM and Data or AI product as your product.");
   const product = allBlocks(buildPlan({ ...ANSWERS, product: "data-ai" }, [addOn()]))[0];
   assert.equal(product.why, "Because you chose Data or AI product as your product.");
-  assert.equal(allBlocks(buildPlan(ANSWERS, [makeBlock()]))[0].why, "Because your plan covers Define.");
+  assert.equal(allBlocks(buildPlan(ANSWERS, [makeBlock()]))[0].why, "Because you're starting something new, and your plan covers Define.");
+  assert.equal(allBlocks(buildPlan({ ...ANSWERS, stage: NOT_SURE }, [makeBlock()]))[0].why, "Because you weren't sure of your stage, and your plan covers Define.");
   const rhythm = buildPlan(ANSWERS, [wow(["scrum"])]).rhythm[0];
   assert.equal(rhythm.why, "Because your team works with Scrum.");
+  assert.equal(buildPlan(ANSWERS, [wow([])]).rhythm[0].why, "Because it suits any team, including one that works with Scrum.");
 });
 
 // --- The summary ---
@@ -1468,4 +1478,10 @@ test("the strategy nudge shows for Group PM, Director and VP on the product trac
   const nudge = (level: IntakeAnswers["level"], work: IntakeAnswers["work"] = null) => buildPlan({ ...ANSWERS, level, work }, PLAN_BLOCKS).leaderNudge;
   for (const level of ["group", "director", "vp"] as const) assert.equal(nudge(level), true, level);
   for (const level of ["associate", "product-manager", "senior", NOT_SURE] as const) assert.equal(nudge(level), false, level);
+});
+
+test("reasons name the visitor's level, in words that read well mid-sentence", () => {
+  const basics = fixture("define-basics", "define", "1 day", [], { appliesTo: { pmTypes: [], productTypes: [], stages: [], waysOfWorking: [], experience: ["beginner"] } });
+  assert.equal(buildPlan({ ...ANSWERS, level: "senior" }, [basics]).refreshBasics[0].why, "Because, as a senior, staff or principal PM, you've moved past this level. It's here if you want to check the basics.");
+  assert.equal(buildPlan({ ...ANSWERS, level: "vp" }, [basics]).refreshBasics[0].why, "Because, as a VP or CPO, you've moved past this level. It's here if you want to check the basics.");
 });

@@ -20,7 +20,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2">
             {availableLinks([...PAGE_LINKS, ...FOOTER_LINKS]).map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="rounded-sm text-muted-foreground hover:text-foreground hover:underline">
+                <Link href={link.href} className="inline-flex min-h-6 items-center rounded-sm text-muted-foreground hover:text-foreground hover:underline">
                   {link.label}
                 </Link>
               </li>
@@ -33,7 +33,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2">
             {availableLinks(HOME_SECTION_LINKS).map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="rounded-sm text-muted-foreground hover:text-foreground hover:underline">
+                <Link href={link.href} className="inline-flex min-h-6 items-center rounded-sm text-muted-foreground hover:text-foreground hover:underline">
                   {link.label}
                 </Link>
               </li>

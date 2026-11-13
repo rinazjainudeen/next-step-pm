@@ -59,6 +59,27 @@ export function hasTimeline(time: TimelineId | typeof NOT_SURE | null): boolean 
   return time !== null && time !== NOT_SURE;
 }
 
+/** A phase as offered in the intake: its id, plus the words shown on the card. */
+export type PhaseChoice = { id: PhaseId; label: string; description: string };
+
+/**
+ * A live product is already released, so "Launch" on its loop means shipping
+ * the next release. Plain "Launch: releasing it to real users" read as if it
+ * didn't apply, so a live product sees it worded for where it is.
+ */
+const LIVE_LAUNCH = { label: "Launch the next release", description: "Releasing your next change to the people who already use it." };
+
+export function phaseChoices(phases: readonly Phase[], stage: StageAnswer): PhaseChoice[] {
+  return phases.map(({ id, label, description }) =>
+    stage === "live" && id === "launch" ? { id, ...LIVE_LAUNCH } : { id, label, description },
+  );
+}
+
+/** One phase's label, worded for the visitor's stage. */
+export function phaseLabelFor(phase: PhaseId, stage: StageAnswer): string {
+  return phaseChoices(toPhases([phase]), stage)[0]?.label ?? phase;
+}
+
 /**
  * The phases a visitor can aim to finish by their milestone: from where they
  * are now to the end of the stage's journey. Not knowing the stage means

@@ -5,6 +5,8 @@ import {
   PAGE_LINKS,
   PRIMARY_ACTION,
   availableLinks,
+  blockHref,
+  planReturnHref,
   isCurrentPage,
 } from "./navigation";
 
@@ -32,4 +34,19 @@ test("the current page is recognised, ignoring #sections", () => {
   assert.equal(isCurrentPage("/", "/#how-it-works"), true);
   assert.equal(isCurrentPage("/library", "/"), false);
   assert.equal(isCurrentPage("/library", "/library"), true);
+});
+
+test("a block opened from a plan carries the plan, so Back returns to it", () => {
+  assert.equal(blockHref("define-problem"), "/library/define-problem");
+  const plan = "/plan?work=product&level=director#define-problem";
+  const href = blockHref("define-problem", plan);
+  assert.equal(planReturnHref(new URL(href, "https://example.test").searchParams.get("from")), plan);
+});
+
+test("only a plan on this site counts as somewhere to go back to", () => {
+  assert.equal(planReturnHref("/plan?work=product"), "/plan?work=product");
+  assert.equal(planReturnHref("/plan"), "/plan");
+  for (const bad of [null, "", "https://example.com/plan?x", "//example.com/plan", "/planet", "/library", "/plan\\@example.com"]) {
+    assert.equal(planReturnHref(bad), null, String(bad));
+  }
 });

@@ -32,7 +32,7 @@ export function TailorPanel({ draft }: { draft: IntakeDraft }) {
       onChange={() => setNext((before) => toggleMulti(before, question, id))}
     >
       {question === "team" && id !== NOT_SURE && next.team.includes(id as TeamRoleId) && (
-        <div className="flex items-center gap-2 px-3 pb-3 pl-11">
+        <div className="flex items-center gap-2 px-3 pb-3 pl-12">
           <label htmlFor={`tailor-count-${id}`} className="text-sm font-medium">
             How many<span className="sr-only"> {label}</span>
           </label>

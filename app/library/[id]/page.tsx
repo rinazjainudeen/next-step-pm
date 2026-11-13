@@ -1,10 +1,10 @@
-import { ArrowLeft, Clock, ExternalLink, TriangleAlert } from "lucide-react";
+import { Clock, ExternalLink, TriangleAlert } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
+import { BackToLibrary, BlockBackLink } from "@/components/library/back-link";
 import { RegionNote } from "@/components/library/region-label";
-import { Button } from "@/components/ui/button";
 import {
   COMPANY_SIZES,
   EXPERIENCE_LEVELS,
@@ -20,6 +20,7 @@ import {
   labelOf,
 } from "@/content/taxonomy";
 import { loadBlocks } from "@/lib/blocks-load";
+import { pageMetadata } from "@/lib/page-metadata";
 import { isExploreBlock, phaseLabel } from "@/lib/blocks-types";
 
 export const dynamicParams = false;
@@ -33,8 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/library/[id]">): 
   const block = loadBlocks().find((b) => b.id === id);
   if (!block) return {};
   return {
-    title: block.title,
-    description: block.summary,
+    ...pageMetadata({ path: `/library/${block.id}`, title: block.title, description: block.summary }),
     // Dummy blocks must never appear in search results.
     ...(block.placeholder ? { robots: { index: false, follow: false } } : {}),
   };
@@ -94,10 +94,10 @@ export default async function BlockPage({ params }: PageProps<"/library/[id]">) 
 
   return (
     <article className="mx-auto max-w-4xl px-4 pb-24 pt-28 sm:px-6 lg:px-8">
-      <Button render={<Link href="/library" />} nativeButton={false} variant="ghost" className="-ml-2 h-10 rounded-full px-4">
-        <ArrowLeft aria-hidden="true" />
-        Back to the library
-      </Button>
+      {/* The page is built ahead of time, so the address is read in the browser. Until then it links to the Library. */}
+      <Suspense fallback={<BackToLibrary />}>
+        <BlockBackLink />
+      </Suspense>
 
       {block.placeholder && (
         <div role="note" className="mt-6 flex gap-3 rounded-2xl border border-destructive/40 bg-destructive/10 p-4">

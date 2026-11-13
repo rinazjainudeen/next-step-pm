@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { RegionNote } from "@/components/library/region-label";
 import { usePlanStyle } from "@/components/plan/plan-style";
 import { QuestionList, StepList } from "@/components/plan/step-list";
+import { blockHref } from "@/lib/navigation";
 import type { PlanBlock, PlanLabel } from "@/lib/plan-types";
 
 /** The small pill that says why a block comes early. Used on block cards and next actions. */
@@ -74,7 +75,9 @@ export function PlanBlockCard({
   /** Buttons such as "Already done", shown at the end of the open block. */
   controls?: ReactNode;
 }) {
-  const { explorer } = usePlanStyle();
+  const { explorer, planHref } = usePlanStyle();
+  // Back from the Library lands on this block in the plan.
+  const libraryHref = (id: string) => blockHref(id, planHref ? `${planHref}#${block.id}` : undefined);
   const handsOn = (
     <>
         {explorer ? (
@@ -91,17 +94,22 @@ export function PlanBlockCard({
           </Part>
 
           <div className="space-y-6">
-            <Part title={teamAnswered ? "Who can do this" : "Who usually helps"}>
-              <ul className="space-y-3">
-                {block.tasks.map((task) => (
-                  <li key={`${task.roleLabel}-${task.task}`} className="text-pretty">
-                    <span className="font-medium">{task.who}:</span> {task.task}
-                    {task.note && <span className="block text-sm text-muted-foreground">{task.note}</span>}
-                  </li>
-                ))}
-              </ul>
-              {block.reviewers.length > 0 && <p className="mt-3">Ask for a review from: {block.reviewers.join(", ")}.</p>}
-            </Part>
+            {/* Some blocks are yours alone, with nobody to hand work to, so the heading only shows with something under it. */}
+            {(block.tasks.length > 0 || block.reviewers.length > 0) && (
+              <Part title={teamAnswered ? "Who can do this" : "Who usually helps"}>
+                {block.tasks.length > 0 && (
+                  <ul className="mb-3 space-y-3">
+                    {block.tasks.map((task) => (
+                      <li key={`${task.roleLabel}-${task.task}`} className="text-pretty">
+                        <span className="font-medium">{task.who}:</span> {task.task}
+                        {task.note && <span className="block text-sm text-muted-foreground">{task.note}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {block.reviewers.length > 0 && <p>Ask for a review from: {block.reviewers.join(", ")}.</p>}
+              </Part>
+            )}
 
             <Part title="With your tools">
               {block.tools.length > 0 ? (
@@ -178,7 +186,7 @@ export function PlanBlockCard({
             <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-primary">
               {block.checkFirst.map((item) => (
                 <li key={item.id}>
-                  <Link href={`/library/${item.id}`} className="text-primary underline underline-offset-4">
+                  <Link href={libraryHref(item.id)} className="text-primary underline underline-offset-4">
                     {item.title}
                   </Link>
                 </li>
@@ -207,7 +215,7 @@ export function PlanBlockCard({
         {controls && <div className="no-print mt-6 flex flex-wrap gap-3 border-t border-border pt-6">{controls}</div>}
 
         <p className="no-print mt-6">
-          <Link href={`/library/${block.id}`} className="font-medium text-primary underline underline-offset-4">
+          <Link href={libraryHref(block.id)} className="font-medium text-primary underline underline-offset-4">
             See the full block and its sources
           </Link>
         </p>

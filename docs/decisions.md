@@ -8,6 +8,21 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-13 (Site review fixes)
+
+From a review of the live site. For Rinaz to check on the preview before merging.
+
+- **"How I built this" is live,** in the header and footer. It covers the problem, how the blocks and rules engine make a plan, how content is checked before it goes live, and what Rinaz learned directing Claude Code, with links to her portfolio, LinkedIn and the code. The block count is read from the content, so it can't drift.
+- **The home hero has one main action and one way to look first:** "Build my plan" and "See an example plan". The jump links stay in the footer, and "New to product" stays as a card in "Built for".
+- **The fifth stat is "145 sources cited",** the number of different source addresses across all blocks. "Every" read like a mistake. A test checks the number against the content.
+- **Reasons name the visitor's answers.** Timeline blocks name where the product is and the phase. Blocks past the three labels that still build a favoured skill name the challenge. Skills name the level or the challenge, and Lead your team and Refresh the basics name the level. No more "Because it suits your experience".
+- **A live product sees "Launch the next release" instead of "Launch".** The review asked for Launch to be removed for a live product, but going round to Launch is a decision from 4 November ("live runs round to Launch"), because live teams build their next release. Plain "Launch: releasing it to real users" read as if it didn't apply, so the wording changes, not the route.
+- **"Who can do this" only shows when a block has someone to ask.** Some blocks, such as "Diagnose the core challenge", are the visitor's own work with nobody to hand tasks to. The content stays as it is.
+- **A block opened from a plan comes back to the plan.** The link to the Library carries the plan's address, and the block page shows "Back to your plan", landing on that block. Only a `/plan` address on this site is accepted.
+- **The plan page opens at the top.** Next.js scrolls a new page into view, and with several top-level sections it landed part-way down the plan on phones. The page now has one wrapper.
+- **Small targets are at least 24 by 24 pixels** (WCAG 2.2 target size): step and question tick-boxes, "Go to this step", "Change" in Your answers, and the footer links.
+- **Every page has a canonical address and `og:url`,** through `pageMetadata()` in `lib/page-metadata.ts`. The plan page stays out of search engines. There's also an icon for phone home screens, a web manifest, a real `/favicon.ico` and a "Page not found" page in the site's style.
+
 ## 2026-11-11 (Phase 9a)
 
 Approved by Rinaz on 11 November 2026. The spec is in `docs/phase-9a-spec.md`.

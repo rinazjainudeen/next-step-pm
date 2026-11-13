@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { CAREER_LEVELS, CHALLENGE_IDS, PHASE_IDS, PM_TYPE_IDS, ROLES, STAGES, TIMELINE_IDS, TOOLS } from "../content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "./intake-draft";
-import { finishOptions, phasesCovered, phasesForStage, stagesFor, trackFor } from "./intake-phases";
+import { finishOptions, phaseChoices, phaseLabelFor, phasesCovered, phasesForStage, stagesFor, trackFor } from "./intake-phases";
 import { INTAKE_QUESTIONS, TAILOR_QUESTIONS, TEAM_ROLE_IDS, TOOL_ANSWER_IDS, TOTAL_STEPS, questionFor, questionsFor, summariseAnswers } from "./intake-questions";
 import { EMPTY_DRAFT, KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type IntakeAnswers, type IntakeDraft } from "./intake-types";
 import { draftToQuery, parseDraft, parseEditing, parseStep, planHref, readerFromRecord, startHref, withOldLinkDefaults } from "./intake-url";
@@ -722,4 +722,13 @@ test("Not sure reads as words, not an id", () => {
   const value = (label: string) => summary.find((row) => row.label === label)?.value;
   assert.equal(value("Kind of PM"), "Not sure");
   assert.equal(value("Where the product is"), "Not sure");
+});
+
+test("a live product sees Launch worded as its next release", () => {
+  const live = phaseChoices(finishOptions({ stage: "live", phase: null, time: "3-6m" }), "live");
+  assert.equal(live.at(-1)?.label, "Launch the next release");
+  assert.equal(phaseLabelFor("launch", "live"), "Launch the next release");
+  const building = phaseChoices(finishOptions({ stage: "mid-build", phase: null, time: "3-6m" }), "mid-build");
+  assert.ok(building.some((phase) => phase.label === "Launch"));
+  assert.equal(phaseLabelFor("launch", "new"), "Launch");
 });

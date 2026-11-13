@@ -7,9 +7,9 @@ import { OptionCard } from "@/components/intake/option-card";
 import { StepNav } from "@/components/intake/step-nav";
 import { PageHero } from "@/components/site/page-hero";
 import { Button } from "@/components/ui/button";
-import type { PHASES, PhaseId } from "@/content/taxonomy";
+import type { PhaseId } from "@/content/taxonomy";
 import { choosePhase, chooseSingle, setTeamCount, toggleMulti } from "@/lib/intake-draft";
-import { finishOptions, phasesForStage } from "@/lib/intake-phases";
+import { finishOptions, phaseChoices, phasesForStage, type PhaseChoice } from "@/lib/intake-phases";
 import { questionFor, questionsForWork, totalStepsFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
 import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
@@ -177,7 +177,7 @@ export function IntakeWizard() {
                   title="Which phase are you in right now?"
                   hint="Your plan will start here."
                   notSure="Your plan will start at the first phase for where the product is."
-                  phases={phasesForStage(draft.stage)}
+                  phases={phaseChoices(phasesForStage(draft.stage), draft.stage)}
                   value={draft.phase}
                   save={save}
                 />
@@ -188,7 +188,7 @@ export function IntakeWizard() {
                   title="Which phase do you want to finish by then?"
                   hint="Your plan will stop here."
                   notSure="Pick this if your milestone doesn't match a phase, such as a contract ending. Your plan will cover the usual phases for where you are."
-                  phases={finishOptions(draft)}
+                  phases={phaseChoices(finishOptions(draft), draft.stage)}
                   value={draft.until}
                   save={save}
                 />
@@ -296,7 +296,7 @@ function Options({ question, draft, save }: OptionsProps) {
 function TeamCount({ option, count, save }: Pick<OptionsProps, "save"> & { option: IntakeOption; count: number }) {
   const id = `count-${option.id}`;
   return (
-    <div className="flex items-center gap-2 px-4 pb-4 pl-12">
+    <div className="flex items-center gap-2 px-4 pb-4 pl-[3.25rem]">
       <label htmlFor={id} className="text-sm font-medium">
         How many
         <span className="sr-only"> {option.label} roles</span>
@@ -331,7 +331,7 @@ function PhaseFollowUp({
   title: string;
   hint: string;
   notSure: string;
-  phases: readonly (typeof PHASES)[number][];
+  phases: readonly PhaseChoice[];
   value: IntakeDraft["phase"];
 }) {
   if (phases.length === 0) return null;

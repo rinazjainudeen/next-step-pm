@@ -15,7 +15,7 @@ export function StepList({ steps }: { steps: PlanStep[] }) {
               type="checkbox"
               checked={ticks.includes(step.id)}
               onChange={() => toggle(step.id)}
-              className="mt-1 size-5 shrink-0 accent-primary"
+              className="mt-0.5 size-6 shrink-0 accent-primary"
             />
             <span className="min-w-0 text-pretty">{step.text}</span>
           </label>
@@ -41,7 +41,7 @@ export function QuestionList({ questions }: { questions: PlanStep[] }) {
               checked={ticks.includes(question.id)}
               onChange={() => toggle(question.id)}
               aria-label={`Mark “${question.text}” as asked`}
-              className="mt-1 size-5 shrink-0 accent-primary"
+              className="mt-0.5 size-6 shrink-0 accent-primary"
             />
             <span className="min-w-0 text-pretty">{question.text}</span>
           </label>

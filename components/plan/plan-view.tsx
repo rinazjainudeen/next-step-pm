@@ -20,7 +20,7 @@ import type { Block } from "@/lib/blocks-types";
 import { buildPlan } from "@/lib/curriculum-engine";
 import { FEEDBACK_ENABLED } from "@/lib/feedback-types";
 import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
-import { draftToQuery } from "@/lib/intake-url";
+import { draftToQuery, planHref } from "@/lib/intake-url";
 import { hasViewSwitch, strategyPlanHref, switchAboveTimeline, viewWords } from "@/lib/leader-view";
 import { markDone, putBack, setAside, undoDone } from "@/lib/plan-adjustments";
 import type { PlanBlock } from "@/lib/plan-types";
@@ -46,7 +46,8 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const announce = (text: string) => setMessage(text);
 
   const leader = plan.view === "leader";
-  const style = useMemo(() => ({ explorer: plan.track === "explore", challengePill: plan.challengePill }), [plan.track, plan.challengePill]);
+  const href = planHref(draft);
+  const style = useMemo(() => ({ explorer: plan.track === "explore", challengePill: plan.challengePill, planHref: href }), [plan.track, plan.challengePill, href]);
   const words = viewWords(plan.view, plan.isLoop);
   // A leader asks questions rather than doing steps, so progress counts the questions asked.
   const stepIds = plan.phases
@@ -230,7 +231,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
                           </>
                         )}
                         {action.text}{" "}
-                        <a href={`#${action.blockId}`} className="no-print inline-flex items-center gap-1 text-sm font-medium text-primary underline underline-offset-4">
+                        <a href={`#${action.blockId}`} className="no-print inline-flex min-h-6 items-center gap-1 align-middle text-sm font-medium text-primary underline underline-offset-4">
                           {words.goTo}
                           <ArrowRight className="size-3.5" aria-hidden="true" />
                         </a>

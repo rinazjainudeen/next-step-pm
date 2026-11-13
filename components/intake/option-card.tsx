@@ -41,7 +41,7 @@ export function OptionCard({
           checked={checked}
           onChange={onChange}
           disabled={disabled}
-          className="mt-0.5 size-5 shrink-0 accent-primary"
+          className="size-6 shrink-0 accent-primary"
         />
         <span className="min-w-0">
           <span className="block font-medium">{label}</span>

@@ -35,7 +35,7 @@ export const NEW_TO_PRODUCT_HREF = "/start?step=2&work=explore";
 export const PAGE_LINKS: NavLink[] = [
   { label: "Home", href: "/", description: "What Next Step PM is.", available: true },
   { label: "Library", href: "/library", description: "Browse every learning block.", available: true },
-  { label: "How I built this", href: "/how-i-built-this", description: "The case study.", available: false },
+  { label: "How I built this", href: "/how-i-built-this", description: "Why I built it, how it works and what I learned.", available: true },
   { label: "Decision log", href: "/decisions", description: "What I decided and why.", available: false },
 ];
 
@@ -47,6 +47,22 @@ export const HOME_SECTION_LINKS: NavLink[] = [
   { label: "How it works", href: "/#how-it-works", description: "Three steps from questions to plan.", available: true },
   { label: "Built to be trusted", href: "/#principles", description: "How the tool treats your data.", available: true },
 ];
+
+/**
+ * A block's page in the Library. From a plan, it carries the plan's address,
+ * so "Back" returns to the plan instead of the Library. The plan lives in its
+ * address, so this is all it takes to keep it.
+ */
+export function blockHref(id: string, fromPlan?: string): string {
+  const path = `/library/${id}`;
+  return fromPlan ? `${path}?from=${encodeURIComponent(fromPlan)}` : path;
+}
+
+/** The plan to go back to, or null. Only a plan on this site counts, so the link can't be pointed elsewhere. */
+export function planReturnHref(from: string | null | undefined): string | null {
+  if (!from || from.includes("\\")) return null;
+  return /^\/plan(?:[?#]|$)/.test(from) ? from : null;
+}
 
 export function availableLinks(links: NavLink[]): NavLink[] {
   return links.filter((link) => link.available);
