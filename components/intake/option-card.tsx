@@ -32,8 +32,14 @@ export function OptionCard({
   children?: ReactNode;
 }) {
   return (
-    <div className={cn("rounded-xl border border-border bg-background transition-colors has-checked:border-primary has-checked:bg-primary/10", disabled ? "opacity-70" : "hover:border-primary/60")}>
-      <label className={cn("flex items-start gap-3", disabled ? "cursor-not-allowed" : "cursor-pointer", compact ? "p-3" : "p-4")}>
+    <div
+      className={cn(
+        "option-card rounded-xl border border-border bg-background transition-[color,background-color,border-color,transform] duration-150 ease-out has-checked:border-primary has-checked:bg-primary/10",
+        // A small press while the card is held down, so a tap feels answered. Not while choosing a team count.
+        disabled ? "opacity-70" : "hover:border-primary/60 has-[label:active]:scale-[0.985]",
+      )}
+    >
+      <label className={cn("relative flex items-start gap-3", disabled ? "cursor-not-allowed" : "cursor-pointer", compact ? "p-3 pr-9" : "p-4 pr-11")}>
         <input
           type={type}
           name={name}
@@ -47,6 +53,19 @@ export function OptionCard({
           <span className="block font-medium">{label}</span>
           {explanation && <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{explanation}</span>}
         </span>
+        {/* Drawn in when chosen (see app/globals.css). The native control already says it's chosen. */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className={cn("option-check absolute size-5 text-primary", compact ? "top-3.5 right-3" : "top-4.5 right-4")}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 12.5l4.5 4.5L19 7.5" pathLength={1} />
+        </svg>
       </label>
       {children}
     </div>

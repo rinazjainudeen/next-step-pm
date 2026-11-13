@@ -162,6 +162,83 @@
   transform: translateY(1.5rem);
 }
 
+/*
+ * Motion for the questions and "Building your plan". Transform and opacity only, so
+ * nothing moves the layout. The reduced-motion rule below makes all of it instant.
+ */
+
+/* An answer card: a check mark draws itself in when it's chosen. */
+.option-check {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.15s ease-out,
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.option-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.25s ease-out 0.05s;
+}
+.option-card:has(input:checked) .option-check {
+  opacity: 1;
+  transform: none;
+}
+.option-card:has(input:checked) .option-check path {
+  stroke-dashoffset: 0;
+}
+
+/* "Building your plan" (components/plan/plan-build-intro.tsx). */
+.build-intro {
+  transition: opacity var(--fade) ease-in;
+}
+.build-intro-card {
+  transition: transform var(--fade) ease-in;
+}
+.build-intro[data-stage="leaving"] {
+  opacity: 0;
+}
+.build-intro[data-stage="leaving"] .build-intro-card {
+  transform: translateY(-0.75rem) scale(1.02);
+}
+/* Answers pop in, then drop towards the phases and dim, as the plan takes them in. */
+.build-intro-chip {
+  animation:
+    build-intro-pop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d) both,
+    build-intro-flow 0.38s ease-in calc(var(--flow) + var(--d) / 2) forwards;
+}
+.build-intro-lane {
+  animation: build-intro-rise 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d) both;
+}
+/* One bar per block, dropping into place one after another. */
+.build-intro-bar {
+  animation: build-intro-drop 0.22s ease-out var(--d) both;
+}
+@keyframes build-intro-pop {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.9);
+  }
+}
+@keyframes build-intro-flow {
+  to {
+    opacity: 0.55;
+    transform: translateY(0.5rem) scale(0.96);
+  }
+}
+@keyframes build-intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+@keyframes build-intro-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

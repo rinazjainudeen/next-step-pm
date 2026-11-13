@@ -8,10 +8,18 @@ import { cn } from "@/lib/utils";
  * question they've answered, or to the first gap. Others stay disabled.
  */
 export function StepNav({ step, draft, onJump }: { step: number; draft: IntakeDraft; onJump: (step: number) => void }) {
+  const questions = questionsForWork(draft.work);
   return (
     <nav aria-label="Questions" className="mt-2">
+      {/* How far through you are. It slides between questions; "Question 3 of 9" says the same in words. */}
+      <div aria-hidden="true" className="mb-2 h-1.5 overflow-hidden rounded-full bg-muted">
+        <div
+          className="h-full origin-left rounded-full bg-primary transition-transform duration-500 ease-out"
+          style={{ transform: `scaleX(${Math.min(step / questions.length, 1)})` }}
+        />
+      </div>
       <ol className="flex gap-1">
-        {questionsForWork(draft.work).map((question, index) => {
+        {questions.map((question, index) => {
           const number = index + 1;
           const isCurrent = number === step;
           return (
