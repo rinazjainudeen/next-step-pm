@@ -50,10 +50,9 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const style = useMemo(() => ({ explorer: plan.track === "explore", challengePill: plan.challengePill, planHref: href }), [plan.track, plan.challengePill, href]);
   const words = viewWords(plan.view, plan.isLoop);
   // A leader asks questions rather than doing steps, so progress counts the questions asked.
-  const stepIds = plan.phases
-    .flatMap((phase) => phase.blocks)
-    .filter((block) => !block.optional)
-    .flatMap((block) => (block.leaderView ? block.leaderView.ask : block.steps).map((item) => item.id));
+  const progressIds = (blocks: readonly PlanBlock[]) =>
+    blocks.filter((block) => !block.optional).flatMap((block) => (block.leaderView ? block.leaderView.ask : block.steps).map((item) => item.id));
+  const stepIds = progressIds(plan.phases.flatMap((phase) => phase.blocks));
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
@@ -288,20 +287,27 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
           {hasViewSwitch(answers) && switchAboveTimeline(answers) && <ViewSwitch draft={draft} current={plan.view} className="mt-8" />}
           <PlanPhases
             current={plan.currentPhase}
-            phases={plan.phases.map((phase) => ({ id: phase.id, label: phase.label, weeks: phase.weeks, blockCount: phase.blocks.length, done: phase.done ?? false }))}
-            contents={plan.phases.map((phase, phaseIndex) => (
+            noun={leader ? "questions asked" : "steps done"}
+            phases={plan.phases.map((phase) => ({
+              id: phase.id,
+              label: phase.label,
+              weeks: phase.weeks,
+              blockIds: phase.blocks.map((block) => block.id),
+              stepIds: progressIds(phase.blocks),
+              done: phase.done ?? false,
+            }))}
+            contents={plan.phases.map((phase) => (
               <div key={phase.id}>
                 <p className="max-w-3xl text-pretty leading-relaxed text-muted-foreground">
                   <span className="font-medium text-foreground">Ready to move on when:</span> {phase.readyWhen}
                 </p>
                 {phase.note && <p className="mt-2 max-w-3xl text-pretty leading-relaxed text-muted-foreground">{phase.note}</p>}
                 <div className="mt-4 space-y-4">
-                  {phase.blocks.map((block, blockIndex) => (
+                  {phase.blocks.map((block) => (
                     <PlanBlockCard
                       key={block.id}
                       block={block}
                       heading="h4"
-                      open={phaseIndex === 0 && blockIndex === 0}
                       teamAnswered={plan.teamAnswered}
                       controls={timelineControls(block)}
                     />
