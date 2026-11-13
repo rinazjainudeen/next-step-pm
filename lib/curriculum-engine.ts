@@ -336,6 +336,54 @@ function whyCompanySize(answers: IntakeAnswers): string {
   return `Because you chose ${labelOf(COMPANY_SIZES, answers.size)} as the size of your organisation.`;
 }
 
+/** Where the visitor is, as the end of "Because …". Each track's stages read differently. */
+const STAGE_PHRASES: Record<StageId, string> = {
+  new: "you're starting something new",
+  "mid-build": "you're partway through a build",
+  live: "you're running a live product",
+  "strategy-none": "you have no strategy yet",
+  "strategy-stale": "your strategy is out of date",
+  "strategy-ready": "your strategy needs turning into plans",
+  "coaching-new": "product practice is just starting where you work",
+  "coaching-some": "some of your teams already do product well",
+  "coaching-established": "product practice is established and needs scaling",
+  "explore-new": "you're exploring product management",
+};
+
+function stagePhrase(answers: IntakeAnswers): string {
+  return answers.stage === NOT_SURE ? "you weren't sure of your stage" : STAGE_PHRASES[answers.stage];
+}
+
+/** A label inside a sentence: "Data and measurement" becomes "data and measurement". "VP or CPO" stays as it is. */
+const inSentence = (label: string) => (/^[A-Z][a-z]/.test(label) ? `${label[0].toLowerCase()}${label.slice(1)}` : label);
+
+/**
+ * The first of the block's skills that the visitor's challenge favours, or of all its skills.
+ * One is enough for a reason line, and labels such as "Communication and influence" already
+ * contain "and", so a list of them reads badly.
+ */
+function firstSkill(block: Block, among?: readonly SkillId[]): string {
+  const skill = SKILLS.find((item) => block.skills.includes(item.id) && (!among || among.includes(item.id)));
+  return skill ? inSentence(skill.label) : "";
+}
+
+function challengeSkills(block: Block, answers: IntakeAnswers): string {
+  return firstSkill(block, favouredSkills(answers));
+}
+
+/** The challenge the visitor chose, or nothing for "Not sure" and the explore path. */
+function challengeLabelFor(answers: IntakeAnswers): string | undefined {
+  if (trackFor(answers.work) === "explore") return undefined;
+  return CHALLENGES.find((challenge) => challenge.id === answers.challenge)?.label;
+}
+
+/** The visitor's level, as "a Product manager". "Not sure" has no level to name. */
+function levelPhrase(answers: IntakeAnswers): string | undefined {
+  if (answers.level === NOT_SURE) return undefined;
+  const short = careerLevelFor(answers).short;
+  return `${/^[AEIOU]/.test(short) ? "an" : "a"} ${inSentence(short)}`;
+}
+
 function whyTimeline(block: Block, answers: IntakeAnswers, phaseId: PhaseId): string {
   if (block.kind === "add-on") {
     const reasons = [
@@ -345,28 +393,43 @@ function whyTimeline(block: Block, answers: IntakeAnswers, phaseId: PhaseId): st
     if (reasons.length > 0) return `Because you chose ${reasons.join(" and ")}.`;
     if (block.appliesTo.companySizes?.length) return whyCompanySize(answers);
   }
-  return `Because your plan covers ${labelOf(PHASES, phaseId)}.`;
+  // Past the three labels, a block can still build a skill the challenge favours. Say so.
+  const skills = challengeSkills(block, answers);
+  const challenge = challengeLabelFor(answers);
+  if (skills && challenge && !block.optional) return `Because ${stagePhrase(answers)}, and it builds ${skills}, which helps with “${challenge}”.`;
+  return `Because ${stagePhrase(answers)}, and your plan covers ${labelOf(PHASES, phaseId)}.`;
 }
 
 function whyRhythm(block: Block, answers: IntakeAnswers): string {
-  if (block.appliesTo.waysOfWorking.length === 0) return "Because it suits any team.";
-  return `Because your team works with ${labelOf(WAYS_OF_WORKING, answers.way)}.`;
+  if (block.appliesTo.waysOfWorking.length > 0) return `Because your team works with ${labelOf(WAYS_OF_WORKING, answers.way)}.`;
+  if (answers.way === NOT_SURE) return "Because it suits any team, whichever way you work.";
+  return `Because it suits any team, including one that works with ${labelOf(WAYS_OF_WORKING, answers.way)}.`;
 }
 
 /** A skill for one level is more specific than one for two, so it comes first. */
 const byNarrowestLevel = (a: Block, b: Block) => a.appliesTo.experience.length - b.appliesTo.experience.length;
 
-function whyRefresh(): string {
-  return "Because you've moved past this level. It's here if you want to check the basics.";
+function whyRefresh(answers: IntakeAnswers): string {
+  const level = levelPhrase(answers);
+  const past = level ? `, as ${level}, you've moved past this level` : " you've moved past this level";
+  return `Because${past}. It's here if you want to check the basics.`;
 }
 
-function whyLead(): string {
-  return "Because you lead other product people.";
+function whyLead(answers: IntakeAnswers): string {
+  const level = levelPhrase(answers);
+  return level ? `Because, as ${level}, you lead other product people.` : "Because you lead other product people.";
 }
 
-function whyCraft(block: Block): string {
-  if (block.appliesTo.experience.length === 0) return "Because it's a useful skill at any level.";
-  return "Because it suits your experience.";
+function whyCraft(block: Block, answers: IntakeAnswers): string {
+  const skills = challengeSkills(block, answers);
+  const challenge = challengeLabelFor(answers);
+  if (skills && challenge) return `Because it builds ${skills}, which helps with “${challenge}”.`;
+  if (block.appliesTo.experience.length > 0) {
+    const level = levelPhrase(answers);
+    return level ? `Because it's pitched at your level, as ${level}.` : "Because it's pitched at product manager level, which we assume when you're not sure.";
+  }
+  const own = firstSkill(block);
+  return own ? `Because ${stagePhrase(answers)}, and it builds ${own}, which matters at every stage.` : `Because ${stagePhrase(answers)}, and this matters at every stage.`;
 }
 
 function whyOnboarding(answers: IntakeAnswers): string {
@@ -796,7 +859,7 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
   const skillsByLevel = skills.filter((block) => block.appliesTo.experience.length > 0).sort(byNarrowestLevel);
   const skillsAnyLevel = skills.filter((block) => block.appliesTo.experience.length === 0);
   const starting = startingSkills(skillsByLevel, skillsAnyLevel, answers, growing);
-  const shapeSkill = (block: Block) => shapeBlock(block, answers, whyCraft(block), []);
+  const shapeSkill = (block: Block) => shapeBlock(block, answers, whyCraft(block, answers), []);
   const isLoop = answers.stage === "live";
 
   return {
@@ -820,13 +883,13 @@ export function buildPlan(answers: IntakeAnswers, allBlocks: readonly Block[], a
     setAside: setAsideBlocks.map((block) => shapeBlock(block, answers, whyTimeline(block, answers, placeIn(block, covered) ?? covered[0]), [])),
     rhythm: rhythm.map((block) => shapeBlock(block, answers, whyRhythm(block, answers), [])),
     rhythmSummary: rhythmSummary(rhythm.length, answers),
-    leadYourTeam: orderByDependency(leadBlocks.filter((block) => !onTimeline.has(block.id)), answers).map((block) => shapeBlock(block, answers, whyLead(), [])),
+    leadYourTeam: orderByDependency(leadBlocks.filter((block) => !onTimeline.has(block.id)), answers).map((block) => shapeBlock(block, answers, whyLead(answers), [])),
     leaderNudge: leads && track === "product",
     openingLine: openingLine(answers, track),
     newToProductFirst: answers.challenge === "new-to-role" && showOnboarding,
     skillsFirst: answers.challenge === "grow",
     refreshBasics: orderByDependency(others.filter((block) => isBelowLevel(block, answers) && placeIn(block, covered)), answers).map((block) =>
-      shapeBlock(block, answers, whyRefresh(), []),
+      shapeBlock(block, answers, whyRefresh(answers), []),
     ),
     skillsStart: starting.map(shapeSkill),
     skillsForLevel: skillsByLevel.filter((block) => !starting.includes(block)).map(shapeSkill),

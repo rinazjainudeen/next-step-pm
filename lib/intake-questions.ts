@@ -5,7 +5,6 @@ import {
   COMPANY_SIZES,
   EXPLORE_GOALS,
   HOURS,
-  PHASES,
   PM_TYPES,
   PRODUCT_TYPES,
   ROLES,
@@ -18,7 +17,7 @@ import {
   WORK_KINDS,
   labelOf,
 } from "../content/taxonomy";
-import { phasesCovered, stagesFor, trackFor } from "./intake-phases";
+import { phaseLabelFor, phasesCovered, stagesFor, trackFor } from "./intake-phases";
 import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type ExploreQuestionId, type IntakeAnswers, type IntakeDraft, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
 
 export type IntakeOption = { readonly id: string; readonly label: string; readonly description?: string };
@@ -267,7 +266,7 @@ export function summariseAnswers(answers: IntakeAnswers): { label: string; value
 
 function followUpText(question: IntakeQuestion["id"], answers: IntakeAnswers): string {
   const { phase, until } = answers;
-  if (question === "stage" && phase && phase !== NOT_SURE) return ` (${labelOf(PHASES, phase)})`;
-  if (question === "time" && until && until !== NOT_SURE) return `, finishing ${labelOf(PHASES, until)}`;
+  if (question === "stage" && phase && phase !== NOT_SURE) return ` (${phaseLabelFor(phase, answers.stage)})`;
+  if (question === "time" && until && until !== NOT_SURE) return `, finishing ${phaseLabelFor(until, answers.stage)}`;
   return "";
 }

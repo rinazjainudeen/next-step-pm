@@ -38,7 +38,7 @@ function YourAnswers({ answers, draft }: { answers: IntakeAnswers; draft: Intake
               <dd className="col-start-1 row-start-2 text-pretty text-muted-foreground sm:col-start-2 sm:row-start-1">{row.value}</dd>
               {row.step && (
                 <dd className="col-start-2 row-start-1 text-right sm:col-start-3">
-                  <Link href={startHref(draft, row.step, true)} className="font-medium text-primary underline underline-offset-4">
+                  <Link href={startHref(draft, row.step, true)} className="inline-flex min-h-6 items-center font-medium text-primary underline underline-offset-4">
                     Change<span className="sr-only"> {row.label}</span>
                   </Link>
                 </dd>
@@ -97,7 +97,9 @@ export default async function PlanPage({
   const blocks = blocksForPlan(result.answers, plan, BLOCKS);
 
   return (
-    <>
+    // One wrapper on purpose. On arrival, Next.js scrolls the new page's top into view, and with
+    // several top-level sections that scroll landed part-way down the plan on phones.
+    <div>
       <PageHero
         size="tool"
         eyebrow={example ? "Example plan" : "Your plan"}
@@ -106,6 +108,6 @@ export default async function PlanPage({
         notice={example && <ExampleBanner />}
       />
       <PlanView answers={result.answers} blocks={blocks} draft={draft} answersPanel={<YourAnswers answers={result.answers} draft={draft} />} />
-    </>
+    </div>
   );
 }

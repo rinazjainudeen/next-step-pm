@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
  * Your plan): about 35% of the screen, so the tool itself shows straight away.
  *
  * `notice` is an optional banner above the heading, such as "This is an example plan".
+ * `children` go under the lead, for buttons such as those on the "Page not found" page.
  */
 export function PageHero({
   eyebrow,
@@ -17,6 +18,7 @@ export function PageHero({
   variant = "plain",
   size = "default",
   notice,
+  children,
 }: {
   eyebrow: string;
   title: string;
@@ -24,6 +26,7 @@ export function PageHero({
   variant?: "plain" | "card";
   size?: "default" | "tool";
   notice?: ReactNode;
+  children?: ReactNode;
 }) {
   const isTool = size === "tool";
 
@@ -51,6 +54,7 @@ export function PageHero({
           {lead}
         </p>
       )}
+      {children}
     </>
   );
 

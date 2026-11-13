@@ -5,12 +5,14 @@ import { LibraryBrowser } from "@/components/library/library-browser";
 import { PageHero } from "@/components/site/page-hero";
 import { loadBlocks } from "@/lib/blocks-load";
 import { toSummary } from "@/lib/blocks-types";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/library",
   title: "Library",
   description:
     "Browse every learning block: small, reusable activities for product managers, filtered by phase, PM type, kind and way of working.",
-};
+});
 
 export default function LibraryPage() {
   // Read at build time. If any block is invalid, the build stops here.

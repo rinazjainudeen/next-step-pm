@@ -5,14 +5,17 @@ import { Reveal } from "@/components/site/reveal";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import { EXAMPLE_PLAN_HREF } from "@/lib/example-plan";
-import { HOME_SECTION_LINKS, NEW_TO_PRODUCT_HREF, PRIMARY_ACTION } from "@/lib/navigation";
+import { NEW_TO_PRODUCT_HREF, PRIMARY_ACTION } from "@/lib/navigation";
+import { pageMetadata } from "@/lib/page-metadata";
 import { HOME_STATS } from "@/lib/site-stats";
 
-export const metadata: Metadata = {
-  title: { absolute: "Next Step PM: a learning plan for product managers" },
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  title: "Next Step PM: a learning plan for product managers",
+  absoluteTitle: true,
   description:
     "A free learning plan for product managers, built around the product you're working on. Answer a few short questions and get sourced, step-by-step guidance pitched at your level.",
-};
+});
 
 const STEPS = [
   {
@@ -122,29 +125,12 @@ export default function HomePage() {
                 {PRIMARY_ACTION.label}
                 <ArrowRight aria-hidden="true" />
               </Button>
-              <nav aria-label="Jump to a section" className="flex flex-wrap gap-2">
-                {HOME_SECTION_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="rounded-full border border-white/30 px-4 py-2 text-sm font-medium backdrop-blur hover:bg-white/10"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-              <Link
-                href={NEW_TO_PRODUCT_HREF}
-                className="rounded-full border border-white/30 px-4 py-2 text-sm font-medium backdrop-blur hover:bg-white/10"
-              >
-                New to product?
-              </Link>
+              {/* One main action, and one way to look before answering anything. */}
               <Link
                 href={EXAMPLE_PLAN_HREF}
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur hover:bg-white/20"
+                className="inline-flex h-12 items-center rounded-full border border-white/60 px-7 text-base font-medium backdrop-blur transition-colors hover:bg-white/10"
               >
                 See an example plan
-                <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </div>
           </div>

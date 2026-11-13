@@ -777,6 +777,7 @@ test("the home page's stats match the real content", () => {
   assert.equal(stat("Career levels"), String(CAREER_LEVELS.length));
   assert.equal(stat("Team roles"), String(ROLES.length));
   assert.ok(BLOCKS.every((block) => block.sources.length > 0));
+  assert.equal(stat("Sources cited"), String(new Set(BLOCKS.flatMap((block) => block.sources.map((source) => source.url))).size));
 });
 
 test("every PM type and company size has blocks of its own, apart from general", () => {

@@ -4,7 +4,8 @@ import { Inter, Ubuntu } from "next/font/google";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { ThemeProvider } from "@/components/site/theme-provider";
-import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/navigation";
+import { SITE_NAME, SITE_URL } from "@/lib/navigation";
+import { DEFAULT_SHARING } from "@/lib/page-metadata";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -25,14 +26,7 @@ export const metadata: Metadata = {
     "Answer a few short questions about your role, product and team, and get a step-by-step learning plan for product managers. Free, with no sign-up.",
   applicationName: SITE_NAME,
   authors: [{ name: "Rinaz Jainudeen" }],
-  openGraph: {
-    type: "website",
-    siteName: SITE_NAME,
-    title: SITE_NAME,
-    description: SITE_TAGLINE,
-    locale: "en_GB",
-  },
-  twitter: { card: "summary_large_image", title: SITE_NAME, description: SITE_TAGLINE },
+  ...DEFAULT_SHARING,
 };
 
 export const viewport: Viewport = {
