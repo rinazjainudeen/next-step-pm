@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, useTransition, type FormEvent } from "react";
 import { OptionCard } from "@/components/intake/option-card";
 import { StepNav } from "@/components/intake/step-nav";
 import { PageHero } from "@/components/site/page-hero";
@@ -13,6 +13,7 @@ import { finishOptions, phaseChoices, phasesForStage, type PhaseChoice } from "@
 import { questionFor, questionsForWork, totalStepsFor, type IntakeOption, type IntakeQuestion } from "@/lib/intake-questions";
 import { MAX_TEAM_COUNT, NOT_SURE, type IntakeDraft, type NotSure, type TeamRoleId } from "@/lib/intake-types";
 import { parseDraft, parseEditing, parseStep, planHref, startHref } from "@/lib/intake-url";
+import { markIntro } from "@/lib/plan-intro";
 import { firstUnansweredStep, followUpError, questionError } from "@/lib/intake-validate";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,15 @@ function fillRow(cardsBefore: number): string {
  */
 function countPlanBuilt(work: IntakeDraft["work"]) {
   fetch("/api/plan-count", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ work }), keepalive: true }).catch(() => {});
+}
+
+/** Session storage can be blocked, and merely asking for it can throw. */
+function sessionStore(): Storage | null {
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
 }
 
 /** Reads the very latest answers, so two quick clicks can't overwrite each other. */
@@ -59,6 +69,14 @@ export function IntakeWizard() {
   // The message belongs to one step, so it can't follow a visitor to another.
   const [error, setError] = useState<{ step: number; message: string } | null>(null);
   const message = error?.step === step ? error.message : null;
+
+  // Which way the last move went, so the new question slides in from the right
+  // going forward and from the left going back. Nothing moves on first load.
+  const [moved, setMoved] = useState<{ step: number; direction: "forward" | "back" | null }>({ step, direction: null });
+  if (moved.step !== step) setMoved({ step, direction: step > moved.step ? "forward" : "back" });
+
+  // The plan page can take a moment to arrive, so the button says what's happening.
+  const [building, startBuilding] = useTransition();
 
   const followUpRef = useRef<HTMLDivElement>(null);
   const hasFollowUp =
@@ -103,6 +121,8 @@ export function IntakeWizard() {
 
   function handleNext(event: FormEvent) {
     event.preventDefault();
+    // Already on the way to the plan.
+    if (building) return;
     const current = latestDraft();
     const problem = questionError(current, question);
     if (problem) {
@@ -121,7 +141,9 @@ export function IntakeWizard() {
       if (missing) goTo(missing, "We still need this answer before we can build your plan.");
       else {
         countPlanBuilt(current.work);
-        router.push(planHref(current));
+        // Asks the plan page for the short "Building your plan" moment, this once.
+        markIntro(sessionStore(), planHref(current));
+        startBuilding(() => router.push(planHref(current)));
       }
     }
   }
@@ -136,7 +158,7 @@ export function IntakeWizard() {
           lead="A few short questions. No name, no email and no account. Your answers stay in the web address, so you can go back, refresh or share the link."
         />
       )}
-      <section aria-label="Questions" className={cn("bg-secondary/40", compact ? "pt-16" : "border-t")}>
+      <section aria-label="Questions" className={cn("overflow-x-clip bg-secondary/40", compact ? "pt-16" : "border-t")}>
         <div className={cn("mx-auto max-w-7xl px-4 sm:px-6 lg:px-8", compact ? "py-4 md:py-6" : "py-8 md:py-12")}>
           <form
             onSubmit={handleNext}
@@ -158,41 +180,51 @@ export function IntakeWizard() {
             </div>
             {!editing && <StepNav step={step} draft={draft} onJump={goTo} />}
 
-            <fieldset className="mt-6 min-w-0">
-              <legend className="w-full">
-                <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-bold tracking-tight text-balance outline-none sm:text-3xl">
-                  {question.title}
-                </h2>
-              </legend>
-              <p className="mt-2 max-w-3xl leading-relaxed text-pretty text-muted-foreground">{question.why}</p>
-              <div className="mt-6">
-                <Options question={question} draft={draft} save={save} />
-              </div>
-            </fieldset>
+            {/* A new box for each question, so it plays its entrance (see `moved` above). */}
+            <div
+              key={step}
+              className={cn(
+                moved.direction && "motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out",
+                moved.direction === "forward" && "motion-safe:slide-in-from-right-8",
+                moved.direction === "back" && "motion-safe:slide-in-from-left-8",
+              )}
+            >
+              <fieldset className="mt-6 min-w-0">
+                <legend className="w-full">
+                  <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-bold tracking-tight text-balance outline-none sm:text-3xl">
+                    {question.title}
+                  </h2>
+                </legend>
+                <p className="mt-2 max-w-3xl leading-relaxed text-pretty text-muted-foreground">{question.why}</p>
+                <div className="mt-6">
+                  <Options question={question} draft={draft} save={save} />
+                </div>
+              </fieldset>
 
-            <div ref={followUpRef}>
-              {question.id === "stage" && (
-                <PhaseFollowUp
-                  name="phase"
-                  title="Which phase are you in right now?"
-                  hint="Your plan will start here."
-                  notSure="Your plan will start at the first phase for where the product is."
-                  phases={phaseChoices(phasesForStage(draft.stage), draft.stage)}
-                  value={draft.phase}
-                  save={save}
-                />
-              )}
-              {question.id === "time" && (
-                <PhaseFollowUp
-                  name="until"
-                  title="Which phase do you want to finish by then?"
-                  hint="Your plan will stop here."
-                  notSure="Pick this if your milestone doesn't match a phase, such as a contract ending. Your plan will cover the usual phases for where you are."
-                  phases={phaseChoices(finishOptions(draft), draft.stage)}
-                  value={draft.until}
-                  save={save}
-                />
-              )}
+              <div ref={followUpRef}>
+                {question.id === "stage" && (
+                  <PhaseFollowUp
+                    name="phase"
+                    title="Which phase are you in right now?"
+                    hint="Your plan will start here."
+                    notSure="Your plan will start at the first phase for where the product is."
+                    phases={phaseChoices(phasesForStage(draft.stage), draft.stage)}
+                    value={draft.phase}
+                    save={save}
+                  />
+                )}
+                {question.id === "time" && (
+                  <PhaseFollowUp
+                    name="until"
+                    title="Which phase do you want to finish by then?"
+                    hint="Your plan will stop here."
+                    notSure="Pick this if your milestone doesn't match a phase, such as a contract ending. Your plan will cover the usual phases for where you are."
+                    phases={phaseChoices(finishOptions(draft), draft.stage)}
+                    value={draft.until}
+                    save={save}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Stays on screen on long questions, so nobody has to scroll to carry on. */}
@@ -205,8 +237,8 @@ export function IntakeWizard() {
                     Back
                   </Button>
                 )}
-                <Button type="submit" size="lg" className="ml-auto h-11 rounded-full px-6">
-                  {editing ? "Save and return to my answers" : step < totalSteps ? "Next" : "Build my plan"}
+                <Button type="submit" size="lg" className="ml-auto h-11 rounded-full px-6" aria-disabled={building || undefined}>
+                  {editing ? "Save and return to my answers" : step < totalSteps ? "Next" : building ? "Building your plan" : "Build my plan"}
                   <ArrowRight aria-hidden="true" />
                 </Button>
               </div>

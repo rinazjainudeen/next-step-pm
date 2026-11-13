@@ -8,6 +8,22 @@ Newest first. Each entry gives the date, the decision and why.
 - **Review the effort estimates in Phase 5.** The engine reads them as start-to-finish time. Build now has its own minimum, so "Write user stories" at 2 to 4 hours no longer sets how long Build lasts, but the estimates still decide when a plan is tight. Rinaz to check when reviewing blocks.
 - **Should `estimatedEffort` allow weeks?** The blocks use days only, so nothing needs it yet.
 
+## 2026-11-13 (Motion for the questions and "Building your plan")
+
+For Rinaz to check on the preview before merging.
+
+- **A short "Building your plan" moment after the last question.** For about 1.5 to 1.8 seconds, the visitor's answers appear as chips, then dim and drop towards the plan's phases. Each phase arrives with its weeks, one bar per block and its step count counting up. Then it fades to show the plan. Why: pressing "Build my plan" used to jump straight to a long page, so the link between the answers and the plan was easy to miss.
+- **It shows the real plan, not a progress bar.** Every answer, phase, week range, block count and step count comes from the plan underneath, counted the same way as "Your plan at a glance". Leaders see questions instead of steps. Nothing waits on it: the plan is already built and on the page. A phase with more than 10 blocks draws 10 bars, and the number beside them is exact.
+- **It plays once, only straight after the questions.** "Build my plan" leaves a note in this tab's session storage naming the plan. The plan page removes it the first time it looks, and plays only if it names this plan. A refresh, Back and Forward, a shared link, the example plan and "Change" from Your answers don't play it. Nothing goes in the link, so copied links stay clean. If storage is blocked, the plan just shows.
+- **Easy to skip.** "Show my plan now", Esc, a tap anywhere or trying to scroll ends it in under 0.3 seconds. While it shows, the page behind can't be reached with Tab, and screen readers hear "Building your plan" and a one-line summary rather than the moving parts. When it ends, focus moves to the plan's heading.
+- **The plan still opens at the top.** The moment sits over the page rather than in it, so the fix from the site review still holds.
+- **Questions slide in the way you're going.** Next brings the new question in from the right and Back from the left, with a fade, in 0.3 seconds. Only the new question moves. The old one isn't animated out, so there's only ever one question on the page for screen readers and keyboard users. Focus still moves to the question's heading.
+- **A progress bar above the numbered steps.** It fills to "Question 3 of 9" and slides between questions. The words say the same, so screen readers skip the bar.
+- **Answer cards respond.** A card presses in slightly while held, and a tick draws itself in the corner when chosen. The native radio button or checkbox is still there and still does the work.
+- **The button says "Building your plan" while the plan loads,** and a second press does nothing, so the plan isn't counted twice.
+- **No motion library.** Everything is CSS (tw-animate-css, already in the project, for the question slide) and a little React. Only position and transparency animate, so nothing reflows and phones keep up. The one exception is the tick, which draws its line on a 20-pixel icon.
+- **Reduce motion turns all of it off.** No "Building your plan", the plan shows straight away, and questions, the bar and ticks change instantly.
+
 ## 2026-11-13 (Leader path and a shorter plan page)
 
 From a second product review of the live site. For Rinaz to check on the preview before merging.
