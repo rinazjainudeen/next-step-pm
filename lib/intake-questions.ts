@@ -1,7 +1,6 @@
 import {
   BACKGROUNDS,
   CAREER_LEVELS,
-  CHALLENGES,
   COMPANY_SIZES,
   EXPLORE_GOALS,
   HOURS,
@@ -18,6 +17,7 @@ import {
   labelOf,
 } from "../content/taxonomy";
 import { phaseLabelFor, phasesCovered, stagesFor, trackFor } from "./intake-phases";
+import { challengeOptions, leadsPeople } from "./leader-intake";
 import { KIND_OF_WORK_ENABLED, MAX_PM_TYPES, MAX_TEAM_COUNT, NOT_SURE, OTHER_TOOL, type ExploreQuestionId, type IntakeAnswers, type IntakeDraft, type MultiQuestionId, type SingleQuestionId, type TeamRoleId } from "./intake-types";
 
 export type IntakeOption = { readonly id: string; readonly label: string; readonly description?: string };
@@ -78,6 +78,15 @@ const KIND_OF_WORK_QUESTION: IntakeQuestion = {
 
 const CORE_QUESTIONS: readonly IntakeQuestion[] = [
   {
+    id: "level",
+    kind: "single",
+    shortLabel: "What you own",
+    title: "What best describes what you own?",
+    why: "This sets how much guidance each step gives. Titles mean different things at different companies, so pick by scope.",
+    notSure: "We'll pitch your plan at product manager level. You can change it on your plan.",
+    options: CAREER_LEVELS,
+  },
+  {
     id: "pm",
     kind: "multi",
     shortLabel: "Kind of PM",
@@ -86,15 +95,6 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
     notSure: "We'll use general. You can change it on your plan.",
     options: PM_TYPES,
     maxChoices: MAX_PM_TYPES,
-  },
-  {
-    id: "level",
-    kind: "single",
-    shortLabel: "What you own",
-    title: "What best describes what you own?",
-    why: "This sets how much guidance each step gives. Titles mean different things at different companies, so pick by scope.",
-    notSure: "We'll pitch your plan at product manager level. You can change it on your plan.",
-    options: CAREER_LEVELS,
   },
   {
     id: "product",
@@ -128,7 +128,7 @@ const CORE_QUESTIONS: readonly IntakeQuestion[] = [
     title: "What's your biggest challenge right now?",
     why: "This moves the blocks that help most to the front of each phase.",
     notSure: "We'll keep your plan balanced.",
-    options: CHALLENGES,
+    options: challengeOptions(null),
   },
   {
     id: "time",
@@ -228,10 +228,53 @@ export function totalStepsFor(work: IntakeDraft["work"] | undefined): number {
   return questionsForWork(work).length;
 }
 
-/** The starting-point question depends on the kind of work. Every other question stays the same. */
-export function questionFor(question: IntakeQuestion, draft: Pick<IntakeDraft, "work">): IntakeQuestion {
-  if (question.id !== "stage") return question;
-  return { ...question, ...STARTING_QUESTIONS[trackFor(draft.work)], options: stagesFor(draft.work) };
+/**
+ * People leaders look after products and teams, not one product of their own, so
+ * some questions are worded for them. The answers and what they change stay the same.
+ */
+const LEADER_WORDING: Partial<Record<IntakeQuestion["id"], Partial<QuestionText>>> = {
+  pm: {
+    shortLabel: "Kind of product work",
+    title: "What kind of product work do your teams do?",
+    why: "Pick up to two. This decides which add-on blocks your plan includes.",
+  },
+  product: {
+    title: "What kind of products do you look after?",
+    why: "Some steps only matter for certain products, such as service assessments in the public sector. If you look after several kinds, pick the main one.",
+  },
+  challenge: {
+    title: "What's your biggest challenge as a leader right now?",
+    why: "This moves the blocks that help most to the front of your plan.",
+  },
+  way: {
+    title: "How do your teams work?",
+    why: "This decides which ways-of-working blocks you get. If it varies, pick the most common.",
+  },
+};
+
+/** The product track's starting point, for someone who looks after more than one product. */
+const LEADER_STAGE: Partial<QuestionText> = {
+  title: "Where is your main product now?",
+  why: "This sets where your plan starts. If you look after several, pick the one that needs you most right now.",
+};
+
+/** "General" describes one PM. For a leader it describes their teams. */
+const LEADER_PM_TYPES: readonly IntakeOption[] = PM_TYPES.map((type) => (type.id === "general" ? { ...type, description: "Your teams cover a bit of everything." } : type));
+
+/**
+ * The question as this visitor sees it. The starting point depends on the kind of
+ * work. People leaders get their own wording, and their own challenges as well.
+ */
+export function questionFor(question: IntakeQuestion, draft: Pick<IntakeDraft, "work"> & Partial<Pick<IntakeDraft, "level">>): IntakeQuestion {
+  const leader = leadsPeople(draft.level ?? null);
+  if (question.id === "stage") {
+    const track = trackFor(draft.work);
+    return { ...question, ...STARTING_QUESTIONS[track], ...(leader && track === "product" ? LEADER_STAGE : {}), options: stagesFor(draft.work) };
+  }
+  if (question.id === "challenge") return { ...question, ...(leader ? LEADER_WORDING.challenge : {}), options: challengeOptions(draft.level ?? null) };
+  if (!leader || !LEADER_WORDING[question.id]) return question;
+  const worded = { ...question, ...LEADER_WORDING[question.id] } as IntakeQuestion;
+  return question.id === "pm" ? ({ ...worded, options: LEADER_PM_TYPES } as IntakeQuestion) : worded;
 }
 
 /** The longest path. A step in the address can't go past it. */

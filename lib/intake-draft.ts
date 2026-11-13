@@ -1,5 +1,6 @@
 import { finishOptions, phasesForStage, stageFits } from "./intake-phases";
 import { TEAM_ROLE_IDS, TOOL_ANSWER_IDS } from "./intake-questions";
+import { challengeFits } from "./leader-intake";
 import { PM_TYPE_IDS, type PhaseId } from "../content/taxonomy";
 import {
   MAX_PM_TYPES,
@@ -22,12 +23,15 @@ import {
  * Keeps the starting point and the two phase follow-ups consistent with the
  * answers they depend on. Every change and every web address goes through this
  * one rule. A starting point must belong to the track, a start phase to the
- * stage, and a finish must be reachable from that start.
+ * stage, a finish must be reachable from that start, and a leaders-only
+ * challenge needs a level that leads people.
  */
 export function tidyDraft(draft: IntakeDraft): IntakeDraft {
   // Each track has its own starting points, so changing track clears the old one.
   const stage = draft.stage !== null && draft.stage !== NOT_SURE && !stageFits(draft.stage, draft.work) ? null : draft.stage;
-  const tidied = { ...draft, stage, phase: keepIfOffered(draft.phase, phasesForStage(stage)) };
+  // A challenge only leaders are offered goes if the level changes to one that doesn't lead people.
+  const challenge = challengeFits(draft.challenge, draft.level) ? draft.challenge : null;
+  const tidied = { ...draft, stage, challenge, phase: keepIfOffered(draft.phase, phasesForStage(stage)) };
   return { ...tidied, until: keepIfOffered(draft.until, finishOptions(tidied)) };
 }
 

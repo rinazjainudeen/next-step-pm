@@ -4,8 +4,11 @@
 // block can't be merged unnoticed.
 
 import { checkContent } from "../lib/blocks-load";
+import { validateChallengeBlocks } from "../lib/blocks-validate";
 
 const { blocks, errors, warnings, fileCount } = checkContent();
+// The blocks a leader's challenge names live in the taxonomy, so they're checked against the real blocks here.
+if (errors.length === 0) errors.push(...validateChallengeBlocks(blocks));
 
 if (warnings.length > 0) {
   console.log("Warnings (these don't fail the check):");

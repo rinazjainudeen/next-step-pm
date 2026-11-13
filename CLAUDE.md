@@ -1,6 +1,6 @@
 # Next Step PM: working rules for Claude Code
 
-Next Step PM is a free, single-use web tool. A product manager answers 9 questions (kind of work, PM type, what they own, product type, company size, starting point, biggest challenge, timeline, ways of working). Someone exploring product management answers 4 (kind of work, background, goal, time each week). Team and tools are optional, in "Tailor your plan" on the plan page. The site then builds a step-by-step curriculum from reusable **learning blocks**.
+Next Step PM is a free, single-use web tool. A product manager answers 9 questions (kind of work, what they own, PM type, product type, company size, starting point, biggest challenge, timeline, ways of working). Someone exploring product management answers 4 (kind of work, background, goal, time each week). Team and tools are optional, in "Tailor your plan" on the plan page. The site then builds a step-by-step curriculum from reusable **learning blocks**.
 
 Rinaz built it as a **portfolio piece** for AI Product Manager and AI Builder roles. It needs to show that he can ship a working product to production that real people use. The audiences, in order: hiring managers, then product managers, then colleagues.
 

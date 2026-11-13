@@ -182,15 +182,64 @@ export const SKILL_IDS: readonly SkillId[] = SKILLS.map((skill) => skill.id);
 // 5b. Intake: what's your biggest challenge right now? It favours some skills.
 // ---------------------------------------------------------------------------
 
+/**
+ * `favours` are the skills that help. People leaders (Group PM, Director, VP)
+ * also see `leadersOnly` challenges, and `forLeaders` gives them their own
+ * wording and `blocks`: the blocks that help most, best first. Each of those
+ * builds a favoured skill, so they're the pick of the skill matches.
+ */
+export type Challenge = {
+  id: string;
+  label: string;
+  description: string;
+  favours: readonly SkillId[];
+  leadersOnly?: true;
+  forLeaders?: { label?: string; description?: string; blocks: readonly string[] };
+};
+
 export const CHALLENGES = [
   { id: "what-to-build", label: "We're not sure what to build next", description: "Lots of ideas, little evidence.", favours: ["discovery", "prioritisation"] },
   { id: "too-many-requests", label: "Too many requests, and it's hard to say no", description: "Everything feels urgent.", favours: ["prioritisation", "communication"] },
   { id: "measurement", label: "We ship, but can't tell if it's working", description: "Little or no measurement.", favours: ["data"] },
-  { id: "alignment", label: "People aren't aligned on the direction", description: "Leaders or teams pull different ways.", favours: ["strategy", "communication"] },
+  {
+    id: "alignment",
+    label: "People aren't aligned on the direction",
+    description: "Leaders or teams pull different ways.",
+    favours: ["strategy", "communication"],
+    forLeaders: {
+      label: "Getting execs and other teams behind the direction",
+      description: "Senior leaders and partner teams pull different ways.",
+      blocks: ["strat-align-leaders", "craft-exec-communication", "craft-influence"],
+    },
+  },
   { id: "slow-delivery", label: "Delivery is slow or unpredictable", description: "Dates slip, and work gets stuck.", favours: ["delivery", "technical"] },
   { id: "new-to-role", label: "I'm new and need to get up to speed", description: "A new role, product or team.", favours: [] },
   { id: "grow", label: "I want to grow into a bigger role", description: "Getting ready for the next level.", favours: ["leadership", "strategy"] },
-] as const satisfies readonly { id: string; label: string; description: string; favours: readonly SkillId[] }[];
+  {
+    id: "team-performance",
+    label: "Getting the best from my PMs",
+    description: "Coaching, feedback and clear ownership.",
+    favours: ["leadership"],
+    leadersOnly: true,
+    forLeaders: { blocks: ["lead-one-to-ones", "cap-coaching", "lead-delegate-ownership"] },
+  },
+  {
+    id: "hiring",
+    label: "Hiring and building the team",
+    description: "Roles to fill, and new PMs to bring up to speed.",
+    favours: ["leadership"],
+    leadersOnly: true,
+    forLeaders: { blocks: ["cap-hiring-onboarding", "cap-roles-career", "cap-coaching"] },
+  },
+  {
+    id: "portfolio",
+    label: "Deciding where people and budget go",
+    description: "More bets than people, money or time.",
+    favours: ["strategy", "prioritisation", "commercial"],
+    leadersOnly: true,
+    forLeaders: { blocks: ["strat-portfolio-allocation", "craft-business-case", "craft-decision-making"] },
+  },
+] as const satisfies readonly Challenge[];
 
 export type ChallengeId = (typeof CHALLENGES)[number]["id"];
 export const CHALLENGE_IDS: readonly ChallengeId[] = CHALLENGES.map((challenge) => challenge.id);

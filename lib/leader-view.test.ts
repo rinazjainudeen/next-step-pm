@@ -55,7 +55,7 @@ test("the view is kept in the link only when it was chosen", () => {
 
 test("the strategy plan link keeps level, size and product type, and opens at the first question left", () => {
   const href = strategyPlanHref({ level: "director", size: "enterprise", product: "public" });
-  assert.ok(href.startsWith("/start?step=2&"), href);
+  assert.ok(href.startsWith("/start?step=3&"), href);
   const draft = parseDraft(params(href));
   assert.equal(draft.work, "strategy");
   assert.equal(draft.level, "director");
