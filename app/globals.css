@@ -163,7 +163,7 @@
 }
 
 /*
- * Motion for the questions and "Building your plan". Transform and opacity only, so
+ * Motion for the questions and the plan. Transform and opacity only, so
  * nothing moves the layout. The reduced-motion rule below makes all of it instant.
  */
 
@@ -188,54 +188,57 @@
   stroke-dashoffset: 0;
 }
 
-/* "Building your plan" (components/plan/plan-build-intro.tsx). */
-.build-intro {
-  transition: opacity var(--fade) ease-in;
+/*
+ * The plan's reveal, right after the questions (components/plan/plan-phases.tsx).
+ * "armed" waits for the overview to come into view; "playing" lasts under 1.2s.
+ * Nothing starts fully transparent, so the plan can be read from the first frame.
+ */
+[data-reveal="armed"] .reveal-phase {
+  opacity: 0.3;
+  transform: translateY(0.5rem);
 }
-.build-intro-card {
-  transition: transform var(--fade) ease-in;
+[data-reveal="armed"] .reveal-timeline {
+  opacity: 0.5;
+  transform: translateY(0.5rem);
 }
-.build-intro[data-stage="leaving"] {
+[data-reveal="playing"] .reveal-phase {
+  animation: plan-reveal-rise var(--rise) cubic-bezier(0.2, 0.8, 0.2, 1) var(--d) both;
+}
+[data-reveal="playing"] .reveal-timeline {
+  animation: plan-reveal-settle var(--timeline-for) ease-out var(--timeline-at) both;
+}
+/* "You're here" glows once, just after its phase arrives. */
+.reveal-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 45%, transparent);
   opacity: 0;
+  pointer-events: none;
 }
-.build-intro[data-stage="leaving"] .build-intro-card {
-  transform: translateY(-0.75rem) scale(1.02);
+[data-reveal="playing"] .reveal-glow::after {
+  animation: plan-reveal-glow var(--glow) ease-out calc(var(--d) + var(--glow-after)) both;
 }
-/* Answers pop in, then drop towards the phases and dim, as the plan takes them in. */
-.build-intro-chip {
-  animation:
-    build-intro-pop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d) both,
-    build-intro-flow 0.38s ease-in calc(var(--flow) + var(--d) / 2) forwards;
-}
-.build-intro-lane {
-  animation: build-intro-rise 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d) both;
-}
-/* One bar per block, dropping into place one after another. */
-.build-intro-bar {
-  animation: build-intro-drop 0.22s ease-out var(--d) both;
-}
-@keyframes build-intro-pop {
+@keyframes plan-reveal-rise {
   from {
-    opacity: 0;
-    transform: translateY(0.5rem) scale(0.9);
+    opacity: 0.3;
+    transform: translateY(0.5rem);
   }
 }
-@keyframes build-intro-flow {
+@keyframes plan-reveal-settle {
+  from {
+    opacity: 0.5;
+    transform: translateY(0.5rem);
+  }
+}
+@keyframes plan-reveal-glow {
+  40% {
+    opacity: 1;
+  }
   to {
-    opacity: 0.55;
-    transform: translateY(0.5rem) scale(0.96);
-  }
-}
-@keyframes build-intro-rise {
-  from {
     opacity: 0;
-    transform: translateY(0.75rem);
-  }
-}
-@keyframes build-intro-drop {
-  from {
-    opacity: 0;
-    transform: translateY(-0.5rem);
+    transform: scale(1.03);
   }
 }
 
@@ -244,7 +247,9 @@
     scroll-behavior: auto;
   }
   .reveal,
-  .reveal[data-hidden="true"] {
+  .reveal[data-hidden="true"],
+  [data-reveal] .reveal-phase,
+  [data-reveal] .reveal-timeline {
     opacity: 1;
     transform: none;
     transition: none;
@@ -270,6 +275,10 @@
   }
   details[data-plan-block] {
     break-inside: avoid;
+  }
+  [data-reveal] .reveal-timeline {
+    opacity: 1 !important;
+    transform: none !important;
   }
   /* Closed phases print in full. */
   [data-phase-panel][hidden] {

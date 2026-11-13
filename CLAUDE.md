@@ -125,6 +125,8 @@ Colour tokens live in `app/globals.css` in `oklch`, mapped with `@theme inline`;
   - a white `rounded-full` button with an arrow
   - optional jump-link pills
 
+  - a faint, slow background of drifting blocks that line up into a short path every few seconds (`components/site/hero-ambient.tsx`): under the gradient, hidden from screen readers, paused off screen, still for reduced motion
+
   The hero and the stats band together fill `min-h-svh`.
 - **Page hero:** `min-h-[60vh]`, in a "plain" or "card" variant (the card variant is a navy-to-primary gradient box). **Tool pages (Library, Build my plan, Your plan) use a shorter hero of about 35% of the screen height (`min-h-[35vh]`, the `size="tool"` option), so the filters or the tool show straight away.**
 - **Stats band:** a navy background with a 2/3/5-column grid of large display numbers and small uppercase labels.
@@ -144,7 +146,7 @@ Colour tokens live in `app/globals.css` in `oklch`, mapped with `@theme inline`;
 
 **Plan UX:**
 - A summary at the top: who it's for, where you are, and the next 3 actions.
-- Then a phase-by-phase timeline. Each block is an expandable card showing steps, "who can do this", tool examples and the definition of done.
+- Then a phase-by-phase timeline, with "Your plan at a glance" above it. Right after the questions, the overview plays a short reveal (under 1.2 seconds, once, never on refresh or shared links). There is no screen between the questions and the plan. Each block is an expandable card showing steps, "who can do this", tool examples and the definition of done.
 - Visitors can tick tasks; the ticks are saved in their browser only, wrapped in try/catch.
 - "Copy link to this plan" and "Print / save as PDF" buttons, with a print stylesheet.
 

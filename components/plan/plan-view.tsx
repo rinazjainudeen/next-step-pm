@@ -6,7 +6,6 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { FIRST_STAR_ID, FeedbackForm } from "@/components/plan/feedback-form";
 import { PlanActions } from "@/components/plan/plan-actions";
 import { LabelPill, PlanBlockCard } from "@/components/plan/plan-block-card";
-import { PlanBuildIntro } from "@/components/plan/plan-build-intro";
 import { PlanPhases } from "@/components/plan/plan-phases";
 import { PlanProgress } from "@/components/plan/plan-progress";
 import { PlanStyleContext } from "@/components/plan/plan-style";
@@ -24,7 +23,6 @@ import type { IntakeAnswers, IntakeDraft } from "@/lib/intake-types";
 import { draftToQuery, planHref } from "@/lib/intake-url";
 import { hasViewSwitch, strategyPlanHref, switchAboveTimeline, viewWords } from "@/lib/leader-view";
 import { markDone, putBack, setAside, undoDone } from "@/lib/plan-adjustments";
-import { introModel } from "@/lib/plan-intro";
 import type { PlanBlock } from "@/lib/plan-types";
 import { cn } from "@/lib/utils";
 
@@ -55,8 +53,6 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
   const progressIds = (blocks: readonly PlanBlock[]) =>
     blocks.filter((block) => !block.optional).flatMap((block) => (block.leaderView ? block.leaderView.ask : block.steps).map((item) => item.id));
   const stepIds = progressIds(plan.phases.flatMap((phase) => phase.blocks));
-  // What the "Building your plan" moment shows, counted the same way as the overview.
-  const intro = useMemo(() => introModel(answers, plan.phases, (phase) => progressIds(phase.blocks).length), [answers, plan.phases]);
   const tight = plan.pace.status === "tight";
   const PaceIcon = tight ? TriangleAlert : CalendarClock;
 
@@ -204,7 +200,6 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
 
   return (
     <PlanStyleContext.Provider value={style}>
-      <PlanBuildIntro planHref={href} model={intro} noun={leader ? "question" : "step"} />
       <p aria-live="polite" className="sr-only">
         {message}
       </p>
@@ -291,6 +286,7 @@ export function PlanView({ answers, blocks, draft, answersPanel }: { answers: In
           <SectionHeading eyebrow="Your timeline" title={words.timelineTitle} lead={words.timelineLead} />
           {hasViewSwitch(answers) && switchAboveTimeline(answers) && <ViewSwitch draft={draft} current={plan.view} className="mt-8" />}
           <PlanPhases
+            planHref={href}
             current={plan.currentPhase}
             noun={leader ? "questions asked" : "steps done"}
             phases={plan.phases.map((phase) => ({

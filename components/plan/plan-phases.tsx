@@ -1,11 +1,12 @@
 "use client";
 
 import { Check, ChevronDown } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { flushSync } from "react-dom";
 import { useTicks } from "@/components/plan/use-ticks";
 import { Button } from "@/components/ui/button";
 import { ONLY_CURRENT, isPhaseOpen, openAll, openFor, phaseAnchor, phaseForTarget, phaseOverview, plural, type PhaseChoices, type PhaseOutline } from "@/lib/plan-phase-view";
+import { countAt, revealTimings, sessionStore, takeReveal } from "@/lib/plan-reveal";
 import { cn } from "@/lib/utils";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -33,6 +34,32 @@ function showTarget(hash: string) {
   target.querySelector<HTMLElement>("summary, button")?.focus({ preventScroll: true });
 }
 
+type Reveal = "off" | "armed" | "playing";
+
+/** Lets CSS read a time in milliseconds. */
+const ms = (value: number) => `${value}ms`;
+
+/**
+ * A step count in the overview. During the reveal it counts up from 0 to the
+ * real number; the rest of the time, and without JavaScript, it is the real
+ * number. Screen readers get the real number from separate text, so this is hidden from them.
+ */
+function RevealCount({ to, playing, start, duration }: { to: number; playing: boolean; start: number; duration: number }) {
+  const [shown, setShown] = useState<number | null>(null);
+  useEffect(() => {
+    if (!playing) return;
+    let frame = 0;
+    const began = performance.now() + start;
+    const tick = (now: number) => {
+      setShown(countAt(to, now - began, duration));
+      if (now - began < duration) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [playing, to, start, duration]);
+  return <>{playing ? (shown ?? 0) : to}</>;
+}
+
 /**
  * The timeline, one phase at a time, with an overview of every phase above it.
  * The phase you're in opens, as worked out by the engine from ticks and "Already
@@ -41,9 +68,52 @@ function showTarget(hash: string) {
  * phases by heading. A link to a block or phase in a closed phase opens it first,
  * whether it's "Go to this step", the overview or a shared link. Printing opens
  * everything (see app/globals.css).
+ *
+ * Right after the questions, the overview plays a short reveal the first time
+ * it's on screen (see lib/plan-reveal.ts). Everything is on the page and usable
+ * throughout; the motion only adds to it.
  */
-export function PlanPhases({ phases, current, contents, noun }: { phases: PhaseOutline[]; current: string | null; contents: ReactNode[]; noun: "steps done" | "questions asked" }) {
+export function PlanPhases({
+  planHref,
+  phases,
+  current,
+  contents,
+  noun,
+}: {
+  planHref: string;
+  phases: PhaseOutline[];
+  current: string | null;
+  contents: ReactNode[];
+  noun: "steps done" | "questions asked";
+}) {
   const [choices, setChoices] = useState<PhaseChoices>(ONLY_CURRENT);
+
+  // Before the first paint, so nothing settles in that was already sitting still.
+  const [reveal, setReveal] = useState<Reveal>("off");
+  const revealRef = useRef<HTMLDivElement>(null);
+  const timings = revealTimings(phases.length);
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- session storage is only readable in the browser, and must be read once
+    if (takeReveal(sessionStore(), planHref, prefersReducedMotion()) && typeof IntersectionObserver !== "undefined") setReveal("armed");
+  }, [planHref]);
+  // The plan opens at the top and the overview is usually further down, so it plays when it first comes into view.
+  useEffect(() => {
+    const element = revealRef.current;
+    if (reveal !== "armed" || !element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      setReveal("playing");
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [reveal]);
+  useEffect(() => {
+    if (reveal !== "playing") return;
+    const timer = window.setTimeout(() => setReveal("off"), timings.total + 50);
+    return () => window.clearTimeout(timer);
+  }, [reveal, timings.total]);
+  const playing = reveal === "playing";
   const { ticks } = useTicks();
   // The listeners below are added once, so they read the latest phases and choices from here.
   const outline = useRef(phases);
@@ -120,7 +190,21 @@ export function PlanPhases({ phases, current, contents, noun }: { phases: PhaseO
   const stepWord = noun === "questions asked" ? "question" : "step";
 
   return (
-    <div>
+    <div
+      ref={revealRef}
+      data-reveal={reveal === "off" ? undefined : reveal}
+      style={
+        reveal === "off"
+          ? undefined
+          : ({
+              "--rise": ms(timings.riseFor),
+              "--glow": ms(timings.glowFor),
+              "--glow-after": ms(timings.glowAfter),
+              "--timeline-at": ms(timings.timelineAt),
+              "--timeline-for": ms(timings.timelineFor),
+            } as CSSProperties)
+      }
+    >
       {phases.length > 1 && (
         <nav aria-label="Phases in your plan" className="no-print mt-8 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -136,13 +220,13 @@ export function PlanPhases({ phases, current, contents, noun }: { phases: PhaseO
           </div>
           <ol className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {rows.map((row, index) => (
-              <li key={row.id}>
+              <li key={row.id} className="reveal-phase" style={reveal === "off" ? undefined : ({ "--d": ms(index * timings.stagger) } as CSSProperties)}>
                 <a
                   href={`#${phaseAnchor(row.id)}`}
                   aria-current={row.status === "current" ? "step" : undefined}
                   className={cn(
-                    "flex min-h-11 items-center gap-3 rounded-xl border px-3 py-2 transition-colors hover:border-primary/40 hover:bg-secondary/60 motion-reduce:transition-none",
-                    row.status === "current" ? "border-primary/50 bg-primary/5" : "border-border",
+                    "relative flex min-h-11 items-center gap-3 rounded-xl border px-3 py-2 transition-colors hover:border-primary/40 hover:bg-secondary/60 motion-reduce:transition-none",
+                    row.status === "current" ? "reveal-glow border-primary/50 bg-primary/5" : "border-border",
                   )}
                 >
                   <span
@@ -157,9 +241,14 @@ export function PlanPhases({ phases, current, contents, noun }: { phases: PhaseO
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline justify-between gap-2">
                       <span className="font-semibold text-foreground">{row.label}</span>
-                      <span className="shrink-0 text-sm text-muted-foreground">
-                        {row.ticked} of {row.steps}
-                        <span className="sr-only"> {plural(row.steps, stepWord)} {noun === "questions asked" ? "asked" : "done"}</span>
+                      <span className="shrink-0 text-sm text-muted-foreground tabular-nums">
+                        <span aria-hidden="true">
+                          {row.ticked} of{" "}
+                          <RevealCount to={row.steps} playing={playing} start={index * timings.stagger + timings.countAfter} duration={timings.countFor} />
+                        </span>
+                        <span className="sr-only">
+                          {row.ticked} of {plural(row.steps, stepWord)} {noun === "questions asked" ? "asked" : "done"}
+                        </span>
                       </span>
                     </span>
                     <span className="block text-xs text-muted-foreground">
@@ -177,7 +266,7 @@ export function PlanPhases({ phases, current, contents, noun }: { phases: PhaseO
           </ol>
         </nav>
       )}
-      <div className="mt-6 space-y-4">
+      <div className="reveal-timeline mt-6 space-y-4">
         {phases.map((phase, index) => {
           const open = isOpen(phase.id);
           const row = rows[index];
